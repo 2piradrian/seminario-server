@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/2piradrian/seminario-client.git
+          search-paths: app-config
+          default-label: develop
+          clone-on-start: true
+
+server:
+  port: 7777
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
