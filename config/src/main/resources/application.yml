@@ -9,7 +9,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/2piradrian/seminario-client.git
+          uri: https://github.com/2piradrian/seminario-server.git
           search-paths: app-config
           default-label: develop
           clone-on-start: true
