@@ -1,4 +1,4 @@
-package com.grupo3.error;
+package com.group3.error;
 
 public class ErrorResponse {
 
