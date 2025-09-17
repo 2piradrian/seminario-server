@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: develop
+    password: develop
+    url: jdbc:postgresql://localhost:5433/posts-db
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: "update"
