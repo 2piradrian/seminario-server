@@ -1,6 +1,6 @@
 services:
   users-db:
-    image: postgres:15
+    image: postgres:15.3
     restart: always
     environment:
       POSTGRES_DB: 'users-db'
