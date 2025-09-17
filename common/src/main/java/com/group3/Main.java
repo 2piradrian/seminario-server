@@ -1,4 +1,4 @@
-package com.grupo3;
+package com.group3;
 
 public class Main {
   public static void main(String[] args) {

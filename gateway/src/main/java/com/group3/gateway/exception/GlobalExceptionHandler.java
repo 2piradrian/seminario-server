@@ -1,7 +1,7 @@
-package com.twopiradrian.gateway.exception;
+package com.group3.gateway.exception;
 
-import com.twopiradrian.error.ErrorHandler;
-import com.twopiradrian.error.ErrorType;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
