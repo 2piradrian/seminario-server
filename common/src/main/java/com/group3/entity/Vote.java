@@ -1,4 +1,4 @@
-package com.grupo3.entity;
+package com.group3.entity;
 
 public enum Vote {
   UPVOTE,

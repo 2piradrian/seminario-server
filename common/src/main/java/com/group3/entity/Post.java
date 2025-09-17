@@ -1,4 +1,4 @@
-package com.grupo3.entity;
+package com.group3.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,21 +10,23 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Post {
 
   private String id;
 
-  private String authorId;
-
-  private String forumId;
-
-  private Comment replyTo;
+  private String title;
 
   private String content;
+
+  private Integer views;
+
+  private String authorId;
 
   private Set<String> upvoters;
 
   private Set<String> downvoters;
+
+  private Category category;
 
   private LocalDateTime createdAt;
 
