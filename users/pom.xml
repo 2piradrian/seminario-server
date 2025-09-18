@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.group3</groupId>
-	<artifactId>auth</artifactId>
+	<artifactId>users</artifactId>
 	<version>1.0.0</version>
-	<name>auth</name>
-	<description>Auth Server</description>
+	<name>users</name>
+	<description>Users Server</description>
 	<url/>
 	<licenses>
 		<license/>

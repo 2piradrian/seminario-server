@@ -1,10 +1,10 @@
-package com.group3.auth;
+package com.group3.users;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AuthApplicationTests {
+class UsersApplicationTests {
 
 	@Test
 	void contextLoads() {
