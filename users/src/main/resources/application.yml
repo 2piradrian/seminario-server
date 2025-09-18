@@ -1,7 +1,7 @@
 spring:
 
   application:
-    name: auth-server
+    name: users-server
 
   profiles:
     active: dev
@@ -11,7 +11,7 @@ spring:
 
 server:
   servlet:
-    context-path: /auth
+    context-path: /users
   port: 0
 
 eureka:
