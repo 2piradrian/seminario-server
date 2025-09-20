@@ -59,4 +59,10 @@ public class JWTHelper {
       .compact();
   }
 
+  public boolean validateToken(String token) {
+    final var expirationDate = this.getExpirationDate(token);
+
+    return expirationDate.after(new Date());
+  }
+
 }
