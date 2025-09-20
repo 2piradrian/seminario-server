@@ -12,10 +12,9 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
 
   Optional<UserModel> findByEmail(String email);
 
-  @Query(value = "SELECT * FROM users u " +
+  @Query("SELECT u FROM UserModel u " +
     "WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%')) " +
-    "AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surname, '%'))",
-    nativeQuery = true)
+    "AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surname, '%'))")
   List<UserModel> findByFullNameLike(@Param("name") String name,
                                      @Param("surname") String surname);
 
