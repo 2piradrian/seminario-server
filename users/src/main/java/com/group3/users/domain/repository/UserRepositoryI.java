@@ -2,13 +2,15 @@ package com.group3.users.domain.repository;
 
 import com.group3.entity.User;
 
+import java.util.List;
+
 public interface UserRepositoryI {
 
   User getById(String userId);
 
   User getByEmail(String email);
 
-  User getByFullname(String name, String surname);
+  List<User> getByFullname(String name, String surname);
 
   User save(User user);
 
