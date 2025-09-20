@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum RegexValidators {
 
-  NAME("^[A-Za-zÁÉÍÓÚáéíóúÑñ][A-Za-zÁÉÍÓÚáéíóúÑñ ']{1,49}$"),
-  SURNAME("^[A-Za-zÁÉÍÓÚáéíóúÑñ][A-Za-zÁÉÍÓÚáéíóúÑñ ']{1,49}$"),
+  NAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
+  SURNAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
   PASSWORD("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"),
   EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
 
