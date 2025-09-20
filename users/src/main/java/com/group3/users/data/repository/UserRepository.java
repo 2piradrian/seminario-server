@@ -34,7 +34,6 @@ public class UserRepository implements UserRepositoryI {
     return userModels.isEmpty() ? UserEntityMapper.toDomain(userModels) : List.of();
   }
 
-  // Se podrian simplificar el save y el update en un solo metodo? Ya que hacen lo mismo
   @Override
   public User save(User user) {
     UserModel userModel = UserEntityMapper.toModel(user);

@@ -19,7 +19,6 @@ public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    // No deberia ser int?
     private String id;
 
     private String name;

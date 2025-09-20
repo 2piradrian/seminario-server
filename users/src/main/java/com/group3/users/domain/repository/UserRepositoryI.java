@@ -12,8 +12,6 @@ public interface UserRepositoryI {
 
   List<User> getByFullname(String name, String surname);
 
-  // Se podrian simplificar el save y el update en un solo metodo? Ya que hacen lo mismo
-
   User save(User user);
 
   User update(User user);
