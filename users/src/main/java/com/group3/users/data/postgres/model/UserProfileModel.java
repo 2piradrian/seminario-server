@@ -20,8 +20,10 @@ public class UserProfileModel {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @Column(nullable = true)
   private String portaitImage;
 
+  @Column(nullable = true)
   private String profileImage;
 
   private String shortDescription;
