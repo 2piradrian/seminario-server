@@ -1,28 +1,9 @@
 package com.group3.entity;
 
-public enum Instrument {
-    GUITAR,
-    BASS,
-    DRUMS,
-    KEYBOARD,
-    PIANO,
-    VIOLIN,
-    SAXOPHONE,
-    TRUMPET,
-    FLUTE,
-    SYNTHESIZER,
-    TURNTABLES,
-    VOCALS,
-    CELLO,
-    HARMONICA,
-    BONGO,
-    CONGA,
-    TIMBALES,
-    ACOUSTIC_GUITAR,
-    BANDONEON,
-    MARIMBA,
-    CUATRO,
-    TROMBONE,
-    CHARANGO,
-    PAN_FLUTE,
+public class Instrument {
+
+    private String id;
+
+    private String nombre;
+
 }
