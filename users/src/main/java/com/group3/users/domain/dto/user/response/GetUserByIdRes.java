@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,10 +20,22 @@ public class GetUserByIdRes {
 
     private final String email;
 
-    private final Set<Role> roles;
+    private final List<Role> roles;
 
     private LocalDateTime memberSince;
 
     private LocalDateTime lastLogin;
+
+    private final String portraitImage;
+
+    private final String profileImage;
+
+    private final String shortDescription;
+
+    private final String longDescription;
+
+    private final List<String> styles;
+
+    private final List<String> instruments;
 
 }
