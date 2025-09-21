@@ -39,7 +39,16 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne
-    private UserProfileModel userProfile;
+    private String portraitImage;
+
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private Set<String> styles;
+
+    private Set<String> instruments;
 
 }
