@@ -15,28 +15,28 @@ import java.util.List;
 @AllArgsConstructor
 public class UserProfileRepository implements UserProfileRepositoryI {
 
-  private final PostgresUserProfileRepositoryI userProfileRepository;
+    private final PostgresUserProfileRepositoryI userProfileRepository;
 
-  @Override
-  public UserProfile getById(String userProfileId) {
-    UserProfileModel userProfileModel = this.userProfileRepository.findById(userProfileId).orElse(null);
-    return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
-  }
+    @Override
+    public UserProfile getById(String userProfileId) {
+        UserProfileModel userProfileModel = this.userProfileRepository.findById(userProfileId).orElse(null);
+        return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
+    }
 
-  @Override
-  public UserProfile save(UserProfile userProfile) {
-    UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
-    UserProfileModel saved = this.userProfileRepository.save(userProfileModel);
+    @Override
+    public UserProfile save(UserProfile userProfile) {
+        UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
+        UserProfileModel saved = this.userProfileRepository.save(userProfileModel);
 
-    return UserProfileEntityMapper.toDomain(saved);
-  }
+        return UserProfileEntityMapper.toDomain(saved);
+    }
 
-  @Override
-  public UserProfile update(UserProfile userProfile) {
-    UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
-    UserProfileModel updated = this.userProfileRepository.save(userProfileModel);
+    @Override
+    public UserProfile update(UserProfile userProfile) {
+        UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
+        UserProfileModel updated = this.userProfileRepository.save(userProfileModel);
 
-    return UserProfileEntityMapper.toDomain(updated);
-  }
+        return UserProfileEntityMapper.toDomain(updated);
+    }
 
 }

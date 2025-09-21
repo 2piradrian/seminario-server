@@ -16,23 +16,22 @@ import java.util.Set;
 @Table(name = "user-profiles")
 public class UserProfileModel {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-  private String portraitImage;
+    private String portraitImage;
 
-  private String profileImage;
+    private String profileImage;
 
-  private String shortDescription;
+    private String shortDescription;
 
-  private String longDescription;
+    private String longDescription;
 
-  @Enumerated(EnumType.STRING)
-  private Set<Style> styles;
+    @Enumerated(EnumType.STRING)
+    private Set<Style> styles;
 
-  @Enumerated(EnumType.STRING)
-  private Set<Instrument> instruments;
-
+    @Enumerated(EnumType.STRING)
+    private Set<Instrument> instruments;
 
 }
