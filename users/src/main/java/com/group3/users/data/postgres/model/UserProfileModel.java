@@ -28,10 +28,8 @@ public class UserProfileModel {
 
     private String longDescription;
 
-    @Enumerated(EnumType.STRING)
-    private Set<Style> styles;
+    private Set<String> styles;
 
-    @Enumerated(EnumType.STRING)
-    private Set<Instrument> instruments;
+    private Set<String> instruments;
 
 }
