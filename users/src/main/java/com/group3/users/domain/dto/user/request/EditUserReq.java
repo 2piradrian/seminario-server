@@ -2,11 +2,10 @@ package com.group3.users.domain.dto.user.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.users.domain.dto.profile.request.EditUserProfileReq;
 import com.group3.users.domain.validator.RegexValidators;
 import lombok.Getter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 public class EditUserReq {
@@ -27,9 +26,9 @@ public class EditUserReq {
 
     private final String longDescription;
 
-    private final Set<String> styles;
+    private final List<String> styles;
 
-    private final Set<String> instruments;
+    private final List<String> instruments;
 
     private EditUserReq(
         String token,
@@ -40,8 +39,8 @@ public class EditUserReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<String> styles,
-        Set<String> instruments
+        List<String> styles,
+        List<String> instruments
     ){
         this.token = token;
         this.userId = userId;
@@ -64,8 +63,8 @@ public class EditUserReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<String> styles,
-        Set<String> instruments
+        List<String> styles,
+        List<String> instruments
     ){
         if (token == null){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
