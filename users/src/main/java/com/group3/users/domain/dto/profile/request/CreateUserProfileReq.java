@@ -25,39 +25,39 @@ public class CreateUserProfileReq {
   private final Set<Instrument> instruments;
 
   private CreateUserProfileReq(
-          String portraitImage,
-          String profileImage,
-          String shortDescription,
-          String longDescription,
-          Set<Style> styles,
-          Set<Instrument> instruments
+      String portraitImage,
+      String profileImage,
+      String shortDescription,
+      String longDescription,
+      Set<Style> styles,
+      Set<Instrument> instruments
   ){
-    this.portraitImage = portraitImage;
-    this.profileImage = profileImage;
-    this.shortDescription = shortDescription;
-    this.longDescription = longDescription;
-    this.styles = styles;
-    this.instruments = instruments;
+      this.portraitImage = portraitImage;
+      this.profileImage = profileImage;
+      this.shortDescription = shortDescription;
+      this.longDescription = longDescription;
+      this.styles = styles;
+      this.instruments = instruments;
   }
 
   public static CreateUserProfileReq create(
-          String portraitImage,
-          String profileImage,
-          String shortDescription,
-          String longDescription,
-          Set<Style> styles,
-          Set<Instrument> instruments
+      String portraitImage,
+      String profileImage,
+      String shortDescription,
+      String longDescription,
+      Set<Style> styles,
+      Set<Instrument> instruments
   ){
 
-    if (shortDescription == null || longDescription == null || styles == null || instruments == null) {
-      throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-    }
+      if (shortDescription == null || longDescription == null || styles == null || instruments == null) {
+        throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+      }
 
-    if (shortDescription.isEmpty() || longDescription.isEmpty() || styles.isEmpty() || instruments.isEmpty()) {
-      throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-    }
+      if (shortDescription.isEmpty() || longDescription.isEmpty() || styles.isEmpty() || instruments.isEmpty()) {
+        throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+      }
 
-    RegexValidators shortDescriptionValidator = RegexValidators.SHORT_DESCRIPTION;
+        RegexValidators shortDescriptionValidator = RegexValidators.SHORT_DESCRIPTION;
     if (!shortDescription.matches(shortDescriptionValidator.getRegex())) {
       throw new ErrorHandler(ErrorType.INVALID_FIELDS);
     }
