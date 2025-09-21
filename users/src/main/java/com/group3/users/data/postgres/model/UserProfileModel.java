@@ -20,10 +20,8 @@ public class UserProfileModel {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(nullable = true)
-  private String portaitImage;
+  private String portraitImage;
 
-  @Column(nullable = true)
   private String profileImage;
 
   private String shortDescription;
@@ -35,4 +33,6 @@ public class UserProfileModel {
 
   @Enumerated(EnumType.STRING)
   private Set<Instrument> instruments;
+
+
 }

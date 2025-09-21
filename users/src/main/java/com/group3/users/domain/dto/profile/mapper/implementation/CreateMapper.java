@@ -1,5 +1,7 @@
 package com.group3.users.domain.dto.profile.mapper.implementation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
 import com.group3.entity.UserProfile;
@@ -13,39 +15,30 @@ import java.util.stream.Collectors;
 
 public class CreateMapper {
 
-  public CreateUserProfileReq toRequest(Map<String, Object> payload){
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // Puede haber problemas en caso de que sea un solo string
-    Set<Style> styles = ((List<String>) payload.getOrDefault("styles", List.of()))
-      .stream()
-      .map(Style::valueOf)   // convierte "JAZZ" -> Style.JAZZ
-      .collect(Collectors.toSet());
-
-    Set<Instrument> instruments = ((List<String>) payload.getOrDefault("instruments", List.of()))
-      .stream()
-      .map(Instrument::valueOf)
-      .collect(Collectors.toSet());
-
-    return CreateUserProfileReq.create(
-      (String) payload.get("portaitImage"),
-      (String) payload.get("profileImage"),
-      (String) payload.get("shortDescription"),
-      (String) payload.get("longDescription"),
-      styles,
-      instruments
-    );
-  }
+    public CreateUserProfileReq toRequest(Map<String, Object> payload){
+        return CreateUserProfileReq.create(
+            (String) payload.get("portraitImage"),
+            (String) payload.get("profileImage"),
+            (String) payload.get("shortDescription"),
+            (String) payload.get("longDescription"),
+            objectMapper.convertValue(payload.get("styles"), new TypeReference<Set<Style>>() {}),
+            objectMapper.convertValue(payload.get("instruments"), new TypeReference<Set<Instrument>>() {})
+        );
+    }
 
   public CreateUserProfileRes toResponse(UserProfile userProfile) {
-    return new CreateUserProfileRes(
-      userProfile.getId(),
-      userProfile.getPortaitImage(),
-      userProfile.getProfileImage(),
-      userProfile.getShortDescription(),
-      userProfile.getLongDescription(),
-      userProfile.getStyles(),
-      userProfile.getInstruments()
-    );
+        return new CreateUserProfileRes(
+            userProfile.getId(),
+            userProfile.getPortraitImage(),
+            userProfile.getProfileImage(),
+            userProfile.getShortDescription(),
+            userProfile.getLongDescription(),
+            userProfile.getStyles(),
+            userProfile.getInstruments()
+
+        );
   }
 
 }

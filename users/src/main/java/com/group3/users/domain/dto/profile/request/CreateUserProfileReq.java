@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 public class CreateUserProfileReq {
 
-  private final String portaitImage;
+  private final String portraitImage;
 
   private final String profileImage;
 
@@ -24,13 +24,15 @@ public class CreateUserProfileReq {
 
   private final Set<Instrument> instruments;
 
-  private CreateUserProfileReq(String portaitImage,
-                               String profileImage,
-                               String shortDescription,
-                               String longDescription,
-                               Set<Style> styles,
-                               Set<Instrument> instruments){
-    this.portaitImage = portaitImage;
+  private CreateUserProfileReq(
+          String portraitImage,
+          String profileImage,
+          String shortDescription,
+          String longDescription,
+          Set<Style> styles,
+          Set<Instrument> instruments
+  ){
+    this.portraitImage = portraitImage;
     this.profileImage = profileImage;
     this.shortDescription = shortDescription;
     this.longDescription = longDescription;
@@ -38,12 +40,15 @@ public class CreateUserProfileReq {
     this.instruments = instruments;
   }
 
-  public static CreateUserProfileReq create(String portaitImage,
-                                            String profileImage,
-                                            String shortDescription,
-                                            String longDescription,
-                                            Set<Style> styles,
-                                            Set<Instrument> instruments){
+  public static CreateUserProfileReq create(
+          String portraitImage,
+          String profileImage,
+          String shortDescription,
+          String longDescription,
+          Set<Style> styles,
+          Set<Instrument> instruments
+  ){
+
     if (shortDescription == null || longDescription == null || styles == null || instruments == null) {
       throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
     }
@@ -62,7 +67,7 @@ public class CreateUserProfileReq {
       throw new ErrorHandler(ErrorType.INVALID_FIELDS);
     }
 
-    return new CreateUserProfileReq(portaitImage, profileImage, shortDescription, longDescription, styles, instruments);
+    return new CreateUserProfileReq(portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
   }
 
 }

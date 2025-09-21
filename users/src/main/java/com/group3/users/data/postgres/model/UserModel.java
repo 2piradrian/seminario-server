@@ -39,4 +39,7 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToOne
+    private UserProfileModel userProfile;
+
 }

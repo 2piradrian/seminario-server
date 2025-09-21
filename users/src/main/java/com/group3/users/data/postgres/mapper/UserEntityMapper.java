@@ -19,7 +19,8 @@ public class UserEntityMapper {
       userModel.getMemberSince(),
       userModel.getLastLogin(),
       userModel.getRoles(),
-      userModel.getStatus()
+      userModel.getStatus(),
+      UserProfileEntityMapper.toDomain(userModel.getUserProfile())
     );
   }
 
@@ -33,7 +34,8 @@ public class UserEntityMapper {
       user.getMemberSince(),
       user.getLastLogin(),
       user.getRoles(),
-      user.getStatus()
+      user.getStatus(),
+      UserProfileEntityMapper.toModel(user.getUserProfile())
     );
   }
 
