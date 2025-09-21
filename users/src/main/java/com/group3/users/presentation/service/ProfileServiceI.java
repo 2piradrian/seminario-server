@@ -5,6 +5,6 @@ import com.group3.users.domain.dto.profile.response.EditUserProfileRes;
 
 public interface ProfileServiceI {
 
-    EditUserProfileRes create(EditUserProfileReq dto);
+    EditUserProfileRes edit(EditUserProfileReq dto);
 
 }
