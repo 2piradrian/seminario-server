@@ -33,7 +33,7 @@ public class UserEntityMapper {
                     s.setId(id);
                     return s;
                 })
-                .collect(Collectors.toSet()),
+                .collect(Collectors.toList()),
             userModel.getInstruments()
                 .stream()
                 .map(id -> {
@@ -41,7 +41,7 @@ public class UserEntityMapper {
                     i.setId(id);
                     return i;
                 })
-                .collect(Collectors.toSet())
+                .collect(Collectors.toList())
         );
     }
 
@@ -62,10 +62,10 @@ public class UserEntityMapper {
             user.getLongDescription(),
             user.getStyles().stream()
                 .map(Style::getId)
-                .collect(Collectors.toSet()),
+                .collect(Collectors.toList()),
             user.getInstruments().stream()
                 .map(Instrument::getId)
-                .collect(Collectors.toSet())
+                .collect(Collectors.toList())
         );
     }
 

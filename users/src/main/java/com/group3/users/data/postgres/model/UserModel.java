@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,7 +34,7 @@ public class UserModel {
     private LocalDateTime lastLogin;
 
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -47,8 +47,8 @@ public class UserModel {
 
     private String longDescription;
 
-    private Set<String> styles;
+    private List<String> styles;
 
-    private Set<String> instruments;
+    private List<String> instruments;
 
 }
