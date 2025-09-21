@@ -13,8 +13,13 @@ public class GatewayBeans {
         return builder.routes()
                 .route(r -> r
                         .path("/api/users/**")
-                        .filters(f -> f.rewritePath("/api/users/(?<segment>.*)", "/auth-server/api/users/${segment}"))
-                        .uri("lb://auth-server")
+                        .filters(f -> f.rewritePath("/api/users/(?<segment>.*)", "/users-server/api/users/${segment}"))
+                        .uri("lb://users-server")
+                )
+                .route(r -> r
+                        .path("/api/catalog/**")
+                        .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/catalog/${segment}"))
+                        .uri("lb://catalog-server")
                 )
                 .build();
     }
