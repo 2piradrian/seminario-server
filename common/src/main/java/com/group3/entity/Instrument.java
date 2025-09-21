@@ -23,8 +23,6 @@ public enum Instrument {
   MARIMBA,
   CUATRO,
   TROMBONE,
-  TRINCA,
   CHARANGO,
   PAN_FLUTE,
-  NONE
 }

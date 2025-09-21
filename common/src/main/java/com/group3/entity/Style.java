@@ -1,7 +1,6 @@
 package com.group3.entity;
 
 public enum Style {
-
   POP,
   ROCK,
   HIP_HOP,

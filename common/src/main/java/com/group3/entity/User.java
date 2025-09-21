@@ -30,4 +30,6 @@ public class User {
 
   private Status status;
 
+  private UserProfile userProfile;
+
 }

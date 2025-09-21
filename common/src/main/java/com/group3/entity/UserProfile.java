@@ -13,7 +13,7 @@ public class UserProfile {
 
   private String id;
 
-  private String portaitImage;
+  private String portraitImage;
 
   private String profileImage;
 
