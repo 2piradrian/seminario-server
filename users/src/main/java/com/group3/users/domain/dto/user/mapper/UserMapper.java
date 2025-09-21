@@ -24,4 +24,8 @@ public class UserMapper {
         return new DeleteMapper();
     }
 
+    public static EditMapper update() {
+        return new EditMapper();
+    }
+
 }
