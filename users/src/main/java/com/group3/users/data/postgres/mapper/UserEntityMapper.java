@@ -1,5 +1,7 @@
 package com.group3.users.data.postgres.mapper;
 
+import com.group3.entity.Instrument;
+import com.group3.entity.Style;
 import com.group3.users.data.postgres.model.UserModel;
 import com.group3.entity.User;
 
@@ -20,7 +22,26 @@ public class UserEntityMapper {
             userModel.getLastLogin(),
             userModel.getRoles(),
             userModel.getStatus(),
-            UserProfileEntityMapper.toDomain(userModel.getUserProfile())
+            userModel.getPortraitImage(),
+            userModel.getProfileImage(),
+            userModel.getShortDescription(),
+            userModel.getLongDescription(),
+            userModel.getStyles()
+                .stream()
+                .map(id -> {
+                    Style s = new Style();
+                    s.setId(id);
+                    return s;
+                })
+                .collect(Collectors.toSet()),
+            userModel.getInstruments()
+                .stream()
+                .map(id -> {
+                    Instrument i = new Instrument();
+                    i.setId(id);
+                    return i;
+                })
+                .collect(Collectors.toSet())
         );
     }
 
@@ -35,7 +56,16 @@ public class UserEntityMapper {
             user.getLastLogin(),
             user.getRoles(),
             user.getStatus(),
-            UserProfileEntityMapper.toModel(user.getUserProfile())
+            user.getPortraitImage(),
+            user.getProfileImage(),
+            user.getShortDescription(),
+            user.getLongDescription(),
+            user.getStyles().stream()
+                .map(Style::getId)
+                .collect(Collectors.toSet()),
+            user.getInstruments().stream()
+                .map(Instrument::getId)
+                .collect(Collectors.toSet())
         );
     }
 
