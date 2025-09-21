@@ -25,5 +25,6 @@ public enum Instrument {
   TROMBONE,
   TRINCA,
   CHARANGO,
-  PAN_FLUTE
+  PAN_FLUTE,
+  NONE
 }

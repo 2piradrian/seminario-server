@@ -21,6 +21,7 @@ public enum Style {
   TROPICAL,
   SAMBA,
   BOSSA_NOVA,
-  RANCHERA
+  RANCHERA,
+  NONE
 
 }
