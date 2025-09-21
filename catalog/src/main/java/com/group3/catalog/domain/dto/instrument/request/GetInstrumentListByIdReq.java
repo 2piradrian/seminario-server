@@ -19,6 +19,7 @@ public class GetInstrumentListByIdReq {
         if (ids == null || ids.isEmpty()) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
+
         return new GetInstrumentListByIdReq(ids);
     }
 }
