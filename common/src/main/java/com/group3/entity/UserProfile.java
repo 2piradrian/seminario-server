@@ -27,10 +27,4 @@ public class UserProfile {
 
   private List<Instrument> instruments;
 
-  private LocalDateTime lastLogin;
-
-  private Set<Role> roles;
-
-  private Status status;
-
 }
