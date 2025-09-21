@@ -78,6 +78,20 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
+        if (portraitImage != null){
+            RegexValidators urlValidator = RegexValidators.IMAGE_URL;
+            if (!portraitImage.matches(urlValidator.getRegex())) {
+                throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+            }
+        }
+
+        if (profileImage != null){
+            RegexValidators urlValidator = RegexValidators.IMAGE_URL;
+            if (!profileImage.matches(urlValidator.getRegex())) {
+                throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+            }
+        }
+
         RegexValidators nameValidator = RegexValidators.NAME;
         if (!name.matches(nameValidator.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
