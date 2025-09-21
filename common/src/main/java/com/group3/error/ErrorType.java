@@ -20,6 +20,9 @@ public enum ErrorType {
     FORUM_NOT_ACTIVE("Forum not active", 400),
     COMMENT_NOT_FOUND("Comment not found", 404),
 
+    STYLE_NOT_FOUND("Style not found", 404),
+    INSTRUMENT_NOT_FOUND("Instrument not found", 404),
+
     INTERNAL_ERROR("Internal error", 500);
 
     private final String message;
