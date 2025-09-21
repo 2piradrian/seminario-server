@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,8 +21,8 @@ public class UserProfile {
 
   private String longDescription;
 
-  private List<Style> styles;
+  private Set<Style> styles;
 
-  private List<Instrument> instruments;
+  private Set<Instrument> instruments;
 
 }
