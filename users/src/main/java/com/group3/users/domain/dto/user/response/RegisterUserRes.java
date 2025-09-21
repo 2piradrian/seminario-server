@@ -25,16 +25,4 @@ public class RegisterUserRes {
 
     private final LocalDateTime lastLogin;
 
-    private final String portraitImage;
-
-    private final String profileImage;
-
-    private final String shortDescription;
-
-    private final String longDescription;
-
-    private final List<String> styles;
-
-    private final List<String> instruments;
-
 }
