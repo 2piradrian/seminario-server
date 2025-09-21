@@ -13,6 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Profile {
 
+  private String id;
+
   private String portaitImage;
 
   private String profileImage;
