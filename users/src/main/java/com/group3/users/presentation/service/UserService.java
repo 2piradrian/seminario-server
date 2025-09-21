@@ -27,95 +27,95 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserService implements UserServiceI {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  private final AuthService authService;
+    private final AuthService authService;
 
-  @Override
-  public GetUserByIdRes getById(GetUserByIdReq dto) {
-    User user = this.userRepository.getById(dto.getUserId());
-    if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+    @Override
+    public GetUserByIdRes getById(GetUserByIdReq dto) {
+        User user = this.userRepository.getById(dto.getUserId());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-    return UserMapper.getById().toResponse(user);
-  }
-
-  @Override
-  public RegisterUserRes register(RegisterUserReq dto) {
-    var emailCheck = this.userRepository.getByEmail(dto.getEmail());
-    if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
-
-    var usernameCheck = this.userRepository.getByFullname(dto.getName(), dto.getSurname());
-    if (!usernameCheck.isEmpty()) throw new ErrorHandler(ErrorType.FULLNAME_ALREADY_EXISTS);
-
-    User user = new User();
-
-    user.setName(dto.getName());
-    user.setSurname(dto.getSurname());
-    user.setEmail(dto.getEmail());
-    user.setPassword(this.authService.hashPassword(dto.getPassword()));
-    user.setStatus(Status.ACTIVE);
-    user.setRoles(Set.of(Role.USER));
-    user.setMemberSince(LocalDateTime.now());
-    user.setLastLogin(LocalDateTime.now());
-
-    User saved = this.userRepository.save(user);
-
-    return UserMapper.register().toResponse(saved);
-  }
-
-  @Override
-  public LoginUserRes login(LoginUserReq dto) {
-    User user = this.userRepository.getByEmail(dto.getEmail());
-    if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-    if (!this.authService.validatePassword(user, dto.getPassword())) {
-      throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
+        return UserMapper.getById().toResponse(user);
     }
 
-    user.setLastLogin(LocalDateTime.now());
-    this.userRepository.update(user);
+    @Override
+    public RegisterUserRes register(RegisterUserReq dto) {
+        var emailCheck = this.userRepository.getByEmail(dto.getEmail());
+        if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
-    Token token = this.authService.createToken(user);
+        var usernameCheck = this.userRepository.getByFullname(dto.getName(), dto.getSurname());
+        if (!usernameCheck.isEmpty()) throw new ErrorHandler(ErrorType.FULLNAME_ALREADY_EXISTS);
 
-    return UserMapper.login().toResponse(token);
-  }
+        User user = new User();
 
-  @Override
-  public AuthUserRes auth(AuthUserReq dto) {
-    String token = this.authService.validateToken(dto.getToken());
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setEmail(dto.getEmail());
+        user.setPassword(this.authService.hashPassword(dto.getPassword()));
+        user.setStatus(Status.ACTIVE);
+        user.setRoles(Set.of(Role.USER));
+        user.setMemberSince(LocalDateTime.now());
+        user.setLastLogin(LocalDateTime.now());
 
-    if (token == null) {
-      throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User saved = this.userRepository.save(user);
+
+        return UserMapper.register().toResponse(saved);
     }
 
-    String subject = this.authService.getSubject(token);
-    User user = this.userRepository.getByEmail(subject);
+    @Override
+    public LoginUserRes login(LoginUserReq dto) {
+        User user = this.userRepository.getByEmail(dto.getEmail());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-    if (user == null) {
-      throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (!this.authService.validatePassword(user, dto.getPassword())) {
+            throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
+        }
+
+        user.setLastLogin(LocalDateTime.now());
+        this.userRepository.update(user);
+
+        Token token = this.authService.createToken(user);
+
+        return UserMapper.login().toResponse(token);
     }
 
-    return UserMapper.auth().toResponse(user);
-  }
+    @Override
+    public AuthUserRes auth(AuthUserReq dto) {
+        String token = this.authService.validateToken(dto.getToken());
 
-  @Override
-  public void delete(DeleteUserReq dto) {
-    String token = this.authService.validateToken(dto.getToken());
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
-    if (token == null) {
-      throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        String subject = this.authService.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        return UserMapper.auth().toResponse(user);
     }
 
-    String subject = this.authService.getSubject(token);
-    User user = this.userRepository.getByEmail(subject);
+    @Override
+    public void delete(DeleteUserReq dto) {
+        String token = this.authService.validateToken(dto.getToken());
 
-    if (user == null) {
-      throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String subject = this.authService.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        user.setStatus(Status.DELETED);
+
+        this.userRepository.update(user);
     }
-
-    user.setStatus(Status.DELETED);
-
-    this.userRepository.update(user);
-  }
 
 }

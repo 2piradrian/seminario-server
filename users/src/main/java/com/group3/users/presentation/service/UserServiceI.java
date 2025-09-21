@@ -8,14 +8,14 @@ import com.group3.users.domain.dto.user.response.RegisterUserRes;
 
 public interface UserServiceI {
 
-  GetUserByIdRes getById(GetUserByIdReq dto);
+    GetUserByIdRes getById(GetUserByIdReq dto);
 
-  RegisterUserRes register(RegisterUserReq dto);
+    RegisterUserRes register(RegisterUserReq dto);
 
-  LoginUserRes login(LoginUserReq dto);
+    LoginUserRes login(LoginUserReq dto);
 
-  AuthUserRes auth(AuthUserReq dto);
+    AuthUserRes auth(AuthUserReq dto);
 
-  void delete(DeleteUserReq dto);
+    void delete(DeleteUserReq dto);
 
 }

@@ -5,14 +5,14 @@ import com.group3.entity.User;
 
 public interface AuthServiceI {
 
-  String hashPassword(String password);
+    String hashPassword(String password);
 
-  Boolean validatePassword(User user, String password);
+    Boolean validatePassword(User user, String password);
 
-  String validateToken(String token);
+    String validateToken(String token);
 
-  String getSubject(String token);
+    String getSubject(String token);
 
-  Token createToken(User user);
+    Token createToken(User user);
 
 }

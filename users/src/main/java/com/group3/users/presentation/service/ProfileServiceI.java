@@ -5,6 +5,6 @@ import com.group3.users.domain.dto.profile.response.CreateUserProfileRes;
 
 public interface ProfileServiceI {
 
-  CreateUserProfileRes create(CreateUserProfileReq dto);
+    CreateUserProfileRes create(CreateUserProfileReq dto);
 
 }
