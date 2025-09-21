@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: develop
+    password: develop
+    url: jdbc:postgresql://localhost:5433/catalog-db
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: "update"
+      properties:
+        hibernate.jdbc.time_zone: UTC
