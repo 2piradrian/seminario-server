@@ -6,15 +6,14 @@ import java.util.List;
 
 public interface UserRepositoryI {
 
-  User getById(String userId);
+    User getById(String userId);
 
-  User getByEmail(String email);
+    User getByEmail(String email);
 
-  List<User> getByFullname(String name, String surname);
+    List<User> getByFullname(String name, String surname);
 
-  // Se podrian simplificar el save y el update en un solo metodo? Ya que hacen lo mismo
+    User save(User user);
 
-  User save(User user);
+    User update(User user);
 
-  User update(User user);
 }

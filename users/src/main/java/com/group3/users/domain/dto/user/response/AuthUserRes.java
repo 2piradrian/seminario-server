@@ -10,10 +10,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuthUserRes {
 
-  private final String id;
+    private final String id;
 
-  private final String email;
+    private final String email;
 
-  private final Set<Role> roles;
+    private final Set<Role> roles;
 
 }

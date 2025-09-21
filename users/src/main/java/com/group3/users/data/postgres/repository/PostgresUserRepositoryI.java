@@ -10,12 +10,14 @@ import java.util.Optional;
 
 public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String> {
 
-  Optional<UserModel> findByEmail(String email);
+    Optional<UserModel> findByEmail(String email);
 
-  @Query("SELECT u FROM UserModel u " +
-    "WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%')) " +
-    "AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surname, '%'))")
-  List<UserModel> findByFullNameLike(@Param("name") String name,
-                                     @Param("surname") String surname);
+    @Query("""
+    SELECT u
+    FROM UserModel u
+    WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
+    AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :lastName, '%'))
+  """)
+    List<UserModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
 
 }
