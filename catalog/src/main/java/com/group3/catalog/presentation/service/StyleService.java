@@ -1,25 +1,49 @@
 package com.group3.catalog.presentation.service;
 
+import com.group3.catalog.data.repository.StyleRepository;
+import com.group3.catalog.domain.dto.style.mapper.StyleMapper;
 import com.group3.catalog.domain.dto.style.request.GetStyleByIdReq;
 import com.group3.catalog.domain.dto.style.request.GetStyleListByIdReq;
 import com.group3.catalog.domain.dto.style.response.GetAllStyleRes;
 import com.group3.catalog.domain.dto.style.response.GetStyleByIdRes;
 import com.group3.catalog.domain.dto.style.response.GetStyleListByIdRes;
+import com.group3.entity.Style;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Slf4j
+@Service
+@Transactional
+@AllArgsConstructor
 public class StyleService implements StyleServiceI {
+
+    private final StyleRepository repository;
 
     @Override
     public GetAllStyleRes getAll() {
-        return null;
+        List<Style> styles = this.repository.getAll();
+        return StyleMapper.getAll().toResponse(styles);
     }
 
     @Override
-    public GetStyleByIdRes getById(GetStyleByIdReq req) {
-        return null;
+    public GetStyleByIdRes getById(GetStyleByIdReq dto) {
+        Style style = this.repository.getById(dto.getId());
+
+        if (style == null) {
+            throw new ErrorHandler(ErrorType.);
+        }
+
+        return StyleMapper.getById().toResponse(style);
     }
 
     @Override
-    public GetStyleListByIdRes getListById(GetStyleListByIdReq req) {
+    public GetStyleListByIdRes getListById(GetStyleListByIdReq dto) {
         return null;
     }
 

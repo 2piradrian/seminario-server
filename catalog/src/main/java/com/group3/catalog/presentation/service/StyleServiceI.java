@@ -10,8 +10,8 @@ public interface StyleServiceI {
 
     GetAllStyleRes getAll();
 
-    GetStyleByIdRes getById(GetStyleByIdReq req);
+    GetStyleByIdRes getById(GetStyleByIdReq dto);
 
-    GetStyleListByIdRes getListById(GetStyleListByIdReq req);
+    GetStyleListByIdRes getListById(GetStyleListByIdReq dto);
 
 }

@@ -1,5 +1,6 @@
 package com.group3.catalog.domain.dto.style.response;
 
+import com.group3.entity.Style;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,8 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GetStyleByIdRes {
 
-    private final String id;
-
-    private final String name;
+    private final Style style;
 
 }

@@ -10,8 +10,8 @@ public interface InstrumentServiceI {
 
     GetAllInstrumentRes getAll();
 
-    GetInstrumentByIdRes getById(GetInstrumentByIdReq req);
+    GetInstrumentByIdRes getById(GetInstrumentByIdReq dto);
 
-    GetInstrumentListByIdRes getListById(GetInstrumentListByIdReq req);
+    GetInstrumentListByIdRes getListById(GetInstrumentListByIdReq dto);
 
 }

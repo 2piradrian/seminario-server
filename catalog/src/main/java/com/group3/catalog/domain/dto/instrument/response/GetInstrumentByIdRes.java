@@ -1,5 +1,6 @@
 package com.group3.catalog.domain.dto.instrument.response;
 
+import com.group3.entity.Instrument;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,8 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GetInstrumentByIdRes {
 
-    private final String id;
-
-    private final String name;
+    private final Instrument instrument;
 
 }
