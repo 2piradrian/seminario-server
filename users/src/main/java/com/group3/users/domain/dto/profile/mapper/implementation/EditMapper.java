@@ -11,31 +11,26 @@ import com.group3.users.domain.dto.profile.response.EditUserProfileRes;
 import java.util.Map;
 import java.util.Set;
 
-public class CreateMapper {
+public class EditMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public EditUserProfileReq toRequest(Map<String, Object> payload){
+    public EditUserProfileReq toRequest(String token, Map<String, Object> payload){
         return EditUserProfileReq.create(
+            token,
+            (String) payload.get("profileid"),
             (String) payload.get("portraitImage"),
             (String) payload.get("profileImage"),
             (String) payload.get("shortDescription"),
             (String) payload.get("longDescription"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<Set<Style>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<Set<Instrument>>() {})
+            objectMapper.convertValue(payload.get("styles"), new TypeReference<Set<String>>() {}),
+            objectMapper.convertValue(payload.get("instruments"), new TypeReference<Set<String>>() {})
         );
     }
 
     public EditUserProfileRes toResponse(UserProfile userProfile) {
         return new EditUserProfileRes(
-            userProfile.getId(),
-            userProfile.getPortraitImage(),
-            userProfile.getProfileImage(),
-            userProfile.getShortDescription(),
-            userProfile.getLongDescription(),
-            userProfile.getStyles(),
-            userProfile.getInstruments()
-
+            userProfile.getId()
         );
     }
 

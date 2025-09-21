@@ -24,9 +24,9 @@ public class EditUserProfileReq {
 
     private final String longDescription;
 
-    private final Set<Style> styles;
+    private final Set<String> styles;
 
-    private final Set<Instrument> instruments;
+    private final Set<String> instruments;
 
     private EditUserProfileReq(
         String token,
@@ -35,8 +35,8 @@ public class EditUserProfileReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<Style> styles,
-        Set<Instrument> instruments
+        Set<String> styles,
+        Set<String> instruments
     ){
         this.token = token;
         this.profileId = profileId;
@@ -55,8 +55,8 @@ public class EditUserProfileReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<Style> styles,
-        Set<Instrument> instruments
+        Set<String> styles,
+        Set<String> instruments
     ){
         if (token == null){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -74,7 +74,7 @@ public class EditUserProfileReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (longDescription.isEmpty() || longDescription.length() > 256) {
+        if (longDescription.isEmpty() || longDescription.length() > 4096) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
