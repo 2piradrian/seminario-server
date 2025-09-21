@@ -1,4 +1,4 @@
-package com.group3.domain.repository;
+package com.group3.catalog.domain.repository;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
