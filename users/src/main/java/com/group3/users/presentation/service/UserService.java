@@ -1,25 +1,20 @@
 package com.group3.users.presentation.service;
 
-import com.group3.entity.Role;
-import com.group3.entity.Status;
-import com.group3.entity.Token;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
-import com.group3.users.domain.dto.user.response.AuthUserRes;
-import com.group3.users.domain.dto.user.response.GetUserByIdRes;
-import com.group3.users.domain.dto.user.response.LoginUserRes;
-import com.group3.users.domain.dto.user.response.RegisterUserRes;
+import com.group3.users.domain.dto.user.response.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,7 +39,7 @@ public class UserService implements UserServiceI {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
-        var usernameCheck = this.userRepository.getByFullname(dto.getName(), dto.getSurname());
+        var usernameCheck = this.userRepository.getByFullName(dto.getName(), dto.getSurname());
         if (!usernameCheck.isEmpty()) throw new ErrorHandler(ErrorType.FULLNAME_ALREADY_EXISTS);
 
         User user = new User();
@@ -54,13 +49,56 @@ public class UserService implements UserServiceI {
         user.setEmail(dto.getEmail());
         user.setPassword(this.authService.hashPassword(dto.getPassword()));
         user.setStatus(Status.ACTIVE);
-        user.setRoles(Set.of(Role.USER));
+        user.setRoles(List.of(Role.USER));
         user.setMemberSince(LocalDateTime.now());
         user.setLastLogin(LocalDateTime.now());
 
         User saved = this.userRepository.save(user);
 
         return UserMapper.register().toResponse(saved);
+    }
+
+    public EditUserRes update(EditUserReq dto) {
+        String token = this.authService.validateToken(dto.getToken());
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String subject = this.authService.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setPortraitImage(dto.getPortraitImage());
+        user.setProfileImage(dto.getProfileImage());
+        user.setShortDescription(dto.getShortDescription());
+        user.setLongDescription(dto.getLongDescription());
+
+        user.setStyles(dto.getStyles()
+            .stream()
+            .map(id -> {
+                Style s = new Style();
+                s.setId(id);
+                return s;
+            })
+            .collect(Collectors.toList()));
+
+        user.setInstruments(dto.getInstruments()
+            .stream()
+            .map(id -> {
+                Instrument i = new Instrument();
+                i.setId(id);
+                return i;
+            })
+            .collect(Collectors.toList()));
+
+        User edited = this.userRepository.update(user);
+        return UserMapper.update().toResponse(edited);
     }
 
     @Override
