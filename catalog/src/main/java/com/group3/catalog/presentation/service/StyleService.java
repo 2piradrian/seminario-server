@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -36,7 +37,7 @@ public class StyleService implements StyleServiceI {
         Style style = this.repository.getById(dto.getId());
 
         if (style == null) {
-            throw new ErrorHandler(ErrorType.);
+            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
         }
 
         return StyleMapper.getById().toResponse(style);
@@ -44,7 +45,16 @@ public class StyleService implements StyleServiceI {
 
     @Override
     public GetStyleListByIdRes getListById(GetStyleListByIdReq dto) {
-        return null;
+        List<Style> styles = dto.getIds().stream()
+            .map(this.repository::getById)
+            .filter(Objects::nonNull)
+            .toList();
+
+        if (styles.isEmpty()) {
+            return StyleMapper.getListById().toResponse(List.of());
+        }
+
+        return StyleMapper.getListById().toResponse(styles);
     }
 
 }
