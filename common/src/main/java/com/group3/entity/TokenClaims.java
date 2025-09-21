@@ -11,10 +11,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class TokenClaims {
 
-  private String id;
+    private String id;
 
-  private String email;
+    private String email;
 
-  private Set<Role> roles;
+    private Set<Role> roles;
 
 }

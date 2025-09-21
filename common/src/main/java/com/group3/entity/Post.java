@@ -12,26 +12,26 @@ import java.util.Set;
 @AllArgsConstructor
 public class Post {
 
-  private String id;
+    private String id;
 
-  private String title;
+    private String title;
 
-  private String content;
+    private String content;
 
-  private Integer views;
+    private Integer views;
 
-  private String authorId;
+    private String authorId;
 
-  private Set<String> upvoters;
+    private Set<String> upvoters;
 
-  private Set<String> downvoters;
+    private Set<String> downvoters;
 
-  private Category category;
+    private Category category;
 
-  private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-  private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
-  private Status status;
+    private Status status;
 
 }
