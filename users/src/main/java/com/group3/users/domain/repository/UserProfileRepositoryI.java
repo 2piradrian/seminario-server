@@ -4,10 +4,10 @@ import com.group3.entity.UserProfile;
 
 public interface UserProfileRepositoryI {
 
-  UserProfile getById(String userProfileId);
+    UserProfile getById(String userProfileId);
 
-  UserProfile save(UserProfile userProfile);
+    UserProfile save(UserProfile userProfile);
 
-  UserProfile update(UserProfile userProfile);
+    UserProfile update(UserProfile userProfile);
 
 }

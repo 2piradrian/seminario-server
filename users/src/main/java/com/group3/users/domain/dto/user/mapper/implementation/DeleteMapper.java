@@ -4,10 +4,10 @@ import com.group3.users.domain.dto.user.request.DeleteUserReq;
 
 public class DeleteMapper {
 
-  public DeleteUserReq toRequest(String token) {
-    return DeleteUserReq.create(
-      token
-    );
-  }
+    public DeleteUserReq toRequest(String token) {
+        return DeleteUserReq.create(
+            token
+        );
+    }
 
 }

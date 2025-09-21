@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginUserRes {
 
-  private final Token token;
+    private final Token token;
 
 }

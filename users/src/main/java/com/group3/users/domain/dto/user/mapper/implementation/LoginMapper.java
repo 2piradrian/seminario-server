@@ -8,17 +8,17 @@ import java.util.Map;
 
 public class LoginMapper {
 
-  public LoginUserReq toRequest(Map<String, Object> payload) {
-    return LoginUserReq.create(
-      (String) payload.get("email"),
-      (String) payload.get("password")
-    );
-  }
+    public LoginUserReq toRequest(Map<String, Object> payload) {
+        return LoginUserReq.create(
+            (String) payload.get("email"),
+            (String) payload.get("password")
+        );
+    }
 
-  public LoginUserRes toResponse(Token token) {
-    return new LoginUserRes(
-      token
-    );
-  }
+    public LoginUserRes toResponse(Token token) {
+        return new LoginUserRes(
+            token
+        );
+    }
 
 }

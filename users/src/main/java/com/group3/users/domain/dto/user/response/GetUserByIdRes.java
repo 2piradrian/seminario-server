@@ -11,18 +11,18 @@ import java.util.Set;
 @AllArgsConstructor
 public class GetUserByIdRes {
 
-  private final String id;
+    private final String id;
 
-  private final String name;
+    private final String name;
 
-  private final String surname;
+    private final String surname;
 
-  private final String email;
+    private final String email;
 
-  private final Set<Role> roles;
+    private final Set<Role> roles;
 
-  private LocalDateTime memberSince;
+    private LocalDateTime memberSince;
 
-  private LocalDateTime lastLogin;
+    private LocalDateTime lastLogin;
 
 }

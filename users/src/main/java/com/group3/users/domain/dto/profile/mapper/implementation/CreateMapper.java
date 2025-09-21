@@ -28,7 +28,7 @@ public class CreateMapper {
         );
     }
 
-  public CreateUserProfileRes toResponse(UserProfile userProfile) {
+    public CreateUserProfileRes toResponse(UserProfile userProfile) {
         return new CreateUserProfileRes(
             userProfile.getId(),
             userProfile.getPortraitImage(),
@@ -39,6 +39,6 @@ public class CreateMapper {
             userProfile.getInstruments()
 
         );
-  }
+    }
 
 }

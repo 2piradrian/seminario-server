@@ -6,13 +6,14 @@ import java.util.List;
 
 public interface UserRepositoryI {
 
-  User getById(String userId);
+    User getById(String userId);
 
-  User getByEmail(String email);
+    User getByEmail(String email);
 
-  List<User> getByFullname(String name, String surname);
+    List<User> getByFullname(String name, String surname);
 
-  User save(User user);
+    User save(User user);
 
-  User update(User user);
+    User update(User user);
+
 }

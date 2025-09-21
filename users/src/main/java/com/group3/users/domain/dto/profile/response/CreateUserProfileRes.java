@@ -11,18 +11,18 @@ import java.util.Set;
 @AllArgsConstructor
 public class CreateUserProfileRes {
 
-  private final String userProfileId;
+    private final String userProfileId;
 
-  private final String portaitImage;
+    private final String portaitImage;
 
-  private final String profileImage;
+    private final String profileImage;
 
-  private final String shortDescription;
+    private final String shortDescription;
 
-  private final String longDescription;
+    private final String longDescription;
 
-  private final Set<Style> styles;
+    private final Set<Style> styles;
 
-  private final Set<Instrument> instruments;
+    private final Set<Instrument> instruments;
   
 }
