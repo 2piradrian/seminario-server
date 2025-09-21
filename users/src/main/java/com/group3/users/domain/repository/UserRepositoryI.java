@@ -10,7 +10,7 @@ public interface UserRepositoryI {
 
     User getByEmail(String email);
 
-    List<User> getByFullname(String name, String surname);
+    List<User> getByFullName(String name, String surname);
 
     User save(User user);
 
