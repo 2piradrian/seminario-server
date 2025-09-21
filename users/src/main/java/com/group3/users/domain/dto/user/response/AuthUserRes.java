@@ -4,6 +4,7 @@ import com.group3.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -14,6 +15,6 @@ public class AuthUserRes {
 
     private final String email;
 
-    private final Set<Role> roles;
+    private final List<Role> roles;
 
 }

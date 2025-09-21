@@ -1,20 +1,22 @@
-package com.group3.users.domain.dto.profile.request;
+package com.group3.users.domain.dto.user.request;
 
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.domain.validator.RegexValidators;
 import lombok.Getter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
-public class EditUserProfileReq {
+public class EditUserReq {
 
     private final String token;
 
-    private final String profileId;
+    private final String userId;
+
+    private final String name;
+
+    private final String surname;
 
     private final String portraitImage;
 
@@ -24,22 +26,26 @@ public class EditUserProfileReq {
 
     private final String longDescription;
 
-    private final Set<String> styles;
+    private final List<String> styles;
 
-    private final Set<String> instruments;
+    private final List<String> instruments;
 
-    private EditUserProfileReq(
+    private EditUserReq(
         String token,
-        String profileId,
+        String userId,
+        String name,
+        String surname,
         String portraitImage,
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<String> styles,
-        Set<String> instruments
+        List<String> styles,
+        List<String> instruments
     ){
         this.token = token;
-        this.profileId = profileId;
+        this.userId = userId;
+        this.name = name;
+        this.surname = surname;
         this.portraitImage = portraitImage;
         this.profileImage = profileImage;
         this.shortDescription = shortDescription;
@@ -48,18 +54,38 @@ public class EditUserProfileReq {
         this.instruments = instruments;
     }
 
-    public static EditUserProfileReq create(
+    public static EditUserReq create(
         String token,
-        String profileId,
+        String userId,
+        String name,
+        String surname,
         String portraitImage,
         String profileImage,
         String shortDescription,
         String longDescription,
-        Set<String> styles,
-        Set<String> instruments
+        List<String> styles,
+        List<String> instruments
     ){
         if (token == null){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (name == null || surname == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (name.isEmpty() || surname.isEmpty()) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        RegexValidators nameValidator = RegexValidators.NAME;
+        if (!name.matches(nameValidator.getRegex())) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        RegexValidators surnameValidator = RegexValidators.SURNAME;
+        if (!name.matches(surnameValidator.getRegex())) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
         if (shortDescription == null){
@@ -96,7 +122,7 @@ public class EditUserProfileReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new EditUserProfileReq(token, profileId, portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
+        return new EditUserReq(token, userId, name, surname , portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
     }
 
 }

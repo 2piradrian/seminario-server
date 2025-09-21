@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +19,7 @@ public class RegisterUserRes {
 
     private final String email;
 
-    private final Set<Role> roles;
+    private final List<Role> roles;
 
     private final LocalDateTime memberSince;
 

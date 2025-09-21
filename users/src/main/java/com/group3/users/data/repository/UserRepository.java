@@ -29,7 +29,7 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public List<User> getByFullname(String name, String surname) {
+    public List<User> getByFullName(String name, String surname) {
         List<UserModel> userModels = this.userRepository.findByFullNameLike(name, surname);
         return userModels.isEmpty() ? UserEntityMapper.toDomain(userModels) : List.of();
     }
