@@ -30,6 +30,16 @@ public class User {
 
     private Status status;
 
-    private UserProfile userProfile;
+    private String portraitImage;
+
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private Set<Style> styles;
+
+    private Set<Instrument> instruments;
 
 }
