@@ -1,10 +1,10 @@
 package com.group3.users.presentation.service;
 
-import com.group3.users.domain.dto.profile.request.CreateUserProfileReq;
-import com.group3.users.domain.dto.profile.response.CreateUserProfileRes;
+import com.group3.users.domain.dto.profile.request.EditUserProfileReq;
+import com.group3.users.domain.dto.profile.response.EditUserProfileRes;
 
 public interface ProfileServiceI {
 
-    CreateUserProfileRes create(CreateUserProfileReq dto);
+    EditUserProfileRes create(EditUserProfileReq dto);
 
 }

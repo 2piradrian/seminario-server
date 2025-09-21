@@ -5,20 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
 import com.group3.entity.UserProfile;
-import com.group3.users.domain.dto.profile.request.CreateUserProfileReq;
-import com.group3.users.domain.dto.profile.response.CreateUserProfileRes;
+import com.group3.users.domain.dto.profile.request.EditUserProfileReq;
+import com.group3.users.domain.dto.profile.response.EditUserProfileRes;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CreateMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public CreateUserProfileReq toRequest(Map<String, Object> payload){
-        return CreateUserProfileReq.create(
+    public EditUserProfileReq toRequest(Map<String, Object> payload){
+        return EditUserProfileReq.create(
             (String) payload.get("portraitImage"),
             (String) payload.get("profileImage"),
             (String) payload.get("shortDescription"),
@@ -28,8 +26,8 @@ public class CreateMapper {
         );
     }
 
-    public CreateUserProfileRes toResponse(UserProfile userProfile) {
-        return new CreateUserProfileRes(
+    public EditUserProfileRes toResponse(UserProfile userProfile) {
+        return new EditUserProfileRes(
             userProfile.getId(),
             userProfile.getPortraitImage(),
             userProfile.getProfileImage(),

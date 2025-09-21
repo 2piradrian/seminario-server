@@ -10,7 +10,11 @@ import lombok.Getter;
 import java.util.Set;
 
 @Getter
-public class CreateUserProfileReq {
+public class EditUserProfileReq {
+
+    private final String token;
+
+    private final String profileId;
 
     private final String portraitImage;
 
@@ -24,7 +28,9 @@ public class CreateUserProfileReq {
 
     private final Set<Instrument> instruments;
 
-    private CreateUserProfileReq(
+    private EditUserProfileReq(
+        String token,
+        String profileId,
         String portraitImage,
         String profileImage,
         String shortDescription,
@@ -32,6 +38,8 @@ public class CreateUserProfileReq {
         Set<Style> styles,
         Set<Instrument> instruments
     ){
+        this.token = token;
+        this.profileId = profileId;
         this.portraitImage = portraitImage;
         this.profileImage = profileImage;
         this.shortDescription = shortDescription;
@@ -40,7 +48,9 @@ public class CreateUserProfileReq {
         this.instruments = instruments;
     }
 
-    public static CreateUserProfileReq create(
+    public static EditUserProfileReq create(
+        String token,
+        String profileId,
         String portraitImage,
         String profileImage,
         String shortDescription,
@@ -48,12 +58,31 @@ public class CreateUserProfileReq {
         Set<Style> styles,
         Set<Instrument> instruments
     ){
+        if (token == null){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
-        if (shortDescription == null || longDescription == null || styles == null || instruments == null) {
+        if (shortDescription == null){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (shortDescription.isEmpty() || longDescription.isEmpty() || styles.isEmpty() || instruments.isEmpty()) {
+        if (shortDescription.isEmpty() || shortDescription.length() > 256) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if (longDescription == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (longDescription.isEmpty() || longDescription.length() > 256) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if ( styles == null || instruments == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if ( styles.isEmpty() || instruments.isEmpty()) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -67,7 +96,7 @@ public class CreateUserProfileReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreateUserProfileReq(portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
+        return new EditUserProfileReq(token, profileId, portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
     }
 
 }
