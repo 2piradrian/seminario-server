@@ -12,24 +12,24 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
 
-  private String id;
+    private String id;
 
-  private String name;
+    private String name;
 
-  private String surname;
+    private String surname;
 
-  private String password;
+    private String password;
 
-  private String email;
+    private String email;
 
-  private LocalDateTime memberSince;
+    private LocalDateTime memberSince;
 
-  private LocalDateTime lastLogin;
+    private LocalDateTime lastLogin;
 
-  private Set<Role> roles;
+    private Set<Role> roles;
 
-  private Status status;
+    private Status status;
 
-  private UserProfile userProfile;
+    private UserProfile userProfile;
 
 }
