@@ -1,6 +1,7 @@
 package com.group3.users.data.repository;
 
 import com.group3.entity.User;
+import com.group3.users.data.catalog_server.repository.CatalogServerRepositoryI;
 import com.group3.users.data.postgres.mapper.UserEntityMapper;
 import com.group3.users.data.postgres.model.UserModel;
 import com.group3.users.data.postgres.repository.PostgresUserRepositoryI;

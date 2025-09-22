@@ -31,7 +31,7 @@ public class InstrumentController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @GetMapping("/get-list-by-id")
+    @PostMapping("/get-list-by-id")
     public ResponseEntity<?> getListById(
         @RequestBody Map<String, Object> payload
     ) {
