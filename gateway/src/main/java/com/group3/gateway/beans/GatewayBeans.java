@@ -18,7 +18,7 @@ public class GatewayBeans {
             )
             .route(r -> r
                     .path("/api/auth/**")
-                    .filters(f -> f.rewritePath("/api/auth/(?<segment>.*)", "/users-server/api/users/${segment}"))
+                    .filters(f -> f.rewritePath("/api/auth/(?<segment>.*)", "/users-server/api/auth/${segment}"))
                     .uri("lb://users-server")
             )
             .route(r -> r
