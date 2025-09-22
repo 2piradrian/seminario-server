@@ -18,9 +18,14 @@ public class GetByIdMapper {
             user.getName(),
             user.getSurname(),
             user.getEmail(),
-            user.getRoles(),
             user.getMemberSince(),
-            user.getLastLogin()
+            user.getLastLogin(),
+            user.getPortraitImage(),
+            user.getProfileImage(),
+            user.getShortDescription(),
+            user.getLongDescription(),
+            user.getStyles(),
+            user.getInstruments()
         );
     }
 

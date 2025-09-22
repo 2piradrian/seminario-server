@@ -2,6 +2,7 @@ package com.group3.users.presentation.controller;
 
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
+import com.group3.users.presentation.service.AuthService;
 import com.group3.users.presentation.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+
+    private final AuthService authService;
 
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(
@@ -59,7 +62,7 @@ public class UserController {
     ) {
         AuthUserReq dto = UserMapper.auth().toRequest(token);
 
-        return ResponseEntity.ok(this.userService.auth(dto));
+        return ResponseEntity.ok(this.authService.auth(dto));
     }
 
     @DeleteMapping("/delete")

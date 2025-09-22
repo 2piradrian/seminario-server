@@ -11,8 +11,6 @@ public interface UserServiceI {
 
     LoginUserRes login(LoginUserReq dto);
 
-    AuthUserRes auth(AuthUserReq dto);
-
     EditUserRes update(EditUserReq dto);
 
     void delete(DeleteUserReq dto);

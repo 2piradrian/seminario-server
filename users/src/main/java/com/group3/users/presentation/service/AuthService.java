@@ -2,55 +2,41 @@ package com.group3.users.presentation.service;
 
 import com.group3.entity.Token;
 import com.group3.entity.User;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
+import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.config.helpers.JWTHelper;
+import com.group3.users.data.repository.UserRepository;
+import com.group3.users.domain.dto.user.mapper.UserMapper;
+import com.group3.users.domain.dto.user.request.AuthUserReq;
+import com.group3.users.domain.dto.user.response.AuthUserRes;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @AllArgsConstructor
-public class AuthService implements AuthServiceI {
+public class AuthService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final AuthHelper authHelper;
 
-    private final JWTHelper jwtHelper;
+    private final UserRepository userRepository;
 
-    @Override
-    public String hashPassword(String password) {
-        return this.passwordEncoder.encode(password);
-    }
+    public AuthUserRes auth(AuthUserReq dto) {
+        String token = this.authHelper.validateToken(dto.getToken());
 
-    @Override
-    public Boolean validatePassword(User user, String password) {
-        return this.passwordEncoder.matches(password, user.getPassword());
-    }
-
-    @Override
-    public Token createToken(User user) {
-        return new Token(this.jwtHelper.createToken(user));
-    }
-
-    @Override
-    public String validateToken(String token) {
-        if (token == null || token.isEmpty()) {
-            return null;
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (!token.startsWith("Bearer ")) {
-            return null;
+        String subject = this.authHelper.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         }
 
-        String tokenValue = token.replace("Bearer ", "");
-        if (this.jwtHelper.validateToken(tokenValue)) {
-            return tokenValue;
-        }
-
-        return null;
-    }
-
-    @Override
-    public String getSubject(String token) {
-        return this.jwtHelper.getSubject(token);
+        return UserMapper.auth().toResponse(user);
     }
 
 }
