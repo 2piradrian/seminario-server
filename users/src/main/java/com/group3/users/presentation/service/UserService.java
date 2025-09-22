@@ -3,6 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.data.repository.CatalogRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
+
+    private final CatalogRepository catalogRepository;
 
     private final AuthService authService;
 
@@ -78,24 +81,8 @@ public class UserService implements UserServiceI {
         user.setProfileImage(dto.getProfileImage());
         user.setShortDescription(dto.getShortDescription());
         user.setLongDescription(dto.getLongDescription());
-
-        user.setStyles(dto.getStyles()
-            .stream()
-            .map(id -> {
-                Style s = new Style();
-                s.setId(id);
-                return s;
-            })
-            .collect(Collectors.toList()));
-
-        user.setInstruments(dto.getInstruments()
-            .stream()
-            .map(id -> {
-                Instrument i = new Instrument();
-                i.setId(id);
-                return i;
-            })
-            .collect(Collectors.toList()));
+        user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles()));
+        user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments()));
 
         User edited = this.userRepository.update(user);
         return UserMapper.update().toResponse(edited);
