@@ -16,7 +16,7 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
     SELECT u
     FROM UserModel u
     WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
-    AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :lastName, '%'))
+    AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
   """)
     List<UserModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
 
