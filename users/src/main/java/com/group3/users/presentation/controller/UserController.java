@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PatchMapping("/edit")
+    @PutMapping("/edit")
     public ResponseEntity<?> edit(
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
