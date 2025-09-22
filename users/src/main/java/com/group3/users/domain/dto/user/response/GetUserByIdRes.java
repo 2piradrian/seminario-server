@@ -22,8 +22,6 @@ public class GetUserByIdRes {
 
     private final String email;
 
-    private final List<Role> roles;
-
     private LocalDateTime memberSince;
 
     private LocalDateTime lastLogin;
