@@ -43,6 +43,16 @@ public class UserController {
         return ResponseEntity.ok(this.userService.login(dto));
     }
 
+    @PatchMapping("/edit")
+    public ResponseEntity<?> edit(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        EditUserReq dto = UserMapper.update().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.userService.update(dto));
+    }
+
     @GetMapping("/auth")
     public ResponseEntity<?> auth(
         @RequestHeader(value = "Authorization") String token
