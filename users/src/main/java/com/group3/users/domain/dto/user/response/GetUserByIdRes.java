@@ -1,6 +1,8 @@
 package com.group3.users.domain.dto.user.response;
 
+import com.group3.entity.Instrument;
 import com.group3.entity.Role;
+import com.group3.entity.Style;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -34,8 +36,8 @@ public class GetUserByIdRes {
 
     private final String longDescription;
 
-    private final List<String> styles;
+    private final List<Style> styles;
 
-    private final List<String> instruments;
+    private final List<Instrument> instruments;
 
 }
