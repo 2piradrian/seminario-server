@@ -17,7 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final AuthService authService;
 
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(
@@ -28,24 +27,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(
-        @RequestBody Map<String, Object> payload
-    ) {
-        RegisterUserReq dto = UserMapper.register().toRequest(payload);
-        this.userService.register(dto);
 
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(
-        @RequestBody Map<String, Object> payload
-    ) {
-        LoginUserReq dto = UserMapper.login().toRequest(payload);
-
-        return ResponseEntity.ok(this.userService.login(dto));
-    }
 
     @PatchMapping("/edit")
     public ResponseEntity<?> edit(
@@ -55,15 +37,6 @@ public class UserController {
         EditUserReq dto = UserMapper.update().toRequest(token, payload);
 
         return ResponseEntity.ok(this.userService.update(dto));
-    }
-
-    @GetMapping("/auth")
-    public ResponseEntity<?> auth(
-        @RequestHeader(value = "Authorization") String token
-    ) {
-        AuthUserReq dto = UserMapper.auth().toRequest(token);
-
-        return ResponseEntity.ok(this.authService.auth(dto));
     }
 
     @DeleteMapping("/delete")

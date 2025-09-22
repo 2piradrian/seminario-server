@@ -30,36 +30,12 @@ public class UserService implements UserServiceI {
 
     private final AuthService authService;
 
-    private final AuthHelper authHelper;
-
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.userRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         return UserMapper.getById().toResponse(user);
-    }
-
-    @Override
-    public void register(RegisterUserReq dto) {
-        var emailCheck = this.userRepository.getByEmail(dto.getEmail());
-        if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
-
-        var usernameCheck = this.userRepository.getByFullName(dto.getName(), dto.getSurname());
-        if (!usernameCheck.isEmpty()) throw new ErrorHandler(ErrorType.FULLNAME_ALREADY_EXISTS);
-
-        User user = new User();
-
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setEmail(dto.getEmail());
-        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
-        user.setStatus(Status.ACTIVE);
-        user.setRoles(List.of(Role.USER));
-        user.setMemberSince(LocalDateTime.now());
-        user.setLastLogin(LocalDateTime.now());
-
-        this.userRepository.save(user);
     }
 
     public EditUserRes update(EditUserReq dto) {
@@ -81,25 +57,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public LoginUserRes login(LoginUserReq dto) {
-        User user = this.userRepository.getByEmail(dto.getEmail());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        if (!this.authHelper.validatePassword(user, dto.getPassword())) {
-            throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
-        }
-
-        user.setLastLogin(LocalDateTime.now());
-        this.userRepository.update(user);
-
-        Token token = this.authHelper.createToken(user);
-
-        return UserMapper.login().toResponse(token);
-    }
-
-    @Override
     public void delete(DeleteUserReq dto) {
-
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userRepository.getByEmail(authResponse.getEmail());

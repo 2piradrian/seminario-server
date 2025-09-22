@@ -7,10 +7,6 @@ public interface UserServiceI {
 
     GetUserByIdRes getById(GetUserByIdReq dto);
 
-    void register(RegisterUserReq dto);
-
-    LoginUserRes login(LoginUserReq dto);
-
     EditUserRes update(EditUserReq dto);
 
     void delete(DeleteUserReq dto);
