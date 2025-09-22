@@ -41,7 +41,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
-    public RegisterUserRes register(RegisterUserReq dto) {
+    public void register(RegisterUserReq dto) {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
@@ -59,9 +59,7 @@ public class UserService implements UserServiceI {
         user.setMemberSince(LocalDateTime.now());
         user.setLastLogin(LocalDateTime.now());
 
-        User saved = this.userRepository.save(user);
-
-        return UserMapper.register().toResponse(saved);
+        this.userRepository.save(user);
     }
 
     public EditUserRes update(EditUserReq dto) {

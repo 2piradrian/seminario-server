@@ -7,7 +7,7 @@ public interface UserServiceI {
 
     GetUserByIdRes getById(GetUserByIdReq dto);
 
-    RegisterUserRes register(RegisterUserReq dto);
+    void register(RegisterUserReq dto);
 
     LoginUserRes login(LoginUserReq dto);
 

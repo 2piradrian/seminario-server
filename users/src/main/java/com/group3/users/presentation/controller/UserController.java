@@ -33,8 +33,9 @@ public class UserController {
         @RequestBody Map<String, Object> payload
     ) {
         RegisterUserReq dto = UserMapper.register().toRequest(payload);
+        this.userService.register(dto);
 
-        return ResponseEntity.ok(this.userService.register(dto));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
