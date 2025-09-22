@@ -3,6 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.data.repository.CatalogRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
@@ -29,6 +30,8 @@ public class UserService implements UserServiceI {
 
     private final AuthService authService;
 
+    private final AuthHelper authHelper;
+
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.userRepository.getById(dto.getUserId());
@@ -50,7 +53,7 @@ public class UserService implements UserServiceI {
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
         user.setEmail(dto.getEmail());
-        user.setPassword(this.authService.hashPassword(dto.getPassword()));
+        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
         user.setStatus(Status.ACTIVE);
         user.setRoles(List.of(Role.USER));
         user.setMemberSince(LocalDateTime.now());
@@ -62,18 +65,9 @@ public class UserService implements UserServiceI {
     }
 
     public EditUserRes update(EditUserReq dto) {
-        String token = this.authService.validateToken(dto.getToken());
+        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
-        if (token == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        String subject = this.authService.getSubject(token);
-        User user = this.userRepository.getByEmail(subject);
-
-        if (user == null) {
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        }
+        User user = this.userRepository.getByEmail(authResponse.getEmail());
 
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
@@ -93,50 +87,24 @@ public class UserService implements UserServiceI {
         User user = this.userRepository.getByEmail(dto.getEmail());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        if (!this.authService.validatePassword(user, dto.getPassword())) {
+        if (!this.authHelper.validatePassword(user, dto.getPassword())) {
             throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
         }
 
         user.setLastLogin(LocalDateTime.now());
         this.userRepository.update(user);
 
-        Token token = this.authService.createToken(user);
+        Token token = this.authHelper.createToken(user);
 
         return UserMapper.login().toResponse(token);
     }
 
     @Override
-    public AuthUserRes auth(AuthUserReq dto) {
-        String token = this.authService.validateToken(dto.getToken());
-
-        if (token == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        String subject = this.authService.getSubject(token);
-        User user = this.userRepository.getByEmail(subject);
-
-        if (user == null) {
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        }
-
-        return UserMapper.auth().toResponse(user);
-    }
-
-    @Override
     public void delete(DeleteUserReq dto) {
-        String token = this.authService.validateToken(dto.getToken());
 
-        if (token == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
+        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
-        String subject = this.authService.getSubject(token);
-        User user = this.userRepository.getByEmail(subject);
-
-        if (user == null) {
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        }
+        User user = this.userRepository.getByEmail(authResponse.getEmail());
 
         user.setStatus(Status.DELETED);
 
