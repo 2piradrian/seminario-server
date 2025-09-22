@@ -11,7 +11,7 @@ spring:
 
 server:
   servlet:
-    context-path: /users
+    context-path: /users-server
   port: 0
 
 eureka:
