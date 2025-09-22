@@ -1,5 +1,5 @@
 services:
-  users-db:
+  catalog-db:
     image: postgres:15.3
     restart: always
     environment:
