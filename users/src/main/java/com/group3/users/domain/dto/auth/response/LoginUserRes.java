@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.user.response;
+package com.group3.users.domain.dto.auth.response;
 
 import com.group3.entity.Token;
 import lombok.AllArgsConstructor;

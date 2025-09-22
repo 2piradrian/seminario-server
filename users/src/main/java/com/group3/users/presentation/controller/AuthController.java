@@ -1,9 +1,9 @@
 package com.group3.users.presentation.controller;
 
-import com.group3.users.domain.dto.user.mapper.UserMapper;
-import com.group3.users.domain.dto.user.request.AuthUserReq;
-import com.group3.users.domain.dto.user.request.LoginUserReq;
-import com.group3.users.domain.dto.user.request.RegisterUserReq;
+import com.group3.users.domain.dto.auth.mapper.AuthMapper;
+import com.group3.users.domain.dto.auth.request.AuthUserReq;
+import com.group3.users.domain.dto.auth.request.LoginUserReq;
+import com.group3.users.domain.dto.auth.request.RegisterUserReq;
 import com.group3.users.presentation.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AuthController {
     public ResponseEntity<?> register(
             @RequestBody Map<String, Object> payload
     ) {
-        RegisterUserReq dto = UserMapper.register().toRequest(payload);
+        RegisterUserReq dto = AuthMapper.register().toRequest(payload);
         this.authService.register(dto);
 
         return ResponseEntity.ok().build();
@@ -32,7 +32,7 @@ public class AuthController {
     public ResponseEntity<?> login(
             @RequestBody Map<String, Object> payload
     ) {
-        LoginUserReq dto = UserMapper.login().toRequest(payload);
+        LoginUserReq dto = AuthMapper.login().toRequest(payload);
 
         return ResponseEntity.ok(this.authService.login(dto));
     }
@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<?> auth(
             @RequestHeader(value = "Authorization") String token
     ) {
-        AuthUserReq dto = UserMapper.auth().toRequest(token);
+        AuthUserReq dto = AuthMapper.auth().toRequest(token);
 
         return ResponseEntity.ok(this.authService.auth(dto));
     }

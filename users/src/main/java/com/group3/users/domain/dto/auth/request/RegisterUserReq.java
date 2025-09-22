@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.user.request;
+package com.group3.users.domain.dto.auth.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;

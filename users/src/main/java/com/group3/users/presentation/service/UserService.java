@@ -6,6 +6,8 @@ import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.data.repository.CatalogRepository;
 import com.group3.users.data.repository.UserRepository;
+import com.group3.users.domain.dto.auth.request.AuthUserReq;
+import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;

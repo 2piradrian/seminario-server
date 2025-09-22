@@ -8,12 +8,12 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.data.repository.UserRepository;
-import com.group3.users.domain.dto.user.mapper.UserMapper;
-import com.group3.users.domain.dto.user.request.AuthUserReq;
-import com.group3.users.domain.dto.user.request.LoginUserReq;
-import com.group3.users.domain.dto.user.request.RegisterUserReq;
-import com.group3.users.domain.dto.user.response.AuthUserRes;
-import com.group3.users.domain.dto.user.response.LoginUserRes;
+import com.group3.users.domain.dto.auth.mapper.AuthMapper;
+import com.group3.users.domain.dto.auth.request.AuthUserReq;
+import com.group3.users.domain.dto.auth.request.LoginUserReq;
+import com.group3.users.domain.dto.auth.request.RegisterUserReq;
+import com.group3.users.domain.dto.auth.response.AuthUserRes;
+import com.group3.users.domain.dto.auth.response.LoginUserRes;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class AuthService implements AuthServiceI {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         }
 
-        return UserMapper.auth().toResponse(user);
+        return AuthMapper.auth().toResponse(user);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class AuthService implements AuthServiceI {
 
         Token token = this.authHelper.createToken(user);
 
-        return UserMapper.login().toResponse(token);
+        return AuthMapper.login().toResponse(token);
     }
 
 }

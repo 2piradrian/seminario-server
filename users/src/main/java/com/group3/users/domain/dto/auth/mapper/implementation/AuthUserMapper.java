@@ -1,10 +1,10 @@
-package com.group3.users.domain.dto.user.mapper.implementation;
+package com.group3.users.domain.dto.auth.mapper.implementation;
 
+import com.group3.users.domain.dto.auth.request.AuthUserReq;
+import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.entity.User;
-import com.group3.users.domain.dto.user.request.AuthUserReq;
-import com.group3.users.domain.dto.user.response.AuthUserRes;
 
-public class AuthMapper {
+public class AuthUserMapper {
 
     public AuthUserReq toRequest(String token){
         return AuthUserReq.create(

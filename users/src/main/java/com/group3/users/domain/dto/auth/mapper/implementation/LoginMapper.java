@@ -1,8 +1,8 @@
-package com.group3.users.domain.dto.user.mapper.implementation;
+package com.group3.users.domain.dto.auth.mapper.implementation;
 
+import com.group3.users.domain.dto.auth.request.LoginUserReq;
+import com.group3.users.domain.dto.auth.response.LoginUserRes;
 import com.group3.entity.Token;
-import com.group3.users.domain.dto.user.request.LoginUserReq;
-import com.group3.users.domain.dto.user.response.LoginUserRes;
 
 import java.util.Map;
 
