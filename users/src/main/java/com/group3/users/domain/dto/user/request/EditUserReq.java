@@ -12,8 +12,6 @@ public class EditUserReq {
 
     private final String token;
 
-    private final String userId;
-
     private final String name;
 
     private final String surname;
@@ -32,7 +30,6 @@ public class EditUserReq {
 
     private EditUserReq(
         String token,
-        String userId,
         String name,
         String surname,
         String portraitImage,
@@ -43,7 +40,6 @@ public class EditUserReq {
         List<String> instruments
     ){
         this.token = token;
-        this.userId = userId;
         this.name = name;
         this.surname = surname;
         this.portraitImage = portraitImage;
@@ -56,7 +52,6 @@ public class EditUserReq {
 
     public static EditUserReq create(
         String token,
-        String userId,
         String name,
         String surname,
         String portraitImage,
@@ -136,7 +131,7 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new EditUserReq(token, userId, name, surname , portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
+        return new EditUserReq(token, name, surname , portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
     }
 
 }
