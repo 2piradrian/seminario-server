@@ -16,4 +16,6 @@ public class UserMapper {
         return new EditMapper();
     }
 
+    public static GetOwnProfileMapper getOwnProfile() { return new GetOwnProfileMapper(); }
+
 }
