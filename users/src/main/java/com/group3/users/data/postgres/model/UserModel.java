@@ -39,8 +39,10 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(columnDefinition = "TEXT")
     private String portraitImage;
 
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     private String shortDescription;
