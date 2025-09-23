@@ -21,22 +21,22 @@ import java.util.Map;
 @LoadBalancerClient(name = "catalog-server", configuration = LoadBalancerConfiguration.class)
 public interface CatalogServerRepositoryI {
 
-    @GetMapping("/style/get-all")
+    @GetMapping("/api/styles/get-all")
     GetAllStyleRes getAllStyle();
 
-    @GetMapping("/style/get-by-id/{styleId}")
+    @GetMapping("/api/styles/get-by-id/{styleId}")
     GetStyleByIdRes getStyleById(@PathVariable("styleId") String styleId);
 
-    @PostMapping("/style/get-list-by-id")
+    @PostMapping("/api/styles/get-list-by-id")
     GetStyleListByIdRes getStyleListById(@RequestBody Map<String, Object> payload);
 
-    @GetMapping("/instrument/get-all")
+    @GetMapping("/api/instruments/get-all")
     GetAllInstrumentRes getAllInstrument();
 
-    @GetMapping("/instrument/get-by-id/{instrumentId}")
+    @GetMapping("/api/instruments/get-by-id/{instrumentId}")
     GetInstrumentByIdRes getInstrumentById(@PathVariable("instrumentId") String instrumentId);
 
-    @PostMapping("/instrument/get-list-by-id")
+    @PostMapping("/api/instruments/get-list-by-id")
     GetInstrumentListByIdRes getInstrumentListById(@RequestBody Map<String, Object> payload);
 
 }
