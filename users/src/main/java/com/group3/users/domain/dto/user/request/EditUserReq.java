@@ -1,5 +1,7 @@
 package com.group3.users.domain.dto.user.request;
 
+import com.group3.entity.Instrument;
+import com.group3.entity.Style;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.domain.validator.RegexValidators;
@@ -24,9 +26,9 @@ public class EditUserReq {
 
     private final String longDescription;
 
-    private final List<String> styles;
+    private final List<Style> styles;
 
-    private final List<String> instruments;
+    private final List<Instrument> instruments;
 
     private EditUserReq(
         String token,
@@ -36,8 +38,8 @@ public class EditUserReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        List<String> styles,
-        List<String> instruments
+        List<Style> styles,
+        List<Instrument> instruments
     ){
         this.token = token;
         this.name = name;
@@ -58,8 +60,8 @@ public class EditUserReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        List<String> styles,
-        List<String> instruments
+        List<Style> styles,
+        List<Instrument> instruments
     ){
         if (token == null){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);

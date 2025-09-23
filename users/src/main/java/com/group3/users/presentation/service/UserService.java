@@ -51,8 +51,8 @@ public class UserService implements UserServiceI {
         user.setProfileImage(dto.getProfileImage());
         user.setShortDescription(dto.getShortDescription());
         user.setLongDescription(dto.getLongDescription());
-        user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles()));
-        user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments()));
+        user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
+        user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
         User edited = this.userRepository.update(user);
         return UserMapper.update().toResponse(edited);
@@ -74,6 +74,12 @@ public class UserService implements UserServiceI {
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userRepository.getByEmail(authResponse.getEmail());
+
+        List<Style> styles = this.catalogRepository.getStyleListById(user.getStyles().stream().map(Style::getId).toList());
+        user.setStyles(styles);
+
+        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(user.getInstruments().stream().map(Instrument::getId).toList());
+        user.setInstruments(instruments);
 
         return UserMapper.getOwnProfile().toResponse(user);
     }

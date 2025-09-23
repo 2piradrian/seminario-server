@@ -2,6 +2,8 @@ package com.group3.users.domain.dto.user.mapper.implementation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.group3.entity.Instrument;
+import com.group3.entity.Style;
 import com.group3.entity.User;
 import com.group3.users.domain.dto.user.request.EditUserReq;
 import com.group3.users.domain.dto.user.response.EditUserRes;
@@ -22,8 +24,8 @@ public class EditMapper {
             (String) payload.get("profileImage"),
             (String) payload.get("shortDescription"),
             (String) payload.get("longDescription"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<String>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<String>>() {})
+            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
+            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {})
         );
     }
 
