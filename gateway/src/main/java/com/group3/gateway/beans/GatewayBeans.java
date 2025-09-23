@@ -23,7 +23,7 @@ public class GatewayBeans {
             )
             .route(r -> r
                     .path("/api/catalog/**")
-                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/catalog/${segment}"))
+                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/api/${segment}"))
                     .uri("lb://catalog-server")
             )
             .build();
