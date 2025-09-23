@@ -15,11 +15,13 @@ import com.group3.users.domain.dto.auth.request.RegisterUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthService implements AuthServiceI {

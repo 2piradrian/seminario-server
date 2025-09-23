@@ -71,7 +71,6 @@ public class UserService implements UserServiceI {
 
     @Override
     public GetOwnProfileRes getOwnProfile(GetOwnProfileReq dto){
-
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userRepository.getByEmail(authResponse.getEmail());
