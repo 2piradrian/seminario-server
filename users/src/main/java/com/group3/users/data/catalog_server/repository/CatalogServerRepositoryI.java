@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "catalog-server")
+@FeignClient(name = "catalog-server", path = "/catalog-server")
 @LoadBalancerClient(name = "catalog-server", configuration = LoadBalancerConfiguration.class)
 public interface CatalogServerRepositoryI {
 
