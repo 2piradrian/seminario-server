@@ -4,7 +4,9 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.domain.validator.RegexValidators;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 public class RegisterUserReq {
 

@@ -7,11 +7,11 @@ public enum RegexValidators {
 
     NAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
     SURNAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
-    PASSWORD("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"),
-    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$"),
+    PASSWORD("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)\\S{8,}$"),
+    EMAIL("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"),
     SHORT_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()'\"\\-\\s]{10,50}$"),
     LONG_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()'\"\\-\\s]{10,150}$"),
-    IMAGE_URL("^https:\\/\\/[^\\s]+\\.(jpg|jpeg|png|gif|webp|bmp)(\\?.*)?$");
+    IMAGE_URL("https://[^\\s]+\\.(jpg|jpeg|png|gif|webp|bmp)(\\?.*)?$");
 
     private final String regex;
 

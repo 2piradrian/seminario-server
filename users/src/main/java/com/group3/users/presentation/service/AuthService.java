@@ -51,19 +51,24 @@ public class AuthService implements AuthServiceI {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
-        var usernameCheck = this.userRepository.getByFullName(dto.getName(), dto.getSurname());
-        if (!usernameCheck.isEmpty()) throw new ErrorHandler(ErrorType.FULLNAME_ALREADY_EXISTS);
-
         User user = new User();
 
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
-        user.setEmail(dto.getEmail());
         user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
-        user.setStatus(Status.ACTIVE);
-        user.setRoles(List.of(Role.USER));
+        user.setEmail(dto.getEmail());
+
         user.setMemberSince(LocalDateTime.now());
         user.setLastLogin(LocalDateTime.now());
+        user.setRoles(List.of(Role.USER));
+        user.setStatus(Status.ACTIVE);
+
+        user.setPortraitImage("");
+        user.setProfileImage("");
+        user.setShortDescription("");
+        user.setLongDescription("");
+        user.setInstruments(List.of());
+        user.setStyles(List.of());
 
         this.userRepository.save(user);
     }
