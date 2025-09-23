@@ -14,6 +14,4 @@ public class AuthUserRes {
 
     private final String email;
 
-    private final List<Role> roles;
-
 }

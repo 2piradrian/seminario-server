@@ -15,8 +15,7 @@ public class AuthUserMapper {
     public AuthUserRes toResponse(User user){
         return new AuthUserRes(
             user.getId(),
-            user.getEmail(),
-            user.getRoles()
+            user.getEmail()
         );
     }
 

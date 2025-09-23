@@ -18,14 +18,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(
-            @RequestBody Map<String, Object> payload
+    @GetMapping("/")
+    public ResponseEntity<?> auth(
+            @RequestHeader(value = "Authorization") String token
     ) {
-        RegisterUserReq dto = AuthMapper.register().toRequest(payload);
-        this.authService.register(dto);
+        AuthUserReq dto = AuthMapper.auth().toRequest(token);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.authService.auth(dto));
     }
 
     @PostMapping("/login")
@@ -37,13 +36,14 @@ public class AuthController {
         return ResponseEntity.ok(this.authService.login(dto));
     }
 
-    @GetMapping("/auth")
-    public ResponseEntity<?> auth(
-            @RequestHeader(value = "Authorization") String token
+    @PostMapping("/register")
+    public ResponseEntity<?> register(
+            @RequestBody Map<String, Object> payload
     ) {
-        AuthUserReq dto = AuthMapper.auth().toRequest(token);
+        RegisterUserReq dto = AuthMapper.register().toRequest(payload);
+        this.authService.register(dto);
 
-        return ResponseEntity.ok(this.authService.auth(dto));
+        return ResponseEntity.ok().build();
     }
 
 }
