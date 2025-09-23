@@ -69,4 +69,14 @@ public class UserService implements UserServiceI {
         this.userRepository.update(user);
     }
 
+    @Override
+    public GetOwnProfileRes getOwnProfile(GetOwnProfileReq dto){
+
+        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
+
+        User user = this.userRepository.getByEmail(authResponse.getEmail());
+
+        return UserMapper.getOwnProfile().toResponse(user);
+    }
+
 }

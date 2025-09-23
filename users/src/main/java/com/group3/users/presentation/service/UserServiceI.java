@@ -11,4 +11,6 @@ public interface UserServiceI {
 
     void delete(DeleteUserReq dto);
 
+    GetOwnProfileRes getOwnProfile (GetOwnProfileReq dto);
+
 }
