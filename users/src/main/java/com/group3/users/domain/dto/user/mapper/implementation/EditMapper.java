@@ -16,7 +16,6 @@ public class EditMapper {
     public EditUserReq toRequest(String token, Map<String, Object> payload){
         return EditUserReq.create(
             token,
-            (String) payload.get("profileId"),
             (String) payload.get("name"),
             (String) payload.get("surname"),
             (String) payload.get("portraitImage"),

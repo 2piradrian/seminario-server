@@ -14,6 +14,10 @@ server:
     context-path: /users-server
   port: 0
 
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
 eureka:
   instance:
     instance-id: "${spring.application.name}:${random.value}"
