@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/style")
+@RequestMapping("/api/styles")
 public class StyleController {
 
     private final StyleService service;

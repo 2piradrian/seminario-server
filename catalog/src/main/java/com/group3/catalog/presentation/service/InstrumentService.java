@@ -51,7 +51,7 @@ public class InstrumentService implements InstrumentServiceI {
                 .toList();
 
         if (instruments.isEmpty()) {
-            throw new ErrorHandler(ErrorType.INSTRUMENT_NOT_FOUND);
+            return InstrumentMapper.getListById().toResponse(List.of());
         }
 
         return InstrumentMapper.getListById().toResponse(instruments);

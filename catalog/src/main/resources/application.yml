@@ -10,8 +10,8 @@ spring:
     import: "optional:configserver:http://localhost:7777"
 
 server:
-  servlet:
-    context-path: /catalog-server
+  #servlet:
+  #  context-path: /catalog-server
   port: 0
 
 eureka:
