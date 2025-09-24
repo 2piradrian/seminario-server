@@ -5,29 +5,41 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
-  private String id;
+    private String id;
 
-  private String name;
+    private String name;
 
-  private String surname;
+    private String surname;
 
-  private String password;
+    private String password;
 
-  private String email;
+    private String email;
 
-  private LocalDateTime memberSince;
+    private LocalDateTime memberSince;
 
-  private LocalDateTime lastLogin;
+    private LocalDateTime lastLogin;
 
-  private Set<Role> roles;
+    private List<Role> roles;
 
-  private Status status;
+    private Status status;
+
+    private String portraitImage;
+
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private List<Style> styles;
+
+    private List<Instrument> instruments;
 
 }

@@ -11,9 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 public class PageContent<T> {
 
-  List<T> content;
+    List<T> content;
 
-  private Integer page;
+    private Integer page;
 
-  private Integer nextPage;
+    private Integer nextPage;
+
 }

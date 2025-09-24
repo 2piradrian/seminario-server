@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenClaims {
 
-  private String id;
+    private String id;
 
-  private String email;
+    private String email;
 
-  private Set<Role> roles;
+    private List<Role> roles;
 
 }

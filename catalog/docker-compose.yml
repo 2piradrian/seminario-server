@@ -1,0 +1,14 @@
+services:
+  catalog-db:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_DB: 'catalog-db'
+      POSTGRES_USER: 'develop'
+      POSTGRES_PASSWORD: 'develop'
+      POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - ./catalog-db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+      

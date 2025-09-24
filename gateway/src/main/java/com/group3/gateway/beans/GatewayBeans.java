@@ -11,12 +11,27 @@ public class GatewayBeans {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route(r -> r
-                        .path("/api/users/**")
-                        .filters(f -> f.rewritePath("/api/users/(?<segment>.*)", "/auth-server/api/users/${segment}"))
-                        .uri("lb://auth-server")
-                )
-                .build();
+            .route(r -> r
+                    .path("/api/users/**")
+                    .filters(f -> f.rewritePath("/api/users/(?<segment>.*)", "/users-server/api/users/${segment}"))
+                    .uri("lb://users-server")
+            )
+            .route(r -> r
+                    .path("/api/auth/**")
+                    .filters(f -> f.rewritePath("/api/auth/(?<segment>.*)", "/users-server/api/auth/${segment}"))
+                    .uri("lb://users-server")
+            )
+            .route(r -> r
+                    .path("/api/catalog/styles/**")
+                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/styles/${segment}"))
+                    .uri("lb://catalog-server")
+            )
+            .route(r -> r
+                    .path("/api/catalog/instruments/**")
+                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/instruments/${segment}"))
+                    .uri("lb://catalog-server")
+            )
+            .build();
     }
 
 }

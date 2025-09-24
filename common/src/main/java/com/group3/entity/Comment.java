@@ -12,24 +12,24 @@ import java.util.Set;
 @AllArgsConstructor
 public class Comment {
 
-  private String id;
+    private String id;
 
-  private String authorId;
+    private String authorId;
 
-  private String forumId;
+    private String postId;
 
-  private Comment replyTo;
+    private Comment replyTo;
 
-  private String content;
+    private String content;
 
-  private Set<String> upvoters;
+    private Set<String> upvoters;
 
-  private Set<String> downvoters;
+    private Set<String> downvoters;
 
-  private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-  private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
-  private Status status;
+    private Status status;
 
 }
