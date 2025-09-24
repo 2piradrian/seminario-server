@@ -1,18 +1,17 @@
 package com.group3.users.presentation.service;
 
-import com.group3.entity.Token;
-import com.group3.entity.User;
+import com.group3.users.domain.dto.auth.request.AuthUserReq;
+import com.group3.users.domain.dto.auth.request.LoginUserReq;
+import com.group3.users.domain.dto.auth.request.RegisterUserReq;
+import com.group3.users.domain.dto.auth.response.AuthUserRes;
+import com.group3.users.domain.dto.auth.response.LoginUserRes;
 
 public interface AuthServiceI {
 
-    String hashPassword(String password);
+    AuthUserRes auth(AuthUserReq dto);
 
-    Boolean validatePassword(User user, String password);
+    void register(RegisterUserReq dto);
 
-    String validateToken(String token);
-
-    String getSubject(String token);
-
-    Token createToken(User user);
+    LoginUserRes login(LoginUserReq dto);
 
 }

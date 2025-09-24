@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,12 +34,23 @@ public class UserModel {
     private LocalDateTime lastLogin;
 
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne
-    private UserProfileModel userProfile;
+    @Column(columnDefinition = "TEXT")
+    private String portraitImage;
+
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
+
+    private List<String> styles;
+
+    private List<String> instruments;
 
 }

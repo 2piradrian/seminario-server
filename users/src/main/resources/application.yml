@@ -11,11 +11,16 @@ spring:
 
 server:
   servlet:
-    context-path: /users
+    context-path: /users-server
   port: 0
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
 
 eureka:
   instance:
+    prefer-ip-address: true
     instance-id: "${spring.application.name}:${random.value}"
   client:
     service-url:

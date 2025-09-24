@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class User {
 
     private LocalDateTime lastLogin;
 
-    private Set<Role> roles;
+    private List<Role> roles;
 
     private Status status;
 
@@ -38,8 +38,8 @@ public class User {
 
     private String longDescription;
 
-    private Set<Style> styles;
+    private List<Style> styles;
 
-    private Set<Instrument> instruments;
+    private List<Instrument> instruments;
 
 }

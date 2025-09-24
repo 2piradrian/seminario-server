@@ -16,7 +16,7 @@ public class Comment {
 
     private String authorId;
 
-    private String forumId;
+    private String postId;
 
     private Comment replyTo;
 

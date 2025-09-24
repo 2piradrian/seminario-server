@@ -11,6 +11,6 @@ public class Instrument {
 
     private String id;
 
-    private String nombre;
+    private String name;
 
 }

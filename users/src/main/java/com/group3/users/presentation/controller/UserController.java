@@ -2,6 +2,7 @@ package com.group3.users.presentation.controller;
 
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
+import com.group3.users.presentation.service.AuthService;
 import com.group3.users.presentation.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,31 +26,23 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(
-        @RequestBody Map<String, Object> payload
-    ) {
-        RegisterUserReq dto = UserMapper.register().toRequest(payload);
-
-        return ResponseEntity.ok(this.userService.register(dto));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(
-        @RequestBody Map<String, Object> payload
-    ) {
-        LoginUserReq dto = UserMapper.login().toRequest(payload);
-
-        return ResponseEntity.ok(this.userService.login(dto));
-    }
-
-    @GetMapping("/auth")
-    public ResponseEntity<?> auth(
+    @GetMapping("/get-own-profile")
+    public ResponseEntity<?> getOwnProfile(
         @RequestHeader(value = "Authorization") String token
     ) {
-        AuthUserReq dto = UserMapper.auth().toRequest(token);
+        GetOwnProfileReq dto = UserMapper.getOwnProfile().toRequest(token);
 
-        return ResponseEntity.ok(this.userService.auth(dto));
+        return ResponseEntity.ok(this.userService.getOwnProfile(dto));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> edit(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        EditUserReq dto = UserMapper.update().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.userService.update(dto));
     }
 
     @DeleteMapping("/delete")

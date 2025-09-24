@@ -3,10 +3,8 @@ package com.group3.users.config.helpers;
 import com.group3.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +20,7 @@ public class JWTHelper {
     @Value("${application.jwt.expiration}")
     private Long expiration;
 
-    private SecretKey getSecretKey(){
+    private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(this.secret.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -31,38 +29,40 @@ public class JWTHelper {
     }
 
     private <T> T getClaims(String token, Function<Claims, T> resolver) {
-        // gets the claims from the token and signs it
-        return resolver.apply(this.signToken(token));
+        return resolver.apply(this.parseToken(token));
     }
 
     public String getSubject(String token) {
         return this.getClaims(token, Claims::getSubject);
     }
 
-    private Claims signToken(String token){
+    private Claims parseToken(String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(this.getSecretKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKey(this.getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String createToken (User user) {
+    public String createToken(User user) {
         final var now = new Date();
         final var expirationDate = new Date(now.getTime() + this.expiration);
 
         return Jwts.builder()
-            .setSubject(user.getEmail())
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(expirationDate)
-            .signWith(this.getSecretKey())
-            .compact();
+                .setSubject(user.getEmail())
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(this.getSecretKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public boolean validateToken(String token) {
-        final var expirationDate = this.getExpirationDate(token);
-
-        return expirationDate.after(new Date());
+        try {
+            Date expirationDate = this.getExpirationDate(token);
+            return expirationDate.after(new Date());
+        }
+        catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
-
 }

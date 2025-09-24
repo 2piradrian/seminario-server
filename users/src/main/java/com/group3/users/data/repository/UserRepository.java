@@ -1,6 +1,7 @@
 package com.group3.users.data.repository;
 
 import com.group3.entity.User;
+import com.group3.users.data.catalog_server.repository.CatalogServerRepositoryI;
 import com.group3.users.data.postgres.mapper.UserEntityMapper;
 import com.group3.users.data.postgres.model.UserModel;
 import com.group3.users.data.postgres.repository.PostgresUserRepositoryI;
@@ -29,7 +30,7 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public List<User> getByFullname(String name, String surname) {
+    public List<User> getByFullName(String name, String surname) {
         List<UserModel> userModels = this.userRepository.findByFullNameLike(name, surname);
         return userModels.isEmpty() ? UserEntityMapper.toDomain(userModels) : List.of();
     }
