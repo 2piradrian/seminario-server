@@ -5,11 +5,9 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.profiles.data.repository.CatalogRepository;
 import com.group3.profiles.data.repository.UserProfileProfileRepository;
-import com.group3.profiles.domain.dto.auth.request.AuthUserReq;
-import com.group3.profiles.domain.dto.auth.response.AuthUserRes;
-import com.group3.profiles.domain.dto.user.mapper.UserMapper;
-import com.group3.profiles.domain.dto.user.request.*;
-import com.group3.profiles.domain.dto.user.response.*;
+import com.group3.profiles.domain.dto.profile.mapper.UserProfileMapper;
+import com.group3.profiles.domain.dto.profile.request.*;
+import com.group3.profiles.domain.dto.profile.response.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +28,14 @@ public class ProfileService implements ProfileServiceI {
     private final AuthService authService;
 
     @Override
-    public GetUserByIdRes getById(GetUserByIdReq dto) {
+    public GetUserProfileByIdRes getById(GetUserProfileByIdReq dto) {
         User user = this.userProfileRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        return UserMapper.getById().toResponse(user);
+        return UserProfileMapper.getById().toResponse(user);
     }
 
-    public EditUserRes update(EditUserReq dto) {
+    public EditUserProfileRes update(EditUserProfileReq dto) {
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
@@ -52,11 +50,11 @@ public class ProfileService implements ProfileServiceI {
         user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
         User edited = this.userProfileRepository.update(user);
-        return UserMapper.update().toResponse(edited);
+        return UserProfileMapper.update().toResponse(edited);
     }
 
     @Override
-    public void delete(DeleteUserReq dto) {
+    public void delete(DeleteUserProfileReq dto) {
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
@@ -67,7 +65,7 @@ public class ProfileService implements ProfileServiceI {
     }
 
     @Override
-    public GetOwnProfileRes getOwnProfile(GetOwnProfileReq dto){
+    public GetOwnUserProfileRes getOwnProfile(GetOwnUserProfileReq dto){
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
         User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
@@ -78,7 +76,7 @@ public class ProfileService implements ProfileServiceI {
         List<Instrument> instruments = this.catalogRepository.getInstrumentListById(user.getInstruments().stream().map(Instrument::getId).toList());
         user.setInstruments(instruments);
 
-        return UserMapper.getOwnProfile().toResponse(user);
+        return UserProfileMapper.getOwnProfile().toResponse(user);
     }
 
 }

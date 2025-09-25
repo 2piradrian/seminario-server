@@ -1,25 +1,25 @@
-package com.group3.profiles.domain.dto.user.request;
+package com.group3.profiles.domain.dto.profile.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetOwnProfileReq {
+public class DeleteUserProfileReq {
 
     private final String token;
 
-    private GetOwnProfileReq(String token) {
+    private DeleteUserProfileReq(String token) {
         this.token = token;
     }
 
-    public static GetOwnProfileReq create(String token) {
+    public static DeleteUserProfileReq create(String token) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        return new GetOwnProfileReq(token);
+        return new DeleteUserProfileReq(token);
     }
 
 }

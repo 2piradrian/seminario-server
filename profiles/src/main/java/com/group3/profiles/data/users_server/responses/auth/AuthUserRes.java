@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.auth.response;
+package com.group3.profiles.data.users_server.responses.auth;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;

@@ -1,11 +1,11 @@
-package com.group3.profiles.domain.dto.user.response;
+package com.group3.profiles.domain.dto.profile.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class EditUserRes {
+public class EditUserProfileRes {
 
     private final String userId;
 

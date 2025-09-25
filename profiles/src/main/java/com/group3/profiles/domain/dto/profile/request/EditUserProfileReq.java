@@ -1,4 +1,4 @@
-package com.group3.profiles.domain.dto.user.request;
+package com.group3.profiles.domain.dto.profile.request;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class EditUserReq {
+public class EditUserProfileReq {
 
     private final String token;
 
@@ -30,7 +30,7 @@ public class EditUserReq {
 
     private final List<Instrument> instruments;
 
-    private EditUserReq(
+    private EditUserProfileReq(
         String token,
         String name,
         String surname,
@@ -52,7 +52,7 @@ public class EditUserReq {
         this.instruments = instruments;
     }
 
-    public static EditUserReq create(
+    public static EditUserProfileReq create(
         String token,
         String name,
         String surname,
@@ -133,7 +133,7 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new EditUserReq(token, name, surname , portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
+        return new EditUserProfileReq(token, name, surname , portraitImage, profileImage, shortDescription, longDescription, styles, instruments);
     }
 
 }

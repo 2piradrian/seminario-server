@@ -1,8 +1,8 @@
-package com.group3.profiles.domain.dto.user.mapper;
+package com.group3.profiles.domain.dto.profile.mapper;
 
-import com.group3.profiles.domain.dto.user.mapper.implementation.*;
+import com.group3.profiles.domain.dto.profile.mapper.implementation.*;
 
-public class UserMapper {
+public class UserProfileMapper {
 
     public static GetByIdMapper getById() {
         return new GetByIdMapper();
@@ -16,7 +16,7 @@ public class UserMapper {
         return new EditMapper();
     }
 
-    public static GetOwnProfileMapper getOwnProfile() {
-        return new GetOwnProfileMapper(); }
+    public static GetOwnMapper getOwnProfile() {
+        return new GetOwnMapper(); }
 
 }

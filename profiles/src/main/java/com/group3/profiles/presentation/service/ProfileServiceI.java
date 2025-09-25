@@ -1,16 +1,16 @@
 package com.group3.profiles.presentation.service;
 
-import com.group3.profiles.domain.dto.user.request.*;
-import com.group3.profiles.domain.dto.user.response.*;
+import com.group3.profiles.domain.dto.profile.request.*;
+import com.group3.profiles.domain.dto.profile.response.*;
 
 public interface ProfileServiceI {
 
-    GetUserByIdRes getById(GetUserByIdReq dto);
+    GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
-    EditUserRes update(EditUserReq dto);
+    EditUserProfileRes update(EditUserProfileReq dto);
 
-    void delete(DeleteUserReq dto);
+    void delete(DeleteUserProfileReq dto);
 
-    GetOwnProfileRes getOwnProfile (GetOwnProfileReq dto);
+    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
 
 }

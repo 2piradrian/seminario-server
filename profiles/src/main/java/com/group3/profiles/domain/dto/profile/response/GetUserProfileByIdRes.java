@@ -1,4 +1,4 @@
-package com.group3.profiles.domain.dto.user.response;
+package com.group3.profiles.domain.dto.profile.response;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetUserByIdRes {
+public class GetUserProfileByIdRes {
 
     private final String id;
 
