@@ -36,6 +36,7 @@ public class ProfileService implements ProfileServiceI {
         return UserProfileMapper.getById().toResponse(userProfile);
     }
 
+    @Override
     public void update(EditUserProfileReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

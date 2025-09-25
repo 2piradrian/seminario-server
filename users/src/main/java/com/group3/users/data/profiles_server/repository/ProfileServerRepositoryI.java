@@ -1,7 +1,6 @@
 package com.group3.users.data.profiles_server.repository;
 
 import com.group3.users.config.beans.LoadBalancerConfiguration;
-import com.group3.users.data.profiles_server.responses.EditUserProfileRes;
 import com.group3.users.data.profiles_server.responses.GetOwnUserProfileRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,6 +19,6 @@ public interface ProfileServerRepositoryI {
     GetOwnUserProfileRes getOwnProfile(@RequestHeader(value = "Authorization") String token);
 
     @PutMapping("/edit")
-    EditUserProfileRes edit(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
+    void edit(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
 
 }
