@@ -4,7 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.profiles.data.repository.CatalogRepository;
-import com.group3.profiles.data.repository.UserRepository;
+import com.group3.profiles.data.repository.UserProfileProfileRepository;
 import com.group3.profiles.domain.dto.auth.request.AuthUserReq;
 import com.group3.profiles.domain.dto.auth.response.AuthUserRes;
 import com.group3.profiles.domain.dto.user.mapper.UserMapper;
@@ -23,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileService implements ProfileServiceI {
 
-    private final UserRepository userRepository;
+    private final UserProfileProfileRepository userProfileRepository;
 
     private final CatalogRepository catalogRepository;
 
@@ -31,7 +31,7 @@ public class ProfileService implements ProfileServiceI {
 
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
-        User user = this.userRepository.getById(dto.getUserId());
+        User user = this.userProfileRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         return UserMapper.getById().toResponse(user);
@@ -40,7 +40,7 @@ public class ProfileService implements ProfileServiceI {
     public EditUserRes update(EditUserReq dto) {
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
+        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
 
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
@@ -51,7 +51,7 @@ public class ProfileService implements ProfileServiceI {
         user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
         user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
-        User edited = this.userRepository.update(user);
+        User edited = this.userProfileRepository.update(user);
         return UserMapper.update().toResponse(edited);
     }
 
@@ -59,18 +59,18 @@ public class ProfileService implements ProfileServiceI {
     public void delete(DeleteUserReq dto) {
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
+        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
 
         user.setStatus(Status.DELETED);
 
-        this.userRepository.update(user);
+        this.userProfileRepository.update(user);
     }
 
     @Override
     public GetOwnProfileRes getOwnProfile(GetOwnProfileReq dto){
         AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
 
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
+        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
 
         List<Style> styles = this.catalogRepository.getStyleListById(user.getStyles().stream().map(Style::getId).toList());
         user.setStyles(styles);

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostgresUserRepositoryI extends JpaRepository<UserProfileModel, String> {
+public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfileModel, String> {
 
     Optional<UserProfileModel> findByEmail(String email);
 
