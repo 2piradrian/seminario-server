@@ -8,6 +8,10 @@ public class UserProfileMapper {
         return new GetByIdMapper();
     }
 
+    public static CreateMapper create(){
+        return new CreateMapper();
+    }
+
     public static DeleteMapper delete() {
         return new DeleteMapper();
     }

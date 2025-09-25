@@ -22,8 +22,6 @@ public class UserProfile {
 
     private LocalDateTime memberSince;
 
-    private LocalDateTime lastLogin;
-
     private String portraitImage;
 
     private String profileImage;

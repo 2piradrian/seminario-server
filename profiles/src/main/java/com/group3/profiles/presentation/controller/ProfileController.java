@@ -25,6 +25,17 @@ public class ProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+        @RequestBody Map<String, Object> payload
+    ){
+        CreateUserProfileReq dto = UserProfileMapper.create().toRequest(payload);
+        this.userService.create(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+
     @GetMapping("/get-own-profile")
     public ResponseEntity<?> getOwnProfile(
         @RequestHeader(value = "Authorization") String token
