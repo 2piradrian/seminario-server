@@ -24,60 +24,12 @@ public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
 
-    private final CatalogRepository catalogRepository;
-
-    private final AuthService authService;
-
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.userRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         return UserMapper.getById().toResponse(user);
-    }
-
-    public EditUserRes update(EditUserReq dto) {
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
-
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
-
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setPortraitImage(dto.getPortraitImage());
-        user.setProfileImage(dto.getProfileImage());
-        user.setShortDescription(dto.getShortDescription());
-        user.setLongDescription(dto.getLongDescription());
-        user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
-        user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
-
-        User edited = this.userRepository.update(user);
-        return UserMapper.update().toResponse(edited);
-    }
-
-    @Override
-    public void delete(DeleteUserReq dto) {
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
-
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
-
-        user.setStatus(Status.DELETED);
-
-        this.userRepository.update(user);
-    }
-
-    @Override
-    public GetOwnProfileRes getOwnProfile(GetOwnProfileReq dto){
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
-
-        User user = this.userRepository.getByEmail(authResponse.getEmail());
-
-        List<Style> styles = this.catalogRepository.getStyleListById(user.getStyles().stream().map(Style::getId).toList());
-        user.setStyles(styles);
-
-        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(user.getInstruments().stream().map(Instrument::getId).toList());
-        user.setInstruments(instruments);
-
-        return UserMapper.getOwnProfile().toResponse(user);
     }
 
 }

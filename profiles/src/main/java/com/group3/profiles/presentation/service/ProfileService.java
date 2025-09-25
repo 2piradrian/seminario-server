@@ -29,6 +29,12 @@ public class ProfileService implements ProfileServiceI {
     private final UserRepository userRepository;
 
     @Override
+    public void create(CreateUserProfileReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+    }
+
+    @Override
     public GetUserProfileByIdRes getById(GetUserProfileByIdReq dto) {
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

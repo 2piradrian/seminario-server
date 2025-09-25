@@ -5,6 +5,8 @@ import com.group3.profiles.domain.dto.profile.response.*;
 
 public interface ProfileServiceI {
 
+    void create(CreateUserProfileReq dto);
+
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
     void update(EditUserProfileReq dto);
