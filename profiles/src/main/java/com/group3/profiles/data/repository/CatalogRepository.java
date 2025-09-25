@@ -15,48 +15,43 @@ import java.util.Map;
 @AllArgsConstructor
 public class CatalogRepository implements CatalogRepositoryI {
 
-    private final CatalogServerRepositoryI catalogRepository;
+    private final CatalogServerRepositoryI repository;
 
     @Override
     public List<Style> getAllStyle() {
-        List<Style> styles = this.catalogRepository.getAllStyle().getStyles();
+        List<Style> styles = this.repository.getAllStyle().getStyles();
 
-        if (styles == null){
-            return List.of();
-        }
-
-        return styles;
+        return styles == null ? List.of() : styles;
     }
 
     @Override
     public Style getStyleById(String styleId) {
-        return this.catalogRepository.getStyleById(styleId).getStyle();
+        return this.repository.getStyleById(styleId).getStyle();
     }
 
     @Override
     public List<Style> getStyleListById(List<String> styles) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("ids", styles);
-        return this.catalogRepository.getStyleListById(payload).getStyles();
+        return this.repository.getStyleListById(payload).getStyles();
     }
 
     @Override
     public List<Instrument> getAllInstrument() {
-        List<Instrument> instruments = this.catalogRepository.getAllInstrument().getInstruments();
+        List<Instrument> instruments = this.repository.getAllInstrument().getInstruments();
         return instruments != null ? instruments : List.of();
     }
 
     @Override
     public Instrument getInstrumentById(String instrumentId) {
-        return this.catalogRepository.getInstrumentById(instrumentId).getInstrument();
+        return this.repository.getInstrumentById(instrumentId).getInstrument();
     }
 
     @Override
     public List<Instrument> getInstrumentListById(List<String> instruments) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("ids", instruments);
-        List<Instrument> response = this.catalogRepository.getInstrumentListById(payload).getInstruments();
-        return response != null ? response : List.of();
+        return this.repository.getInstrumentListById(payload).getInstruments();
     }
 
 }

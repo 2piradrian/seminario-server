@@ -4,7 +4,8 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.profiles.data.repository.CatalogRepository;
-import com.group3.profiles.data.repository.UserProfileProfileRepository;
+import com.group3.profiles.data.repository.UserProfileRepository;
+import com.group3.profiles.data.repository.UserRepository;
 import com.group3.profiles.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.profiles.domain.dto.profile.request.*;
 import com.group3.profiles.domain.dto.profile.response.*;
@@ -21,62 +22,64 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileService implements ProfileServiceI {
 
-    private final UserProfileProfileRepository userProfileRepository;
+    private final UserProfileRepository userProfileRepository;
 
     private final CatalogRepository catalogRepository;
 
-    private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Override
     public GetUserProfileByIdRes getById(GetUserProfileByIdReq dto) {
-        User user = this.userProfileRepository.getById(dto.getUserId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
+        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        return UserProfileMapper.getById().toResponse(user);
+        return UserProfileMapper.getById().toResponse(userProfile);
     }
 
     public EditUserProfileRes update(EditUserProfileReq dto) {
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
 
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setPortraitImage(dto.getPortraitImage());
-        user.setProfileImage(dto.getProfileImage());
-        user.setShortDescription(dto.getShortDescription());
-        user.setLongDescription(dto.getLongDescription());
-        user.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
-        user.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
+        userProfile.setName(dto.getName());
+        userProfile.setSurname(dto.getSurname());
+        userProfile.setPortraitImage(dto.getPortraitImage());
+        userProfile.setProfileImage(dto.getProfileImage());
+        userProfile.setShortDescription(dto.getShortDescription());
+        userProfile.setLongDescription(dto.getLongDescription());
+        userProfile.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
+        userProfile.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
-        User edited = this.userProfileRepository.update(user);
+        UserProfile edited = this.userProfileRepository.update(userProfile);
         return UserProfileMapper.update().toResponse(edited);
     }
 
     @Override
     public void delete(DeleteUserProfileReq dto) {
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
-
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
         user.setStatus(Status.DELETED);
 
-        this.userProfileRepository.update(user);
+        this.userProfileRepository.update(userProfile);
     }
 
     @Override
     public GetOwnUserProfileRes getOwnProfile(GetOwnUserProfileReq dto){
-        AuthUserRes authResponse = this.authService.auth(AuthUserReq.create(dto.getToken()));
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        User user = this.userProfileRepository.getByEmail(authResponse.getEmail());
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
 
-        List<Style> styles = this.catalogRepository.getStyleListById(user.getStyles().stream().map(Style::getId).toList());
-        user.setStyles(styles);
+        List<Style> styles = this.catalogRepository.getStyleListById(userProfile.getStyles().stream().map(Style::getId).toList());
+        userProfile.setStyles(styles);
 
-        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(user.getInstruments().stream().map(Instrument::getId).toList());
-        user.setInstruments(instruments);
+        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(userProfile.getInstruments().stream().map(Instrument::getId).toList());
+        userProfile.setInstruments(instruments);
 
-        return UserProfileMapper.getOwnProfile().toResponse(user);
+        return UserProfileMapper.getOwnProfile().toResponse(userProfile);
     }
 
 }

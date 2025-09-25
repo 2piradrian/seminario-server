@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class UserProfileProfileRepository implements UserProfileRepositoryI {
+public class UserProfileRepository implements UserProfileRepositoryI {
 
     private final PostgresUserProfileRepositoryI repository;
 
