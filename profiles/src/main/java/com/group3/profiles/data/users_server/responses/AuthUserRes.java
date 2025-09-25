@@ -1,4 +1,4 @@
-package com.group3.profiles.data.users_server.responses.auth;
+package com.group3.profiles.data.users_server.responses;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;

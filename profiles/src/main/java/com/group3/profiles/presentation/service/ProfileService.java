@@ -14,7 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -30,8 +32,35 @@ public class ProfileService implements ProfileServiceI {
 
     @Override
     public void create(CreateUserProfileReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
+        User user = this.userRepository.getById(dto.getId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!Objects.equals(dto.getId(), user.getId())){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        if (!Objects.equals(dto.getEmail(), user.getEmail())){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        UserProfile userProfile = new UserProfile();
+
+        userProfile.setId(dto.getId());
+        userProfile.setName(dto.getName());
+        userProfile.setSurname(dto.getSurname());
+        userProfile.setEmail(dto.getEmail());
+
+        userProfile.setMemberSince(LocalDateTime.now());
+        userProfile.setLastLogin(LocalDateTime.now());
+
+        userProfile.setPortraitImage("");
+        userProfile.setProfileImage("");
+        userProfile.setShortDescription("¡Usuario nuevo!");
+        userProfile.setLongDescription("¡Usuario nuevo!");
+        userProfile.setInstruments(List.of());
+        userProfile.setStyles(List.of());
+
+        this.userProfileRepository.save(userProfile);
     }
 
     @Override

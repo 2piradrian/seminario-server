@@ -7,6 +7,7 @@ import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
+import com.group3.users.data.repository.ProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
@@ -30,6 +31,8 @@ public class AuthService implements AuthServiceI {
 
     private final UserRepository userRepository;
 
+    private final ProfileRepository profileRepository;
+
     @Override
     public AuthUserRes auth(AuthUserReq dto) {
         String token = this.authHelper.validateToken(dto.getToken());
@@ -52,6 +55,8 @@ public class AuthService implements AuthServiceI {
     public void register(RegisterUserReq dto) {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
+
+        this.profileRepository.create()
 
         User user = new User();
 
