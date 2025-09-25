@@ -41,7 +41,7 @@ public class ProfileController {
     ) {
         EditUserProfileReq dto = UserProfileMapper.update().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.userService.update(dto));
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete")

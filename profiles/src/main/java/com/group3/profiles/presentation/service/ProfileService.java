@@ -36,7 +36,7 @@ public class ProfileService implements ProfileServiceI {
         return UserProfileMapper.getById().toResponse(userProfile);
     }
 
-    public EditUserProfileRes update(EditUserProfileReq dto) {
+    public void update(EditUserProfileReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
@@ -51,8 +51,7 @@ public class ProfileService implements ProfileServiceI {
         userProfile.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
         userProfile.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
-        UserProfile edited = this.userProfileRepository.update(userProfile);
-        return UserProfileMapper.update().toResponse(edited);
+        this.userProfileRepository.update(userProfile);
     }
 
     @Override

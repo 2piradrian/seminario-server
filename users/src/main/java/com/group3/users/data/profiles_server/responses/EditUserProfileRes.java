@@ -1,4 +1,4 @@
-package com.group3.profiles.domain.dto.profile.response;
+package com.group3.users.data.profiles_server.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

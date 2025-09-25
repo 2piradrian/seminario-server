@@ -7,7 +7,7 @@ public interface ProfileServiceI {
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
-    EditUserProfileRes update(EditUserProfileReq dto);
+    void update(EditUserProfileReq dto);
 
     void delete(DeleteUserProfileReq dto);
 
