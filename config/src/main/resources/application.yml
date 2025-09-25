@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev,native
 
   application:
     name: config-server
@@ -8,11 +8,8 @@ spring:
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/2piradrian/seminario-server.git
-          search-paths: app-config
-          default-label: develop
-          clone-on-start: true
+        native:
+          search-locations: classpath:/app-config
 
 server:
   port: 7777
