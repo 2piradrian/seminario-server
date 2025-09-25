@@ -1,7 +1,5 @@
 package com.group3.users.data.postgres.mapper;
 
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
 import com.group3.users.data.postgres.model.UserModel;
 import com.group3.entity.User;
 
@@ -14,58 +12,20 @@ public class UserEntityMapper {
     public static User toDomain(UserModel userModel){
         return new User(
             userModel.getId(),
-            userModel.getName(),
-            userModel.getSurname(),
-            userModel.getPassword(),
             userModel.getEmail(),
-            userModel.getMemberSince(),
-            userModel.getLastLogin(),
-            userModel.getRoles(),
+            userModel.getPassword(),
             userModel.getStatus(),
-            userModel.getPortraitImage(),
-            userModel.getProfileImage(),
-            userModel.getShortDescription(),
-            userModel.getLongDescription(),
-            userModel.getStyles()
-                .stream()
-                .map(id -> {
-                    Style s = new Style();
-                    s.setId(id);
-                    return s;
-                })
-                .collect(Collectors.toList()),
-            userModel.getInstruments()
-                .stream()
-                .map(id -> {
-                    Instrument i = new Instrument();
-                    i.setId(id);
-                    return i;
-                })
-                .collect(Collectors.toList())
+            userModel.getRoles()
         );
     }
 
     public static UserModel toModel(User user){
         return new UserModel(
             user.getId(),
-            user.getName(),
-            user.getSurname(),
             user.getEmail(),
             user.getPassword(),
-            user.getMemberSince(),
-            user.getLastLogin(),
             user.getRoles(),
-            user.getStatus(),
-            user.getPortraitImage(),
-            user.getProfileImage(),
-            user.getShortDescription(),
-            user.getLongDescription(),
-            user.getStyles().stream()
-                .map(Style::getId)
-                .collect(Collectors.toList()),
-            user.getInstruments().stream()
-                .map(Instrument::getId)
-                .collect(Collectors.toList())
+            user.getStatus()
         );
     }
 
