@@ -7,10 +7,6 @@ public interface UserServiceI {
 
     GetUserByIdRes getById(GetUserByIdReq dto);
 
-    EditUserRes update(EditUserReq dto);
-
     void delete(DeleteUserReq dto);
-
-    GetOwnProfileRes getOwnProfile (GetOwnProfileReq dto);
 
 }

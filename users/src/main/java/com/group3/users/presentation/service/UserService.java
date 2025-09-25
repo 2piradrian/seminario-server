@@ -24,12 +24,27 @@ public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
 
+    private final AuthService authService;
+
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.userRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         return UserMapper.getById().toResponse(user);
+    }
+
+    @Override
+    public void delete(DeleteUserReq dto) {
+        AuthUserRes auth = this.authService.auth(AuthUserReq.create(dto.getToken()));
+        if (auth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        User user = this.userRepository.getById(auth.getId());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        user.setStatus(Status.DELETED);
+
+        this.userRepository.save(user);
     }
 
 }
