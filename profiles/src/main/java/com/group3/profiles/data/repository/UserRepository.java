@@ -1,8 +1,7 @@
 package com.group3.profiles.data.repository;
 
 import com.group3.entity.User;
-import com.group3.profiles.data.postgres.mapper.UserEntityMapper;
-import com.group3.profiles.data.postgres.model.UserModel;
+import com.group3.profiles.data.postgres.model.UserProfileModel;
 import com.group3.profiles.data.postgres.repository.PostgresUserRepositoryI;
 import com.group3.profiles.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
@@ -18,34 +17,34 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public User getById(String userId) {
-        UserModel userModel = this.userRepository.findById(userId).orElse(null);
-        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+        UserProfileModel userProfileModel = this.userRepository.findById(userId).orElse(null);
+        return userProfileModel != null ? UserEntityMapper.toDomain(userProfileModel) : null;
     }
 
     @Override
     public User getByEmail(String email) {
-        UserModel userModel = this.userRepository.findByEmail(email).orElse(null);
-        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+        UserProfileModel userProfileModel = this.userRepository.findByEmail(email).orElse(null);
+        return userProfileModel != null ? UserEntityMapper.toDomain(userProfileModel) : null;
     }
 
     @Override
     public List<User> getByFullName(String name, String surname) {
-        List<UserModel> userModels = this.userRepository.findByFullNameLike(name, surname);
-        return userModels.isEmpty() ? UserEntityMapper.toDomain(userModels) : List.of();
+        List<UserProfileModel> userProfileModels = this.userRepository.findByFullNameLike(name, surname);
+        return userProfileModels.isEmpty() ? UserEntityMapper.toDomain(userProfileModels) : List.of();
     }
 
     @Override
     public User save(User user) {
-        UserModel userModel = UserEntityMapper.toModel(user);
-        UserModel saved = this.userRepository.save(userModel);
+        UserProfileModel userProfileModel = UserEntityMapper.toModel(user);
+        UserProfileModel saved = this.userRepository.save(userProfileModel);
 
         return UserEntityMapper.toDomain(saved);
     }
 
     @Override
     public User update(User user) {
-        UserModel userModel = UserEntityMapper.toModel(user);
-        UserModel updated = this.userRepository.save(userModel);
+        UserProfileModel userProfileModel = UserEntityMapper.toModel(user);
+        UserProfileModel updated = this.userRepository.save(userProfileModel);
 
         return UserEntityMapper.toDomain(updated);
     }

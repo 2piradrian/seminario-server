@@ -1,6 +1,6 @@
 package com.group3.profiles.data.postgres.repository;
 
-import com.group3.profiles.data.postgres.model.UserModel;
+import com.group3.profiles.data.postgres.model.UserProfileModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String> {
+public interface PostgresUserRepositoryI extends JpaRepository<UserProfileModel, String> {
 
-    Optional<UserModel> findByEmail(String email);
+    Optional<UserProfileModel> findByEmail(String email);
 
     @Query("""
         SELECT u
@@ -18,6 +18,6 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
         WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
         AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
     """)
-    List<UserModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
+    List<UserProfileModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
 
 }
