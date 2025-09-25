@@ -15,10 +15,9 @@ import java.util.Map;
 @LoadBalancerClient(name = "profile-server", configuration = LoadBalancerConfiguration.class)
 public interface ProfileServerRepositoryI {
 
+    // TODO: Create Profile Route
+
     @PostMapping("/api/get-own-profile")
     GetOwnUserProfileRes getOwnProfile(@RequestHeader(value = "Authorization") String token);
-
-    @PutMapping("/edit")
-    void edit(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
 
 }
