@@ -26,8 +26,6 @@ public class UserProfileModel {
 
     private LocalDateTime memberSince;
 
-    private LocalDateTime lastLogin;
-
     @Column(columnDefinition = "TEXT")
     private String portraitImage;
 

@@ -14,7 +14,7 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
 
     @Query("""
         SELECT u
-        FROM UserModel u
+        FROM UserProfileModel u
         WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
         AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
     """)

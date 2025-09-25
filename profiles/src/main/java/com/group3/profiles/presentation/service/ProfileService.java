@@ -51,7 +51,6 @@ public class ProfileService implements ProfileServiceI {
         userProfile.setEmail(dto.getEmail());
 
         userProfile.setMemberSince(LocalDateTime.now());
-        userProfile.setLastLogin(LocalDateTime.now());
 
         userProfile.setPortraitImage("");
         userProfile.setProfileImage("");

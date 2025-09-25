@@ -22,8 +22,6 @@ public class GetOwnUserProfileRes {
 
     private LocalDateTime memberSince;
 
-    private LocalDateTime lastLogin;
-
     private final String portraitImage;
 
     private final String profileImage;

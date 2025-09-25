@@ -19,7 +19,6 @@ public class GetOwnMapper {
             userProfile.getSurname(),
             userProfile.getEmail(),
             userProfile.getMemberSince(),
-            userProfile.getLastLogin(),
             userProfile.getPortraitImage(),
             userProfile.getProfileImage(),
             userProfile.getShortDescription(),
