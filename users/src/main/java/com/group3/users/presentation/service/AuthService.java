@@ -15,6 +15,7 @@ import com.group3.users.domain.dto.auth.request.LoginUserReq;
 import com.group3.users.domain.dto.auth.request.RegisterUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class AuthService implements AuthServiceI {
 

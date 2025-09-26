@@ -1,7 +1,7 @@
 spring:
 
   application:
-    name: users-server
+    name: profiles-server
 
   profiles:
     active: dev
@@ -11,7 +11,7 @@ spring:
 
 server:
   servlet:
-    context-path: /users-server
+    context-path: /profiles-server
   port: 0
 
 logging:
