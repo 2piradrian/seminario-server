@@ -11,7 +11,8 @@ public class CreateMapper {
                 (String) payload.get("id"),
                 (String) payload.get("email"),
                 (String) payload.get("name"),
-                (String) payload.get("surname")
+                (String) payload.get("surname"),
+                (String) payload.get("secret")
         );
     }
 

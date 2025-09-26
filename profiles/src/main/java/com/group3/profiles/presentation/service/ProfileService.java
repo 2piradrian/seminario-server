@@ -3,6 +3,7 @@ package com.group3.profiles.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.profiles.config.helpers.SecretKeyHelper;
 import com.group3.profiles.data.repository.CatalogRepository;
 import com.group3.profiles.data.repository.UserProfileRepository;
 import com.group3.profiles.data.repository.UserRepository;
@@ -24,6 +25,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public class ProfileService implements ProfileServiceI {
 
+    private final SecretKeyHelper secretKeyHelper;
+
     private final UserProfileRepository userProfileRepository;
 
     private final CatalogRepository catalogRepository;
@@ -32,15 +35,10 @@ public class ProfileService implements ProfileServiceI {
 
     @Override
     public void create(CreateUserProfileReq dto) {
-        User user = this.userRepository.getById(dto.getId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        if (!Objects.equals(dto.getId(), user.getId())){
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        }
-
-        if (!Objects.equals(dto.getEmail(), user.getEmail())){
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            log.info(dto.getSecret());
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
         UserProfile userProfile = new UserProfile();
@@ -54,8 +52,8 @@ public class ProfileService implements ProfileServiceI {
 
         userProfile.setPortraitImage("");
         userProfile.setProfileImage("");
-        userProfile.setShortDescription("¡Usuario nuevo!");
-        userProfile.setLongDescription("¡Usuario nuevo!");
+        userProfile.setShortDescription("¡New user!");
+        userProfile.setLongDescription("¡New user!");
         userProfile.setInstruments(List.of());
         userProfile.setStyles(List.of());
 

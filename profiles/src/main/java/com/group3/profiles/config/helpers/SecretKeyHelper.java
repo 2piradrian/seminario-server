@@ -1,4 +1,4 @@
-package com.group3.users.config.helpers;
+package com.group3.profiles.config.helpers;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
