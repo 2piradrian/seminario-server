@@ -7,6 +7,8 @@ import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
+import com.group3.users.config.helpers.SecretKeyHelper;
+import com.group3.users.data.repository.ProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
@@ -14,6 +16,7 @@ import com.group3.users.domain.dto.auth.request.LoginUserReq;
 import com.group3.users.domain.dto.auth.request.RegisterUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,12 +26,17 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class AuthService implements AuthServiceI {
 
     private final AuthHelper authHelper;
 
+    private final SecretKeyHelper secretKeyHelper;
+
     private final UserRepository userRepository;
+
+    private final ProfileRepository profileRepository;
 
     @Override
     public AuthUserRes auth(AuthUserReq dto) {
@@ -55,24 +63,13 @@ public class AuthService implements AuthServiceI {
 
         User user = new User();
 
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
         user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
         user.setEmail(dto.getEmail());
-
-        user.setMemberSince(LocalDateTime.now());
-        user.setLastLogin(LocalDateTime.now());
         user.setRoles(List.of(Role.USER));
         user.setStatus(Status.ACTIVE);
 
-        user.setPortraitImage("");
-        user.setProfileImage("");
-        user.setShortDescription("");
-        user.setLongDescription("");
-        user.setInstruments(List.of());
-        user.setStyles(List.of());
-
-        this.userRepository.save(user);
+        User saved = this.userRepository.save(user);
+        this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
     }
 
     @Override
@@ -84,9 +81,7 @@ public class AuthService implements AuthServiceI {
             throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
         }
 
-        user.setLastLogin(LocalDateTime.now());
         this.userRepository.update(user);
-
         Token token = this.authHelper.createToken(user);
 
         return AuthMapper.login().toResponse(token);

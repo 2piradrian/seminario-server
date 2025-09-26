@@ -26,25 +26,6 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @GetMapping("/get-own-profile")
-    public ResponseEntity<?> getOwnProfile(
-        @RequestHeader(value = "Authorization") String token
-    ) {
-        GetOwnProfileReq dto = UserMapper.getOwnProfile().toRequest(token);
-
-        return ResponseEntity.ok(this.userService.getOwnProfile(dto));
-    }
-
-    @PutMapping("/edit")
-    public ResponseEntity<?> edit(
-        @RequestHeader(value = "Authorization") String token,
-        @RequestBody Map<String, Object> payload
-    ) {
-        EditUserReq dto = UserMapper.update().toRequest(token, payload);
-
-        return ResponseEntity.ok(this.userService.update(dto));
-    }
-
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token

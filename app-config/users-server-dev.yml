@@ -28,3 +28,5 @@ application:
   jwt:
     secret: "I'll see you on the dark side of the moon"
     expiration: 86400000
+  internal:
+    secret: "I'll see you on the dark side of the moon"
