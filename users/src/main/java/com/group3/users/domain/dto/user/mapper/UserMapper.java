@@ -12,11 +12,4 @@ public class UserMapper {
         return new DeleteMapper();
     }
 
-    public static EditMapper update() {
-        return new EditMapper();
-    }
-
-    public static GetOwnProfileMapper getOwnProfile() {
-        return new GetOwnProfileMapper(); }
-
 }

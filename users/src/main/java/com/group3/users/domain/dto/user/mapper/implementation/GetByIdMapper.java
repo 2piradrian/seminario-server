@@ -15,17 +15,9 @@ public class GetByIdMapper {
     public GetUserByIdRes toResponse(User user) {
         return new GetUserByIdRes(
             user.getId(),
-            user.getName(),
-            user.getSurname(),
             user.getEmail(),
-            user.getMemberSince(),
-            user.getLastLogin(),
-            user.getPortraitImage(),
-            user.getProfileImage(),
-            user.getShortDescription(),
-            user.getLongDescription(),
-            user.getStyles(),
-            user.getInstruments()
+            user.getStatus(),
+            user.getRoles()
         );
     }
 

@@ -10,8 +10,6 @@ public interface UserRepositoryI {
 
     User getByEmail(String email);
 
-    List<User> getByFullName(String name, String surname);
-
     User save(User user);
 
     User update(User user);

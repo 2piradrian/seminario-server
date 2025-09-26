@@ -16,7 +16,7 @@ public class GetInstrumentListByIdReq {
     }
 
     public static GetInstrumentListByIdReq create(List<String> ids) {
-        if (ids == null || ids.isEmpty()) {
+        if (ids == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 

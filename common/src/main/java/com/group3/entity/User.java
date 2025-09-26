@@ -14,32 +14,12 @@ public class User {
 
     private String id;
 
-    private String name;
-
-    private String surname;
+    private String email;
 
     private String password;
 
-    private String email;
-
-    private LocalDateTime memberSince;
-
-    private LocalDateTime lastLogin;
-
-    private List<Role> roles;
-
     private Status status;
 
-    private String portraitImage;
-
-    private String profileImage;
-
-    private String shortDescription;
-
-    private String longDescription;
-
-    private List<Style> styles;
-
-    private List<Instrument> instruments;
+    private List<Role> roles;
 
 }

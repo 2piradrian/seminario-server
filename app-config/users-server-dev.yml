@@ -11,8 +11,22 @@ spring:
       ddl-auto: "update"
       properties:
         hibernate.jdbc.time_zone: UTC
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: develop
+    password: develop
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 application:
   jwt:
     secret: "I'll see you on the dark side of the moon"
     expiration: 86400000
+  internal:
+    secret: "I'll see you on the dark side of the moon"
