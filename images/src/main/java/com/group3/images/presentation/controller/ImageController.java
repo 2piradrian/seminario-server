@@ -1,23 +1,29 @@
 package com.group3.images.presentation.controller;
 
+import com.group3.images.domain.dto.images.mapper.ImagesMapper;
+import com.group3.images.domain.dto.images.request.UploadImageReq;
+import com.group3.images.presentation.service.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/images")
 public class ImageController {
 
-    @GetMapping("/{imageName}")
-    public ResponseEntity<Resource> getImage(@PathVariable String imageId) {
-        Resource resource = imageService.loadImage(imageName);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/webp")
-                .body(resource);
+    private final ImageService service;
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(
+            @RequestBody Map<String, Object> payload
+    ) {
+        UploadImageReq dto = ImagesMapper.upload().toRequest(payload);
+
+        return ResponseEntity.ok(this.service.uploadImage(dto));
     }
+
 }

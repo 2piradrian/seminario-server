@@ -5,7 +5,7 @@ import com.group3.images.domain.dto.images.mapper.implementation.UploadMapper;
 
 public class ImagesMapper {
 
-    public static UploadMapper create(){
+    public static UploadMapper upload(){
         return new UploadMapper();
     }
 
