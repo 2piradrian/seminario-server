@@ -11,12 +11,12 @@ public class UploadImageReq {
 
     private final String base64Image;
 
-    private UploadImageReq(String base64Image, String secret) {
-        this.base64Image = base64Image;
+    private UploadImageReq(String secret, String base64Image) {
         this.secret = secret;
+        this.base64Image = base64Image;
     }
 
-    public static UploadImageReq create(String base64Image, String secret) {
+    public static UploadImageReq create(String secret, String base64Image) {
 
         if (base64Image == null || secret == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -26,7 +26,7 @@ public class UploadImageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new UploadImageReq(base64Image, secret);
+        return new UploadImageReq(secret, base64Image);
     }
 
 }

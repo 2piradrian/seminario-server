@@ -1,8 +1,5 @@
 package com.group3.images.data.file_system.repository;
 
-import com.group3.images.domain.repository.ImageRepositoryI;
-
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -11,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.nio.file.*;
 
 @Repository
-@AllArgsConstructor
 public class FileSystemImageRepository {
 
     @Value("${images.path}")
