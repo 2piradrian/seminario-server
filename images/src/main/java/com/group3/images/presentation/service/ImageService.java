@@ -7,11 +7,13 @@ import com.group3.images.config.helpers.SecretKeyHelper;
 import com.group3.images.data.repository.ImageRepository;
 import com.group3.images.domain.dto.images.mapper.ImagesMapper;
 import com.group3.images.domain.dto.images.request.DeleteImageReq;
+import com.group3.images.domain.dto.images.request.LoadImageReq;
 import com.group3.images.domain.dto.images.request.UploadImageReq;
 import com.group3.images.domain.dto.images.response.UploadImageRes;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
@@ -27,6 +29,7 @@ public class ImageService implements ImageServiceI {
 
     private final ImageRepository imageRepository;
 
+    @Override
     @SneakyThrows
     public UploadImageRes uploadImage(UploadImageReq dto) {
 
@@ -42,9 +45,10 @@ public class ImageService implements ImageServiceI {
 
         Path savedPath = imageRepository.save(processedImage, fileName);
 
-        return ImagesMapper.create().toResponse(savedPath.getFileName().toString());
+        return ImagesMapper.upload().toResponse(savedPath.getFileName().toString());
     }
 
+    @Override
     public void deleteImage(DeleteImageReq dto) {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
@@ -54,12 +58,9 @@ public class ImageService implements ImageServiceI {
         imageRepository.delete(dto.getImageId());
     }
 
-    public Resource loadImage(String imageName) {
-        try {
-            return imageRepository.load(imageName);
-        } catch (Exception e) {
-            throw new ErrorHandler(ErrorType.NOT_FOUND, "Imagen no encontrada: " + imageName, e);
-        }
+    @Override
+    public Resource loadImage(LoadImageReq dto) {
+        return imageRepository.load(dto.getImageId());
     }
 
 }
