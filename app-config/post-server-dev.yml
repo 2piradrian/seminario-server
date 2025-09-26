@@ -9,3 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: "update"
+
+application:
+  internal:
+    secret: "I'll see you on the dark side of the moon"

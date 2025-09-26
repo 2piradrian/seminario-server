@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
-import com.group3.entity.UserProfile;
 import com.group3.profiles.domain.dto.profile.request.EditUserProfileReq;
 
 import java.util.List;

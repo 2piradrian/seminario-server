@@ -11,3 +11,7 @@ spring:
       ddl-auto: "update"
       properties:
         hibernate.jdbc.time_zone: UTC
+
+application:
+  internal:
+    secret: "I'll see you on the dark side of the moon"

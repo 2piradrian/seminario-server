@@ -14,12 +14,13 @@ public class ProfileRepository implements ProfileRepositoryI {
 
     private final ProfileServerRepositoryI repository;
 
-    public void create(String id, String email, String name, String surname) {
+    public void create(String id, String email, String name, String surname, String secret) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("id", id);
         payload.put("email", email);
         payload.put("name", name);
         payload.put("surname", surname);
+        payload.put("secret", secret);
 
         this.repository.create(payload);
     };

@@ -7,6 +7,7 @@ import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
+import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.ProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
@@ -30,6 +31,8 @@ import java.util.List;
 public class AuthService implements AuthServiceI {
 
     private final AuthHelper authHelper;
+
+    private final SecretKeyHelper secretKeyHelper;
 
     private final UserRepository userRepository;
 
@@ -66,7 +69,7 @@ public class AuthService implements AuthServiceI {
         user.setStatus(Status.ACTIVE);
 
         User saved = this.userRepository.save(user);
-        this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname());
+        this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
     }
 
     @Override

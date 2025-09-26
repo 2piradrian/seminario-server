@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
-@FeignClient(name = "profile-server", path = "/profile-server")
-@LoadBalancerClient(name = "profile-server", configuration = LoadBalancerConfiguration.class)
+@FeignClient(name = "profiles-server", path = "/profiles-server")
+@LoadBalancerClient(name = "profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface ProfileServerRepositoryI {
 
-    @PostMapping("/api/create")
+    @PostMapping("/api/profiles/create")
     void create(@RequestBody Map<String, Object> payload);
 
-    @PostMapping("/api/get-own-profile")
+    @PostMapping("/api/profiles/get-own-profile")
     GetOwnUserProfileRes getOwnProfile(@RequestHeader(value = "Authorization") String token);
 
 }
