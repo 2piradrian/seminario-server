@@ -17,7 +17,7 @@ public class LoginUserReq {
         this.password = password;
     }
 
-    public  static  LoginUserReq create(String email, String password){
+    public static LoginUserReq create(String email, String password){
 
         if (password == null || email == null){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
