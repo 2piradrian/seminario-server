@@ -2,7 +2,7 @@ package com.group3.profiles.data.repository;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
-import com.group3.profiles.data.catalog_server.repository.CatalogServerRepositoryI;
+import com.group3.profiles.data.feign.catalog_server.repository.CatalogServerRepositoryI;
 import com.group3.profiles.domain.repository.CatalogRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
