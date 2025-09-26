@@ -1,0 +1,14 @@
+services:
+  posts-db:
+    image: mongo:7.0.5
+    restart: always
+    container_name: mongo-db
+    hostname: mongo-db
+    environment:
+      MONGO_INITDB_DATABASE: 'posts'
+      MONGO_INITDB_ROOT_USERNAME: 'develop'
+      MONGO_INITDB_ROOT_PASSWORD: 'develop'
+    volumes:
+      - ./posts-db:/data/db
+    ports:
+      - "27017:27017"
