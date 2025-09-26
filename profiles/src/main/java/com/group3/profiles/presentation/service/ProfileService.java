@@ -88,17 +88,6 @@ public class ProfileService implements ProfileServiceI {
     }
 
     @Override
-    public void delete(DeleteUserProfileReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
-        user.setStatus(Status.DELETED);
-
-        this.userProfileRepository.update(userProfile);
-    }
-
-    @Override
     public GetOwnUserProfileRes getOwnProfile(GetOwnUserProfileReq dto){
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -112,6 +101,17 @@ public class ProfileService implements ProfileServiceI {
         userProfile.setInstruments(instruments);
 
         return UserProfileMapper.getOwnProfile().toResponse(userProfile);
+    }
+
+    @Override
+    public void delete(DeleteUserProfileReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
+        user.setStatus(Status.DELETED);
+
+        this.userProfileRepository.update(userProfile);
     }
 
 }

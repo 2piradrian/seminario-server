@@ -14,7 +14,7 @@ public class GetStyleByIdReq {
     }
 
     public static GetStyleByIdReq create(String id) {
-        if (id == null) {
+        if (id == null || id.isEmpty()) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
         return new GetStyleByIdReq(id);

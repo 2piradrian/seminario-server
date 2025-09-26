@@ -51,6 +51,7 @@ public class ProfileController {
         @RequestBody Map<String, Object> payload
     ) {
         EditUserProfileReq dto = UserProfileMapper.update().toRequest(token, payload);
+        this.userService.update(dto);
 
         return ResponseEntity.ok().build();
     }
