@@ -37,7 +37,6 @@ public class ProfileService implements ProfileServiceI {
     public void create(CreateUserProfileReq dto) {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
-            log.info(dto.getSecret());
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
