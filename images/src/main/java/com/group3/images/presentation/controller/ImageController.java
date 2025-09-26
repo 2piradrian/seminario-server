@@ -1,6 +1,7 @@
 package com.group3.images.presentation.controller;
 
 import com.group3.images.domain.dto.images.mapper.ImagesMapper;
+import com.group3.images.domain.dto.images.request.DeleteImageReq;
 import com.group3.images.domain.dto.images.request.UploadImageReq;
 import com.group3.images.presentation.service.ImageService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,16 @@ public class ImageController {
         UploadImageReq dto = ImagesMapper.upload().toRequest(payload);
 
         return ResponseEntity.ok(this.service.uploadImage(dto));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(
+            @RequestBody Map<String, Object> payload
+    ) {
+        DeleteImageReq dto = ImagesMapper.delete().toRequest(payload);
+        this.service.deleteImage(dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }
