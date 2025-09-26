@@ -22,10 +22,9 @@ public class CommentModel {
 
     private  String authorId;
 
-    @Field("post_id")
     private String postId;
 
-    private String replyToId; // cambia por mongo
+    private String replyToId;
 
     private String content;
 
@@ -38,5 +37,7 @@ public class CommentModel {
     private  LocalDateTime updatedAt;
 
     private Status status;
+
+    private  Boolean replying;
 
 }

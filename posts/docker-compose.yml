@@ -1,14 +1,13 @@
 services:
   posts-db:
-    image: mongo:7.0.5
+    image: postgres:15.3
     restart: always
-    container_name: mongo-db
-    hostname: mongo-db
     environment:
-      MONGO_INITDB_DATABASE: 'posts'
-      MONGO_INITDB_ROOT_USERNAME: 'develop'
-      MONGO_INITDB_ROOT_PASSWORD: 'develop'
+      POSTGRES_DB: 'posts-db'
+      POSTGRES_USER: 'develop'
+      POSTGRES_PASSWORD: 'develop'
+      POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./posts-db:/data/db
+      - ./posts-db:/var/lib/postgresql/data
     ports:
-      - "27017:27017"
+      - 5434:5432
