@@ -5,30 +5,28 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comments")
+@Document(collection = "comments")
 public class CommentModel {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.UUID)
-    private String Id;
+    private String id;
 
     private  String authorId;
 
-    @Column(name = "post_id", nullable = false)
+    @Field("post_id")
     private String postId;
 
-    @ManyToOne
-    private CommentModel replyTo;
+    private String replyToId; // cambia por mongo
 
-    @Column(columnDefinition = "TEXT")
     private String content;
 
     private Set<String> upvoters;
@@ -39,7 +37,6 @@ public class CommentModel {
 
     private  LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
     private Status status;
 
 }
