@@ -7,9 +7,8 @@ public enum RegexValidators {
 
     NAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
     SURNAME("^[\\p{L}]+(?:[ '-][\\p{L}]+)*$"),
-    SHORT_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()'\"\\-\\s]{0,50}$"),
-    LONG_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?()'\"\\-\\s]{0,150}$"),
-    IMAGE_URL("^https?://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,}[^\\s]*$");
+    SHORT_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?'\"¡¿@%&$*+_:;\\-\\s]{1,50}$"),
+    LONG_DESCRIPTION("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?'\"¡¿@%&$*+_:;\\-\\s]{1,150}$");
 
     private final String regex;
 

@@ -1,9 +1,7 @@
 package com.group3.users.presentation.controller;
 
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
-import com.group3.users.domain.dto.auth.request.AuthUserReq;
-import com.group3.users.domain.dto.auth.request.LoginUserReq;
-import com.group3.users.domain.dto.auth.request.RegisterUserReq;
+import com.group3.users.domain.dto.auth.request.*;
 import com.group3.users.presentation.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +40,26 @@ public class AuthController {
     ) {
         RegisterUserReq dto = AuthMapper.register().toRequest(payload);
         this.authService.register(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verify-email/{token}")
+    public ResponseEntity<?> verifyEmail(
+            @PathVariable(value = "token") String token
+    ) {
+        VerifyEmailReq dto = AuthMapper.verifyEmail().toRequest(token);
+        this.authService.verifyEmail(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resend-verify-email")
+    public ResponseEntity<?> resendVerifyEmail(
+            @RequestBody Map<String, Object> payload
+    ) {
+        ResendEmailReq dto = AuthMapper.resendEmail().toRequest(payload);
+        this.authService.resendVerifyEmail(dto);
 
         return ResponseEntity.ok().build();
     }
