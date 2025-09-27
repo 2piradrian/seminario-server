@@ -55,4 +55,22 @@ public class AuthHelper {
     public String getSubject(String token) {
         return this.jwtHelper.getSubject(token);
     }
+
+    public String validateUrlToken(String tokenValue) {
+
+        if (tokenValue == null || tokenValue.isBlank()) {
+            return null;
+        }
+
+        try {
+            if (this.jwtHelper.validateToken(tokenValue)) {
+                return tokenValue;
+            }
+        }
+        catch (Exception e) {
+            return null;
+        }
+
+        return null;
+    }
 }
