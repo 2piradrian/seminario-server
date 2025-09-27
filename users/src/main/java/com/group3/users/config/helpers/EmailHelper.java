@@ -6,13 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailHelper {
 
-    @Value("${spring.mail.username}")
-    private String username;
-
-    @Value("${spring.mail.password}")
-    private String password;
-
-    // ${environmentVars.getUrl()}
+    @Value("${application.host.url}")
     private String baseUrl;
 
     public String verifyEmailHTML(String token){
