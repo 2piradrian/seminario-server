@@ -16,4 +16,12 @@ public class AuthMapper {
         return new AuthUserMapper();
     }
 
+    public static VerifyEmailMapper verifyEmail() {
+        return new VerifyEmailMapper();
+    }
+
+    public static ResendEmailMapper resendEmail() {
+        return new ResendEmailMapper();
+    }
+
 }
