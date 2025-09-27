@@ -82,6 +82,10 @@ public class AuthService implements AuthServiceI {
 
         User saved = this.userRepository.save(user);
         this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
+
+        Token token = this.authHelper.createToken(saved);
+
+        this.emailService.sendEmail(saved.getEmail(),"Email Validation", this.emailHelper.verifyEmailHTML(token.getAccessToken()));
     }
 
     @Override
