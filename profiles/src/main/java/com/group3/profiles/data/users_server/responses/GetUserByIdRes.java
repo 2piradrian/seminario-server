@@ -1,4 +1,4 @@
-package com.group3.profiles.data.feign.users_server.responses;
+package com.group3.profiles.data.users_server.responses;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;
@@ -9,14 +9,14 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class AuthUserRes {
+public class GetUserByIdRes {
 
     private final String id;
 
     private final String email;
 
-    private Status status;
+    private final Status status;
 
-    private List<Role> roles;
+    private final List<Role> roles;
 
 }
