@@ -74,7 +74,7 @@ public class AuthService implements AuthServiceI {
         user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
         user.setEmail(dto.getEmail());
         user.setRoles(List.of(Role.USER));
-        user.setStatus(Status.ACTIVE);
+        user.setStatus(Status.INACTIVE);
 
         User saved = this.userRepository.save(user);
         this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
@@ -98,7 +98,7 @@ public class AuthService implements AuthServiceI {
     @Override
     public void verifyEmail(VerifyEmailReq dto){
 
-        String token = this.authHelper.validateToken(dto.getToken());
+        String token = this.authHelper.validateUrlToken(dto.getToken());
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
