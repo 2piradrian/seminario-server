@@ -1,29 +1,29 @@
-package com.group3.posts.data.mongo.model;
+package com.group3.posts.data.postgres.model;
 
 import com.group3.entity.Category;
 import com.group3.entity.Status;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "posts")
+@Table(name = "posts")
 public class PostModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String title;
 
-    @Field("content")
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private Integer views;
@@ -34,11 +34,13 @@ public class PostModel {
 
     private Set<String> downvoters;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

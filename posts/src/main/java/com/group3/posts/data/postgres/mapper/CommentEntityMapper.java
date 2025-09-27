@@ -1,7 +1,7 @@
-package com.group3.posts.data.mongo.mapper;
+package com.group3.posts.data.postgres.mapper;
 
 import com.group3.entity.Comment;
-import com.group3.posts.data.mongo.model.CommentModel;
+import com.group3.posts.data.postgres.model.CommentModel;
 
 public class CommentEntityMapper {
 

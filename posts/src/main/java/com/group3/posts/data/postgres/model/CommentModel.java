@@ -1,31 +1,34 @@
-package com.group3.posts.data.mongo.model;
+package com.group3.posts.data.postgres.model;
 
 import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "comments")
+@Table(name = "comments")
 public class CommentModel {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy =  GenerationType.UUID)
+    private String Id;
 
     private  String authorId;
 
+    @Column(name = "post_id", nullable = false)
     private String postId;
 
-    private String replyToId;
+    @ManyToOne
+    private CommentModel replyTo;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private Set<String> upvoters;
@@ -36,8 +39,7 @@ public class CommentModel {
 
     private  LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
-
-    private  Boolean replying;
 
 }
