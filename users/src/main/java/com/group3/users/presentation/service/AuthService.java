@@ -61,6 +61,10 @@ public class AuthService implements AuthServiceI {
             throw new ErrorHandler(ErrorType.USER_NOT_ACTIVATED);
         }
 
+        if (user.getStatus() == Status.DELETED){
+            throw new ErrorHandler(ErrorType.USER_DELETED);
+        }
+
         return AuthMapper.auth().toResponse(user);
     }
 
@@ -84,6 +88,14 @@ public class AuthService implements AuthServiceI {
     public LoginUserRes login(LoginUserReq dto) {
         User user = this.userRepository.getByEmail(dto.getEmail());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (user.getStatus() == Status.INACTIVE){
+            throw new ErrorHandler(ErrorType.USER_NOT_ACTIVATED);
+        }
+
+        if (user.getStatus() == Status.DELETED){
+            throw new ErrorHandler(ErrorType.USER_DELETED);
+        }
 
         if (!this.authHelper.validatePassword(user, dto.getPassword())) {
             throw new ErrorHandler(ErrorType.INVALID_PASSWORD);
