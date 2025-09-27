@@ -30,3 +30,5 @@ application:
     expiration: 86400000
   internal:
     secret: "I'll see you on the dark side of the moon"
+  host:
+      url: url

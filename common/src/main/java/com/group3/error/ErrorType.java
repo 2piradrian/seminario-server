@@ -8,6 +8,11 @@ public enum ErrorType {
     MISSING_REQUIRED_FIELDS("Missing required fields", 400),
     INVALID_FIELDS("Invalid fields", 400),
 
+    USER_NOT_ACTIVATED("User not activated", 400),
+    USER_DELETED("User has been banned", 400),
+    PASSWORDS_DO_NOT_MATCH("Passwords do not match", 400),
+    USER_ALREADY_ACTIVATED("User already activated", 400),
+
     USER_NOT_FOUND("User not found", 404),
     POST_NOT_FOUND("Forum not found", 404),
 

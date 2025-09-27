@@ -1,0 +1,23 @@
+package com.group3.images.domain.dto.images.mapper.implementation;
+
+import com.group3.images.domain.dto.images.request.UploadImageReq;
+import com.group3.images.domain.dto.images.response.UploadImageRes;
+
+import java.util.Map;
+
+public class UploadMapper {
+
+    public UploadImageReq toRequest(Map<String, Object> payload){
+        return UploadImageReq.create(
+                (String) payload.get("secret"),
+                (String) payload.get("base64Image")
+        );
+    }
+
+    public UploadImageRes toResponse(String imageId) {
+        return new UploadImageRes(
+                imageId
+        );
+    }
+
+}
