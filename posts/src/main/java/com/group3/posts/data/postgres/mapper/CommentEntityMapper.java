@@ -10,7 +10,7 @@ public class CommentEntityMapper {
                 commentModel.getId(),
                 commentModel.getAuthorId(),
                 commentModel.getPostId(),
-                commentModel.replyToId(),
+                commentModel.getReplyTo() != null ? toDomain(commentModel.getReplyTo()) : null,
                 commentModel.getContent(),
                 commentModel.getUpvoters(),
                 commentModel.getDownvoters(),
@@ -25,7 +25,13 @@ public class CommentEntityMapper {
                 comment.getId(),
                 comment.getAuthorId(),
                 comment.getPostId(),
-                comment.
+                comment.getReplyTo() != null ? toModel(comment.getReplyTo()) : null,
+                comment.getContent(),
+                comment.getUpvoters(),
+                comment.getDownvoters(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt(),
+                comment.getStatus()
 
         );
     }
