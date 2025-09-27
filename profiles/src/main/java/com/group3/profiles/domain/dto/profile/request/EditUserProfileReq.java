@@ -105,10 +105,6 @@ public class EditUserProfileReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if ( styles.isEmpty() || instruments.isEmpty()) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
         RegexValidators shortDescriptionValidator = RegexValidators.SHORT_DESCRIPTION;
         if (!shortDescription.matches(shortDescriptionValidator.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);

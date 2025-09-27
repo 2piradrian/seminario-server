@@ -104,8 +104,6 @@ public class ProfileService implements ProfileServiceI {
 
         userProfile.setName(dto.getName());
         userProfile.setSurname(dto.getSurname());
-        userProfile.setPortraitImage(dto.getPortraitImage());
-        userProfile.setProfileImage(dto.getProfileImage());
         userProfile.setShortDescription(dto.getShortDescription());
         userProfile.setLongDescription(dto.getLongDescription());
 
