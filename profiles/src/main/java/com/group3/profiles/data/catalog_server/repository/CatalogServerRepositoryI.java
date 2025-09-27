@@ -1,12 +1,12 @@
-package com.group3.profiles.data.feign.catalog_server.repository;
+package com.group3.profiles.data.catalog_server.repository;
 
 import com.group3.profiles.config.beans.LoadBalancerConfiguration;
-import com.group3.profiles.data.feign.catalog_server.responses.instrument.GetAllInstrumentRes;
-import com.group3.profiles.data.feign.catalog_server.responses.instrument.GetInstrumentByIdRes;
-import com.group3.profiles.data.feign.catalog_server.responses.instrument.GetInstrumentListByIdRes;
-import com.group3.profiles.data.feign.catalog_server.responses.style.GetAllStyleRes;
-import com.group3.profiles.data.feign.catalog_server.responses.style.GetStyleByIdRes;
-import com.group3.profiles.data.feign.catalog_server.responses.style.GetStyleListByIdRes;
+import com.group3.profiles.data.catalog_server.responses.instrument.GetAllInstrumentRes;
+import com.group3.profiles.data.catalog_server.responses.instrument.GetInstrumentByIdRes;
+import com.group3.profiles.data.catalog_server.responses.instrument.GetInstrumentListByIdRes;
+import com.group3.profiles.data.catalog_server.responses.style.GetAllStyleRes;
+import com.group3.profiles.data.catalog_server.responses.style.GetStyleByIdRes;
+import com.group3.profiles.data.catalog_server.responses.style.GetStyleListByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
