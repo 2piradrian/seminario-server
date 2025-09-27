@@ -9,6 +9,7 @@ public enum ErrorType {
     INVALID_FIELDS("Invalid fields", 400),
 
     USER_NOT_ACTIVATED("User not activated", 400),
+    USER_DELETED("User has been banned", 400),
     PASSWORDS_DO_NOT_MATCH("Passwords do not match", 400),
     USER_ALREADY_ACTIVATED("User already activated", 400),
 
