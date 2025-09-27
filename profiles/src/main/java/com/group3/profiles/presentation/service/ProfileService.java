@@ -5,11 +5,13 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.profiles.config.helpers.SecretKeyHelper;
 import com.group3.profiles.data.repository.CatalogRepository;
+import com.group3.profiles.data.repository.ImagesRepository;
 import com.group3.profiles.data.repository.UserProfileRepository;
 import com.group3.profiles.data.repository.UserRepository;
 import com.group3.profiles.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.profiles.domain.dto.profile.request.*;
 import com.group3.profiles.domain.dto.profile.response.*;
+import com.group3.profiles.domain.validator.RegexValidators;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ public class ProfileService implements ProfileServiceI {
     private final CatalogRepository catalogRepository;
 
     private final UserRepository userRepository;
+
+    private final ImagesRepository imagesRepository;
 
     @Override
     public void create(CreateUserProfileReq dto) {
@@ -74,14 +78,36 @@ public class ProfileService implements ProfileServiceI {
 
         UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
 
+        if (userProfile == null){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        if (!dto.getStyles().isEmpty()){
+            List<Style> styles = this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList());
+            userProfile.setStyles(styles);
+        }
+
+        if (!dto.getInstruments().isEmpty()){
+            List<Instrument> instruments = this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList());
+            userProfile.setInstruments(instruments);
+        }
+
+        if (dto.getProfileImage() != null){
+            String profileId = this.imagesRepository.uploadImage(dto.getProfileImage(), secretKeyHelper.getSecret());
+            userProfile.setProfileImage(profileId);
+        }
+
+        if (dto.getPortraitImage() != null){
+            String portraitId = this.imagesRepository.uploadImage(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            userProfile.setPortraitImage(portraitId);
+        }
+
         userProfile.setName(dto.getName());
         userProfile.setSurname(dto.getSurname());
         userProfile.setPortraitImage(dto.getPortraitImage());
         userProfile.setProfileImage(dto.getProfileImage());
         userProfile.setShortDescription(dto.getShortDescription());
         userProfile.setLongDescription(dto.getLongDescription());
-        userProfile.setStyles(this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList()));
-        userProfile.setInstruments(this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList()));
 
         this.userProfileRepository.update(userProfile);
     }
@@ -92,6 +118,10 @@ public class ProfileService implements ProfileServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
+
+        if (userProfile == null){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
 
         List<Style> styles = this.catalogRepository.getStyleListById(userProfile.getStyles().stream().map(Style::getId).toList());
         userProfile.setStyles(styles);
