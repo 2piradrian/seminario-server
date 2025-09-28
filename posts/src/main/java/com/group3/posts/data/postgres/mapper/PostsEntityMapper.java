@@ -21,7 +21,7 @@ public class PostsEntityMapper {
         );
     }
 
-    public static PostModel toModel( Post forum) {
+    public static PostModel toModel(Post forum) {
         return new PostModel(
                 forum.getId(),
                 forum.getTitle(),

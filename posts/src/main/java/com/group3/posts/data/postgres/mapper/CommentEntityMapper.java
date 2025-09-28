@@ -5,7 +5,7 @@ import com.group3.posts.data.postgres.model.CommentModel;
 
 public class CommentEntityMapper {
 
-    public  static Comment toDomain(CommentModel commentModel) {
+    public static Comment toDomain(CommentModel commentModel) {
         return new Comment(
                 commentModel.getId(),
                 commentModel.getAuthorId(),
