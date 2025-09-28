@@ -3,6 +3,7 @@ package com.group3.posts.data.repository;
 import com.group3.entity.TokenClaims;
 import com.group3.entity.User;
 import com.group3.posts.data.auth_server.AuthServerRepositoryI;
+import com.group3.posts.domain.repository.AuthRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class AuthRepositoryI implements Authrepository{
+public class AuthRepository implements AuthRepositoryI{
 
     private final AuthServerRepositoryI authServerRepository;
 

@@ -6,7 +6,7 @@ import com.group3.entity.Post;
 
 import java.util.List;
 
-public interface PostRepository {
+public interface PostRepositoryI {
 
     Post getById(String postId);
 

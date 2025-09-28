@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostgresCommentRepository extends JpaRepository<CommentModel, String> {
+public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, String> {
 
     Page<CommentModel> findAllByPostId(String postId,Pageable pageable);
 }

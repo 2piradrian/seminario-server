@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface PostgresPostRepository extends JpaRepository<PostModel, String> {
+public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
     @Query(
             value = "SELECT p FROM PostModel p WHERE p.status <> :status ORDER BY p.createdAT DESC"
