@@ -7,7 +7,7 @@ public interface CommentRepositoryI {
 
     Comment getById(String commentId);
 
-    PageContent getByForumId(String postId, Integer page, Integer size);
+    PageContent getByPostId(String postId, Integer page, Integer size);
 
     Comment save(Comment comment);
 
