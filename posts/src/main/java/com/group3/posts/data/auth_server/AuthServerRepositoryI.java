@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Optional;
 
-@FeignClient(name = "auth-server")
-@LoadBalancerClient(name = "auth-server", configuration = LoadBalancerConfiguration.class)
-public interface AuthServerRepository {
+@FeignClient(name = "users-server", path = "/users-server")
+@LoadBalancerClient(name = "users-server", configuration = LoadBalancerConfiguration.class)
+public interface AuthServerRepositoryI {
 
-    @GetMapping("/auth-server/api/users/auth")
+    @GetMapping("/api/auth")
     Optional<TokenClaims> auth (@RequestHeader("Authorization") String token);
 
-    @GetMapping("/auth-server/api/users/get-by-id/{userId]")
+    @GetMapping("/api/users/get-by-id/{userId]")
     Optional<User> getById(@PathVariable String userId);
 
 }
