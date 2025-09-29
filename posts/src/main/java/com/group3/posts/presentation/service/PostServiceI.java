@@ -4,7 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.repository.AuthRepository;
-import com.group3.posts.data.repository.PostRepositoryI;
+import com.group3.posts.data.repository.PostRepository;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -23,7 +23,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class PostServiceI implements PostService {
 
-    private final PostRepositoryI postRepository;
+    private final PostRepository postRepository;
     private final AuthRepository authRepository;
 
     @Override
@@ -43,7 +43,7 @@ public class PostServiceI implements PostService {
     }
 
     @Override
-    public GetPostPageRes getPost(GetPostPageReq dto) {
+    public GetPostPageRes getPosts(GetPostPageReq dto) {
         PageContent<Post> posts =
                 this.postRepository.getAllPosts(dto.getPage(), dto.getSize(), dto.getCategory());
 

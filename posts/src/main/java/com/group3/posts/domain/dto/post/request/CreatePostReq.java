@@ -22,7 +22,7 @@ public class CreatePostReq {
         this.category = category;
     }
 
-    public static CreatePostReq create(String token, String title, String content, Category category) {
+    public static CreatePostReq create(String token, String title, String content, String category) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);

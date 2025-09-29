@@ -12,8 +12,6 @@ public class GetPostByIdRes {
 
     private final String authorId;
 
-    private final String authorUserName;
-
     private final String postId;
 
     private  final String title;
