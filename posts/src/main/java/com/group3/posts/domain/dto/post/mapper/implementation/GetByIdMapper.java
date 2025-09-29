@@ -16,7 +16,6 @@ public class GetByIdMapper {
     public GetPostByIdRes toResponse(Post post, User author) {
         return new GetPostByIdRes(
                 author.getId(),
-                author.getUsername(),
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),

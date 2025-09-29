@@ -7,7 +7,7 @@ import com.group3.entity.Status;
 import com.group3.posts.data.postgres.mapper.PostsEntityMapper;
 import com.group3.posts.data.postgres.model.PostModel;
 import com.group3.posts.data.postgres.repository.PostgresPostRepositoryI;
-import com.group3.posts.domain.repository.PostRepository;
+import com.group3.posts.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
-public class PostRepositoryI implements PostRepository {
+public class PostRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI postRepository;
 

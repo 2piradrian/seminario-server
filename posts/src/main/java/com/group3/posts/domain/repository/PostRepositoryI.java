@@ -6,11 +6,11 @@ import com.group3.entity.Post;
 
 import java.util.List;
 
-public interface PostRepository {
+public interface PostRepositoryI {
 
     Post getById(String postId);
 
-    PageContent<Post> getAllPosts(Integer size, Category category);
+    PageContent<Post> getAllPosts(Integer page, Integer size, Category category);
 
     List<Post >getMonthlyPosts (Integer month, Integer year);
 
