@@ -15,14 +15,17 @@ public class CreatePostReq {
 
     private final Category category;
 
-    private CreatePostReq(String token, String title, String content, Category category) {
+    private final String base64Image;
+
+    private CreatePostReq(String token, String title, String content, Category category, String base64Image) {
         this.token = token;
         this.title = title;
         this.content = content;
         this.category = category;
+        this.base64Image = base64Image;
     }
 
-    public static CreatePostReq create(String token, String title, String content, String category) {
+    public static CreatePostReq create(String token, String title, String content, String category, String base64Image) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -64,6 +67,6 @@ public class CreatePostReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreatePostReq(token, title, content, categoryEnum);
+        return new CreatePostReq(token, title, content, categoryEnum, base64Image);
     }
 }
