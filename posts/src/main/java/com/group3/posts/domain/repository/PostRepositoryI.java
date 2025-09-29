@@ -12,9 +12,8 @@ public interface PostRepositoryI {
 
     PageContent<Post> getAllPosts(Integer page, Integer size, Category category);
 
-    List<Post >getMonthlyPosts (Integer month, Integer year);
-
     Post save(Post post);
 
     Post update(Post post);
+
 }

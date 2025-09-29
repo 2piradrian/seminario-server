@@ -43,7 +43,8 @@ public class PostServiceI implements PostService {
 
         this.postRepository.update(post);
 
-        return PostMapper.getById().toResponse(post, author);
+        // TODO: Search page
+        return PostMapper.getById().toResponse(post, author, new Page());
     }
 
     @Override
@@ -52,21 +53,6 @@ public class PostServiceI implements PostService {
                 this.postRepository.getAllPosts(dto.getPage(), dto.getSize(), dto.getCategory());
 
         return PostMapper.getPage().toResponse(posts);
-    }
-
-    @Override
-    public GetMonthlyPostsRes getMonthlyPosts(GetMonthlyPostReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
-        if (!isAdmin) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        List<Post> posts =
-                this.postRepository.getMonthlyPosts(dto.getMonth(), dto.getYear());
-
-        return PostMapper.getMonthly().toResponse(posts);
     }
 
     @Override

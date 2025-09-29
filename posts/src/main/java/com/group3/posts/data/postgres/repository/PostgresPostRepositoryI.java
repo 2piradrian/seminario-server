@@ -32,13 +32,4 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             Pageable pageable
     );
 
-    @Query(
-            value = "SELECT p FROM PostModel p WHERE p.createdAt BETWEEN :starDate AND :endDate " +
-                    "AND p.status <> :status ORDER BY p.createdAt DESC"
-    )
-    List<PostModel> getMonthlyPosts(
-            @Param("starDate") LocalDateTime startDate,
-            @Param("endDate")LocalDateTime endDate,
-            @Param("status") Status status
-    );
 }

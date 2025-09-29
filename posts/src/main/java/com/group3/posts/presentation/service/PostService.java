@@ -9,8 +9,6 @@ public interface PostService {
 
     GetPostPageRes getPosts(GetPostPageReq dto);
 
-    GetMonthlyPostsRes getMonthlyPosts(GetMonthlyPostReq dto);
-
     CreatePostRes create(CreatePostReq dto);
 
     EditPostRes edit(EditPostReq dto);
