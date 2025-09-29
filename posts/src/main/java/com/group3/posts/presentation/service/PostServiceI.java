@@ -3,6 +3,7 @@ package com.group3.posts.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.posts.data.repository.ImagesRepository;
 import com.group3.posts.data.repository.PostRepository;
 import com.group3.posts.data.repository.UserRepository;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
@@ -24,7 +25,10 @@ import java.util.Set;
 public class PostServiceI implements PostService {
 
     private final PostRepository postRepository;
+
     private final UserRepository userRepository;
+
+    private final ImagesRepository imagesRepository;
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
