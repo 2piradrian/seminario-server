@@ -26,7 +26,7 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             value = "SELECT p from PostModel p WHERE p.category = :category" +
                     "AND p.status <> :status ORDER BY p.createdAT DESC"
     )
-    Page<PostModel> findAllByCategoty(
+    Page<PostModel> findAllByCategory(
             @Param("category") Category category,
             @Param("status") Status status,
             Pageable pageable
