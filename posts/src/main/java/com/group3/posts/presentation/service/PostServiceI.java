@@ -3,6 +3,7 @@ package com.group3.posts.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.ImagesRepository;
 import com.group3.posts.data.repository.PostRepository;
 import com.group3.posts.data.repository.UserRepository;
@@ -23,6 +24,8 @@ import java.util.Set;
 @Transactional
 @AllArgsConstructor
 public class PostServiceI implements PostService {
+
+    private final SecretKeyHelper secretKeyHelper;
 
     private final PostRepository postRepository;
 
@@ -62,6 +65,11 @@ public class PostServiceI implements PostService {
 
         Post post = new Post();
 
+        if (dto.getBase64Image() != null){
+            String profileId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
+            post.setImageId(profileId);
+        }
+        // TODO: Search page and verify if is member
         post.setAuthorId(user.getId());
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -90,7 +98,7 @@ public class PostServiceI implements PostService {
         if (!post.getAuthorId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
-
+        // TODO: Search page and verify if is member
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setCategory(dto.getCategory());
@@ -116,7 +124,8 @@ public class PostServiceI implements PostService {
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
                 upvoters.remove(userId);
-            } else {
+            }
+            else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
             }
@@ -124,7 +133,8 @@ public class PostServiceI implements PostService {
         if (Vote.DOWNVOTE == dto.getVoteType()) {
             if (downvoters.contains(userId)) {
                 downvoters.remove(userId);
-            } else {
+            }
+            else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
             }
