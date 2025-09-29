@@ -22,6 +22,8 @@ public class Post {
 
     private String authorId;
 
+    private String imageId;
+
     private Set<String> upvoters;
 
     private Set<String> downvoters;
