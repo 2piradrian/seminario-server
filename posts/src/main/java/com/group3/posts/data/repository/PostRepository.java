@@ -58,18 +58,6 @@ public class PostRepository implements PostRepositoryI {
     }
 
     @Override
-    public List<Post> getMonthlyPosts(Integer month, Integer year) {
-        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(year, month + 1, 1, 0, 0);
-
-        List<PostModel> postModels = this.postRepository.getMonthlyPosts(
-                startDate, endDate, Status.DELETED
-        );
-        return postModels.stream().map(PostsEntityMapper::toDomain).collect(Collectors.toList());
-
-    }
-
-    @Override
     public Post save(Post post) {
         PostModel postModel = PostsEntityMapper.toModel(post);
         PostModel saved = this.postRepository.save(postModel);

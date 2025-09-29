@@ -36,17 +36,6 @@ public class PostController {
         return ResponseEntity.ok(this.postService.getPosts(dto));
     }
 
-    @GetMapping("/get-monthly-posts")
-    public ResponseEntity<?> getMonthlyPosts(
-            @RequestHeader(value = "Authorization") String token,
-            @RequestParam(value = "month") Integer month,
-            @RequestParam(value = "year") Integer year
-    ) {
-        GetMonthlyPostReq dto = PostMapper.getMonthly().toRequest(token, month, year);
-
-        return ResponseEntity.ok(this.postService.getMonthlyPosts(dto));
-    }
-
     @PostMapping("/create")
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
