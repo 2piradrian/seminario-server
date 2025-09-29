@@ -4,6 +4,7 @@ import com.group3.profiles.config.beans.LoadBalancerConfiguration;
 import com.group3.profiles.data.images_server.responses.UploadImageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -15,5 +16,8 @@ public interface ImagesServerRepositoryI {
 
     @PostMapping("/api/images/upload")
     UploadImageRes upload(@RequestBody Map<String, Object> payload);
+
+    @DeleteMapping("/api/images/delete")
+    void delete(@RequestBody Map<String, Object> payload);
 
 }
