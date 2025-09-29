@@ -2,6 +2,8 @@ package com.group3.profiles.domain.repository;
 
 public interface ImagesRepositoryI {
 
-    String uploadImage(String base64Image, String secret);
+    String upload(String base64Image, String secret);
+
+    void delete(String imageId, String secret);
 
 }
