@@ -9,7 +9,9 @@ public class GetPostByIdReq {
 
     private  final String postId;
 
-    private GetPostByIdReq(String postId) {this.postId = postId;}
+    private GetPostByIdReq(String postId) {
+        this.postId = postId;
+    }
 
     public static GetPostByIdReq create(String postId) {
 
@@ -19,4 +21,5 @@ public class GetPostByIdReq {
 
         return new GetPostByIdReq(postId);
     }
+
 }

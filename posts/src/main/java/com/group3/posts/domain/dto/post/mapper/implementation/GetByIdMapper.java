@@ -1,5 +1,6 @@
 package com.group3.posts.domain.dto.post.mapper.implementation;
 
+import com.group3.entity.Page;
 import com.group3.entity.Post;
 import com.group3.entity.User;
 import com.group3.posts.domain.dto.post.request.GetPostByIdReq;
@@ -9,21 +10,23 @@ public class GetByIdMapper {
 
     public GetPostByIdReq toRequest(String postId) {
         return GetPostByIdReq.create(
-                postId
+            postId
         );
     }
 
-    public GetPostByIdRes toResponse(Post post, User author) {
+    public GetPostByIdRes toResponse(Post post, User author, Page page) {
         return new GetPostByIdRes(
-                author.getId(),
-                post.getId(),
-                post.getTitle(),
-                post.getContent(),
-                post.getViews(),
-                post.getUpvoters().size(),
-                post.getDownvoters().size(),
-                post.getCategory(),
-                post.getCreatedAt()
+            author.getId(),
+            post.getId(),
+            page.getId(),
+            post.getImageId(),
+            post.getTitle(),
+            post.getContent(),
+            post.getViews(),
+            post.getUpvoters().size(),
+            post.getDownvoters().size(),
+            post.getCategory(),
+            post.getCreatedAt()
         );
     }
 }

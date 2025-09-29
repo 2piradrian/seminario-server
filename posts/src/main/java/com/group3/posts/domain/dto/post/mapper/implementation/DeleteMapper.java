@@ -8,8 +8,8 @@ public class DeleteMapper {
 
     public DeletePostReq toRequest(String token, Map<String, Object> payload) {
         return DeletePostReq.create(
-                token,
-                (String) payload.get("postId")
+            token,
+            (String) payload.get("postId")
         );
     }
 }

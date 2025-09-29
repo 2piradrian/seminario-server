@@ -18,15 +18,18 @@ public class EditPostReq {
 
     private final Category category;
 
-    public EditPostReq(String token, String postId, String title, String content, Category category) {
+    private final String base64Image;
+
+    public EditPostReq(String token, String postId, String title, String content, Category category, String base64Image) {
         this.token = token;
         this.title = title;
         this.content = content;
         this.category = category;
         this.postId = postId;
+        this.base64Image = base64Image;
     }
 
-    public static EditPostReq create(String token, String postId, String title, String content, String category) {
+    public static EditPostReq create(String token, String postId, String title, String content, String category, String base64Image) {
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
@@ -62,7 +65,7 @@ public class EditPostReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new EditPostReq(token, postId, title, content, categoryEnum);
+        return new EditPostReq(token, postId, title, content, categoryEnum, base64Image);
     }
 
 }

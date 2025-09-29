@@ -30,6 +30,10 @@ public class PostModel {
 
     private String authorId;
 
+    private String pageId;
+
+    private String imageId;
+
     private Set<String> upvoters;
 
     private Set<String> downvoters;
@@ -43,4 +47,5 @@ public class PostModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
 }

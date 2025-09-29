@@ -13,4 +13,5 @@ public class GetPostPageRes {
     List<Post> posts;
 
     Integer nextPage;
+
 }

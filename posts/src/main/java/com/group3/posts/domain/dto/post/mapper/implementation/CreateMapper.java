@@ -10,16 +10,18 @@ public class CreateMapper {
 
     public CreatePostReq toRequest(String token, Map<String, Object> payload) {
         return CreatePostReq.create(
-                token,
-                (String) payload.get("title"),
-                (String) payload.get("content"),
-                (String) payload.get("category")
+            token,
+            (String) payload.get("title"),
+            (String) payload.get("content"),
+            (String) payload.get("pageId"),
+            (String) payload.get("category"),
+            (String) payload.get("base64Image")
         );
     }
 
     public CreatePostRes toResponse(Post post) {
         return new CreatePostRes(
-                post.getId()
+            post.getId()
         );
     }
 }
