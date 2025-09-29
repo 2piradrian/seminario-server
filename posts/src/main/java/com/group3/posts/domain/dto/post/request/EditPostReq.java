@@ -26,7 +26,7 @@ public class EditPostReq {
         this.postId = postId;
     }
 
-    public static EditPostReq create(String token, String postId, String title, String content, Category category) {
+    public static EditPostReq create(String token, String postId, String title, String content, String category) {
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
