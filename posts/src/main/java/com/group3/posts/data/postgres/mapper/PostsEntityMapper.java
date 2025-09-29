@@ -21,19 +21,19 @@ public class PostsEntityMapper {
         );
     }
 
-    public static PostModel toModel(Post forum) {
+    public static PostModel toModel(Post post) {
         return new PostModel(
-                forum.getId(),
-                forum.getTitle(),
-                forum .getContent(),
-                forum.getViews(),
-                forum.getAuthorId(),
-                forum.getUpvoters(),
-                forum.getDownvoters(),
-                forum.getCategory(),
-                forum.getCreatedAt(),
-                forum.getUpdatedAt(),
-                forum.getStatus()
+                post.getId(),
+                post.getTitle(),
+                post .getContent(),
+                post.getViews(),
+                post.getAuthorId(),
+                post.getUpvoters(),
+                post.getDownvoters(),
+                post.getCategory(),
+                post.getCreatedAt(),
+                post.getUpdatedAt(),
+                post.getStatus()
         );
     }
 }
