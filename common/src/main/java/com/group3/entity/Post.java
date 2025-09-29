@@ -22,6 +22,8 @@ public class Post {
 
     private String authorId;
 
+    private String pageId;
+
     private String imageId;
 
     private Set<String> upvoters;
