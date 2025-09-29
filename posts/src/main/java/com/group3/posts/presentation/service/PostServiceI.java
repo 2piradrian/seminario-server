@@ -3,8 +3,8 @@ package com.group3.posts.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.posts.data.repository.AuthRepository;
 import com.group3.posts.data.repository.PostRepository;
+import com.group3.posts.data.repository.UserRepository;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -24,14 +24,14 @@ import java.util.Set;
 public class PostServiceI implements PostService {
 
     private final PostRepository postRepository;
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        User author = this.authRepository.getById(post.getAuthorId());
+        User author = this.userRepository.getById(post.getAuthorId());
         if(author == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         Integer views = post.getViews();
@@ -52,11 +52,11 @@ public class PostServiceI implements PostService {
 
     @Override
     public GetMonthlyPostsRes getMonthlyPosts(GetMonthlyPostReq dto) {
-        TokenClaims claims = this.authRepository.auth(dto.getToken());
+        User user = this.userRepository.auth(dto.getToken());
 
-        if (claims == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        boolean isAdmin = claims.getRoles().contains(Role.ADMIN);
+        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
         if (!isAdmin) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         List<Post> posts =
@@ -67,12 +67,12 @@ public class PostServiceI implements PostService {
 
     @Override
     public CreatePostRes create(CreatePostReq dto) {
-        TokenClaims claims = this.authRepository.auth(dto.getToken());
-        if (claims == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = new Post();
 
-        post.setAuthorId(claims.getId());
+        post.setAuthorId(user.getId());
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setCategory(dto.getCategory());
@@ -91,13 +91,13 @@ public class PostServiceI implements PostService {
 
     @Override
     public EditPostRes edit(EditPostReq dto) {
-        TokenClaims claims = this.authRepository.auth(dto.getToken());
-        if (claims == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (!post.getAuthorId().equals(claims.getId())) {
+        if (!post.getAuthorId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -112,31 +112,31 @@ public class PostServiceI implements PostService {
 
     @Override
     public void toggleVotes(TogglePostVotesReq dto) {
-        TokenClaims claims = this.authRepository.auth(dto.getToken());
-        if (claims == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        String user = claims.getId();
+        String userId = user.getId();
 
         Set<String> upvoters = post.getUpvoters();
         Set<String> downvoters = post.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
-            if (upvoters.contains(user)) {
-                upvoters.remove(user);
+            if (upvoters.contains(userId)) {
+                upvoters.remove(userId);
             } else {
-                upvoters.add(user);
-                downvoters.remove(user);
+                upvoters.add(userId);
+                downvoters.remove(userId);
             }
         }
         if (Vote.DOWNVOTE == dto.getVoteType()) {
-            if (downvoters.contains(user)) {
-                downvoters.remove(user);
+            if (downvoters.contains(userId)) {
+                downvoters.remove(userId);
             } else {
-                downvoters.add(user);
-                upvoters.remove(user);
+                downvoters.add(userId);
+                upvoters.remove(userId);
             }
         }
 
@@ -148,15 +148,15 @@ public class PostServiceI implements PostService {
 
     @Override
     public void delete(DeletePostReq dto) {
-        TokenClaims claims = this.authRepository.auth(dto.getToken());
-        if (claims == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        boolean isAuthor = post.getAuthorId().equals(claims.getId());
-        boolean isAdmin = claims.getRoles().contains(Role.ADMIN);
-        boolean isModerator = claims.getRoles().contains(Role.MODERATOR);
+        boolean isAuthor = post.getAuthorId().equals(user.getId());
+        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
+        boolean isModerator = user.getRoles().contains(Role.MODERATOR);
 
         if (!isAuthor && !isAdmin && !isModerator) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);

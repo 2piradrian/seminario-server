@@ -1,24 +1,22 @@
-package com.group3.posts.data.auth_server;
+package com.group3.posts.data.users_server.repository;
 
-import com.group3.entity.TokenClaims;
-import com.group3.entity.User;
 import com.group3.posts.config.beans.LoadBalancerConfiguration;
+import com.group3.posts.data.users_server.responses.AuthUserRes;
+import com.group3.posts.data.users_server.responses.GetUserByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.Optional;
-
 @FeignClient(name = "users-server", path = "/users-server")
 @LoadBalancerClient(name = "users-server", configuration = LoadBalancerConfiguration.class)
-public interface AuthServerRepositoryI {
+public interface UsersServerRepositoryI {
 
-    @GetMapping("/api/auth")
-    Optional<TokenClaims> auth (@RequestHeader("Authorization") String token);
+    @GetMapping("/api/auth/")
+    AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
 
-    @GetMapping("/api/users/get-by-id/{userId]")
-    Optional<User> getById(@PathVariable String userId);
+    @GetMapping("/api/users/get-by-id/{userId}")
+    GetUserByIdRes getById(@PathVariable(value = "userId") String userId);
 
 }
