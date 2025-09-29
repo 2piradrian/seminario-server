@@ -7,25 +7,29 @@ import lombok.Getter;
 
 @Getter
 public class CreatePostReq {
+
     private final String token;
 
     private final String title;
 
     private final String content;
 
+    private final String pageId;
+
     private final Category category;
 
     private final String base64Image;
 
-    private CreatePostReq(String token, String title, String content, Category category, String base64Image) {
+    private CreatePostReq(String token, String title, String content, String pageId, Category category, String base64Image) {
         this.token = token;
         this.title = title;
         this.content = content;
+        this.pageId = pageId;
         this.category = category;
         this.base64Image = base64Image;
     }
 
-    public static CreatePostReq create(String token, String title, String content, String category, String base64Image) {
+    public static CreatePostReq create(String token, String title, String content, String pageId, String category, String base64Image) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -67,6 +71,6 @@ public class CreatePostReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreatePostReq(token, title, content, categoryEnum, base64Image);
+        return new CreatePostReq(token, title, content, pageId, categoryEnum, base64Image);
     }
 }

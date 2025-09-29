@@ -9,16 +9,16 @@ public class GetPageMapper {
 
     public GetPostPageReq toRequest(String category, Integer size, Integer page) {
         return GetPostPageReq.create(
-                category,
-                size,
-                page
+            category,
+            size,
+            page
         );
     }
 
     public GetPostPageRes toResponse(PageContent<Post> posts) {
         return new GetPostPageRes(
-                posts.getContent(),
-                posts.getNextPage()
+            posts.getContent(),
+            posts.getNextPage()
         );
     }
 }
