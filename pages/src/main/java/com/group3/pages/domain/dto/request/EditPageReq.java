@@ -13,6 +13,8 @@ public class EditPageReq {
     
     private final String token;
 
+    private final String pageId;
+
     private final String name;
 
     private final String portraitImage;
@@ -31,6 +33,7 @@ public class EditPageReq {
 
     private EditPageReq(
         String token,
+        String pageId,
         String name,
         String portraitImage,
         String profileImage,
@@ -41,6 +44,7 @@ public class EditPageReq {
         PageType pageType
     ) {
         this.token = token;
+        this.pageId = pageId;
         this.name = name;
         this.portraitImage = portraitImage;
         this.profileImage = profileImage;
@@ -53,6 +57,7 @@ public class EditPageReq {
 
     public static EditPageReq create(
         String token,
+        String pageId,
         String name,
         String portraitImage,
         String profileImage,
@@ -78,6 +83,14 @@ public class EditPageReq {
         RegexValidators nameValidator = RegexValidators.NAME;
         if (!name.matches(nameValidator.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if (pageId == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (pageId.isEmpty()){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
         if (shortDescription == null){
@@ -123,7 +136,8 @@ public class EditPageReq {
         }
 
         return new EditPageReq(
-            token, 
+            token,
+            pageId,
             name,
             portraitImage,
             profileImage,

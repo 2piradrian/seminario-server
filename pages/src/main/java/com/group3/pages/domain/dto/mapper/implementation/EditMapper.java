@@ -16,6 +16,7 @@ public class EditMapper {
         return EditPageReq.create(
             token,
             (String) payload.get("name"),
+            (String) payload.get("pageId"),
             (String) payload.get("portraitImage"),
             (String) payload.get("profileImage"),
             (String) payload.get("shortDescription"),
