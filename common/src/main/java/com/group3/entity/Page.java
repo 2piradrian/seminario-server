@@ -15,12 +15,20 @@ public class Page {
 
     private String name;
 
-    private String imageId;
+    private String portraitImage;
+
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
 
     private String ownerId;
 
     private List<String> members;
 
     private Status status;
+
+    private PageType pageType;
 
 }
