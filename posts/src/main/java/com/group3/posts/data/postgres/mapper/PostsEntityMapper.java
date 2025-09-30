@@ -1,5 +1,6 @@
 package com.group3.posts.data.postgres.mapper;
 
+import com.group3.entity.Page;
 import com.group3.entity.Post;
 import com.group3.entity.UserProfile;
 import com.group3.posts.data.postgres.model.PostModel;
@@ -13,7 +14,7 @@ public class PostsEntityMapper {
             postModel.getContent(),
             postModel.getViews(),
             UserProfile.builder().id(postModel.getAuthorId()).build(),
-            postModel.getPageId(),
+            Page.builder().id(postModel.getPageId()).build(),
             postModel.getImageId(),
             postModel.getUpvoters(),
             postModel.getDownvoters(),
@@ -32,7 +33,7 @@ public class PostsEntityMapper {
             post.getContent(),
             post.getViews(),
             post.getAuthor().getId(),
-            post.getPageId(),
+            post.getPage().getId(),
             post.getImageId(),
             post.getUpvoters(),
             post.getDownvoters(),
