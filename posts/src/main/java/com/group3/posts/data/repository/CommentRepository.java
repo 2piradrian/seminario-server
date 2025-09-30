@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CommentRepository implements CommentRepositoryI {
 
-    private final PostgresCommentRepositoryI commentRepository;
+    private final PostgresCommentRepositoryI repository;
 
     @Override
     public Comment getById(String commentId) {
-        CommentModel commentModel = this.commentRepository.findById(commentId).orElse(null);
+        CommentModel commentModel = this.repository.findById(commentId).orElse(null);
 
         if (commentModel == null) {
             return null;
@@ -40,7 +40,7 @@ public class CommentRepository implements CommentRepositoryI {
 
     @Override
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
-        Page<CommentModel> commentModels = this.commentRepository.findAllByPostId(postId, PageRequest.of(page, size));
+        Page<CommentModel> commentModels = this.repository.findAllByPostId(postId, PageRequest.of(page, size));
 
         return new PageContent<Comment>(
             commentModels.getContent().stream().map(CommentEntityMapper::toDomain).collect(Collectors.toList()),
@@ -52,7 +52,7 @@ public class CommentRepository implements CommentRepositoryI {
     @Override
     public Comment save(Comment comment) {
         CommentModel commentModel = CommentEntityMapper.toModel(comment);
-        CommentModel saved = this.commentRepository.save(commentModel);
+        CommentModel saved = this.repository.save(commentModel);
 
         return CommentEntityMapper.toDomain(saved);
     }
@@ -60,7 +60,7 @@ public class CommentRepository implements CommentRepositoryI {
     @Override
     public Comment update(Comment comment) {
         CommentModel commentModel = CommentEntityMapper.toModel(comment);
-        CommentModel updated = this.commentRepository.save(commentModel);
+        CommentModel updated = this.repository.save(commentModel);
 
         return CommentEntityMapper.toDomain(updated);
     }

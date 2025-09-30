@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostRepository implements PostRepositoryI {
 
-    private final PostgresPostRepositoryI postRepository;
+    private final PostgresPostRepositoryI repository;
 
     @Override
     public Post getById(String postId) {
-        PostModel postModel = this.postRepository.findById(postId).orElse(null);
+        PostModel postModel = this.repository.findById(postId).orElse(null);
 
         if (postModel == null) return null;
 
@@ -37,7 +37,7 @@ public class PostRepository implements PostRepositoryI {
 
     @Override
     public PageContent<Post> getAllPosts(Integer page, Integer size) {
-        Page<PostModel> postModels  = this.postRepository.findAll(Status.DELETED, PageRequest.of(page, size));
+        Page<PostModel> postModels  = this.repository.findAll(Status.DELETED, PageRequest.of(page, size));
 
         return new PageContent<Post>(
                 postModels.getContent().stream().map(PostsEntityMapper::toDomain).collect(Collectors.toList()),
@@ -50,7 +50,7 @@ public class PostRepository implements PostRepositoryI {
     @Override
     public Post save(Post post) {
         PostModel postModel = PostsEntityMapper.toModel(post);
-        PostModel saved = this.postRepository.save(postModel);
+        PostModel saved = this.repository.save(postModel);
 
         return PostsEntityMapper.toDomain(saved);
     }
@@ -58,7 +58,7 @@ public class PostRepository implements PostRepositoryI {
     @Override
     public Post update(Post post) {
         PostModel postModel = PostsEntityMapper.toModel(post);
-        PostModel updated = this.postRepository.save(postModel);
+        PostModel updated = this.repository.save(postModel);
 
         return PostsEntityMapper.toDomain(updated);
     }
