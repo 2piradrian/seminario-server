@@ -15,7 +15,7 @@ public class GetPageByIdReq {
 
     public static GetPageByIdReq create(String pageId){
 
-        if (pageId == null){
+        if (pageId == null || pageId.isEmpty()){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
