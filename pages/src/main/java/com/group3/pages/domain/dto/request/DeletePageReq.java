@@ -5,7 +5,6 @@ import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-
 public class DeletePageReq {
     
     private final String token;

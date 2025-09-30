@@ -4,9 +4,11 @@ import com.group3.entity.PageType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.pages.domain.validator.RegexValidators;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class EditPageReq {
     
     private final String token;
