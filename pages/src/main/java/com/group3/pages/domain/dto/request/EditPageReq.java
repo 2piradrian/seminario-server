@@ -1,5 +1,6 @@
 package com.group3.pages.domain.dto.request;
 
+import com.group3.entity.PageType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.pages.domain.validator.RegexValidators;
@@ -24,6 +25,8 @@ public class EditPageReq {
 
     private final List<String> members;
 
+    private final PageType pageType;
+
     private EditPageReq(
         String token,
         String name,
@@ -32,7 +35,8 @@ public class EditPageReq {
         String shortDescription,
         String longDescription,
         String ownerId,
-        List<String> members
+        List<String> members,
+        PageType pageType
     ) {
         this.token = token;
         this.name = name;
@@ -42,6 +46,7 @@ public class EditPageReq {
         this.longDescription = longDescription;
         this.ownerId = ownerId;
         this.members = members;
+        this.pageType = pageType;
     }
 
     public static EditPageReq create(
@@ -52,7 +57,8 @@ public class EditPageReq {
         String shortDescription,
         String longDescription,
         String ownerId,
-        List<String> members
+        List<String> members,
+        PageType pageType
     ) {
 
         if (token == null) {
@@ -110,6 +116,10 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
+        if (pageType == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
         return new EditPageReq(
             token, 
             name,
@@ -118,7 +128,8 @@ public class EditPageReq {
             shortDescription,
             longDescription,
             ownerId, 
-            members
+            members,
+            pageType
         );
     }
     
