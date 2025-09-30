@@ -21,4 +21,6 @@ public class Page {
 
     private List<String> members;
 
+    private Status status;
+
 }
