@@ -22,6 +22,6 @@ public interface PostgresPagesRepositoryI extends JpaRepository<PageModel, Strin
     FROM PageModel p
     WHERE p.ownerId = :userId OR :userId MEMBER OF p.members
     """)
-    List<PageModel> findByOwnerOrMember(@Param("userId") String userId);
+    List<PageModel> findByUserId(@Param("userId") String userId);
 
 }

@@ -10,7 +10,7 @@ public interface PageRepositoryI {
 
     List<Page> findByName(String name);
 
-    List<Page> findByParticipantUserId(String userId);
+    List<Page> findByUserId(String userId);
 
     Page save(Page page);
 

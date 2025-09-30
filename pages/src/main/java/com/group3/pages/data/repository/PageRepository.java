@@ -23,8 +23,8 @@ public class PageRepository implements PageRepositoryI {
     }
 
     @Override
-    public List<Page> findByParticipantUserId(String userId) {
-        List<PageModel> pageModels = this.repository.findByOwnerOrMember(userId);
+    public List<Page> findByUserId(String userId) {
+        List<PageModel> pageModels = this.repository.findByUserId(userId);
         return pageModels.isEmpty() ? PageEntityMapper.toDomain(pageModels) : List.of();
     }
 
