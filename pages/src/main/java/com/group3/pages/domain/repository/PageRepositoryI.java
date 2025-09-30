@@ -7,10 +7,10 @@ import java.util.List;
 public interface PageRepositoryI {
     
     Page getById(String pageId);
-    
-    Page getByParticipantId(String memberId);
 
     List<Page> findByName(String name);
+
+    List<Page> findByParticipantUserId(String userId);
 
     Page save(Page page);
 
