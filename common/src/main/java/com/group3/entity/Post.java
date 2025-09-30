@@ -20,7 +20,7 @@ public class Post {
 
     private Integer views;
 
-    private String authorId;
+    private UserProfile author;
 
     private String pageId;
 
