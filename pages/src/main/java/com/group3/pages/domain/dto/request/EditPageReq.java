@@ -131,6 +131,10 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
+        if(!members.contains(ownerId)){
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
         if (pageType == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
