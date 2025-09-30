@@ -15,7 +15,7 @@ public class GetCategoryListByIdMapper {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public GetCategoryListByIdReq toRequest(Map<String, Object> payload){
-        return GetCategoryByIdReq.create(
+        return GetCategoryListByIdReq.create(
                 objectMapper.convertValue(payload.get("ids"), new TypeReference<List<String>>() {})
         );
     }

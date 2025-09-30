@@ -15,7 +15,7 @@ public class GetPageTypeListByIdMapper {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public GetPageTypeListByIdReq toRequest(Map<String, Object> payload){
-        return GetPageTypeByIdReq.create(
+        return GetPageTypeListByIdReq.create(
                 objectMapper.convertValue(payload.get("ids"), new TypeReference<List<String>>() {})
         );
     }
