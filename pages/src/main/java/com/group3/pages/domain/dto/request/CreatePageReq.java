@@ -11,15 +11,12 @@ public class CreatePageReq {
 
     private final String name;
 
-    private final String base64Image;
-
-    private CreatePageReq(String token, String name, String base64Image) {
+    private CreatePageReq(String token, String name) {
         this.token = token;
         this.name = name;
-        this.base64Image = base64Image;
     }
 
-    public static CreatePageReq create(String token, String name, String base64Image) {
+    public static CreatePageReq create(String token, String name) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -34,7 +31,7 @@ public class CreatePageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreatePageReq(token, name, base64Image);
+        return new CreatePageReq(token, name);
     }
     
 }
