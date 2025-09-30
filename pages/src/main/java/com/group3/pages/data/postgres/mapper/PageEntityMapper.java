@@ -15,7 +15,8 @@ public class PageEntityMapper {
             pageModel.getName(),
             pageModel.getImageId(),
             pageModel.getOwnerId(),
-            pageModel.getMembers()
+            pageModel.getMembers(),
+            pageModel.getStatus()
         );
     }
 
@@ -25,7 +26,8 @@ public class PageEntityMapper {
             page.getName(),
             page.getImageId(),
             page.getOwnerId(),
-            page.getMembers()
+            page.getMembers(),
+            page.getStatus()
         );
     }
 

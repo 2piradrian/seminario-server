@@ -1,5 +1,6 @@
 package com.group3.pages.data.postgres.model;
 
+import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,5 +26,8 @@ public class PageModel {
     private String ownerId;
 
     private List<String> members;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
