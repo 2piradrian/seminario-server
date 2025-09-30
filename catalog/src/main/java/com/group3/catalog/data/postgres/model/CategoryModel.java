@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "category")
+@Table(name = "categories")
 public class CategoryModel {
 
     @Id
@@ -17,4 +17,5 @@ public class CategoryModel {
     private String id;
 
     private String name;
+
 }
