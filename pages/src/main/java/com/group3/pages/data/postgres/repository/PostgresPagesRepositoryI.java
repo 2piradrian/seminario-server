@@ -10,8 +10,6 @@ import java.util.Optional;
 
 public interface PostgresPagesRepositoryI extends JpaRepository<PageModel, String> {
     
-    Optional<PageModel> findByParticipantId(String participantId);
-    
     @Query("""
         SELECT p
         FROM PageModel p
