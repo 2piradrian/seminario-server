@@ -1,0 +1,13 @@
+services:
+    pages-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: 'pages-db'
+            POSTGRES_USER: 'develop'
+            POSTGRES_PASSWORD: 'develop'
+            POSTGRES_HOST_AUTH_METHOD: md5
+        volumes:
+            - ./pages-db:/var/lib/postgresql/data
+        ports:
+            - 5436:5432
