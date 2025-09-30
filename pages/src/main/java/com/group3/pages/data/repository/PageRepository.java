@@ -23,8 +23,8 @@ public class PageRepository implements PageRepositoryI {
     }
 
     @Override
-    public Page getByOwnerId(String ownerId) {
-        PageModel pageModel = this.repository.findByOwnerId(ownerId).orElse(null);
+    public Page getByParticipantId(String memberId) {
+        PageModel pageModel = this.repository.findByOwnerId(memberId).orElse(null);
         return pageModel != null ? PageEntityMapper.toDomain(pageModel) : null;
     }
 

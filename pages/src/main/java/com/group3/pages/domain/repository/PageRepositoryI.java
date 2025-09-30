@@ -8,7 +8,7 @@ public interface PageRepositoryI {
     
     Page getById(String pageId);
     
-    Page getByParticipantId(String ownerId);
+    Page getByParticipantId(String memberId);
 
     List<Page> findByName(String name);
 
