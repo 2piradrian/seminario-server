@@ -14,20 +14,20 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/comment")
+@RequestMapping("/api/comments")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentService service;
 
     @GetMapping("/get-comments")
     public ResponseEntity<?> getByForumId(
-            @RequestParam(value = "forumId") String forumId,
+            @RequestParam(value = "postId") String postId,
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "page") Integer page
     ) {
-        GetCommentPageReq dto = CommentMapper.getPage().toRequest(forumId, size, page);
+        GetCommentPageReq dto = CommentMapper.getPage().toRequest(postId, size, page);
 
-        return ResponseEntity.ok(this.commentService.getComments(dto));
+        return ResponseEntity.ok(this.service.getComments(dto));
     }
 
     @PostMapping("/create")
@@ -37,7 +37,7 @@ public class CommentController {
     ) {
         CreateCommentReq dto = CommentMapper.create().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.commentService.create(dto));
+        return ResponseEntity.ok(this.service.create(dto));
     }
 
     @PutMapping("/toggle-votes")
@@ -46,7 +46,7 @@ public class CommentController {
             @RequestBody Map<String, Object> payload
     ) {
         ToggleCommentVotesReq dto = CommentMapper.toggleVotes().toRequest(token, payload);
-        this.commentService.toggleVotes(dto);
+        this.service.toggleVotes(dto);
 
         return ResponseEntity.ok().build();
     }
@@ -57,7 +57,7 @@ public class CommentController {
             @RequestBody Map<String, Object> payload
     ) {
         DeleteCommentReq dto = CommentMapper.delete().toRequest(token, payload);
-        this.commentService.delete(dto);
+        this.service.delete(dto);
 
         return ResponseEntity.ok().build();
     }
