@@ -23,9 +23,9 @@ INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Electrónica');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Folklore');
 
 -- Inserts para Tipos de página
-INSERT INTO pageTypes (id, name) VALUES (gen_random_uuid(), 'Banda')
-INSERT INTO pageTypes (id, name) VALUES (gen_random_uuid(), 'General')
-INSERT INTO pageTypes (id, name) VALUES (gen_random_uuid(), 'Marca')
+INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Banda');
+INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'General');
+INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Marca');
 
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Ofrezco servicio');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Busco músicos');
