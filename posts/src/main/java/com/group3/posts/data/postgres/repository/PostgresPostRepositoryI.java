@@ -1,6 +1,5 @@
 package com.group3.posts.data.postgres.repository;
 
-import com.group3.entity.Category;
 import com.group3.entity.Status;
 import com.group3.posts.data.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
@@ -8,9 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 

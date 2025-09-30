@@ -19,4 +19,5 @@ public interface ImagesServerRepositoryI {
 
     @DeleteMapping("/api/images/delete")
     void delete(@RequestBody Map<String, Object> payload);
+
 }

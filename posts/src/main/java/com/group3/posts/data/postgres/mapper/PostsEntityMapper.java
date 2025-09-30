@@ -4,6 +4,7 @@ import com.group3.entity.Post;
 import com.group3.posts.data.postgres.model.PostModel;
 
 public class PostsEntityMapper {
+
     public static Post toDomain(PostModel postModel) {
         return new Post(
             postModel.getId(),
@@ -40,4 +41,5 @@ public class PostsEntityMapper {
             post.getStatus()
         );
     }
+
 }
