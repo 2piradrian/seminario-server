@@ -9,34 +9,17 @@ import lombok.Getter;
 @Getter
 public class GetPostPageReq {
 
-    private final Category category;
 
     private final Integer page;
 
     private final Integer size;
 
-    public GetPostPageReq(Category category, Integer page, Integer size) {
-        this.category = category;
+    public GetPostPageReq(Integer page, Integer size) {
         this.page = page;
         this.size = size;
     }
 
-    public static GetPostPageReq create(String category, Integer page, Integer size) {
-
-        Category categoryEnum = null;
-        if (category != null ) {
-            boolean isValidCategory = false;
-            for (Category c : Category.values()) {
-                if (c.name().equals(category)) {
-                    isValidCategory = true;
-                    categoryEnum = c;
-                    break;
-                }
-            }
-            if (!isValidCategory) {
-                throw new ErrorHandler(ErrorType.INVALID_FIELDS);
-            }
-        }
+    public static GetPostPageReq create(Integer page, Integer size) {
 
         if (page == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -54,6 +37,7 @@ public class GetPostPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetPostPageReq(categoryEnum, page, size);
+        return new GetPostPageReq(page, size);
     }
+
 }

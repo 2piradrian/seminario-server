@@ -1,5 +1,6 @@
 package com.group3.posts.domain.dto.post.mapper.implementation;
 
+import com.group3.entity.Category;
 import com.group3.entity.Post;
 import com.group3.posts.domain.dto.post.request.EditPostReq;
 import com.group3.posts.domain.dto.post.response.EditPostRes;
@@ -14,7 +15,7 @@ public class EditMapper {
             (String) payload.get("postId"),
             (String) payload.get("title"),
             (String) payload.get("content"),
-            (String) payload.get("category"),
+            (Category) payload.get("category"),
             (String) payload.get("base64Image")
         );
     }

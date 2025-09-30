@@ -16,10 +16,6 @@ public class CommentMapper {
         return new DeleteMapper();
     }
 
-    public static EditMapper edit() {
-        return new EditMapper();
-    }
-
     public static ToggleVotesMapper toggleVotes() {
         return new ToggleVotesMapper();
     }

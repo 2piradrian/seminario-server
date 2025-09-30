@@ -2,7 +2,7 @@ package com.group3.posts.presentation.controller;
 
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
-import com.group3.posts.presentation.service.PostService;
+import com.group3.posts.presentation.service.PostServiceI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.Map;
 @RequestMapping("api/post")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceI postServiceI;
 
     @GetMapping("get-by-id/{postId}")
     public ResponseEntity<?> getById(
@@ -22,18 +22,16 @@ public class PostController {
     ) {
         GetPostByIdReq dto = PostMapper.getById().toRequest(postId);
 
-        return ResponseEntity.ok(this.postService.getById(dto));
+        return ResponseEntity.ok(this.postServiceI.getById(dto));
     }
 
-    @GetMapping("/get-posts")
+    @PostMapping("/get-posts")
     public ResponseEntity<?> getPosts(
-            @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "size") Integer size,
-            @RequestParam(value = "page") Integer page
+            @RequestBody Map<String, Object> payload
     ) {
-        GetPostPageReq dto = PostMapper.getPage().toRequest(category, size, page);
+        GetPostPageReq dto = PostMapper.getPage().toRequest(payload);
 
-        return ResponseEntity.ok(this.postService.getPosts(dto));
+        return ResponseEntity.ok(this.postServiceI.getPosts(dto));
     }
 
     @PostMapping("/create")
@@ -43,7 +41,7 @@ public class PostController {
     ) {
         CreatePostReq dto = PostMapper.create().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.postService.create(dto));
+        return ResponseEntity.ok(this.postServiceI.create(dto));
     }
 
     @PatchMapping("/edit")
@@ -53,7 +51,7 @@ public class PostController {
     ) {
         EditPostReq dto = PostMapper.edit().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.postService.edit(dto));
+        return ResponseEntity.ok(this.postServiceI.edit(dto));
     }
 
     @PatchMapping("/toggle-votes")
@@ -62,7 +60,7 @@ public class PostController {
             @RequestBody Map<String, Object> payload
     ) {
         TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
-        this.postService.toggleVotes(dto);
+        this.postServiceI.toggleVotes(dto);
 
         return ResponseEntity.ok().build();
     }
@@ -73,7 +71,7 @@ public class PostController {
             @RequestBody Map<String, Object> payload
     ) {
         DeletePostReq dto = PostMapper.delete().toRequest(token, payload);
-        this.postService.delete(dto);
+        this.postServiceI.delete(dto);
 
         return ResponseEntity.ok().build();
     }

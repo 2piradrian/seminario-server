@@ -36,18 +36,8 @@ public class PostRepository implements PostRepositoryI {
     }
 
     @Override
-    public PageContent<Post> getAllPosts(Integer page, Integer size, Category category) {
-        Page<PostModel> postModels;
-        if (category != null) {
-            postModels = this.postRepository.findAllByCategory(
-                    category, Status.DELETED, PageRequest.of(page, size)
-            );
-        }
-        else {
-            postModels = this.postRepository.findAll(
-                    Status.DELETED, PageRequest.of(page, size)
-            );
-        }
+    public PageContent<Post> getAllPosts(Integer page, Integer size) {
+        Page<PostModel> postModels  = this.postRepository.findAll(Status.DELETED, PageRequest.of(page, size));
 
         return new PageContent<Post>(
                 postModels.getContent().stream().map(PostsEntityMapper::toDomain).collect(Collectors.toList()),
