@@ -10,10 +10,18 @@ import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Slf4j
+@Service
+@Transactional
+@AllArgsConstructor
 public class CommentService implements CommentServiceI {
 
     private final CommentRepository commentRepository;
