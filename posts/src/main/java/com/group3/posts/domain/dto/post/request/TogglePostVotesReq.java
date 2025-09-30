@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class TogglePostVotesReq {
+
     private final String token;
 
     private final Vote voteType;
@@ -43,4 +44,5 @@ public class TogglePostVotesReq {
 
         return new TogglePostVotesReq(token, voteEnum, postId);
     }
+
 }

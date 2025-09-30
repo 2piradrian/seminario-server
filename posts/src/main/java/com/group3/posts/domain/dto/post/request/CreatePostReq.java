@@ -59,4 +59,5 @@ public class CreatePostReq {
 
         return new CreatePostReq(token, title, content, pageId, category, base64Image);
     }
+
 }

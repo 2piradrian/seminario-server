@@ -1,14 +1,11 @@
 package com.group3.posts.domain.dto.post.request;
 
-
-import com.group3.entity.Category;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
 public class GetPostPageReq {
-
 
     private final Integer page;
 
