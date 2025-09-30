@@ -1,5 +1,6 @@
 package com.group3.pages.data.postgres.model;
 
+import com.group3.entity.PageType;
 import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,15 @@ public class PageModel {
 
     private String name;
 
-    private String imageId;
+    @Column(columnDefinition = "TEXT")
+    private String portraitImage;
+
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
 
     private String ownerId;
 
@@ -29,5 +38,7 @@ public class PageModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private PageType pageType;
 
 }
