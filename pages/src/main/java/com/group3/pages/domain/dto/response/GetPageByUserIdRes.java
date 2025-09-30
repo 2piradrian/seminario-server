@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPageByUserId {
+public class GetPageByUserIdRes {
 
     List<Page> pages;
 
