@@ -8,7 +8,7 @@ public interface PageRepositoryI {
     
     Page getById(String pageId);
     
-    Page getByEmail(String ownerId);
+    Page getByOwnerId(String ownerId);
 
     List<Page> findByName(String name);
 
