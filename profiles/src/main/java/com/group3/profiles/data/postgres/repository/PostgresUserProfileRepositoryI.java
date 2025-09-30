@@ -12,6 +12,7 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
 
     Optional<UserProfileModel> findByEmail(String email);
 
+    //TODO: FIX IT 
     @Query("""
         SELECT u
         FROM UserProfileModel u
