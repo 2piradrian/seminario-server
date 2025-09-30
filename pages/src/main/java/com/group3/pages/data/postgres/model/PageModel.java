@@ -1,6 +1,5 @@
 package com.group3.pages.data.postgres.model;
 
-import com.group3.entity.PageType;
 import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,7 +38,6 @@ public class PageModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Enumerated(EnumType.STRING)
-    private PageType pageType;
+    private String idPageType;
 
 }

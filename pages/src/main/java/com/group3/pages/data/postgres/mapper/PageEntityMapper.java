@@ -1,6 +1,7 @@
 package com.group3.pages.data.postgres.mapper;
 
 import com.group3.entity.Page;
+import com.group3.entity.PageType;
 import com.group3.pages.data.postgres.model.PageModel;
 
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class PageEntityMapper {
             pageModel.getOwnerId(),
             pageModel.getMembers(),
             pageModel.getStatus(),
-            pageModel.getPageType()
+            new PageType(pageModel.getIdPageType(), null)
         );
     }
 
@@ -35,7 +36,7 @@ public class PageEntityMapper {
             page.getOwnerId(),
             page.getMembers(),
             page.getStatus(),
-            page.getPageType()
+            page.getPageType().getId()
         );
     }
 
