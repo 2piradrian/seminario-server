@@ -1,4 +1,4 @@
-package com.group3.profiles.data.catalog_server.responses.instrument;
+package com.group3.profiles.data.datasource.catalog_server.responses.instrument;
 
 import com.group3.entity.Instrument;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
-package com.group3.profiles.data.postgres.repository;
+package com.group3.profiles.data.datasource.postgres.repository;
 
-import com.group3.profiles.data.postgres.model.UserProfileModel;
+import com.group3.profiles.data.datasource.postgres.model.UserProfileModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

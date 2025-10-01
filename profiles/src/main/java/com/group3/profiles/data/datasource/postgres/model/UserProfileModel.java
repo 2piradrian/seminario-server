@@ -1,4 +1,4 @@
-package com.group3.profiles.data.postgres.model;
+package com.group3.profiles.data.datasource.postgres.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,9 @@
-package com.group3.profiles.data.postgres.mapper;
+package com.group3.profiles.data.datasource.postgres.mapper;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
-import com.group3.entity.User;
 import com.group3.entity.UserProfile;
-import com.group3.profiles.data.postgres.model.UserProfileModel;
+import com.group3.profiles.data.datasource.postgres.model.UserProfileModel;
 
 import java.util.Collections;
 import java.util.List;

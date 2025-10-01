@@ -1,9 +1,9 @@
 package com.group3.profiles.data.repository;
 
 import com.group3.entity.UserProfile;
-import com.group3.profiles.data.postgres.mapper.UserProfileEntityMapper;
-import com.group3.profiles.data.postgres.model.UserProfileModel;
-import com.group3.profiles.data.postgres.repository.PostgresUserProfileRepositoryI;
+import com.group3.profiles.data.datasource.postgres.mapper.UserProfileEntityMapper;
+import com.group3.profiles.data.datasource.postgres.model.UserProfileModel;
+import com.group3.profiles.data.datasource.postgres.repository.PostgresUserProfileRepositoryI;
 import com.group3.profiles.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
