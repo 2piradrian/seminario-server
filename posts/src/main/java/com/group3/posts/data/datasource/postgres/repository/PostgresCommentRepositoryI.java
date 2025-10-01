@@ -1,6 +1,6 @@
-package com.group3.posts.data.postgres.repository;
+package com.group3.posts.data.datasource.postgres.repository;
 
-import com.group3.posts.data.postgres.model.CommentModel;
+import com.group3.posts.data.datasource.postgres.model.CommentModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

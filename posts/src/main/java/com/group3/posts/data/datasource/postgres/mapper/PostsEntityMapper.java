@@ -1,9 +1,10 @@
-package com.group3.posts.data.postgres.mapper;
+package com.group3.posts.data.datasource.postgres.mapper;
 
+import com.group3.entity.Category;
 import com.group3.entity.Page;
 import com.group3.entity.Post;
 import com.group3.entity.UserProfile;
-import com.group3.posts.data.postgres.model.PostModel;
+import com.group3.posts.data.datasource.postgres.model.PostModel;
 
 public class PostsEntityMapper {
 
@@ -18,7 +19,7 @@ public class PostsEntityMapper {
             postModel.getImageId(),
             postModel.getUpvoters(),
             postModel.getDownvoters(),
-            postModel.getCategory(),
+            Category.builder().id(postModel.getCategory()).build(),
             postModel.getCreatedAt(),
             postModel.getUpdatedAt(),
             postModel.getStatus()
@@ -37,7 +38,7 @@ public class PostsEntityMapper {
             post.getImageId(),
             post.getUpvoters(),
             post.getDownvoters(),
-            post.getCategory(),
+            post.getCategory().getId(),
             post.getCreatedAt(),
             post.getUpdatedAt(),
             post.getStatus()

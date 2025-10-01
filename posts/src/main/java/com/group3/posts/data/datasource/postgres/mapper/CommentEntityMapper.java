@@ -1,8 +1,8 @@
-package com.group3.posts.data.postgres.mapper;
+package com.group3.posts.data.datasource.postgres.mapper;
 
 import com.group3.entity.Comment;
 import com.group3.entity.UserProfile;
-import com.group3.posts.data.postgres.model.CommentModel;
+import com.group3.posts.data.datasource.postgres.model.CommentModel;
 
 public class CommentEntityMapper {
 

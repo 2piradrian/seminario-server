@@ -1,9 +1,9 @@
 package com.group3.posts.data.repository;
 
 import com.group3.entity.User;
-import com.group3.posts.data.users_server.repository.UsersServerRepositoryI;
-import com.group3.posts.data.users_server.responses.AuthUserRes;
-import com.group3.posts.data.users_server.responses.GetUserByIdRes;
+import com.group3.posts.data.datasource.users_server.repository.UsersServerRepositoryI;
+import com.group3.posts.data.datasource.users_server.responses.AuthUserRes;
+import com.group3.posts.data.datasource.users_server.responses.GetUserByIdRes;
 import com.group3.posts.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

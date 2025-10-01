@@ -58,8 +58,9 @@ public class CommentService implements CommentServiceI {
         }
 
         Comment comment = new Comment();
+        UserProfile author = UserProfile.builder().id(user.getId()).build();
 
-        comment.setAuthorId(user.getId());
+        comment.setAuthor(author);
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
         comment.setUpvoters(Set.of());
@@ -123,7 +124,7 @@ public class CommentService implements CommentServiceI {
         Comment comment = this.commentRepository.getById(dto.getCommentId());
         if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
 
-        boolean isAuthor = comment.getAuthorId().equals(user.getId());
+        boolean isAuthor = comment.getAuthor().getId().equals(user.getId());
         boolean isAdmin = user.getRoles().contains(Role.ADMIN);
         boolean isModerator = user.getRoles().contains(Role.MODERATOR);
 

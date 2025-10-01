@@ -1,7 +1,7 @@
-package com.group3.posts.data.postgres.repository;
+package com.group3.posts.data.datasource.postgres.repository;
 
 import com.group3.entity.Status;
-import com.group3.posts.data.postgres.model.PostModel;
+import com.group3.posts.data.datasource.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

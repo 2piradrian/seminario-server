@@ -1,4 +1,4 @@
-package com.group3.posts.data.postgres.model;
+package com.group3.posts.data.datasource.postgres.model;
 
 import com.group3.entity.Status;
 import jakarta.persistence.*;

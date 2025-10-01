@@ -1,20 +1,17 @@
 package com.group3.posts.data.repository;
 
-import com.group3.entity.Category;
 import com.group3.entity.PageContent;
 import com.group3.entity.Post;
 import com.group3.entity.Status;
-import com.group3.posts.data.postgres.mapper.PostsEntityMapper;
-import com.group3.posts.data.postgres.model.PostModel;
-import com.group3.posts.data.postgres.repository.PostgresPostRepositoryI;
+import com.group3.posts.data.datasource.postgres.mapper.PostsEntityMapper;
+import com.group3.posts.data.datasource.postgres.model.PostModel;
+import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
 import com.group3.posts.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository

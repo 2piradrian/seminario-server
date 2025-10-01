@@ -1,8 +1,8 @@
-package com.group3.posts.data.users_server.repository;
+package com.group3.posts.data.datasource.users_server.repository;
 
 import com.group3.posts.config.beans.LoadBalancerConfiguration;
-import com.group3.posts.data.users_server.responses.AuthUserRes;
-import com.group3.posts.data.users_server.responses.GetUserByIdRes;
+import com.group3.posts.data.datasource.users_server.responses.AuthUserRes;
+import com.group3.posts.data.datasource.users_server.responses.GetUserByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

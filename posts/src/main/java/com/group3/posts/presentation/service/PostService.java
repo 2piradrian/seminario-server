@@ -37,7 +37,7 @@ public class PostService implements PostServiceI {
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        User author = this.userRepository.getById(post.getAuthorId());
+        User author = this.userRepository.getById(post.getAuthor().getId());
         if(author == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         Integer views = post.getViews();
@@ -68,8 +68,11 @@ public class PostService implements PostServiceI {
             String profileId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
             post.setImageId(profileId);
         }
+
         // TODO: Search page and verify if is member
-        post.setAuthorId(user.getId());
+        UserProfile author = UserProfile.builder().id(user.getId()).build();
+
+        post.setAuthor(author);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setCategory(dto.getCategory());
@@ -94,7 +97,7 @@ public class PostService implements PostServiceI {
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (!post.getAuthorId().equals(user.getId())) {
+        if (!post.getAuthor().getId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
         // TODO: Search page and verify if is member
@@ -153,7 +156,7 @@ public class PostService implements PostServiceI {
         Post post = this.postRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        boolean isAuthor = post.getAuthorId().equals(user.getId());
+        boolean isAuthor = post.getAuthor().getId().equals(user.getId());
         boolean isAdmin = user.getRoles().contains(Role.ADMIN);
         boolean isModerator = user.getRoles().contains(Role.MODERATOR);
 

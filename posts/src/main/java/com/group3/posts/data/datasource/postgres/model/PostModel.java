@@ -1,4 +1,4 @@
-package com.group3.posts.data.postgres.model;
+package com.group3.posts.data.datasource.postgres.model;
 
 import com.group3.entity.Category;
 import com.group3.entity.Status;
@@ -38,8 +38,7 @@ public class PostModel {
 
     private Set<String> downvoters;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    private String category;
 
     private LocalDateTime createdAt;
 

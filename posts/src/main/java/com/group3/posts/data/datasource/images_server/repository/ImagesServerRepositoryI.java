@@ -1,7 +1,7 @@
-package com.group3.posts.data.images_server.repository;
+package com.group3.posts.data.datasource.images_server.repository;
 
 import com.group3.posts.config.beans.LoadBalancerConfiguration;
-import com.group3.posts.data.images_server.reponses.UploadImageRes;
+import com.group3.posts.data.datasource.images_server.reponses.UploadImageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
