@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class PageTypeEntityMapper {
 
-    public static PageType toDomain(PageTypeModel model ){
+    public static PageType toDomain(PageTypeModel model){
         if (model == null) return null;
 
         return new PageType(
