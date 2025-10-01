@@ -4,6 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
+import com.group3.posts.data.repository.CatalogRepository;
 import com.group3.posts.data.repository.ImagesRepository;
 import com.group3.posts.data.repository.PostRepository;
 import com.group3.posts.data.repository.UserRepository;
@@ -32,6 +33,8 @@ public class PostService implements PostServiceI {
 
     private final ImagesRepository imagesRepository;
 
+    private final CatalogRepository catalogRepository;
+
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
         Post post = this.postRepository.getById(dto.getPostId());
@@ -51,8 +54,7 @@ public class PostService implements PostServiceI {
 
     @Override
     public GetPostPageRes getPosts(GetPostPageReq dto) {
-        PageContent<Post> posts =
-                this.postRepository.getAllPosts(dto.getPage(), dto.getSize());
+        PageContent<Post> posts = this.postRepository.getAllPosts(dto.getPage(), dto.getSize());
 
         return PostMapper.getPage().toResponse(posts);
     }
@@ -62,15 +64,17 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = new Post();
-
-        if (dto.getBase64Image() != null){
-            String profileId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
-            post.setImageId(profileId);
-        }
+        Category category = this.catalogRepository.getCategoryById(dto.getCategory().getId());
+        if (category == null) throw new ErrorHandler(ErrorType.CATEGORY_NOT_FOUND);
 
         // TODO: Search page and verify if is member
         UserProfile author = UserProfile.builder().id(user.getId()).build();
+        Post post = new Post();
+
+        if (dto.getBase64Image() != null) {
+            String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
+            post.setImageId(imageId);
+        }
 
         post.setAuthor(author);
         post.setTitle(dto.getTitle());
@@ -100,7 +104,21 @@ public class PostService implements PostServiceI {
         if (!post.getAuthor().getId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
-        // TODO: Search page and verify if is member
+
+        if (post.getPage() != null){
+            // TODO: Search page and verify if is member
+        }
+
+        if (dto.getBase64Image() != null){
+            String postImage = post.getImageId();
+            if (postImage != null) {
+                this.imagesRepository.delete(postImage, secretKeyHelper.getSecret());
+            }
+
+            String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
+            post.setImageId(imageId);
+        }
+
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setCategory(dto.getCategory());

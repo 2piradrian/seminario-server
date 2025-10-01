@@ -25,33 +25,15 @@ public class CatalogRepository implements CatalogRepositoryI {
     }
 
     @Override
-    public Category getCategoryById(String styleId) {
-        return this.repository.getCategoryById(styleId).getCategory();
+    public Category getCategoryById(String categoryId) {
+        return this.repository.getCategoryById(categoryId).getCategory();
     }
 
     @Override
-    public List<Category> getCategoryListById(List<String> styles) {
+    public List<Category> getCategoryListById(List<String> categories) {
         Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", styles);
+        payload.put("ids", categories);
         return this.repository.getCategoryListById(payload).getCategories();
-    }
-
-    @Override
-    public List<PageType> getAllPageType() {
-        List<PageType> pageTypes = this.repository.getAllPageType().getPageTypes();
-        return pageTypes != null ? pageTypes : List.of();
-    }
-
-    @Override
-    public PageType getPageTypeById(String instrumentId) {
-        return this.repository.getPageTypeById(instrumentId).getPageType();
-    }
-
-    @Override
-    public List<PageType> getPageTypeListById(List<String> instruments) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", instruments);
-        return this.repository.getPageTypeListById(payload).getPageTypes();
     }
 
 }

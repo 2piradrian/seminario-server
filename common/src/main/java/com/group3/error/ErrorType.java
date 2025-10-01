@@ -28,6 +28,8 @@ public enum ErrorType {
 
     STYLE_NOT_FOUND("Style not found", 404),
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
+    CATEGORY_NOT_FOUND("Category not found", 404),
+    PAGETYPE_NOT_FOUND("Page type not found", 404),
 
     INTERNAL_ERROR("Internal error", 500);
 

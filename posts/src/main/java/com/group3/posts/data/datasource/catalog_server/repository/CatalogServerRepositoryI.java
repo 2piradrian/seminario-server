@@ -24,13 +24,4 @@ public interface CatalogServerRepositoryI {
     @PostMapping("/api/categories/get-list-by-id")
     GetCategoryListByIdRes getCategoryListById(@RequestBody Map<String, Object> payload);
 
-    @GetMapping("/api/page-types/get-all")
-    GetAllPageTypeRes getAllPageType();
-
-    @GetMapping("/api/page-types/get-by-id/{pageTypeId}")
-    GetPageTypeByIdRes getPageTypeById(@PathVariable("pageTypeId") String instrumentId);
-
-    @PostMapping("/api/page-types/get-list-by-id")
-    GetPageTypeListByIdRes getPageTypeListById(@RequestBody Map<String, Object> payload);
-
 }
