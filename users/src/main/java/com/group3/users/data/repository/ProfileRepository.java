@@ -1,6 +1,6 @@
 package com.group3.users.data.repository;
 
-import com.group3.users.data.profiles_server.repository.ProfileServerRepositoryI;
+import com.group3.users.data.datasource.profiles_server.repository.ProfileServerRepositoryI;
 import com.group3.users.domain.repository.ProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

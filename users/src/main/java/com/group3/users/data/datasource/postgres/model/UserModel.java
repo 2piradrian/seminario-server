@@ -1,4 +1,4 @@
-package com.group3.users.data.postgres.model;
+package com.group3.users.data.datasource.postgres.model;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;

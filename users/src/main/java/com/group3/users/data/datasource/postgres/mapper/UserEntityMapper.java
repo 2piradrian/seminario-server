@@ -1,6 +1,6 @@
-package com.group3.users.data.postgres.mapper;
+package com.group3.users.data.datasource.postgres.mapper;
 
-import com.group3.users.data.postgres.model.UserModel;
+import com.group3.users.data.datasource.postgres.model.UserModel;
 import com.group3.entity.User;
 
 import java.util.Collections;

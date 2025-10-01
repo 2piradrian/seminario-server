@@ -1,4 +1,4 @@
-package com.group3.users.data.profiles_server.responses;
+package com.group3.users.data.datasource.profiles_server.responses;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
