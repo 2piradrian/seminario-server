@@ -1,4 +1,4 @@
-package com.group3.images.data.file_system.repository;
+package com.group3.images.data.datasource.file_system.repository;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

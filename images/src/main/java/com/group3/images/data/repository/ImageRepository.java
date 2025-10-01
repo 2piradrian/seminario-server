@@ -1,6 +1,6 @@
 package com.group3.images.data.repository;
 
-import com.group3.images.data.file_system.repository.FileSystemImageRepository;
+import com.group3.images.data.datasource.file_system.repository.FileSystemImageRepository;
 import com.group3.images.domain.repository.ImageRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
