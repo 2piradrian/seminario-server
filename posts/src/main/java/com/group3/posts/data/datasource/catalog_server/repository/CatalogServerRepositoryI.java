@@ -1,12 +1,7 @@
 package com.group3.posts.data.datasource.catalog_server.repository;
 
 import com.group3.posts.config.beans.LoadBalancerConfiguration;
-import com.group3.posts.data.datasource.catalog_server.responses.instrument.GetAllInstrumentRes;
-import com.group3.posts.data.datasource.catalog_server.responses.instrument.GetInstrumentByIdRes;
-import com.group3.posts.data.datasource.catalog_server.responses.instrument.GetInstrumentListByIdRes;
-import com.group3.posts.data.datasource.catalog_server.responses.style.GetAllStyleRes;
-import com.group3.posts.data.datasource.catalog_server.responses.style.GetStyleByIdRes;
-import com.group3.posts.data.datasource.catalog_server.responses.style.GetStyleListByIdRes;
+import com.group3.posts.data.datasource.catalog_server.responses.*;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,22 +15,22 @@ import java.util.Map;
 @LoadBalancerClient(name = "catalog-server", configuration = LoadBalancerConfiguration.class)
 public interface CatalogServerRepositoryI {
 
-    @GetMapping("/api/styles/get-all")
-    GetAllStyleRes getAllStyle();
+    @GetMapping("/api/categories/get-all")
+    GetAllCategoryRes getAllCategory();
 
-    @GetMapping("/api/styles/get-by-id/{styleId}")
-    GetStyleByIdRes getStyleById(@PathVariable("styleId") String styleId);
+    @GetMapping("/api/categories/get-by-id/{categoryId}")
+    GetCategoryByIdRes getCategoryById(@PathVariable("categoryId") String styleId);
 
-    @PostMapping("/api/styles/get-list-by-id")
-    GetStyleListByIdRes getStyleListById(@RequestBody Map<String, Object> payload);
+    @PostMapping("/api/categories/get-list-by-id")
+    GetCategoryListByIdRes getCategoryListById(@RequestBody Map<String, Object> payload);
 
-    @GetMapping("/api/instruments/get-all")
-    GetAllInstrumentRes getAllInstrument();
+    @GetMapping("/api/page-types/get-all")
+    GetAllPageTypeRes getAllPageType();
 
-    @GetMapping("/api/instruments/get-by-id/{instrumentId}")
-    GetInstrumentByIdRes getInstrumentById(@PathVariable("instrumentId") String instrumentId);
+    @GetMapping("/api/page-types/get-by-id/{pageTypeId}")
+    GetPageTypeByIdRes getPageTypeById(@PathVariable("pageTypeId") String instrumentId);
 
-    @PostMapping("/api/instruments/get-list-by-id")
-    GetInstrumentListByIdRes getInstrumentListById(@RequestBody Map<String, Object> payload);
+    @PostMapping("/api/page-types/get-list-by-id")
+    GetPageTypeListByIdRes getPageTypeListById(@RequestBody Map<String, Object> payload);
 
 }

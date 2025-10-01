@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/pageTypes")
+@RequestMapping("/api/page-types")
 public class PageTypeController {
 
     private final PageTypeService service;
