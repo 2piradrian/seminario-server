@@ -1,6 +1,6 @@
-package com.group3.catalog.data.postgres.mapper;
+package com.group3.catalog.data.datasource.postgres.mapper;
 
-import com.group3.catalog.data.postgres.model.CategoryModel;
+import com.group3.catalog.data.datasource.postgres.model.CategoryModel;
 import com.group3.entity.Category;
 
 import java.util.Collections;

@@ -1,8 +1,8 @@
 package com.group3.catalog.data.repository;
 
-import com.group3.catalog.data.postgres.mapper.CategoryEntityMapper;
-import com.group3.catalog.data.postgres.model.CategoryModel;
-import com.group3.catalog.data.postgres.repository.PostgresCategoryRepositoryI;
+import com.group3.catalog.data.datasource.postgres.mapper.CategoryEntityMapper;
+import com.group3.catalog.data.datasource.postgres.model.CategoryModel;
+import com.group3.catalog.data.datasource.postgres.repository.PostgresCategoryRepositoryI;
 import com.group3.catalog.domain.repository.CategoryRepositoryI;
 import com.group3.entity.Category;
 import lombok.AllArgsConstructor;

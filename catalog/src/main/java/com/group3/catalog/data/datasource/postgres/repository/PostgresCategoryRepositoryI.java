@@ -1,6 +1,6 @@
-package com.group3.catalog.data.postgres.repository;
+package com.group3.catalog.data.datasource.postgres.repository;
 
-import com.group3.catalog.data.postgres.model.CategoryModel;
+import com.group3.catalog.data.datasource.postgres.model.CategoryModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostgresCategoryRepositoryI extends JpaRepository<CategoryModel, String>{

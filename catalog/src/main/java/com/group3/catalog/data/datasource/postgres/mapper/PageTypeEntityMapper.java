@@ -1,6 +1,6 @@
-package com.group3.catalog.data.postgres.mapper;
+package com.group3.catalog.data.datasource.postgres.mapper;
 
-import com.group3.catalog.data.postgres.model.PageTypeModel;
+import com.group3.catalog.data.datasource.postgres.model.PageTypeModel;
 import com.group3.entity.PageType;
 
 import java.util.Collections;

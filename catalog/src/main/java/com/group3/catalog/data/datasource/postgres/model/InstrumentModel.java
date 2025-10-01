@@ -1,4 +1,4 @@
-package com.group3.catalog.data.postgres.model;
+package com.group3.catalog.data.datasource.postgres.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "categories")
-public class CategoryModel {
+@Table(name = "instruments")
+public class InstrumentModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

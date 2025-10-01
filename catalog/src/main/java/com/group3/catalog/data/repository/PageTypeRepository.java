@@ -1,8 +1,8 @@
 package com.group3.catalog.data.repository;
 
-import com.group3.catalog.data.postgres.mapper.PageTypeEntityMapper;
-import com.group3.catalog.data.postgres.model.PageTypeModel;
-import com.group3.catalog.data.postgres.repository.PostgresPageTypeRepositoryI;
+import com.group3.catalog.data.datasource.postgres.mapper.PageTypeEntityMapper;
+import com.group3.catalog.data.datasource.postgres.model.PageTypeModel;
+import com.group3.catalog.data.datasource.postgres.repository.PostgresPageTypeRepositoryI;
 import com.group3.catalog.domain.repository.PageTypeRepositoryI;
 import com.group3.entity.PageType;
 import lombok.AllArgsConstructor;
