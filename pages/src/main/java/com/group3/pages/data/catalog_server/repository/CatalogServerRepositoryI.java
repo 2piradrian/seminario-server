@@ -20,8 +20,8 @@ public interface CatalogServerRepositoryI {
     @GetMapping("/api/page-types/get-all")
     GetAllPageTypeRes getAll();
 
-    @GetMapping("/api/page-types/get-by-id/{styleId}")
-    GetPageTypeByIdRes getById(@PathVariable("styleId") String styleId);
+    @GetMapping("/api/page-types/get-by-id/{pageTypeId}")
+    GetPageTypeByIdRes getById(@PathVariable("pageTypeId") String pageTypeId);
 
     @PostMapping("/api/page-types/get-list-by-id")
     GetPageTypeListByIdRes getListById(@RequestBody Map<String, Object> payload);
