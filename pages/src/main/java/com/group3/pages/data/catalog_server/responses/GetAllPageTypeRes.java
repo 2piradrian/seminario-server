@@ -1,6 +1,6 @@
 package com.group3.pages.data.catalog_server.responses;
 
-import com.group3.entity.Instrument;
+import com.group3.entity.PageType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetAllPageTypeRes {
 
-    List<Instrument> instruments;
+    List<PageType> instruments;
 
 }

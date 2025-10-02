@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetPageTypeByIdRes {
 
-    List<PageType> pagetypes;
+    private final PageType pageType;
 
 }
