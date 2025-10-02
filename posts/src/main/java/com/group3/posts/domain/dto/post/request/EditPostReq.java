@@ -29,7 +29,7 @@ public class EditPostReq {
         this.base64Image = base64Image;
     }
 
-    public static EditPostReq create(String token, String postId, String title, String content, String category, String base64Image) {
+    public static EditPostReq create(String token, String postId, String title, String content, Category category, String base64Image) {
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
@@ -52,20 +52,7 @@ public class EditPostReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        Category categoryEnum = null;
-        boolean isValidCategory = false;
-        for (Category c : Category.values()) {
-            if (c.name().equals(category)) {
-                isValidCategory = true;
-                categoryEnum = c;
-                break;
-            }
-        }
-        if (!isValidCategory) {
-            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
-        }
-
-        return new EditPostReq(token, postId, title, content, categoryEnum, base64Image);
+        return new EditPostReq(token, postId, title, content, category, base64Image);
     }
 
 }

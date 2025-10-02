@@ -1,12 +1,14 @@
 package com.group3.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Page {
@@ -23,9 +25,9 @@ public class Page {
 
     private String longDescription;
 
-    private String ownerId;
+    private UserProfile owner;
 
-    private List<String> members;
+    private List<UserProfile> members;
 
     private Status status;
 

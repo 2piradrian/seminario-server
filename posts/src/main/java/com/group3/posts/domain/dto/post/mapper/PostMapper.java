@@ -8,10 +8,6 @@ public class PostMapper {
 
     public static GetPageMapper getPage() { return new GetPageMapper(); }
 
-    public static GetMonthlyMapper getMonthly() {
-        return new GetMonthlyMapper();
-    }
-
     public static DeleteMapper delete() {
         return new DeleteMapper();
     }

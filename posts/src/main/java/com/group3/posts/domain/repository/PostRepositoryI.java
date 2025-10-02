@@ -10,7 +10,7 @@ public interface PostRepositoryI {
 
     Post getById(String postId);
 
-    PageContent<Post> getAllPosts(Integer page, Integer size, Category category);
+    PageContent<Post> getAllPosts(Integer page, Integer size);
 
     Post save(Post post);
 

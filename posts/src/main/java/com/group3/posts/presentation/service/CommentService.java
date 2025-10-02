@@ -10,29 +10,40 @@ import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Slf4j
+@Service
+@Transactional
+@AllArgsConstructor
 public class CommentService implements CommentServiceI {
 
     private final CommentRepository commentRepository;
+
     private final PostRepository postRepository;
+
     private final UserRepository userRepository;
-@Override
-public GetCommentPageRes getComments(GetCommentPageReq dto) {
-    Post post = this.postRepository.getById(dto.getPostId());
-    if(post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-    if (post.getStatus() == Status.DELETED) {
-        throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+    @Override
+    public GetCommentPageRes getComments(GetCommentPageReq dto) {
+        Post post = this.postRepository.getById(dto.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
+        if (post.getStatus() == Status.DELETED) {
+            throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+        }
+
+        PageContent<Comment> comments =
+                this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
+
+        return CommentMapper.getPage().toResponse(comments);
     }
-
-    PageContent<Comment> comments =
-            this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
-
-    return CommentMapper.getPage().toResponse(comments);
-}
 
     @Override
     public CreateCommentRes create(CreateCommentReq dto) {
@@ -40,15 +51,16 @@ public GetCommentPageRes getComments(GetCommentPageReq dto) {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = this.postRepository.getById(dto.getPostId());
-        if(post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         if (post.getStatus() != Status.ACTIVE) {
             throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
         }
 
         Comment comment = new Comment();
+        UserProfile author = UserProfile.builder().id(user.getId()).build();
 
-        comment.setAuthorId(user.getId());
+        comment.setAuthor(author);
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
         comment.setUpvoters(Set.of());
@@ -67,3 +79,63 @@ public GetCommentPageRes getComments(GetCommentPageReq dto) {
 
         return CommentMapper.create().toResponse(saved);
     }
+
+    @Override
+    public void toggleVotes(ToggleCommentVotesReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Comment comment = this.commentRepository.getById(dto.getCommentId());
+        if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
+
+        String userId = user.getId();
+
+        Set<String> upvoters = comment.getUpvoters();
+        Set<String> downvoters = comment.getDownvoters();
+
+        if (Vote.UPVOTE == dto.getVoteType()) {
+            if (upvoters.contains(userId)) {
+                upvoters.remove(userId);
+            } else {
+                upvoters.add(userId);
+                downvoters.remove(userId);
+            }
+        }
+        if (Vote.DOWNVOTE == dto.getVoteType()) {
+            if (downvoters.contains(userId)) {
+                downvoters.remove(userId);
+            } else {
+                downvoters.add(userId);
+                upvoters.remove(userId);
+            }
+        }
+
+        comment.setUpvoters(upvoters);
+        comment.setDownvoters(downvoters);
+
+        this.commentRepository.update(comment);
+    }
+
+    @Override
+    public void delete(DeleteCommentReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Comment comment = this.commentRepository.getById(dto.getCommentId());
+        if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
+
+        boolean isAuthor = comment.getAuthor().getId().equals(user.getId());
+        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
+        boolean isModerator = user.getRoles().contains(Role.MODERATOR);
+
+        if (!isAuthor && !isAdmin && !isModerator) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        comment.setUpdatedAt(LocalDateTime.now());
+        comment.setStatus(Status.DELETED);
+
+        this.commentRepository.update(comment);
+    }
+
+}

@@ -11,12 +11,12 @@ public class DeletePostReq {
 
     private final String postId;
 
-    private DeletePostReq (String token, String postId) {
+    private DeletePostReq(String token, String postId) {
         this.token = token;
         this.postId = postId;
     }
 
-    public static  DeletePostReq create(String token, String postId) {
+    public static DeletePostReq create(String token, String postId) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -28,4 +28,5 @@ public class DeletePostReq {
 
         return new DeletePostReq(token, postId);
     }
+
 }
