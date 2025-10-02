@@ -11,6 +11,6 @@ public interface CatalogRepositoryI {
 
     PageType getById(String pageTypeId);
 
-    List<Style> getListById(List<String> pageTypeIds);
+    List<PageType> getListById(List<String> pageTypeIds);
 
 }
