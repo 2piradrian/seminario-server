@@ -94,7 +94,7 @@ public class ProfileService implements ProfileServiceI {
 
         if (dto.getProfileImage() != null){
             String profileImage = userProfile.getProfileImage();
-            if (profileImage != null) {
+            if (profileImage != null && !profileImage.isEmpty()) {
                 this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
             }
 
@@ -104,7 +104,7 @@ public class ProfileService implements ProfileServiceI {
 
         if (dto.getPortraitImage() != null){
             String portraitImage = userProfile.getPortraitImage();
-            if (portraitImage != null) {
+            if (portraitImage != null && !portraitImage.isEmpty()) {
                 this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
             }
 
