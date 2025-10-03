@@ -25,8 +25,6 @@ public class EditPageReq {
 
     private final String longDescription;
 
-    private final String ownerId;
-
     private final List<String> members;
 
     private final PageType pageType;
@@ -39,7 +37,6 @@ public class EditPageReq {
         String profileImage,
         String shortDescription,
         String longDescription,
-        String ownerId,
         List<String> members,
         PageType pageType
     ) {
@@ -50,7 +47,6 @@ public class EditPageReq {
         this.profileImage = profileImage;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
-        this.ownerId = ownerId;
         this.members = members;
         this.pageType = pageType;
     }
@@ -123,14 +119,6 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (ownerId == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (ownerId.isEmpty()) {
-            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
-        }
-
         if(!members.contains(ownerId)){
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
@@ -147,7 +135,6 @@ public class EditPageReq {
             profileImage,
             shortDescription,
             longDescription,
-            ownerId, 
             members,
             pageType
         );
