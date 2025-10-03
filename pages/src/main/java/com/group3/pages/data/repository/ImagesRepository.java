@@ -1,6 +1,6 @@
 package com.group3.pages.data.repository;
 
-import com.group3.pages.data.images_server.repository.ImagesServerRepositoryI;
+import com.group3.pages.data.datasource.images_server.repository.ImagesServerRepositoryI;
 import com.group3.pages.domain.repository.ImagesRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

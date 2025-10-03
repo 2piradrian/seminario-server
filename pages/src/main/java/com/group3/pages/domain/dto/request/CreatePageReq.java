@@ -1,5 +1,6 @@
 package com.group3.pages.domain.dto.request;
 
+import com.group3.entity.PageType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
@@ -11,15 +12,15 @@ public class CreatePageReq {
 
     private final String name;
 
-    private final String idPageType;
+    private final PageType pageType;
 
-    private CreatePageReq(String token, String name, String idPageType) {
+    private CreatePageReq(String token, String name, PageType pageType) {
         this.token = token;
         this.name = name;
-        this.idPageType = idPageType;
+        this.pageType = pageType;
     }
 
-    public static CreatePageReq create(String token, String name, String idPageType) {
+    public static CreatePageReq create(String token, String name, PageType pageType) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -33,15 +34,11 @@ public class CreatePageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (idPageType == null) {
+        if (pageType == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (idPageType.isEmpty()) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        return new CreatePageReq(token, name, idPageType);
+        return new CreatePageReq(token, name, pageType);
     }
     
 }

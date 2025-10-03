@@ -7,6 +7,7 @@ import com.group3.pages.config.helpers.SecretKeyHelper;
 import com.group3.pages.data.repository.*;
 import com.group3.pages.domain.dto.mapper.PageMapper;
 import com.group3.pages.domain.dto.request.*;
+import com.group3.pages.domain.dto.response.CreatePageRes;
 import com.group3.pages.domain.dto.response.GetPageByIdRes;
 import com.group3.pages.domain.dto.response.GetPageByUserIdRes;
 import jakarta.transaction.Transactional;
@@ -32,24 +33,24 @@ public class PageService implements PageServiceI{
 
     private final UserRepository userRepository;
 
-    private final ProfileRepository profileRepository;
+    private final ProfilesRepository profilesRepository;
 
     private final ImagesRepository imagesRepository;
 
     @Override
-    public void create(CreatePageReq dto) {
+    public CreatePageRes create(CreatePageReq dto) {
 
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Page page = new Page();
 
-        PageType pageType = this.catalogRepository.getById(dto.getIdPageType());
+        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
 
         page.setPageType(pageType);
 
-        UserProfile owner = this.profileRepository.getById(user.getId());
+        UserProfile owner = this.profilesRepository.getById(user.getId());
         if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         page.setOwner(owner);
@@ -63,7 +64,8 @@ public class PageService implements PageServiceI{
 
         page.setStatus(Status.ACTIVE);
 
-        this.pageRepository.save(page);
+        Page newPage = this.pageRepository.save(page);
+        return PageMapper.create().toResponse(newPage);
     }
 
     @Override
@@ -140,7 +142,7 @@ public class PageService implements PageServiceI{
         }
 
         dto.getMembers().stream()
-            .map(profileRepository::getById)
+            .map(profilesRepository::getById)
             .forEach(userProfile -> {
                 if (userProfile == null) {
                     throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -152,7 +154,7 @@ public class PageService implements PageServiceI{
 
         dto.getMembers()
             .forEach(id -> {
-                UserProfile userProfile = profileRepository.getById(id);
+                UserProfile userProfile = profilesRepository.getById(id);
                 if (existingMembers.add(userProfile)){
                     members.add(userProfile);
                 }

@@ -1,9 +1,9 @@
 package com.group3.pages.data.repository;
 
 import com.group3.entity.Page;
-import com.group3.pages.data.postgres.mapper.PageEntityMapper;
-import com.group3.pages.data.postgres.model.PageModel;
-import com.group3.pages.data.postgres.repository.PostgresPagesRepositoryI;
+import com.group3.pages.data.datasource.postgres.mapper.PageEntityMapper;
+import com.group3.pages.data.datasource.postgres.model.PageModel;
+import com.group3.pages.data.datasource.postgres.repository.PostgresPagesRepositoryI;
 import com.group3.pages.domain.repository.PageRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

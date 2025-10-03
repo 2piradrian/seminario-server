@@ -1,8 +1,7 @@
 package com.group3.pages.data.repository;
 
 import com.group3.entity.PageType;
-import com.group3.entity.Style;
-import com.group3.pages.data.catalog_server.repository.CatalogServerRepositoryI;
+import com.group3.pages.data.datasource.catalog_server.repository.CatalogServerRepositoryI;
 import com.group3.pages.domain.repository.CatalogRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

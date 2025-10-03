@@ -1,4 +1,4 @@
-package com.group3.catalog.domain.dto.pagetype.response;
+package com.group3.pages.data.datasource.catalog_server.responses;
 
 import com.group3.entity.PageType;
 import lombok.AllArgsConstructor;
