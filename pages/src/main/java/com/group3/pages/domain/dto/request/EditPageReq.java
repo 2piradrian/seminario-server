@@ -1,31 +1,68 @@
 package com.group3.pages.domain.dto.request;
 
+import com.group3.entity.PageType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.pages.domain.validator.RegexValidators;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class EditPageReq {
     
     private final String token;
 
+    private final String pageId;
+
     private final String name;
 
-    private final String base64Image;
+    private final String portraitImage;
 
-    private final String ownerId;
+    private final String profileImage;
+
+    private final String shortDescription;
+
+    private final String longDescription;
 
     private final List<String> members;
 
-    private EditPageReq(String token, String name, String base64Image, String ownerId, List<String> members) {
+    private final PageType pageType;
+
+    private EditPageReq(
+        String token,
+        String pageId,
+        String name,
+        String portraitImage,
+        String profileImage,
+        String shortDescription,
+        String longDescription,
+        List<String> members,
+        PageType pageType
+    ) {
         this.token = token;
+        this.pageId = pageId;
         this.name = name;
-        this.base64Image = base64Image;
-        this.ownerId = ownerId;
+        this.portraitImage = portraitImage;
+        this.profileImage = profileImage;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
         this.members = members;
+        this.pageType = pageType;
     }
 
-    public static EditPageReq create(String token, String name, String base64Image, String ownerId, List<String> members) {
+    public static EditPageReq create(
+        String token,
+        String pageId,
+        String name,
+        String portraitImage,
+        String profileImage,
+        String shortDescription,
+        String longDescription,
+        String ownerId,
+        List<String> members,
+        PageType pageType
+    ) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -35,8 +72,46 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        name = name.trim();
-        if (name.isEmpty() || name.length() > 64) {
+        if (name.isEmpty()) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        RegexValidators nameValidator = RegexValidators.NAME;
+        if (!name.matches(nameValidator.getRegex())) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if (pageId == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (pageId.isEmpty()){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (shortDescription == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (shortDescription.isEmpty() || shortDescription.length() > 256) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if (longDescription == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (longDescription.isEmpty() || longDescription.length() > 4096) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        RegexValidators shortDescriptionValidator = RegexValidators.SHORT_DESCRIPTION;
+        if (!shortDescription.matches(shortDescriptionValidator.getRegex())) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        RegexValidators longDescriptionValidator = RegexValidators.LONG_DESCRIPTION;
+        if (!longDescription.matches(longDescriptionValidator.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
@@ -44,15 +119,25 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (ownerId == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (ownerId.isEmpty()) {
+        if(!members.contains(ownerId)){
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new EditPageReq(token, name, base64Image, ownerId, members);
+        if (pageType == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        return new EditPageReq(
+            token,
+            pageId,
+            name,
+            portraitImage,
+            profileImage,
+            shortDescription,
+            longDescription,
+            members,
+            pageType
+        );
     }
     
 }

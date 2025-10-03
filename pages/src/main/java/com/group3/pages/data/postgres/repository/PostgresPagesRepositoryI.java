@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PostgresPagesRepositoryI extends JpaRepository<PageModel, String> {
     
@@ -17,11 +16,7 @@ public interface PostgresPagesRepositoryI extends JpaRepository<PageModel, Strin
     """)
     List<PageModel> findByNameLike(@Param("name") String name);
 
-    @Query("""
-    SELECT p
-    FROM PageModel p
-    WHERE :userId MEMBER OF p.members
-    """)
+    @Query(value = "SELECT * FROM page_model WHERE :userId = ANY(members)", nativeQuery = true)
     List<PageModel> findByUserId(@Param("userId") String userId);
 
 }

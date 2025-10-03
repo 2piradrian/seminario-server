@@ -16,9 +16,13 @@ public class GetByIdMapper {
         return new GetPageByIdRes(
             page.getId(),
             page.getName(),
-            page.getImageId(),
+            page.getPortraitImage(),
+            page.getProfileImage(),
+            page.getShortDescription(),
+            page.getLongDescription(),
             page.getOwnerId(),
-            page.getMembers()
+            page.getMembers(),
+            page.getPageType()
         );
     }
     

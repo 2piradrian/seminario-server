@@ -16,6 +16,7 @@ public enum ErrorType {
     USER_NOT_FOUND("User not found", 404),
     POST_NOT_FOUND("Forum not found", 404),
     PAGE_NOT_FOUND("Page not found", 404),
+    PAGE_TYPE_NOT_FOUND("Page type not found", 404),
 
     UNAUTHORIZED("Unauthorized", 401),
     INVALID_PASSWORD("Invalid password", 400),

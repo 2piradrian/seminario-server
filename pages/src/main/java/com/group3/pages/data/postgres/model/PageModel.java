@@ -21,7 +21,15 @@ public class PageModel {
 
     private String name;
 
-    private String imageId;
+    @Column(columnDefinition = "TEXT")
+    private String portraitImage;
+
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    private String shortDescription;
+
+    private String longDescription;
 
     private String ownerId;
 
@@ -29,5 +37,7 @@ public class PageModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private String idPageType;
 
 }

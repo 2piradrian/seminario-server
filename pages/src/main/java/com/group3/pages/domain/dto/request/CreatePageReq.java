@@ -11,15 +11,15 @@ public class CreatePageReq {
 
     private final String name;
 
-    private final String base64Image;
+    private final String idPageType;
 
-    private CreatePageReq(String token, String name, String base64Image) {
+    private CreatePageReq(String token, String name, String idPageType) {
         this.token = token;
         this.name = name;
-        this.base64Image = base64Image;
+        this.idPageType = idPageType;
     }
 
-    public static CreatePageReq create(String token, String name, String base64Image) {
+    public static CreatePageReq create(String token, String name, String idPageType) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -29,12 +29,19 @@ public class CreatePageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        name = name.trim();
-        if (name.isEmpty() || name.length() > 64) {
+        if (name.isEmpty()) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreatePageReq(token, name, base64Image);
+        if (idPageType == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (idPageType.isEmpty()) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        return new CreatePageReq(token, name, idPageType);
     }
     
 }

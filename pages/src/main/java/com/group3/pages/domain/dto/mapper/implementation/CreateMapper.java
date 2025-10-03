@@ -10,7 +10,7 @@ public class CreateMapper {
         return CreatePageReq.create(
             token,
             (String) payload.get("name"),
-            (String) payload.get("base64Image")
+            (String) payload.get("idPageType")
         );
     }
     
