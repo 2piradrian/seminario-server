@@ -32,7 +32,7 @@ public class ProfileRepository implements ProfileRepositoryI {
         user.setSurname(reponse.getSurname());
         user.setMemberSince(reponse.getMemberSince());
         user.setPortraitImage(reponse.getPortraitImage());
-        user.setProfileImage(reponse.getPortraitImage());
+        user.setProfileImage(reponse.getProfileImage());
         user.setShortDescription(reponse.getShortDescription());
         user.setLongDescription(reponse.getLongDescription());
         user.setStyles(reponse.getStyles());
