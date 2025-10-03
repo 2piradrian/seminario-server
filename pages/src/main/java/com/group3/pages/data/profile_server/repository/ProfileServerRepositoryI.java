@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "profile-server", path = "/profile-server")
 @LoadBalancerClient(name = "profile-server", configuration = LoadBalancerConfiguration.class)
-public interface ProfileServerRepository {
+public interface ProfileServerRepositoryI {
 
     @GetMapping("/api/get-by-id/{userId}")
     GetUserProfileByIdRes getById(@PathVariable("userId") String userId);
