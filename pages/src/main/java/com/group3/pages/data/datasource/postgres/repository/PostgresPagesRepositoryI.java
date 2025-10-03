@@ -16,7 +16,7 @@ public interface PostgresPagesRepositoryI extends JpaRepository<PageModel, Strin
     """)
     List<PageModel> findByNameLike(@Param("name") String name);
 
-    @Query(value = "SELECT * FROM page_model WHERE :userId = ANY(members)", nativeQuery = true)
+    @Query(value = "SELECT * FROM pages WHERE :userId = ANY(members)", nativeQuery = true)
     List<PageModel> findByUserId(@Param("userId") String userId);
 
 }
