@@ -20,7 +20,7 @@ public class GetByIdMapper {
             page.getProfileImage(),
             page.getShortDescription(),
             page.getLongDescription(),
-            page.getOwnerId(),
+            page.getOwner(),
             page.getMembers(),
             page.getPageType()
         );
