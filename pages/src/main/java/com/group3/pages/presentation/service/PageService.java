@@ -4,9 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.pages.config.helpers.SecretKeyHelper;
-import com.group3.pages.data.repository.ImagesRepository;
-import com.group3.pages.data.repository.PageRepository;
-import com.group3.pages.data.repository.UserRepository;
+import com.group3.pages.data.repository.*;
 import com.group3.pages.domain.dto.mapper.PageMapper;
 import com.group3.pages.domain.dto.request.*;
 import com.group3.pages.domain.dto.response.GetPageByIdRes;
@@ -16,7 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -26,9 +26,13 @@ public class PageService implements PageServiceI{
 
     private final SecretKeyHelper secretKeyHelper;
 
+    private final CatalogRepository catalogRepository;
+
     private final PageRepository pageRepository;
 
     private final UserRepository userRepository;
+
+    private final ProfileRepository profileRepository;
 
     private final ImagesRepository imagesRepository;
 
@@ -40,26 +44,24 @@ public class PageService implements PageServiceI{
 
         Page page = new Page();
 
-        page.setName(dto.getName());
-        page.setOwnerId(user.getId());
-        page.setMembers(List.of(user.getId()));
+        PageType pageType = this.catalogRepository.getById(dto.getIdPageType());
+        if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
 
+        page.setPageType(pageType);
+
+        UserProfile owner = this.profileRepository.getById(user.getId());
+        if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        page.setOwner(owner);
+        page.setMembers(List.of(owner));
+
+        page.setName(dto.getName());
         page.setPortraitImage("");
         page.setProfileImage("");
         page.setShortDescription("¡New page!");
         page.setLongDescription("¡New page!");
 
         page.setStatus(Status.ACTIVE);
-
-        /*
-        PageType pageType = this.catalogRepository.getPageTypeById(dto.getIdPageType());
-
-        if(pageType == null){
-            throw new ErrorHandler(ErrorType.PAGE_TYPE_NOTFOUND);
-        }
-
-        page.setPageType(pageType);
-        */
 
         this.pageRepository.save(page);
     }
@@ -69,8 +71,7 @@ public class PageService implements PageServiceI{
         Page page = this.pageRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        /*User owner = this.userRepository.getById(page.getOwnerId());
-        if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);*/
+        if(page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         return PageMapper.getPage().toResponse(page);
     }
@@ -94,7 +95,7 @@ public class PageService implements PageServiceI{
 
         Page page = this.pageRepository.getById(dto.getPageId());
 
-        boolean isOwner = page.getOwnerId().equals(user.getId());
+        boolean isOwner = page.getOwner().getId().equals(user.getId());
         boolean isAdmin = user.getRoles().contains(Role.ADMIN);
         boolean isModerator = user.getRoles().contains(Role.MODERATOR);
 
@@ -115,7 +116,7 @@ public class PageService implements PageServiceI{
         Page page = this.pageRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        if (!page.getOwnerId().equals(user.getId())) {
+        if (!page.getOwner().getId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -124,7 +125,6 @@ public class PageService implements PageServiceI{
             if (profileImage != null) {
                 this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
             }
-
             String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
             page.setProfileImage(profileId);
         }
@@ -139,32 +139,36 @@ public class PageService implements PageServiceI{
             page.setPortraitImage(portraitId);
         }
 
-        dto.getMembers().forEach(id -> {
-            User userVerify = userRepository.getById(id);
+        dto.getMembers().stream()
+            .map(profileRepository::getById)
+            .forEach(userProfile -> {
+                if (userProfile == null) {
+                    throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+                }
+            });
 
-            if (userVerify == null) {
-                throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-            }
-        });
+        List<UserProfile> members = page.getMembers();
+        Set<UserProfile> existingMembers = new HashSet<>(members);
 
-        /*
+        dto.getMembers()
+            .forEach(id -> {
+                UserProfile userProfile = profileRepository.getById(id);
+                if (existingMembers.add(userProfile)){
+                    members.add(userProfile);
+                }
+            });
 
-        PageType pageType = this.catalogRepository.getPageTypeById(dto.getIdPageType());
+        page.setMembers(members);
 
-        if(pageType == null){
-            throw new ErrorHandler(ErrorType.PAGE_TYPE_NOTFOUND);
-        }
+        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        if(pageType == null)throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
 
         page.setPageType(pageType);
-
-        */
-
         page.setName(dto.getName());
         page.setShortDescription(dto.getShortDescription());
         page.setLongDescription(dto.getLongDescription());
 
-
-        Page edited = this.pageRepository.update(page);
+        this.pageRepository.update(page);
     }
     
 }
