@@ -31,9 +31,8 @@ public class PageController {
         @RequestBody Map<String, Object> payload
     ){
         CreatePageReq dto = PageMapper.create().toRequest(token, payload);
-        this.pageService.create(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.pageService.create(dto));
     }
 
     @GetMapping("/get-by-user-id/{userId}")

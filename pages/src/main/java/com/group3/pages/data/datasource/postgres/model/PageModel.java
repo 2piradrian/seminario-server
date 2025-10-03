@@ -38,6 +38,6 @@ public class PageModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private String idPageType;
+    private String pageTypeId;
 
 }
