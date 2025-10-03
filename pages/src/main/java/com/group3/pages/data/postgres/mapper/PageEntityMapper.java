@@ -2,6 +2,8 @@ package com.group3.pages.data.postgres.mapper;
 
 import com.group3.entity.Page;
 import com.group3.entity.PageType;
+import com.group3.entity.Style;
+import com.group3.entity.UserProfile;
 import com.group3.pages.data.postgres.model.PageModel;
 
 import java.util.Collections;
@@ -11,6 +13,9 @@ import java.util.stream.Collectors;
 public class PageEntityMapper {
     
     public static Page toDomain(PageModel pageModel) {
+        UserProfile owner = new UserProfile();
+        owner.setId(pageModel.getOwnerId());
+
         return new Page(
             pageModel.getId(),
             pageModel.getName(),
@@ -18,8 +23,15 @@ public class PageEntityMapper {
             pageModel.getProfileImage(),
             pageModel.getShortDescription(),
             pageModel.getLongDescription(),
-            pageModel.getOwnerId(),
-            pageModel.getMembers(),
+            owner,
+            pageModel.getMembers()
+                .stream()
+                .map(id -> {
+                    UserProfile member = new UserProfile();
+                    member.setId(id);
+                    return member;
+                })
+                .collect(java.util.stream.Collectors.toList()),
             pageModel.getStatus(),
             new PageType(pageModel.getIdPageType(), null)
         );
@@ -33,8 +45,11 @@ public class PageEntityMapper {
             page.getProfileImage(),
             page.getShortDescription(),
             page.getLongDescription(),
-            page.getOwnerId(),
-            page.getMembers(),
+            page.getOwner().getId(),
+            page.getMembers()
+                .stream()
+                .map(UserProfile::getId)
+                .collect(Collectors.toList()),
             page.getStatus(),
             page.getPageType().getId()
         );
