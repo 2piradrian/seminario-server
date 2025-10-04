@@ -34,6 +34,8 @@ public class PostService implements PostServiceI {
 
     private final PagesRepository pagesRepository;
 
+    private final ProfilesRepository profilesRepository;
+
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
         Post post = this.postRepository.getById(dto.getPostId());
@@ -54,6 +56,13 @@ public class PostService implements PostServiceI {
     @Override
     public GetPostPageRes getPosts(GetPostPageReq dto) {
         PageContent<Post> posts = this.postRepository.getAllPosts(dto.getPage(), dto.getSize());
+
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor() != null) {
+                UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+                post.setAuthor(fullProfile);
+            }
+        }
 
         return PostMapper.getPage().toResponse(posts);
     }
