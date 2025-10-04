@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface PagesServerRepositoryI {
 
     @GetMapping("/api/pages/get-by-id/{pageId}")
-    GetPageByIdRes getById( @PathVariable(value = "pageId") String pageId);
+    GetPageByIdRes getById(@PathVariable("pageId") String pageId);
 
 }

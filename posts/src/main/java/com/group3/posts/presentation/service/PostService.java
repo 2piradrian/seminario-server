@@ -62,6 +62,10 @@ public class PostService implements PostServiceI {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
+            if (post.getPage() != null) {
+                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
+                post.setPage(fullPage);
+            }
         }
 
         return PostMapper.getPage().toResponse(posts);
@@ -75,6 +79,10 @@ public class PostService implements PostServiceI {
             if (post.getAuthor() != null) {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
+            }
+            if (post.getPage() != null) {
+                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
+                post.setPage(fullPage);
             }
         }
 
@@ -92,6 +100,10 @@ public class PostService implements PostServiceI {
             if (post.getAuthor() != null) {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
+            }
+            if (post.getPage() != null) {
+                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
+                post.setPage(fullPage);
             }
         }
 
