@@ -20,7 +20,7 @@ public class EditPostReq {
 
     private final String base64Image;
 
-    public EditPostReq(String token, String postId, String title, String content, Category category, String base64Image) {
+    private EditPostReq(String token, String postId, String title, String content, Category category, String base64Image) {
         this.token = token;
         this.title = title;
         this.content = content;

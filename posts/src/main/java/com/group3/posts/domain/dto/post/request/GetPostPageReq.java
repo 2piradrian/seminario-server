@@ -11,7 +11,7 @@ public class GetPostPageReq {
 
     private final Integer size;
 
-    public GetPostPageReq(Integer page, Integer size) {
+    private GetPostPageReq(Integer page, Integer size) {
         this.page = page;
         this.size = size;
     }

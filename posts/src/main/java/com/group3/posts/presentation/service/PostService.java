@@ -82,6 +82,23 @@ public class PostService implements PostServiceI {
     }
 
     @Override
+    public GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Post> posts = this.postsRepository.getPostsByUserId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor() != null) {
+                UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+                post.setAuthor(fullProfile);
+            }
+        }
+
+        return PostMapper.getOwnPage().toResponse(posts);
+    }
+
+    @Override
     public CreatePostRes create(CreatePostReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);

@@ -11,6 +11,8 @@ public interface PostServiceI {
 
     GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto);
 
+    GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto);
+
     CreatePostRes create(CreatePostReq dto);
 
     EditPostRes edit(EditPostReq dto);

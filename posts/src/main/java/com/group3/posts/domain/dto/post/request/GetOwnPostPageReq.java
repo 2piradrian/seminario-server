@@ -5,26 +5,30 @@ import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetPostPageByProfileReq {
+public class GetOwnPostPageReq {
+
+    private final String token;
 
     private final Integer page;
 
     private final Integer size;
 
-    private final String profileId;
 
-    private GetPostPageByProfileReq(Integer page, Integer size, String profileId) {
+    private GetOwnPostPageReq(String token, Integer page, Integer size) {
         this.page = page;
         this.size = size;
-        this.profileId = profileId;
+        this.token = token;
     }
 
-    public static GetPostPageByProfileReq create(Integer page, Integer size, String profileId) {
+    public static GetOwnPostPageReq create(String token, Integer page, Integer size) {
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (page == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
-
         if (page < 0) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
@@ -32,16 +36,10 @@ public class GetPostPageByProfileReq {
         if (size == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
-
         if (size < 0) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (profileId == null || profileId.isBlank()) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        return new GetPostPageByProfileReq(page, size, profileId);
+        return new GetOwnPostPageReq(token, page, size);
     }
-
 }

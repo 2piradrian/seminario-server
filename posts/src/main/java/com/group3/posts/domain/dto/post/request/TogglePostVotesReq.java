@@ -14,7 +14,7 @@ public class TogglePostVotesReq {
 
     private final String postId;
 
-    public TogglePostVotesReq(String token, Vote voteType, String postId) {
+    private TogglePostVotesReq(String token, Vote voteType, String postId) {
         this.token = token;
         this.voteType = voteType;
         this.postId = postId;
