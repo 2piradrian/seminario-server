@@ -53,12 +53,12 @@ public class GatewayBeans {
             )
             .route(r -> r
                     .path("/api/posts/**")
-                    .filters(f -> f.rewritePath("/api/posts/(?<segment>.*)", "/posts-server/api/${segment}"))
+                    .filters(f -> f.rewritePath("/api/posts/(?<segment>.*)", "/posts-server/api/posts/${segment}"))
                     .uri("lb://posts-server")
             )
             .route(r -> r
                     .path("/api/comments/**")
-                    .filters(f -> f.rewritePath("/api/comments/(?<segment>.*)", "/posts-server/api/${segment}"))
+                    .filters(f -> f.rewritePath("/api/comments/(?<segment>.*)", "/posts-server/api/comments/${segment}"))
                     .uri("lb://posts-server")
             )
             .route(r -> r

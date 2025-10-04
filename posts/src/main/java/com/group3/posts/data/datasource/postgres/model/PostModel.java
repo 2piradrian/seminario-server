@@ -1,6 +1,5 @@
 package com.group3.posts.data.datasource.postgres.model;
 
-import com.group3.entity.Category;
 import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +36,6 @@ public class PostModel {
     private Set<String> upvoters;
 
     private Set<String> downvoters;
-
-    private String category;
 
     private LocalDateTime createdAt;
 

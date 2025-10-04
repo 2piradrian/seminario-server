@@ -92,7 +92,6 @@ public class PageService implements PageServiceI{
         if(user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<Page> pages = this.pageRepository.getByUserId(dto.getUserId());
-        log.info(pages.toString());
 
         return PageMapper.getUserPages().toResponse(pages);
     }

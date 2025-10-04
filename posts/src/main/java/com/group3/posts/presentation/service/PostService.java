@@ -1,13 +1,11 @@
 package com.group3.posts.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
-import com.group3.posts.data.repository.CatalogRepository;
-import com.group3.posts.data.repository.ImagesRepository;
-import com.group3.posts.data.repository.PostRepository;
-import com.group3.posts.data.repository.UserRepository;
+import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -33,7 +32,7 @@ public class PostService implements PostServiceI {
 
     private final ImagesRepository imagesRepository;
 
-    private final CatalogRepository catalogRepository;
+    private final PagesRepository pagesRepository;
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
@@ -64,12 +63,24 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Category category = this.catalogRepository.getCategoryById(dto.getCategory().getId());
-        if (category == null) throw new ErrorHandler(ErrorType.CATEGORY_NOT_FOUND);
-
-        // TODO: Search page and verify if is member
         UserProfile author = UserProfile.builder().id(user.getId()).build();
         Post post = new Post();
+
+        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
+        if (type == PrefixedUUID.EntityType.USER) {
+            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            post.setPage(Page.builder().id(null).build());
+            post.setAuthor(author);
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
+            Page page = this.pagesRepository.getById(dto.getProfileId());
+
+            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            }
+            post.setAuthor(author);
+            post.setPage(Page.builder().id(dto.getProfileId()).build());
+        }
 
         if (dto.getBase64Image() != null) {
             String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
@@ -79,7 +90,6 @@ public class PostService implements PostServiceI {
         post.setAuthor(author);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        post.setCategory(dto.getCategory());
         post.setStatus(Status.ACTIVE);
 
         post.setViews(0);
@@ -121,7 +131,6 @@ public class PostService implements PostServiceI {
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-        post.setCategory(dto.getCategory());
         post.setUpdatedAt(LocalDateTime.now());
 
         Post edited = this.postRepository.update(post);

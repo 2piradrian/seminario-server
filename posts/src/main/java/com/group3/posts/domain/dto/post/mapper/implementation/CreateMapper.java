@@ -14,8 +14,7 @@ public class CreateMapper {
             token,
             (String) payload.get("title"),
             (String) payload.get("content"),
-            (String) payload.get("pageId"),
-            (Category) payload.get("category"),
+            (String) payload.get("profileId"),
             (String) payload.get("base64Image")
         );
     }

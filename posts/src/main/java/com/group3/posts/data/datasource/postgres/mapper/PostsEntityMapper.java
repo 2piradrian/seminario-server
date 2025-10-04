@@ -19,11 +19,9 @@ public class PostsEntityMapper {
             postModel.getImageId(),
             postModel.getUpvoters(),
             postModel.getDownvoters(),
-            Category.builder().id(postModel.getCategory()).build(),
             postModel.getCreatedAt(),
             postModel.getUpdatedAt(),
             postModel.getStatus()
-
         );
     }
 
@@ -38,7 +36,6 @@ public class PostsEntityMapper {
             post.getImageId(),
             post.getUpvoters(),
             post.getDownvoters(),
-            post.getCategory().getId(),
             post.getCreatedAt(),
             post.getUpdatedAt(),
             post.getStatus()

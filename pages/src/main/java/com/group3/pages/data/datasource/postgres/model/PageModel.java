@@ -16,7 +16,6 @@ import java.util.List;
 public class PageModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(unique = true)

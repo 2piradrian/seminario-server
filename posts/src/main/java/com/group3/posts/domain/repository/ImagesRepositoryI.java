@@ -5,4 +5,5 @@ public interface ImagesRepositoryI {
     String upload(String base64Image, String secret);
 
     void delete(String imageId, String secret);
+
 }

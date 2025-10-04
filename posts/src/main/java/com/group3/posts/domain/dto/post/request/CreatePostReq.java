@@ -14,22 +14,19 @@ public class CreatePostReq {
 
     private final String content;
 
-    private final String pageId;
-
-    private final Category category;
+    private final String profileId;
 
     private final String base64Image;
 
-    private CreatePostReq(String token, String title, String content, String pageId, Category category, String base64Image) {
+    private CreatePostReq(String token, String title, String content, String profileId, String base64Image) {
         this.token = token;
         this.title = title;
         this.content = content;
-        this.pageId = pageId;
-        this.category = category;
+        this.profileId = profileId;
         this.base64Image = base64Image;
     }
 
-    public static CreatePostReq create(String token, String title, String content, String pageId, Category category, String base64Image) {
+    public static CreatePostReq create(String token, String title, String content, String profileId, String base64Image) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -53,11 +50,11 @@ public class CreatePostReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (category == null) {
+        if (profileId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new CreatePostReq(token, title, content, pageId, category, base64Image);
+        return new CreatePostReq(token, title, content, profileId, base64Image);
     }
 
 }

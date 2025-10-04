@@ -32,8 +32,6 @@ public class Post {
 
     private Set<String> downvoters;
 
-    private Category category;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
