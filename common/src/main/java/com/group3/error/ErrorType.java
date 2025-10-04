@@ -31,6 +31,7 @@ public enum ErrorType {
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
     PAGETYPE_NOT_FOUND("Page type not found", 404),
+    PAGENAME_ALREADY_EXISTS("Page name already exists", 400),
 
     INTERNAL_ERROR("Internal error", 500);
 
