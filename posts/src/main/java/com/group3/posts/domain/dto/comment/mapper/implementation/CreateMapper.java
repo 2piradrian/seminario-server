@@ -12,6 +12,7 @@ public class CreateMapper {
                 token,
                 (String) payload.get("postId"),
                 (String) payload.get("content"),
+                (String) payload.get("profileId"),
                 (String) payload.get("replyTo")
         );
     }
