@@ -43,6 +43,9 @@ public class PageService implements PageServiceI{
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        Page existsPage = this.pageRepository.getByName(dto.getName());
+        if (existsPage != null) throw new ErrorHandler(ErrorType.PAGENAME_ALREADY_EXISTS);
+
         Page page = new Page();
 
         PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
@@ -84,7 +87,8 @@ public class PageService implements PageServiceI{
         User user = this.userRepository.getById(dto.getUserId());
         if(user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        List<Page> pages = this.pageRepository.findByUserId(dto.getUserId());
+        List<Page> pages = this.pageRepository.getByUserId(dto.getUserId());
+        log.info(pages.toString());
 
         return PageMapper.getUserPages().toResponse(pages);
     }

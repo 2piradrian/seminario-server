@@ -8,9 +8,11 @@ public interface PageRepositoryI {
     
     Page getById(String pageId);
 
-    List<Page> findByName(String name);
+    List<Page> getByUserId(String name);
 
-    List<Page> findByUserId(String userId);
+    List<Page> getByNameLike(String userId);
+
+    Page getByName(String name);
 
     Page save(Page page);
 

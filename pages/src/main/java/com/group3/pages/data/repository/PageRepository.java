@@ -23,15 +23,21 @@ public class PageRepository implements PageRepositoryI {
     }
 
     @Override
-    public List<Page> findByUserId(String userId) {
+    public List<Page> getByUserId(String userId) {
         List<PageModel> pageModels = this.repository.findByUserId(userId);
-        return pageModels.isEmpty() ? PageEntityMapper.toDomain(pageModels) : List.of();
+        return pageModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageModels);
     }
 
     @Override
-    public List<Page> findByName(String name) {
+    public List<Page> getByNameLike(String name) {
         List<PageModel> pageModels = this.repository.findByNameLike(name);
-        return pageModels.isEmpty() ? PageEntityMapper.toDomain(pageModels) : List.of();
+        return pageModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageModels);
+    }
+
+    @Override
+    public Page getByName(String name) {
+        PageModel pageModel = this.repository.findByName(name);
+        return pageModel != null ? PageEntityMapper.toDomain(pageModel) : null;
     }
 
     @Override

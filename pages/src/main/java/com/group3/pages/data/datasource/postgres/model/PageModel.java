@@ -19,6 +19,7 @@ public class PageModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(unique = true)
     private String name;
 
     @Column(columnDefinition = "TEXT")
@@ -33,6 +34,9 @@ public class PageModel {
 
     private String ownerId;
 
+    @ElementCollection
+    @CollectionTable(name = "page_members", joinColumns = @JoinColumn(name = "page_id"))
+    @Column(name = "user_id")
     private List<String> members;
 
     @Enumerated(EnumType.STRING)
