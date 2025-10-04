@@ -1,5 +1,6 @@
 package com.group3.pages.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
@@ -47,6 +48,9 @@ public class PageService implements PageServiceI{
         if (existsPage != null) throw new ErrorHandler(ErrorType.PAGENAME_ALREADY_EXISTS);
 
         Page page = new Page();
+
+        String pageId = PrefixedUUID.generate(PrefixedUUID.EntityType.PAGE).toString();
+        page.setId(pageId);
 
         PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
