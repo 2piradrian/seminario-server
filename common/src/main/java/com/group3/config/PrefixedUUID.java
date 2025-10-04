@@ -10,7 +10,10 @@ public class PrefixedUUID {
 
     public enum EntityType {
         USER((byte) 0b0001),
-        PAGE((byte) 0b0010);
+        PAGE((byte) 0b0010),
+        POST((byte) 0b0011),
+        COMMENT((byte) 0b0100),
+        IMAGE((byte) 0b0101);
 
         private final byte prefix;
 
