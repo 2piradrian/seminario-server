@@ -25,7 +25,6 @@ public class GetByIdMapper {
             post.getViews(),
             post.getUpvoters().size(),
             post.getDownvoters().size(),
-            post.getCategory(),
             post.getCreatedAt()
         );
     }

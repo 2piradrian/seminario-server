@@ -28,8 +28,6 @@ public class GetPostByIdRes {
 
     private final Integer downvoters;
 
-    private final Category category;
-
     private final LocalDateTime createdAt;
 
 }
