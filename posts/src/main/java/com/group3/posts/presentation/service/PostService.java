@@ -55,7 +55,6 @@ public class PostService implements PostServiceI {
 
         this.postsRepository.update(post);
 
-        // TODO: Search page
         return PostMapper.getById().toResponse(post);
     }
 
@@ -140,8 +139,8 @@ public class PostService implements PostServiceI {
             post.setPage(Page.builder().id(dto.getProfileId()).build());
         }
 
-        if (dto.getBase64Image() != null) {
-            String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
+        if (dto.getImage() != null) {
+            String imageId = this.imagesRepository.upload(dto.getImage(), secretKeyHelper.getSecret());
             post.setImageId(imageId);
         }
 
