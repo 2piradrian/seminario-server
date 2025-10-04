@@ -144,6 +144,10 @@ public class CommentService implements CommentServiceI {
         Comment comment = this.commentRepository.getById(dto.getCommentId());
         if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
 
+        if (comment.getStatus() == Status.DELETED){
+            throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND)
+        }
+
         boolean isAuthor = comment.getAuthor().getId().equals(user.getId());
         boolean isAdmin = user.getRoles().contains(Role.ADMIN);
         boolean isModerator = user.getRoles().contains(Role.MODERATOR);
