@@ -1,6 +1,7 @@
 package com.group3.posts.data.datasource.postgres.mapper;
 
 import com.group3.entity.Comment;
+import com.group3.entity.Page;
 import com.group3.entity.UserProfile;
 import com.group3.posts.data.datasource.postgres.model.CommentModel;
 
@@ -17,6 +18,7 @@ public class CommentEntityMapper {
                 commentModel.getDownvoters(),
                 commentModel.getCreatedAt(),
                 commentModel.getUpdatedAt(),
+                Page.builder().id(commentModel.getPageId()).build(),
                 commentModel.getStatus()
         );
     }
@@ -26,6 +28,7 @@ public class CommentEntityMapper {
                 comment.getId(),
                 comment.getAuthor().getId(),
                 comment.getPostId(),
+                comment.getPage().getId(),
                 comment.getReplyTo() != null ? toModel(comment.getReplyTo()) : null,
                 comment.getContent(),
                 comment.getUpvoters(),

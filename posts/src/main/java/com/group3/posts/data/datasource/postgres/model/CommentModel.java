@@ -25,6 +25,8 @@ public class CommentModel {
     @Column(name = "post_id", nullable = false)
     private String postId;
 
+    private String pageId;
+
     @ManyToOne
     private CommentModel replyTo;
 
