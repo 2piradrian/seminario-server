@@ -145,7 +145,7 @@ public class CommentService implements CommentServiceI {
         if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
 
         if (comment.getStatus() == Status.DELETED){
-            throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND)
+            throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
         }
 
         boolean isAuthor = comment.getAuthor().getId().equals(user.getId());
