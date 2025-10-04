@@ -32,6 +32,8 @@ public class Comment {
 
     private LocalDateTime updatedAt;
 
+    private Page page;
+
     private Status status;
 
 }
