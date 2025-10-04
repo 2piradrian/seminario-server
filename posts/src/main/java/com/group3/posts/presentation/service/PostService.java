@@ -41,8 +41,14 @@ public class PostService implements PostServiceI {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        User author = this.userRepository.getById(post.getAuthor().getId());
-        if(author == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (post.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+            post.setAuthor(fullProfile);
+        }
+        if (post.getPage().getId() != null) {
+            Page fullPage = this.pagesRepository.getById(post.getPage().getId());
+            post.setPage(fullPage);
+        }
 
         Integer views = post.getViews();
         post.setViews(views + 1);
@@ -50,7 +56,7 @@ public class PostService implements PostServiceI {
         this.postsRepository.update(post);
 
         // TODO: Search page
-        return PostMapper.getById().toResponse(post, author, new Page());
+        return PostMapper.getById().toResponse(post);
     }
 
     @Override

@@ -14,11 +14,11 @@ public class GetByIdMapper {
         );
     }
 
-    public GetPostByIdRes toResponse(Post post, User author, Page page) {
+    public GetPostByIdRes toResponse(Post post) {
         return new GetPostByIdRes(
-            author.getId(),
+            post.getAuthor(),
             post.getId(),
-            page.getId(),
+            post.getPage(),
             post.getImageId(),
             post.getTitle(),
             post.getContent(),

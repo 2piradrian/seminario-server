@@ -1,6 +1,8 @@
 package com.group3.posts.domain.dto.post.response;
 
 import com.group3.entity.Category;
+import com.group3.entity.Page;
+import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,11 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GetPostByIdRes {
 
-    private final String authorId;
+    private final UserProfile author;
 
     private final String postId;
 
-    private final String pageId;
+    private final Page page;
 
     private final String imageId;
 
