@@ -1,5 +1,6 @@
 package com.group3.users.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.Role;
 import com.group3.entity.Status;
 import com.group3.entity.Token;
@@ -74,7 +75,9 @@ public class AuthService implements AuthServiceI {
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
         User user = new User();
+        String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
 
+        user.setId(userId);
         user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
         user.setEmail(dto.getEmail());
         user.setRoles(List.of(Role.USER));
