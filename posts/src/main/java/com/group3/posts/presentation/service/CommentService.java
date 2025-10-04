@@ -1,9 +1,11 @@
 package com.group3.posts.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.repository.CommentRepository;
+import com.group3.posts.data.repository.PagesRepository;
 import com.group3.posts.data.repository.PostsRepository;
 import com.group3.posts.data.repository.UserRepository;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -29,6 +32,8 @@ public class CommentService implements CommentServiceI {
     private final PostsRepository postsRepository;
 
     private final UserRepository userRepository;
+
+    private final PagesRepository pagesRepository;
 
     @Override
     public GetCommentPageRes getComments(GetCommentPageReq dto) {
@@ -60,7 +65,22 @@ public class CommentService implements CommentServiceI {
         Comment comment = new Comment();
         UserProfile author = UserProfile.builder().id(user.getId()).build();
 
-        comment.setAuthor(author);
+        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
+        if (type == PrefixedUUID.EntityType.USER) {
+            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            comment.setPage(Page.builder().id(null).build());
+            comment.setAuthor(author);
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
+            Page page = this.pagesRepository.getById(dto.getProfileId());
+
+            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            }
+            comment.setAuthor(author);
+            comment.setPage(Page.builder().id(dto.getProfileId()).build());
+        }
+
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
         comment.setUpvoters(Set.of());
