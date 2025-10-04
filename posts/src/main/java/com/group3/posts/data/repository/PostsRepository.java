@@ -20,12 +20,15 @@ public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
 
+    private int normalizePage(Integer page) {
+        return (page != null && page > 0) ? page - 1 : 0;
+    }
+
     @Override
     public Post getById(String postId) {
         PostModel postModel = this.repository.findById(postId).orElse(null);
 
         if (postModel == null) return null;
-
         if (postModel.getStatus().equals(Status.DELETED)) return null;
 
         return PostsEntityMapper.toDomain(postModel);
@@ -33,12 +36,57 @@ public class PostsRepository implements PostRepositoryI {
 
     @Override
     public PageContent<Post> getAllPosts(Integer page, Integer size) {
-        Page<PostModel> postModels  = this.repository.findAll(Status.DELETED, PageRequest.of(page, size));
+        int pageIndex = normalizePage(page);
 
-        return new PageContent<Post>(
-                postModels.getContent().stream().map(PostsEntityMapper::toDomain).collect(Collectors.toList()),
-                postModels.getNumber(),
-                postModels.hasNext() ? postModels.getNumber() + 1 : null
+        Page<PostModel> postModels = this.repository.findAll(
+                Status.DELETED,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber() + 1,
+                postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
+    @Override
+    public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<PostModel> postModels = repository.findByAuthorId(
+                userId,
+                Status.DELETED,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber() + 1,
+                postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
+    @Override
+    public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<PostModel> postModels = repository.findByPageId(
+                pageId,
+                Status.DELETED,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber() + 1,
+                postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
 
@@ -56,32 +104,6 @@ public class PostsRepository implements PostRepositoryI {
         PostModel updated = this.repository.save(postModel);
 
         return PostsEntityMapper.toDomain(updated);
-    }
-
-    @Override
-    public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
-        Page<PostModel> postModels = repository.findByAuthorId(userId, Status.DELETED, PageRequest.of(page, size));
-
-        return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber(),
-                postModels.hasNext() ? postModels.getNumber() + 1 : null
-        );
-    }
-
-    @Override
-    public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
-        Page<PostModel> postModels = repository.findByPageId(pageId, Status.DELETED, PageRequest.of(page, size));
-
-        return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber(),
-                postModels.hasNext() ? postModels.getNumber() + 1 : null
-        );
     }
 
 }

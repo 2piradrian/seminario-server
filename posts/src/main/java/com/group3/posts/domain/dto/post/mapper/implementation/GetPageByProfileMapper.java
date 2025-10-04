@@ -13,8 +13,8 @@ public class GetPageByProfileMapper {
 
     public GetPostPageByProfileReq toRequest(Map<String, Object> payload) {
         return GetPostPageByProfileReq.create(
-            (Integer) payload.get("size"),
             (Integer) payload.get("page"),
+            (Integer) payload.get("size"),
             (String) payload.get("profileId")
         );
     }
