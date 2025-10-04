@@ -4,7 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.repository.CommentRepository;
-import com.group3.posts.data.repository.PostRepository;
+import com.group3.posts.data.repository.PostsRepository;
 import com.group3.posts.data.repository.UserRepository;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.*;
@@ -26,13 +26,13 @@ public class CommentService implements CommentServiceI {
 
     private final CommentRepository commentRepository;
 
-    private final PostRepository postRepository;
+    private final PostsRepository postsRepository;
 
     private final UserRepository userRepository;
 
     @Override
     public GetCommentPageRes getComments(GetCommentPageReq dto) {
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         if (post.getStatus() == Status.DELETED) {
@@ -50,7 +50,7 @@ public class CommentService implements CommentServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         if (post.getStatus() != Status.ACTIVE) {

@@ -26,7 +26,7 @@ public class PostService implements PostServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
 
-    private final PostRepository postRepository;
+    private final PostsRepository postsRepository;
 
     private final UserRepository userRepository;
 
@@ -38,7 +38,7 @@ public class PostService implements PostServiceI {
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         User author = this.userRepository.getById(post.getAuthor().getId());
@@ -47,7 +47,7 @@ public class PostService implements PostServiceI {
         Integer views = post.getViews();
         post.setViews(views + 1);
 
-        this.postRepository.update(post);
+        this.postsRepository.update(post);
 
         // TODO: Search page
         return PostMapper.getById().toResponse(post, author, new Page());
@@ -55,7 +55,7 @@ public class PostService implements PostServiceI {
 
     @Override
     public GetPostPageRes getPosts(GetPostPageReq dto) {
-        PageContent<Post> posts = this.postRepository.getAllPosts(dto.getPage(), dto.getSize());
+        PageContent<Post> posts = this.postsRepository.getAllPosts(dto.getPage(), dto.getSize());
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor() != null) {
@@ -107,7 +107,7 @@ public class PostService implements PostServiceI {
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
 
-        Post saved = this.postRepository.save(post);
+        Post saved = this.postsRepository.save(post);
 
         return PostMapper.create().toResponse(saved);
     }
@@ -117,7 +117,7 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         if (!post.getAuthor().getId().equals(user.getId())) {
@@ -142,7 +142,7 @@ public class PostService implements PostServiceI {
         post.setContent(dto.getContent());
         post.setUpdatedAt(LocalDateTime.now());
 
-        Post edited = this.postRepository.update(post);
+        Post edited = this.postsRepository.update(post);
         return PostMapper.edit().toResponse(edited);
     }
 
@@ -151,7 +151,7 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         String userId = user.getId();
@@ -181,7 +181,7 @@ public class PostService implements PostServiceI {
         post.setUpvoters(upvoters);
         post.setDownvoters(downvoters);
 
-        this.postRepository.update(post);
+        this.postsRepository.update(post);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = this.postRepository.getById(dto.getPostId());
+        Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         boolean isAuthor = post.getAuthor().getId().equals(user.getId());
@@ -203,7 +203,7 @@ public class PostService implements PostServiceI {
         post.setUpdatedAt(LocalDateTime.now());
         post.setStatus(Status.DELETED);
 
-        this.postRepository.update(post);
+        this.postsRepository.update(post);
     }
 
 }

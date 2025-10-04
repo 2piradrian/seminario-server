@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
-public class PostRepository implements PostRepositoryI {
+public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
 
@@ -29,7 +29,6 @@ public class PostRepository implements PostRepositoryI {
         if (postModel.getStatus().equals(Status.DELETED)) return null;
 
         return PostsEntityMapper.toDomain(postModel);
-
     }
 
     @Override
@@ -41,7 +40,6 @@ public class PostRepository implements PostRepositoryI {
                 postModels.getNumber(),
                 postModels.hasNext() ? postModels.getNumber() + 1 : null
         );
-
     }
 
     @Override
@@ -59,4 +57,31 @@ public class PostRepository implements PostRepositoryI {
 
         return PostsEntityMapper.toDomain(updated);
     }
+
+    @Override
+    public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
+        Page<PostModel> postModels = repository.findByAuthorId(userId, Status.DELETED, PageRequest.of(page, size));
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber(),
+                postModels.hasNext() ? postModels.getNumber() + 1 : null
+        );
+    }
+
+    @Override
+    public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
+        Page<PostModel> postModels = repository.findByPageId(pageId, Status.DELETED, PageRequest.of(page, size));
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber(),
+                postModels.hasNext() ? postModels.getNumber() + 1 : null
+        );
+    }
+
 }
