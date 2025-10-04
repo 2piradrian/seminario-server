@@ -18,8 +18,10 @@ import java.util.List;
 public class UserModel {
 
     @Id
+    @Column(unique = true)
     private String id;
 
+    @Column(unique = true)
     private String email;
 
     private String password;

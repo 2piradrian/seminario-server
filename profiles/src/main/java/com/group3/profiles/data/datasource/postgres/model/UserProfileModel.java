@@ -16,8 +16,10 @@ import java.util.List;
 public class UserProfileModel {
 
     @Id
+    @Column(unique = true)
     private String id;
 
+    @Column(unique = true)
     private String email;
 
     private String name;
