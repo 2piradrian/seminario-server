@@ -4,10 +4,7 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.posts.data.repository.CommentRepository;
-import com.group3.posts.data.repository.PagesRepository;
-import com.group3.posts.data.repository.PostsRepository;
-import com.group3.posts.data.repository.UserRepository;
+import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
@@ -33,6 +30,8 @@ public class CommentService implements CommentServiceI {
 
     private final UserRepository userRepository;
 
+    private final ProfilesRepository profilesRepository;
+
     private final PagesRepository pagesRepository;
 
     @Override
@@ -46,6 +45,19 @@ public class CommentService implements CommentServiceI {
 
         PageContent<Comment> comments =
                 this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
+
+        comments.getContent().forEach(
+            comment -> {
+                if (comment.getAuthor().getId() != null) {
+                    UserProfile fullProfile = this.profilesRepository.getById(comment.getAuthor().getId());
+                    comment.setAuthor(fullProfile);
+                }
+                if (comment.getPage().getId() != null) {
+                    Page fullPage = this.pagesRepository.getById(comment.getPage().getId());
+                    comment.setPage(fullPage);
+                }
+            }
+        );
 
         return CommentMapper.getPage().toResponse(comments);
     }
