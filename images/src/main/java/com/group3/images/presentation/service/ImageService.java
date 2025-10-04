@@ -1,5 +1,6 @@
 package com.group3.images.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.images.config.helpers.CompressorHelper;
@@ -39,7 +40,8 @@ public class ImageService implements ImageServiceI {
 
         byte[] imageBytes = Base64.getDecoder().decode(dto.getBase64Image());
 
-        String fileName = UUID.randomUUID() + ".webp";
+        String imageId = PrefixedUUID.generate(PrefixedUUID.EntityType.IMAGE).toString();
+        String fileName = imageId + ".webp";
 
         byte[] processedImage = CompressorHelper.compressUntilUnderSize(imageBytes, 1);
 
