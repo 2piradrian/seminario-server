@@ -16,4 +16,5 @@ public interface PostServiceI {
     void  toggleVotes(TogglePostVotesReq dto);
 
     void delete(DeletePostReq dto);
+
 }

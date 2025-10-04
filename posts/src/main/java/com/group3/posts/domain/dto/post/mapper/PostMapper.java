@@ -4,9 +4,17 @@ import com.group3.posts.domain.dto.post.mapper.implementation.*;
 
 public class PostMapper {
 
-    public static CreateMapper create() { return new CreateMapper(); }
+    public static CreateMapper create() {
+        return new CreateMapper();
+    }
 
-    public static GetPageMapper getPage() { return new GetPageMapper(); }
+    public static GetPageMapper getPage() {
+        return new GetPageMapper();
+    }
+
+    public static GetPageByProfileMapper getPageByProfile() {
+        return new GetPageByProfileMapper();
+    }
 
     public static DeleteMapper delete() {
         return new DeleteMapper();
