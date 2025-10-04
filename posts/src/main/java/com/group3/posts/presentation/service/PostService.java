@@ -58,11 +58,11 @@ public class PostService implements PostServiceI {
         PageContent<Post> posts = this.postsRepository.getAllPosts(dto.getPage(), dto.getSize());
 
         for (Post post : posts.getContent()) {
-            if (post.getAuthor() != null) {
+            if (post.getAuthor().getId() != null) {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage() != null) {
+            if (post.getPage().getId() != null) {
                 Page fullPage = this.pagesRepository.getById(post.getPage().getId());
                 post.setPage(fullPage);
             }
@@ -76,11 +76,11 @@ public class PostService implements PostServiceI {
         PageContent<Post> posts = this.postsRepository.getPostsByUserId(dto.getProfileId(), dto.getPage(), dto.getSize());
 
         for (Post post : posts.getContent()) {
-            if (post.getAuthor() != null) {
+            if (post.getAuthor().getId() != null) {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage() != null) {
+            if (post.getPage().getId() != null) {
                 Page fullPage = this.pagesRepository.getById(post.getPage().getId());
                 post.setPage(fullPage);
             }
@@ -97,11 +97,11 @@ public class PostService implements PostServiceI {
         PageContent<Post> posts = this.postsRepository.getPostsByUserId(user.getId(), dto.getPage(), dto.getSize());
 
         for (Post post : posts.getContent()) {
-            if (post.getAuthor() != null) {
+            if (post.getAuthor().getId() != null) {
                 UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage() != null) {
+            if (post.getPage().getId() != null) {
                 Page fullPage = this.pagesRepository.getById(post.getPage().getId());
                 post.setPage(fullPage);
             }
