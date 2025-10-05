@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
@@ -26,9 +28,9 @@ public class GetPostByIdRes {
 
     private final Integer views;
 
-    private final Integer upvoters;
+    private final Set<String> upvoters;
 
-    private final Integer downvoters;
+    private final Set<String> downvoters;
 
     private final LocalDateTime createdAt;
 
