@@ -101,7 +101,7 @@ public class CommentService implements CommentServiceI {
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setStatus(Status.ACTIVE);
 
-        if (dto.getReplyTo() != null) {
+        if (dto.getReplyTo() != null && !dto.getReplyTo().isEmpty()) {
             Comment replyTo = this.commentRepository.getById(dto.getReplyTo());
             if (replyTo == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
             comment.setReplyTo(replyTo);

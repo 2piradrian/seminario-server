@@ -20,7 +20,7 @@ public class CommentController {
     private final CommentService service;
 
     @GetMapping("/get-comments")
-    public ResponseEntity<?> getByForumId(
+    public ResponseEntity<?> getById(
             @RequestParam(value = "postId") String postId,
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "page") Integer page
