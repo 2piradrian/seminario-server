@@ -20,6 +20,10 @@ public class CommentRepository implements CommentRepositoryI {
 
     private final PostgresCommentRepositoryI repository;
 
+    private int normalizePage(Integer page) {
+        return (page != null && page > 0) ? page - 1 : 0;
+    }
+
     @Override
     public Comment getById(String commentId) {
         CommentModel commentModel = this.repository.findById(commentId).orElse(null);
@@ -40,12 +44,16 @@ public class CommentRepository implements CommentRepositoryI {
 
     @Override
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
-        Page<CommentModel> commentModels = this.repository.findAllByPostId(postId, PageRequest.of(page, size));
+        int pageIndex = normalizePage(page);
 
-        return new PageContent<Comment>(
-            commentModels.getContent().stream().map(CommentEntityMapper::toDomain).collect(Collectors.toList()),
-            commentModels.getNumber(),
-            commentModels.hasNext() ? commentModels.getNumber() + 1 : null
+        Page<CommentModel> commentModels = this.repository.findAllByPostId(postId, PageRequest.of(pageIndex, size));
+
+        return new PageContent<>(
+                commentModels.getContent().stream()
+                        .map(CommentEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                commentModels.getNumber() + 1,
+                commentModels.hasNext() ? commentModels.getNumber() + 2 : null
         );
     }
 

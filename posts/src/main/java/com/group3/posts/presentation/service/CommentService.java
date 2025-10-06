@@ -39,10 +39,6 @@ public class CommentService implements CommentServiceI {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (post.getStatus() == Status.DELETED) {
-            throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-        }
-
         PageContent<Comment> comments =
                 this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
 
