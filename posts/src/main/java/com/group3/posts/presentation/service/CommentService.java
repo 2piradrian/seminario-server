@@ -70,12 +70,10 @@ public class CommentService implements CommentServiceI {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (post.getStatus() != Status.ACTIVE) {
-            throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
-        }
+        if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
 
         Comment comment = new Comment();
-        UserProfile author = UserProfile.builder().id(user.getId()).build();
+        UserProfile author = this.profilesRepository.getById(user.getId());
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
@@ -90,7 +88,7 @@ public class CommentService implements CommentServiceI {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
             comment.setAuthor(author);
-            comment.setPage(Page.builder().id(dto.getProfileId()).build());
+            comment.setPage(page);
         }
 
         comment.setPostId(post.getId());
@@ -108,8 +106,9 @@ public class CommentService implements CommentServiceI {
         }
 
         Comment saved = this.commentRepository.save(comment);
+        comment.setId(saved.getId());
 
-        return CommentMapper.create().toResponse(saved);
+        return CommentMapper.create().toResponse(comment);
     }
 
     @Override

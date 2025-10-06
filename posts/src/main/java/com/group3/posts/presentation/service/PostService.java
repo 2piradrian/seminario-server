@@ -136,7 +136,7 @@ public class PostService implements PostServiceI {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
             post.setAuthor(author);
-            post.setPage(Page.builder().id(dto.getProfileId()).build());
+            post.setPage(page);
         }
 
         if (dto.getImage() != null) {

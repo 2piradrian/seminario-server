@@ -19,7 +19,16 @@ public class CreateMapper {
 
     public CreateCommentRes toResponse(Comment comment) {
         return new CreateCommentRes(
-                comment.getId()
+                comment.getId(),
+                comment.getAuthor(),
+                comment.getPostId(),
+                comment.getReplyTo(),
+                comment.getContent(),
+                comment.getUpvoters(),
+                comment.getDownvoters(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt(),
+                comment.getPage()
         );
     }
 
