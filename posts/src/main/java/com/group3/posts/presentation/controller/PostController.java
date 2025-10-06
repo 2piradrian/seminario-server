@@ -77,9 +77,8 @@ public class PostController {
             @RequestBody Map<String, Object> payload
     ) {
         TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
-        this.service.toggleVotes(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @DeleteMapping("/delete")
