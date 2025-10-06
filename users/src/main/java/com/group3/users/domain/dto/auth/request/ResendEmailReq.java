@@ -19,8 +19,7 @@ public class ResendEmailReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new ResendEmailReq(email);
-
+        return new ResendEmailReq(email.toLowerCase());
     }
 
 
