@@ -19,7 +19,7 @@ public class GetCommentPageReq {
         this.size = size;
     }
 
-    public static GetCommentPageReq create(String postId, Integer size, Integer page) {
+    public static GetCommentPageReq create(String postId, Integer page, Integer size) {
 
         if (postId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -41,6 +41,6 @@ public class GetCommentPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetCommentPageReq(postId, size, page);
+        return new GetCommentPageReq(postId, page, size);
     }
 }

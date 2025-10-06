@@ -19,13 +19,11 @@ public class CommentController {
 
     private final CommentService service;
 
-    @GetMapping("/get-comments")
+    @PostMapping("/get-comments")
     public ResponseEntity<?> getById(
-            @RequestParam(value = "postId") String postId,
-            @RequestParam(value = "size") Integer size,
-            @RequestParam(value = "page") Integer page
+            @RequestBody Map<String, Object> payload
     ) {
-        GetCommentPageReq dto = CommentMapper.getPage().toRequest(postId, size, page);
+        GetCommentPageReq dto = CommentMapper.getPage().toRequest(payload);
 
         return ResponseEntity.ok(this.service.getComments(dto));
     }
