@@ -17,7 +17,7 @@ public interface PostServiceI {
 
     EditPostRes edit(EditPostReq dto);
 
-    void  toggleVotes(TogglePostVotesReq dto);
+    TogglePostVotesRes toggleVotes(TogglePostVotesReq dto);
 
     void delete(DeletePostReq dto);
 

@@ -1,6 +1,9 @@
 package com.group3.posts.domain.dto.post.mapper.implementation;
 
+import com.group3.entity.PageContent;
+import com.group3.entity.Post;
 import com.group3.posts.domain.dto.post.request.TogglePostVotesReq;
+import com.group3.posts.domain.dto.post.response.TogglePostVotesRes;
 
 import java.util.Map;
 
@@ -11,6 +14,12 @@ public class ToggleVotesMapper {
             token,
             (String) payload.get("voteType"),
             (String) payload.get("postId")
+        );
+    }
+
+    public TogglePostVotesRes toResponse(Post post) {
+        return new TogglePostVotesRes(
+            post
         );
     }
 }

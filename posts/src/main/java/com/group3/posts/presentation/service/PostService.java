@@ -6,6 +6,7 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
+import com.group3.posts.domain.dto.comment.mapper.implementation.ToggleVotesMapper;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -195,7 +196,7 @@ public class PostService implements PostServiceI {
     }
 
     @Override
-    public void toggleVotes(TogglePostVotesReq dto) {
+    public TogglePostVotesRes toggleVotes(TogglePostVotesReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -230,6 +231,7 @@ public class PostService implements PostServiceI {
         post.setDownvoters(downvoters);
 
         this.postsRepository.update(post);
+        return PostMapper.toggleVotes().toResponse(post);
     }
 
     @Override
