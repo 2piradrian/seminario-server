@@ -32,6 +32,10 @@ public class CommentRepository implements CommentRepositoryI {
             return null;
         }
 
+        if (commentModel.getStatus().equals(Status.INACTIVE)){
+            return null;
+        }
+
         if (commentModel.getStatus().equals(Status.DELETED)) {
             commentModel.setAuthorId(Status.DELETED.toString());
             commentModel.setContent(Status.DELETED.toString());
@@ -46,7 +50,7 @@ public class CommentRepository implements CommentRepositoryI {
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<CommentModel> commentModels = this.repository.findAllByPostId(postId, PageRequest.of(pageIndex, size));
+        Page<CommentModel> commentModels = this.repository.findAllByPostIdAndActiveStatus(postId, Status.ACTIVE, PageRequest.of(pageIndex, size));
 
         return new PageContent<>(
                 commentModels.getContent().stream()
