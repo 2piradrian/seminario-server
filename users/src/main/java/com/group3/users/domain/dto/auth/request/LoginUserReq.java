@@ -37,7 +37,7 @@ public class LoginUserReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new LoginUserReq(email,password);
+        return new LoginUserReq(email.toLowerCase(),password);
     }
 
 }

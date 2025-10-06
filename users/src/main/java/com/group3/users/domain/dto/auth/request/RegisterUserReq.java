@@ -55,7 +55,7 @@ public class RegisterUserReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new RegisterUserReq(name, surname, password, email);
+        return new RegisterUserReq(name, surname, password, email.toLowerCase());
     }
 
 }
