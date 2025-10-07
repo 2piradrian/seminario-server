@@ -125,7 +125,8 @@ public class CommentService implements CommentServiceI {
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
                 upvoters.remove(userId);
-            } else {
+            }
+            else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
             }
@@ -133,7 +134,8 @@ public class CommentService implements CommentServiceI {
         if (Vote.DOWNVOTE == dto.getVoteType()) {
             if (downvoters.contains(userId)) {
                 downvoters.remove(userId);
-            } else {
+            }
+            else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
             }
