@@ -44,9 +44,8 @@ public class CommentController {
             @RequestBody Map<String, Object> payload
     ) {
         ToggleCommentVotesReq dto = CommentMapper.toggleVotes().toRequest(token, payload);
-        this.service.toggleVotes(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @DeleteMapping("/delete")

@@ -9,6 +9,8 @@ import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
+import com.group3.posts.domain.dto.comment.response.ToggleCommentVotesRes;
+import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +110,7 @@ public class CommentService implements CommentServiceI {
     }
 
     @Override
-    public void toggleVotes(ToggleCommentVotesReq dto) {
+        public ToggleCommentVotesRes toggleVotes(ToggleCommentVotesReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -141,6 +143,7 @@ public class CommentService implements CommentServiceI {
         comment.setDownvoters(downvoters);
 
         this.commentRepository.update(comment);
+        return CommentMapper.toggleVotes().toResponse(comment);
     }
 
     @Override
