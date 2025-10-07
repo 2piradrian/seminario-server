@@ -1,6 +1,5 @@
 package com.group3.posts.domain.dto.post.mapper.implementation;
 
-import com.group3.entity.PageContent;
 import com.group3.entity.Post;
 import com.group3.posts.domain.dto.post.request.TogglePostVotesReq;
 import com.group3.posts.domain.dto.post.response.TogglePostVotesRes;
@@ -19,7 +18,16 @@ public class ToggleVotesMapper {
 
     public TogglePostVotesRes toResponse(Post post) {
         return new TogglePostVotesRes(
-            post
+            post.getAuthor(),
+            post.getId(),
+            post.getPage(),
+            post.getImageId(),
+            post.getTitle(),
+            post.getContent(),
+            post.getViews(),
+            post.getUpvoters(),
+            post.getDownvoters(),
+            post.getCreatedAt()
         );
     }
 }
