@@ -231,6 +231,17 @@ public class PostService implements PostServiceI {
         post.setDownvoters(downvoters);
 
         this.postsRepository.update(post);
+
+        if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+            post.setAuthor(fullProfile);
+        }
+
+        if (post.getPage() != null && post.getPage().getId() != null) {
+            Page fullPage = this.pagesRepository.getById(post.getPage().getId());
+            post.setPage(fullPage);
+        }
+
         return PostMapper.toggleVotes().toResponse(post);
     }
 
