@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ToggleCommentVotesRes {
 
-    private String id;
+    private String commentId;
 
     private UserProfile author;
 

@@ -143,6 +143,17 @@ public class CommentService implements CommentServiceI {
         comment.setDownvoters(downvoters);
 
         this.commentRepository.update(comment);
+
+        if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.profilesRepository.getById(comment.getAuthor().getId());
+            comment.setAuthor(fullProfile);
+        }
+
+        if (comment.getPage() != null && comment.getPage().getId() != null) {
+            Page fullPage = this.pagesRepository.getById(comment.getPage().getId());
+            comment.setPage(fullPage);
+        }
+
         return CommentMapper.toggleVotes().toResponse(comment);
     }
 
