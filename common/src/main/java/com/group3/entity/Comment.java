@@ -1,6 +1,7 @@
 package com.group3.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,13 +9,14 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
 
     private String id;
 
-    private String authorId;
+    private UserProfile author;
 
     private String postId;
 
@@ -29,6 +31,8 @@ public class Comment {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Page page;
 
     private Status status;
 

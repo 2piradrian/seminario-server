@@ -15,6 +15,8 @@ public enum ErrorType {
 
     USER_NOT_FOUND("User not found", 404),
     POST_NOT_FOUND("Forum not found", 404),
+    PAGE_NOT_FOUND("Page not found", 404),
+    PAGE_TYPE_NOT_FOUND("Page type not found", 404),
 
     UNAUTHORIZED("Unauthorized", 401),
     INVALID_PASSWORD("Invalid password", 400),
@@ -27,6 +29,9 @@ public enum ErrorType {
 
     STYLE_NOT_FOUND("Style not found", 404),
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
+    CATEGORY_NOT_FOUND("Category not found", 404),
+    PAGETYPE_NOT_FOUND("Page type not found", 404),
+    PAGENAME_ALREADY_EXISTS("Page name already exists", 400),
 
     INTERNAL_ERROR("Internal error", 500);
 

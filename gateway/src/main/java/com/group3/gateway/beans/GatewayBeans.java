@@ -32,6 +32,16 @@ public class GatewayBeans {
                     .uri("lb://catalog-server")
             )
             .route(r -> r
+                    .path("/api/catalog/categories/**")
+                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/${segment}"))
+                    .uri("lb://catalog-server")
+            )
+            .route(r -> r
+                    .path("/api/catalog/page-types/**")
+                    .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/${segment}"))
+                    .uri("lb://catalog-server")
+            )
+            .route(r -> r
                     .path("/api/profiles/**")
                     .filters(f -> f.rewritePath("/api/profiles/(?<segment>.*)", "/profiles-server/api/profiles/${segment}"))
                     .uri("lb://profiles-server")
@@ -40,6 +50,21 @@ public class GatewayBeans {
                     .path("/api/images/**")
                     .filters(f -> f.rewritePath("/api/images/(?<segment>.*)", "/images-server/api/images/${segment}"))
                     .uri("lb://images-server")
+            )
+            .route(r -> r
+                    .path("/api/posts/**")
+                    .filters(f -> f.rewritePath("/api/posts/(?<segment>.*)", "/posts-server/api/posts/${segment}"))
+                    .uri("lb://posts-server")
+            )
+            .route(r -> r
+                    .path("/api/comments/**")
+                    .filters(f -> f.rewritePath("/api/comments/(?<segment>.*)", "/posts-server/api/comments/${segment}"))
+                    .uri("lb://posts-server")
+            )
+            .route(r -> r
+                   .path("/api/pages/**")
+                    .filters(f -> f.rewritePath("/api/pages/(?<segment>.*)", "/pages-server/api/pages/${segment}"))
+                   .uri("lb://pages-server")
             )
             .build();
     }
