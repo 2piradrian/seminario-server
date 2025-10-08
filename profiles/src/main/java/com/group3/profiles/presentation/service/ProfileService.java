@@ -93,12 +93,22 @@ public class ProfileService implements ProfileServiceI {
         }
 
         if (dto.getProfileImage() != null){
-            String profileId = this.imagesRepository.uploadImage(dto.getProfileImage(), secretKeyHelper.getSecret());
+            String profileImage = userProfile.getProfileImage();
+            if (profileImage != null && !profileImage.isEmpty()) {
+                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+            }
+
+            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
             userProfile.setProfileImage(profileId);
         }
 
         if (dto.getPortraitImage() != null){
-            String portraitId = this.imagesRepository.uploadImage(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            String portraitImage = userProfile.getPortraitImage();
+            if (portraitImage != null && !portraitImage.isEmpty()) {
+                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+            }
+
+            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
             userProfile.setPortraitImage(portraitId);
         }
 

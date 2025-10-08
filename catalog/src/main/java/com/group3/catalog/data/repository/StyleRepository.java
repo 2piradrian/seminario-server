@@ -1,8 +1,8 @@
 package com.group3.catalog.data.repository;
 
-import com.group3.catalog.data.postgres.mapper.StyleEntityMapper;
-import com.group3.catalog.data.postgres.model.StyleModel;
-import com.group3.catalog.data.postgres.repository.PostgresStyleRepositoryI;
+import com.group3.catalog.data.datasource.postgres.mapper.StyleEntityMapper;
+import com.group3.catalog.data.datasource.postgres.model.StyleModel;
+import com.group3.catalog.data.datasource.postgres.repository.PostgresStyleRepositoryI;
 import com.group3.catalog.domain.repository.StyleRepositoryI;
 import com.group3.entity.Style;
 import lombok.AllArgsConstructor;
