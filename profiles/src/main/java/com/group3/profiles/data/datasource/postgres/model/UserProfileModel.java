@@ -42,4 +42,6 @@ public class UserProfileModel {
 
     private List<String> instruments;
 
+    private List<String> following;
+
 }
