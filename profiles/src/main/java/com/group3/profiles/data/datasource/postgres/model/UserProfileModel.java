@@ -1,5 +1,6 @@
 package com.group3.profiles.data.datasource.postgres.model;
 
+import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,5 +42,8 @@ public class UserProfileModel {
     private List<String> styles;
 
     private List<String> instruments;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
