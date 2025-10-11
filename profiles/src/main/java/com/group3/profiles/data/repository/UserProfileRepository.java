@@ -44,7 +44,7 @@ public class UserProfileRepository implements UserProfileRepositoryI {
 
         Page<UserProfileModel> profilesModels = repository.findByFullNameLike(
             fullname,
-           // Status.DELETED,
+            Status.DELETED,
             PageRequest.of(pageIndex, size)
         );
 
