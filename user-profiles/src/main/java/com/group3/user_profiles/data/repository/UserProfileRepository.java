@@ -37,6 +37,16 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     }
 
     @Override
+    public Integer getFollowingCount(String userId) {
+        return repository.countFollowing(userId);
+    }
+
+    @Override
+    public Integer getFollowersCount(String userId) {
+        return repository.countFollowers(userId);
+    }
+
+    @Override
     public UserProfile getById(String userId) {
         UserProfileModel userProfileModel = this.repository.findById(userId).orElse(null);
         return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
