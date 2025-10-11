@@ -20,7 +20,12 @@ public class UserProfileMapper {
         return new EditMapper();
     }
 
+    public static GetPageByFullnameMapper getByFullname(){
+        return new GetPageByFullnameMapper();
+    }
+
     public static GetOwnMapper getOwnProfile() {
-        return new GetOwnMapper(); }
+        return new GetOwnMapper();
+    }
 
 }
