@@ -4,6 +4,10 @@ import com.group3.profiles.domain.dto.profile.mapper.implementation.*;
 
 public class UserProfileMapper {
 
+    public static GetPageMapper getPage() {
+        return new GetPageMapper();
+    }
+
     public static GetByIdMapper getById() {
         return new GetByIdMapper();
     }
