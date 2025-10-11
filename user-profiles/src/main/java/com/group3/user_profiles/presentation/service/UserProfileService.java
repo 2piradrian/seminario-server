@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ProfileService implements ProfileServiceI {
+public class UserProfileService implements UserProfileServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
 

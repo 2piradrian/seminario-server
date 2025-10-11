@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @LoadBalancerClient(name = "user-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface UserProfilesServerRepositoryI {
 
-    @GetMapping("/api/profiles/get-by-id/{userId}")
+    @GetMapping("/api/user-profiles/get-by-id/{userId}")
     GetUserProfileByIdRes getById(@PathVariable("userId") String userId);
 
 }

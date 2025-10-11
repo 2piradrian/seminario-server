@@ -2,7 +2,7 @@ package com.group3.user_profiles.presentation.controller;
 
 import com.group3.user_profiles.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.user_profiles.domain.dto.profile.request.*;
-import com.group3.user_profiles.presentation.service.ProfileService;
+import com.group3.user_profiles.presentation.service.UserProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +11,10 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/profiles")
-public class ProfileController {
+@RequestMapping("/api/user-profiles")
+public class UserProfileController {
 
-    private final ProfileService userService;
+    private final UserProfileService userService;
 
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(

@@ -2,7 +2,7 @@ package com.group3.page_profiles.presentation.controller;
 
 import com.group3.page_profiles.domain.dto.mapper.PageMapper;
 import com.group3.page_profiles.domain.dto.request.*;
-import com.group3.page_profiles.presentation.service.PageService;
+import com.group3.page_profiles.presentation.service.PageProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +11,10 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/pages")
-public class PageController {
+@RequestMapping("/api/page-profiles")
+public class PageProfileController {
     
-    private final PageService pageService;
+    private final PageProfileService pageService;
 
     @GetMapping("/get-by-id/{pageId}")
     public ResponseEntity<?> getById(
