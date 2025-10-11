@@ -1,8 +1,8 @@
 package com.group3.posts.domain.repository;
 
-import com.group3.entity.Page;
+import com.group3.entity.PageProfile;
 
 public interface PagesRepositoryI {
 
-    Page getById(String id);
+    PageProfile getById(String id);
 }

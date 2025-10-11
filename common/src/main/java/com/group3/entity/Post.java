@@ -24,7 +24,7 @@ public class Post {
 
     private UserProfile author;
 
-    private Page page;
+    private PageProfile pageProfile;
 
     private String imageId;
 
