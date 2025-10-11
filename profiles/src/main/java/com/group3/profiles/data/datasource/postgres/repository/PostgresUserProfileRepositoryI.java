@@ -18,10 +18,12 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     @Query("""
         SELECT u
         FROM UserProfileModel u
-        WHERE LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))
+        WHERE u.status <> :status
+        AND LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))
     """)
     Page<UserProfileModel> findByFullNameLike(
         @Param("fullName") String fullName,
+        @Param("status") Status status,
         Pageable pageable
     );
 
