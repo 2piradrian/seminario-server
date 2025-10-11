@@ -1,12 +1,15 @@
 package com.group3.profiles.data.repository;
 
+import com.group3.entity.PageContent;
 import com.group3.entity.UserProfile;
 import com.group3.profiles.data.datasource.postgres.mapper.UserProfileEntityMapper;
 import com.group3.profiles.data.datasource.postgres.model.UserProfileModel;
 import com.group3.profiles.data.datasource.postgres.repository.PostgresUserProfileRepositoryI;
 import com.group3.profiles.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,6 +18,23 @@ import java.util.List;
 public class UserProfileRepository implements UserProfileRepositoryI {
 
     private final PostgresUserProfileRepositoryI repository;
+
+    private int normalizePage(Integer page) {
+        return (page != null && page > 0) ? page - 1 : 0;
+    }
+
+    @Override
+    public PageContent<String> getFollowingIds(String userId, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<String> followingPage = this.repository.findFollowing(userId, PageRequest.of(pageIndex, size));
+
+        return new PageContent<>(
+                followingPage.getContent(),
+                followingPage.getNumber() + 1,
+                followingPage.hasNext() ? followingPage.getNumber() + 2 : null
+        );
+    }
 
     @Override
     public UserProfile getById(String userId) {
