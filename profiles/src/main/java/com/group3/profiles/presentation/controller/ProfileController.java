@@ -25,6 +25,14 @@ public class ProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
+    @PostMapping("/get-by-fullname")
+    public ResponseEntity<?> getByFullname(
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetUserProfilePageByFullnameReq dto = UserProfileMapper.getByFullname().toRequest(payload);
+        return ResponseEntity.ok(this.userService.getProfileByFullname(dto));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create(
         @RequestBody Map<String, Object> payload
