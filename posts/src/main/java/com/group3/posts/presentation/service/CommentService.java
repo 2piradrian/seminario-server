@@ -10,14 +10,13 @@ import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
 import com.group3.posts.domain.dto.comment.response.ToggleCommentVotesRes;
-import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -91,8 +90,8 @@ public class CommentService implements CommentServiceI {
 
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
-        comment.setUpvoters(Set.of());
-        comment.setDownvoters(Set.of());
+        comment.setUpvoters(List.of());
+        comment.setDownvoters(List.of());
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setStatus(Status.ACTIVE);
@@ -119,8 +118,8 @@ public class CommentService implements CommentServiceI {
 
         String userId = user.getId();
 
-        Set<String> upvoters = comment.getUpvoters();
-        Set<String> downvoters = comment.getDownvoters();
+        List<String> upvoters = comment.getUpvoters();
+        List<String> downvoters = comment.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {

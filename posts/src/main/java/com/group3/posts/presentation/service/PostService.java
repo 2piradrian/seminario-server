@@ -6,7 +6,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
-import com.group3.posts.domain.dto.comment.mapper.implementation.ToggleVotesMapper;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -16,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -151,8 +150,8 @@ public class PostService implements PostServiceI {
         post.setStatus(Status.ACTIVE);
 
         post.setViews(0);
-        post.setUpvoters(Set.of());
-        post.setDownvoters(Set.of());
+        post.setUpvoters(List.of());
+        post.setDownvoters(List.of());
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
 
@@ -205,8 +204,8 @@ public class PostService implements PostServiceI {
 
         String userId = user.getId();
 
-        Set<String> upvoters = post.getUpvoters();
-        Set<String> downvoters = post.getDownvoters();
+        List<String> upvoters = post.getUpvoters();
+        List<String> downvoters = post.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
