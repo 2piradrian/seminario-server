@@ -13,7 +13,7 @@ public interface UserProfileRepositoryI {
 
     List<UserProfile> getByFullName(String name, String surname);
 
-    PageContent<String> getFollowingIds(String userId, Integer page, Integer size);
+    PageContent<String> getFollowingPage(String userId, Integer page, Integer size);
 
     UserProfile save(UserProfile user);
 
