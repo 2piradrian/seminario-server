@@ -38,10 +38,19 @@ public class UserProfileModel {
 
     private String longDescription;
 
+    @ElementCollection
+    @CollectionTable(name = "user_styles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "style")
     private List<String> styles;
 
+    @ElementCollection
+    @CollectionTable(name = "user_instruments", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "instrument")
     private List<String> instruments;
 
+    @ElementCollection
+    @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "following_id")
     private List<String> following;
 
 }

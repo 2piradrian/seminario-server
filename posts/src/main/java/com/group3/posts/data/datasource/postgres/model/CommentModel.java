@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,9 +33,15 @@ public class CommentModel {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Set<String> upvoters;
+    @ElementCollection
+    @CollectionTable(name = "comment_upvoters", joinColumns = @JoinColumn(name = "comment_id"))
+    @Column(name = "user_id")
+    private List<String> upvoters;
 
-    private  Set<String> downvoters;
+    @ElementCollection
+    @CollectionTable(name = "comment_downvoters", joinColumns = @JoinColumn(name = "comment_id"))
+    @Column(name = "user_id")
+    private List<String> downvoters;
 
     private LocalDateTime createdAt;
 

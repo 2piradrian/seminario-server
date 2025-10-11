@@ -27,7 +27,8 @@ public class UserProfileEntityMapper {
                 .collect(Collectors.toList()),
             userProfileModel.getInstruments().stream()
                 .map(id -> new Instrument(id, null))
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()),
+            userProfileModel.getFollowing()
         );
     }
 
@@ -47,7 +48,8 @@ public class UserProfileEntityMapper {
                 .collect(Collectors.toList()),
             userProfile.getInstruments().stream()
                 .map(Instrument::getId)
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()),
+            userProfile.getFollowing()
         );
     }
 
