@@ -36,6 +36,20 @@ public class UserProfileService implements UserProfileServiceI {
     private final ImagesRepository imagesRepository;
 
     @Override
+    public GetFollowerPageRes getFollowers(GetFollowerPageReq dto) {
+        UserProfile follower = this.userProfileRepository.getById(dto.getFollowerId());
+        if (follower == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        PageContent<String> followersPage =
+                this.userProfileRepository.getFollowing(follower.getId(), dto.getPage(), dto.getSize());
+
+        List<String> followersList = followersPage.getContent();
+
+        GetFollowerPageRes res = new GetFollowerPageRes(followersList, followersPage.getNextPage());
+        return res;
+    }
+
+    @Override
     public void create(CreateUserProfileReq dto) {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
