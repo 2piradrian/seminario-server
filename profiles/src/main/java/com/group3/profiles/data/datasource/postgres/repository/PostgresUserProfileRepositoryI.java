@@ -28,7 +28,7 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
        countQuery = "SELECT COUNT(*) FROM user_following WHERE user_id = :userId",
        nativeQuery = true
     )
-    Page<String> findFollowingPage(
+    Page<String> findFollowingPageable(
             @Param("userId") String userId,
             Pageable pageable
     );
