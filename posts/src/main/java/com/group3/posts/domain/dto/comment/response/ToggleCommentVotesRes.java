@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -23,9 +23,9 @@ public class ToggleCommentVotesRes {
 
     private final String content;
 
-    private final Set<String> upvoters;
+    private List<String> upvoters;
 
-    private final Set<String> downvoters;
+    private List<String> downvoters;
 
     private final LocalDateTime createdAt;
 

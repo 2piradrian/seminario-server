@@ -1,13 +1,12 @@
 package com.group3.posts.domain.dto.post.response;
 
 import com.group3.entity.Page;
-import com.group3.entity.Post;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -27,9 +26,9 @@ public class TogglePostVotesRes {
 
     private final Integer views;
 
-    private final Set<String> upvoters;
+    private final List<String> upvoters;
 
-    private final Set<String> downvoters;
+    private final List<String> downvoters;
 
     private final LocalDateTime createdAt;
 

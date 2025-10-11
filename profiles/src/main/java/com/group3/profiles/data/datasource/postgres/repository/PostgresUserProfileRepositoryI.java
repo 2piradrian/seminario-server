@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
@@ -25,6 +27,16 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
         @Param("fullName") String fullName,
         @Param("status") Status status,
         Pageable pageable
+    );
+
+    @Query(
+       value = "SELECT following_id FROM user_following WHERE user_id = :userId ORDER BY following_id ASC",
+       countQuery = "SELECT COUNT(*) FROM user_following WHERE user_id = :userId",
+       nativeQuery = true
+    )
+    Page<String> findFollowingPage(
+            @Param("userId") String userId,
+            Pageable pageable
     );
 
 }

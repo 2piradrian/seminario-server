@@ -3,13 +3,12 @@ package com.group3.posts.domain.dto.comment.response;
 
 import com.group3.entity.Comment;
 import com.group3.entity.Page;
-import com.group3.entity.Status;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -25,9 +24,9 @@ public class CreateCommentRes {
 
     private final String content;
 
-    private final Set<String> upvoters;
+    private List<String> upvoters;
 
-    private final Set<String> downvoters;
+    private List<String> downvoters;
 
     private final LocalDateTime createdAt;
 

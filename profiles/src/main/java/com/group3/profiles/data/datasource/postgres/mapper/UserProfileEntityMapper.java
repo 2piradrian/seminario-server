@@ -28,6 +28,7 @@ public class UserProfileEntityMapper {
             userProfileModel.getInstruments().stream()
                 .map(id -> new Instrument(id, null))
                 .collect(Collectors.toList()),
+            userProfileModel.getFollowing(),
             userProfileModel.getStatus()
         );
     }
@@ -49,6 +50,7 @@ public class UserProfileEntityMapper {
             userProfile.getInstruments().stream()
                 .map(Instrument::getId)
                 .collect(Collectors.toList()),
+            userProfile.getFollowing(),
             userProfile.getStatus()
         );
     }
@@ -60,7 +62,6 @@ public class UserProfileEntityMapper {
             .map(UserProfileEntityMapper::toDomain)
             .collect(Collectors.toList());
     }
-
 
     public static List<UserProfileModel> toModel(List<UserProfile> users) {
         if (users == null) return Collections.emptyList();

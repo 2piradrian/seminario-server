@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,9 +24,9 @@ public class Comment {
 
     private String content;
 
-    private Set<String> upvoters;
+    private List<String> upvoters;
 
-    private Set<String> downvoters;
+    private List<String> downvoters;
 
     private LocalDateTime createdAt;
 
