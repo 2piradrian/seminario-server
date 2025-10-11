@@ -24,10 +24,10 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     }
 
     @Override
-    public PageContent<String> getFollowingPageable(String userId, Integer page, Integer size) {
+    public PageContent<String> getFollowing(String userId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<String> followingPage = this.repository.findFollowingPageable(userId, PageRequest.of(pageIndex, size));
+        Page<String> followingPage = this.repository.findFollowing(userId, PageRequest.of(pageIndex, size));
 
         return new PageContent<>(
                 followingPage.getContent(),
