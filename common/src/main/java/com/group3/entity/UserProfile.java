@@ -36,4 +36,6 @@ public class UserProfile {
 
     private List<Instrument> instruments;
 
+    private Status status;
+
 }
