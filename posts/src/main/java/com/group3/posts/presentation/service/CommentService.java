@@ -10,14 +10,13 @@ import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
 import com.group3.posts.domain.dto.comment.response.ToggleCommentVotesRes;
-import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -32,9 +31,9 @@ public class CommentService implements CommentServiceI {
 
     private final UserRepository userRepository;
 
-    private final ProfilesRepository profilesRepository;
+    private final UserProfileRepository userProfileRepository;
 
-    private final PagesRepository pagesRepository;
+    private final PageProfileRepository pageProfileRepository;
 
     @Override
     public GetCommentPageRes getComments(GetCommentPageReq dto) {
@@ -47,12 +46,12 @@ public class CommentService implements CommentServiceI {
         comments.getContent().forEach(
             comment -> {
                 if (comment.getAuthor().getId() != null) {
-                    UserProfile fullProfile = this.profilesRepository.getById(comment.getAuthor().getId());
+                    UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
                     comment.setAuthor(fullProfile);
                 }
-                if (comment.getPage().getId() != null) {
-                    Page fullPage = this.pagesRepository.getById(comment.getPage().getId());
-                    comment.setPage(fullPage);
+                if (comment.getPageProfile().getId() != null) {
+                    PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
+                    comment.setPageProfile(fullPage);
                 }
             }
         );
@@ -71,28 +70,28 @@ public class CommentService implements CommentServiceI {
         if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
 
         Comment comment = new Comment();
-        UserProfile author = this.profilesRepository.getById(user.getId());
+        UserProfile author = this.userProfileRepository.getById(user.getId());
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
             if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-            comment.setPage(Page.builder().id(null).build());
+            comment.setPageProfile(PageProfile.builder().id(null).build());
             comment.setAuthor(author);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
-            Page page = this.pagesRepository.getById(dto.getProfileId());
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
 
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
             comment.setAuthor(author);
-            comment.setPage(page);
+            comment.setPageProfile(page);
         }
 
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
-        comment.setUpvoters(Set.of());
-        comment.setDownvoters(Set.of());
+        comment.setUpvoters(List.of());
+        comment.setDownvoters(List.of());
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setStatus(Status.ACTIVE);
@@ -119,8 +118,8 @@ public class CommentService implements CommentServiceI {
 
         String userId = user.getId();
 
-        Set<String> upvoters = comment.getUpvoters();
-        Set<String> downvoters = comment.getDownvoters();
+        List<String> upvoters = comment.getUpvoters();
+        List<String> downvoters = comment.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
@@ -147,13 +146,13 @@ public class CommentService implements CommentServiceI {
         this.commentRepository.update(comment);
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.profilesRepository.getById(comment.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
             comment.setAuthor(fullProfile);
         }
 
-        if (comment.getPage() != null && comment.getPage().getId() != null) {
-            Page fullPage = this.pagesRepository.getById(comment.getPage().getId());
-            comment.setPage(fullPage);
+        if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
+            comment.setPageProfile(fullPage);
         }
 
         return CommentMapper.toggleVotes().toResponse(comment);

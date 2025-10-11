@@ -1,0 +1,69 @@
+package com.group3.page_profiles.presentation.controller;
+
+import com.group3.page_profiles.domain.dto.mapper.PageMapper;
+import com.group3.page_profiles.domain.dto.request.*;
+import com.group3.page_profiles.presentation.service.PageProfileService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/api/page-profiles")
+public class PageProfileController {
+    
+    private final PageProfileService pageService;
+
+    @GetMapping("/get-by-id/{pageId}")
+    public ResponseEntity<?> getById(
+        @PathVariable(value = "pageId") String pageId
+    ) {
+        GetPageByIdReq dto = PageMapper.getPage().toRequest(pageId);
+
+        return ResponseEntity.ok(this.pageService.getById(dto));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ){
+        CreatePageReq dto = PageMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.pageService.create(dto));
+    }
+
+    @GetMapping("/get-by-user-id/{userId}")
+    public ResponseEntity<?> getOwnProfile(
+        @PathVariable(value = "userId") String userId
+    ) {
+        GetPageByUserIdReq dto = PageMapper.getUserPages().toRequest(userId);
+
+        return ResponseEntity.ok(this.pageService.getUserPages(dto));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> edit(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        EditPageReq dto = PageMapper.edit().toRequest(token, payload);
+        this.pageService.edit(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        DeletePageReq dto = PageMapper.delete().toRequest(token, payload);
+        this.pageService.delete(dto);
+
+        return ResponseEntity.ok().build();
+    }
+    
+}

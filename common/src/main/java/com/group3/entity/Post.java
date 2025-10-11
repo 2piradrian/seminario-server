@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,13 +24,13 @@ public class Post {
 
     private UserProfile author;
 
-    private Page page;
+    private PageProfile pageProfile;
 
     private String imageId;
 
-    private Set<String> upvoters;
+    private List<String> upvoters;
 
-    private Set<String> downvoters;
+    private List<String> downvoters;
 
     private LocalDateTime createdAt;
 

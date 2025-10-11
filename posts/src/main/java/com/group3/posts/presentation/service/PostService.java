@@ -6,7 +6,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
-import com.group3.posts.domain.dto.comment.mapper.implementation.ToggleVotesMapper;
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.domain.dto.post.response.*;
@@ -16,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -33,9 +32,9 @@ public class PostService implements PostServiceI {
 
     private final ImagesRepository imagesRepository;
 
-    private final PagesRepository pagesRepository;
+    private final PageProfileRepository pageProfileRepository;
 
-    private final ProfilesRepository profilesRepository;
+    private final UserProfileRepository userProfileRepository;
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
@@ -43,12 +42,12 @@ public class PostService implements PostServiceI {
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         if (post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
             post.setAuthor(fullProfile);
         }
-        if (post.getPage().getId() != null) {
-            Page fullPage = this.pagesRepository.getById(post.getPage().getId());
-            post.setPage(fullPage);
+        if (post.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+            post.setPageProfile(fullPage);
         }
 
         Integer views = post.getViews();
@@ -65,12 +64,12 @@ public class PostService implements PostServiceI {
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage().getId() != null) {
-                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
-                post.setPage(fullPage);
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                post.setPageProfile(fullPage);
             }
         }
 
@@ -83,12 +82,12 @@ public class PostService implements PostServiceI {
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage().getId() != null) {
-                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
-                post.setPage(fullPage);
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                post.setPageProfile(fullPage);
             }
         }
 
@@ -104,12 +103,12 @@ public class PostService implements PostServiceI {
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
                 post.setAuthor(fullProfile);
             }
-            if (post.getPage().getId() != null) {
-                Page fullPage = this.pagesRepository.getById(post.getPage().getId());
-                post.setPage(fullPage);
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                post.setPageProfile(fullPage);
             }
         }
 
@@ -127,17 +126,17 @@ public class PostService implements PostServiceI {
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
             if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-            post.setPage(Page.builder().id(null).build());
+            post.setPageProfile(PageProfile.builder().id(null).build());
             post.setAuthor(author);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
-            Page page = this.pagesRepository.getById(dto.getProfileId());
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
 
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
             post.setAuthor(author);
-            post.setPage(page);
+            post.setPageProfile(page);
         }
 
         if (dto.getImage() != null) {
@@ -151,8 +150,8 @@ public class PostService implements PostServiceI {
         post.setStatus(Status.ACTIVE);
 
         post.setViews(0);
-        post.setUpvoters(Set.of());
-        post.setDownvoters(Set.of());
+        post.setUpvoters(List.of());
+        post.setDownvoters(List.of());
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
 
@@ -173,7 +172,7 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (post.getPage() != null){
+        if (post.getPageProfile() != null){
             // TODO: Search page and verify if is member
         }
 
@@ -205,8 +204,8 @@ public class PostService implements PostServiceI {
 
         String userId = user.getId();
 
-        Set<String> upvoters = post.getUpvoters();
-        Set<String> downvoters = post.getDownvoters();
+        List<String> upvoters = post.getUpvoters();
+        List<String> downvoters = post.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
@@ -233,13 +232,13 @@ public class PostService implements PostServiceI {
         this.postsRepository.update(post);
 
         if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.profilesRepository.getById(post.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
             post.setAuthor(fullProfile);
         }
 
-        if (post.getPage() != null && post.getPage().getId() != null) {
-            Page fullPage = this.pagesRepository.getById(post.getPage().getId());
-            post.setPage(fullPage);
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+            post.setPageProfile(fullPage);
         }
 
         return PostMapper.toggleVotes().toResponse(post);
