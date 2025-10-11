@@ -1,6 +1,6 @@
 package com.group3.users.data.repository;
 
-import com.group3.users.data.datasource.profiles_server.repository.ProfileServerRepositoryI;
+import com.group3.users.data.datasource.user_profiles_server.repository.UserProfileServerRepositoryI;
 import com.group3.users.domain.repository.ProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,9 +10,9 @@ import java.util.Map;
 
 @Repository
 @AllArgsConstructor
-public class ProfileRepository implements ProfileRepositoryI {
+public class UserProfileRepository implements ProfileRepositoryI {
 
-    private final ProfileServerRepositoryI repository;
+    private final UserProfileServerRepositoryI repository;
 
     public void create(String id, String email, String name, String surname, String secret) {
         Map<String, Object> payload = new HashMap<>();

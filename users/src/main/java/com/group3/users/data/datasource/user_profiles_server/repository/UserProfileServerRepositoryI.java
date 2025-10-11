@@ -1,7 +1,7 @@
-package com.group3.users.data.datasource.profiles_server.repository;
+package com.group3.users.data.datasource.user_profiles_server.repository;
 
 import com.group3.users.config.beans.LoadBalancerConfiguration;
-import com.group3.users.data.datasource.profiles_server.responses.GetOwnUserProfileRes;
+import com.group3.users.data.datasource.user_profiles_server.responses.GetOwnUserProfileRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
-@FeignClient(name = "profiles-server", path = "/profiles-server")
-@LoadBalancerClient(name = "profiles-server", configuration = LoadBalancerConfiguration.class)
-public interface ProfileServerRepositoryI {
+@FeignClient(name = "user-profiles-server", path = "/user-profiles-server")
+@LoadBalancerClient(name = "user-profiles-server", configuration = LoadBalancerConfiguration.class)
+public interface UserProfileServerRepositoryI {
 
-    @PostMapping("/api/profiles/create")
+    @PostMapping("/api/user-profiles/create")
     void create(@RequestBody Map<String, Object> payload);
 
-    @PostMapping("/api/profiles/get-own-profile")
+    @PostMapping("/api/user-profiles/get-own-profile")
     GetOwnUserProfileRes getOwnProfile(@RequestHeader(value = "Authorization") String token);
 
 }

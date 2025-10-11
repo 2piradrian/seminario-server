@@ -5,7 +5,7 @@ import com.group3.page_profiles.domain.dto.response.CreatePageRes;
 import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
 import com.group3.page_profiles.domain.dto.response.GetPageByUserIdRes;
 
-public interface PageServiceI {
+public interface PageProfileServiceI {
 
     CreatePageRes create(CreatePageReq dto);
 

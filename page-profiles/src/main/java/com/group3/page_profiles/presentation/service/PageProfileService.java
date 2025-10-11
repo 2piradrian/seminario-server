@@ -24,7 +24,7 @@ import java.util.Set;
 @Service
 @Transactional
 @AllArgsConstructor
-public class PageService implements PageServiceI{
+public class PageProfileService implements PageProfileServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
 

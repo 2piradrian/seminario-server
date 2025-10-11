@@ -3,7 +3,7 @@ package com.group3.user_profiles.presentation.service;
 import com.group3.user_profiles.domain.dto.profile.request.*;
 import com.group3.user_profiles.domain.dto.profile.response.*;
 
-public interface ProfileServiceI {
+public interface UserProfileServiceI {
 
     void create(CreateUserProfileReq dto);
 
