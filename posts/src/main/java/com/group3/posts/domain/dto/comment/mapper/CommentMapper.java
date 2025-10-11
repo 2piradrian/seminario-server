@@ -4,9 +4,7 @@ import com.group3.posts.domain.dto.comment.mapper.implementation.*;
 
 public class CommentMapper {
 
-    public static GetPageMapper getPage() {
-        return new GetPageMapper();
-    }
+    public static GetPageMapper getPage() {return new GetPageMapper();}
 
     public static CreateMapper create() {
         return new CreateMapper();
