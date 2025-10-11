@@ -72,6 +72,12 @@ public class ProfileService implements ProfileServiceI {
     }
 
     @Override
+    public GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto) {
+        PageContent<UserProfile> profiles = this.userProfileRepository.getByFullName(dto.getFullname(), dto.getPage(), dto.getSize());
+        return UserProfileMapper.getByFullname().toResponse(profiles);
+    }
+
+    @Override
     public void update(EditUserProfileReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
