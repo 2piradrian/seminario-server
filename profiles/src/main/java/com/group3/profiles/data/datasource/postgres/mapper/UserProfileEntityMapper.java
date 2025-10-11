@@ -61,7 +61,6 @@ public class UserProfileEntityMapper {
             .collect(Collectors.toList());
     }
 
-
     public static List<UserProfileModel> toModel(List<UserProfile> users) {
         if (users == null) return Collections.emptyList();
 
