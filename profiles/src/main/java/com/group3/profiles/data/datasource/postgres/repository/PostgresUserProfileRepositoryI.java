@@ -1,11 +1,13 @@
 package com.group3.profiles.data.datasource.postgres.repository;
 
+import com.group3.entity.Status;
 import com.group3.profiles.data.datasource.postgres.model.UserProfileModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfileModel, String> {
@@ -16,9 +18,11 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     @Query("""
         SELECT u
         FROM UserProfileModel u
-        WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
-        AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
+        WHERE LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))
     """)
-    List<UserProfileModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
+    Page<UserProfileModel> findByFullNameLike(
+        @Param("fullName") String fullName,
+        Pageable pageable
+    );
 
 }
