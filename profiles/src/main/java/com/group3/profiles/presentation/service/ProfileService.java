@@ -59,6 +59,7 @@ public class ProfileService implements ProfileServiceI {
         userProfile.setLongDescription("¡New user!");
         userProfile.setInstruments(List.of());
         userProfile.setStyles(List.of());
+        userProfile.setStatus(Status.ACTIVE);
 
         this.userProfileRepository.save(userProfile);
     }
