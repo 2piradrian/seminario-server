@@ -13,24 +13,24 @@ import java.util.Set;
 @AllArgsConstructor
 public class ToggleCommentVotesRes {
 
-    private String commentId;
+    private final String commentId;
 
-    private UserProfile author;
+    private final UserProfile author;
 
-    private String postId;
+    private final String postId;
 
-    private Comment replyTo;
+    private final Comment replyTo;
 
-    private String content;
+    private final String content;
 
-    private Set<String> upvoters;
+    private final Set<String> upvoters;
 
-    private Set<String> downvoters;
+    private final Set<String> downvoters;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
-    private Page page;
+    private final Page page;
 
 }
