@@ -7,10 +7,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 services = {
     "posts": os.path.abspath(os.path.join(BASE_DIR, "..", "posts")),
-    "profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "profiles")),
+    "user-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "user-profiles")),
     "users": os.path.abspath(os.path.join(BASE_DIR, "..", "users")),
     "catalog": os.path.abspath(os.path.join(BASE_DIR, "..", "catalog")),
-    "pages": os.path.abspath(os.path.join(BASE_DIR, "..", "pages")),
+    "page-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "page-profiles")),
 }
 
 delay_seconds = 15
@@ -34,7 +34,7 @@ def open_terminal_and_docker_compose(name, path):
 
 
 def main():
-    for svc in ["posts", "profiles", "users", "catalog", "pages"]:
+    for svc in ["posts", "user-profiles", "users", "catalog", "page-profiles"]:
         print(f"Iniciando docker compose para {svc}...")
         open_terminal_and_docker_compose(svc, services[svc])
         time.sleep(delay_seconds)

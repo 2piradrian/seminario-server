@@ -32,7 +32,7 @@ public class Comment {
 
     private LocalDateTime updatedAt;
 
-    private Page page;
+    private PageProfile pageProfile;
 
     private Status status;
 

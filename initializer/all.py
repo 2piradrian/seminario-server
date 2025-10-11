@@ -11,12 +11,12 @@ services = {
     "config": os.path.abspath(os.path.join(BASE_DIR, "..", "config")),
     "gateway": os.path.abspath(os.path.join(BASE_DIR, "..", "gateway")),
     "posts": os.path.abspath(os.path.join(BASE_DIR, "..", "posts")),
-    "profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "profiles")),
+    "user-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "user-profiles")),
     "results": os.path.abspath(os.path.join(BASE_DIR, "..", "results")),
     "users": os.path.abspath(os.path.join(BASE_DIR, "..", "users")),
     "catalog": os.path.abspath(os.path.join(BASE_DIR, "..", "catalog")),
     "images": os.path.abspath(os.path.join(BASE_DIR, "..", "images")),
-    "pages": os.path.abspath(os.path.join(BASE_DIR, "..", "pages")),
+    "page-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "page-profiles")),
 }
 
 delay_seconds = 15
@@ -42,7 +42,7 @@ def open_terminal_and_run(name, path):
 
 def main():
     run_maven_install()
-    for svc in ["registry", "config", "gateway", "posts", "profiles", "results", "users", "catalog", "images", "pages"]:
+    for svc in ["registry", "config", "gateway", "posts", "user-profiles", "results", "users", "catalog", "images", "page-profiles"]:
         open_terminal_and_run(svc, services[svc])
         time.sleep(delay_seconds)
 

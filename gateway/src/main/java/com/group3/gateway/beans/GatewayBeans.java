@@ -42,9 +42,9 @@ public class GatewayBeans {
                     .uri("lb://catalog-server")
             )
             .route(r -> r
-                    .path("/api/profiles/**")
-                    .filters(f -> f.rewritePath("/api/profiles/(?<segment>.*)", "/profiles-server/api/profiles/${segment}"))
-                    .uri("lb://profiles-server")
+                    .path("/api/user-profiles/**")
+                    .filters(f -> f.rewritePath("/api/user-profiles/(?<segment>.*)", "/user-profiles-server/api/user-profiles/${segment}"))
+                    .uri("lb://user-profiles-server")
             )
             .route(r -> r
                     .path("/api/images/**")
@@ -62,9 +62,9 @@ public class GatewayBeans {
                     .uri("lb://posts-server")
             )
             .route(r -> r
-                   .path("/api/pages/**")
-                    .filters(f -> f.rewritePath("/api/pages/(?<segment>.*)", "/pages-server/api/pages/${segment}"))
-                   .uri("lb://pages-server")
+                   .path("/api/page-profiles/**")
+                    .filters(f -> f.rewritePath("/api/page-profiles/(?<segment>.*)", "/pages-server/api/page-profiles/${segment}"))
+                   .uri("lb://page-profiles-server")
             )
             .build();
     }
