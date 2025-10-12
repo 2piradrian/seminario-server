@@ -70,7 +70,7 @@ public class UserProfileController {
     public ResponseEntity<?> getFollowers(
             @RequestBody Map<String, Object> payload
     ) {
-        GetFollowerPageReq dto = UserProfileMapper.getFollowerPageMapper().toRequest(payload);
+        GetFollowerPageReq dto = UserProfileMapper.getFollowerPage().toRequest(payload);
 
         return ResponseEntity.ok(this.userService.getFollowers(dto));
     }
