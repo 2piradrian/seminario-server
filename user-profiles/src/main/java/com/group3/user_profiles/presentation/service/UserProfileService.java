@@ -14,6 +14,7 @@ import com.group3.user_profiles.domain.dto.profile.response.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,16 +38,13 @@ public class UserProfileService implements UserProfileServiceI {
 
     @Override
     public GetFollowerPageRes getFollowers(GetFollowerPageReq dto) {
-        UserProfile follower = this.userProfileRepository.getById(dto.getFollowerId());
+        UserProfile follower = this.userProfileRepository.getById(dto.getUserId());
         if (follower == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         PageContent<String> followersPage =
                 this.userProfileRepository.getFollowing(follower.getId(), dto.getPage(), dto.getSize());
 
-        List<String> followersList = followersPage.getContent();
-
-        GetFollowerPageRes res = new GetFollowerPageRes(followersList, followersPage.getNextPage());
-        return res;
+        return UserProfileMapper.GetFollowerPage().toResponse(followersPage);
     }
 
     @Override

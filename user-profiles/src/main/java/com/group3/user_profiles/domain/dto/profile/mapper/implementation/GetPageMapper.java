@@ -17,7 +17,7 @@ public class GetPageMapper {
         );
     }
 
-    public GetFollowerPageRes toResponse(PageContent<UserProfile> followers) {
+    public GetFollowerPageRes toResponse(PageContent<String> followers) {
         return new GetFollowerPageRes(
                 followers.getContent(),
                 followers.getNextPage()
