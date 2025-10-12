@@ -16,6 +16,16 @@ public class PageProfileController {
     
     private final PageProfileService pageService;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ){
+        CreatePageReq dto = PageMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.pageService.create(dto));
+    }
+
     @GetMapping("/get-by-id/{pageId}")
     public ResponseEntity<?> getById(
         @PathVariable(value = "pageId") String pageId
@@ -23,16 +33,6 @@ public class PageProfileController {
         GetPageByIdReq dto = PageMapper.getPage().toRequest(pageId);
 
         return ResponseEntity.ok(this.pageService.getById(dto));
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<?> create(
-        @RequestHeader(value = "Authorization") String token,
-        @RequestBody Map<String, Object> payload
-    ){
-        CreatePageReq dto = PageMapper.create().toRequest(token, payload);
-
-        return ResponseEntity.ok(this.pageService.create(dto));
     }
 
     @GetMapping("/get-by-user-id/{userId}")
@@ -73,7 +73,5 @@ public class PageProfileController {
 
         return ResponseEntity.ok().build();
     }
-
-
     
 }
