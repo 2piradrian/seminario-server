@@ -10,6 +10,7 @@ import java.util.List;
 public class GetPageListByIdsReq {
 
     private final List<String> pageIds;
+
     private final String secret;
 
     private GetPageListByIdsReq(List<String> pageIds, String secret) {
@@ -19,7 +20,11 @@ public class GetPageListByIdsReq {
 
     public static GetPageListByIdsReq create(List<String> pageIds, String secret) {
 
-        if (pageIds == null || pageIds.isEmpty() || secret == null || secret.isEmpty()) {
+        if(secret == null || secret.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (pageIds == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 

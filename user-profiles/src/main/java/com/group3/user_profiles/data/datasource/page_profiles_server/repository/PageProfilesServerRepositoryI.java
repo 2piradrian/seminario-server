@@ -13,7 +13,7 @@ import java.util.Map;
 @LoadBalancerClient(name = "page-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface PageProfilesServerRepositoryI {
 
-    @PostMapping("/get-list-by-id")
+    @PostMapping("/api/page-profiles/get-list-by-id")
     GetPageListByIdsRes getListByIds(@RequestBody Map<String, Object> payload);
 
 }
