@@ -28,7 +28,7 @@ public class ToggleVotesMapper {
             comment.getDownvoters(),
             comment.getCreatedAt(),
             comment.getUpdatedAt(),
-            comment.getPage()
+            comment.getPageProfile()
         );
     }
 }

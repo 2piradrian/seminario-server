@@ -2,7 +2,7 @@ package com.group3.posts.domain.dto.comment.response;
 
 
 import com.group3.entity.Comment;
-import com.group3.entity.Page;
+import com.group3.entity.PageProfile;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +32,6 @@ public class CreateCommentRes {
 
     private LocalDateTime updatedAt;
 
-    private Page page;
+    private PageProfile page;
 
 }
