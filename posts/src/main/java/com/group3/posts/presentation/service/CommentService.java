@@ -26,38 +26,13 @@ import java.util.UUID;
 public class CommentService implements CommentServiceI {
 
     private final CommentRepository commentRepository;
-
     private final PostsRepository postsRepository;
-
     private final UserRepository userRepository;
-
     private final UserProfileRepository userProfileRepository;
-
     private final PageProfileRepository pageProfileRepository;
 
-    @Override
-    public GetCommentPageRes getComments(GetCommentPageReq dto) {
-        Post post = this.postsRepository.getById(dto.getPostId());
-        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        PageContent<Comment> comments =
-                this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
-
-        comments.getContent().forEach(
-            comment -> {
-                if (comment.getAuthor().getId() != null) {
-                    UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
-                    comment.setAuthor(fullProfile);
-                }
-                if (comment.getPageProfile().getId() != null) {
-                    PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
-                    comment.setPageProfile(fullPage);
-                }
-            }
-        );
-
-        return CommentMapper.getPage().toResponse(comments);
-    }
+    // ======== Create Comment ========
 
     @Override
     public CreateCommentRes create(CreateCommentReq dto) {
@@ -66,7 +41,6 @@ public class CommentService implements CommentServiceI {
 
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-
         if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
 
         Comment comment = new Comment();
@@ -77,10 +51,8 @@ public class CommentService implements CommentServiceI {
             if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             comment.setPageProfile(PageProfile.builder().id(null).build());
             comment.setAuthor(author);
-        }
-        else if (type == PrefixedUUID.EntityType.PAGE) {
+        } else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
-
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
@@ -108,8 +80,38 @@ public class CommentService implements CommentServiceI {
         return CommentMapper.create().toResponse(comment);
     }
 
+
+    // ======== Get Comments by Post ========
+
     @Override
-        public ToggleCommentVotesRes toggleVotes(ToggleCommentVotesReq dto) {
+    public GetCommentPageRes getComments(GetCommentPageReq dto) {
+        Post post = this.postsRepository.getById(dto.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
+        PageContent<Comment> comments =
+                this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
+
+        comments.getContent().forEach(
+                comment -> {
+                    if (comment.getAuthor().getId() != null) {
+                        UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
+                        comment.setAuthor(fullProfile);
+                    }
+                    if (comment.getPageProfile().getId() != null) {
+                        PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
+                        comment.setPageProfile(fullPage);
+                    }
+                }
+        );
+
+        return CommentMapper.getPage().toResponse(comments);
+    }
+
+
+    // ======== Toggle Comment Votes ========
+
+    @Override
+    public ToggleCommentVotesRes toggleVotes(ToggleCommentVotesReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -117,23 +119,18 @@ public class CommentService implements CommentServiceI {
         if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
 
         String userId = user.getId();
-
         List<String> upvoters = comment.getUpvoters();
         List<String> downvoters = comment.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
-            if (upvoters.contains(userId)) {
-                upvoters.remove(userId);
-            }
+            if (upvoters.contains(userId)) upvoters.remove(userId);
             else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
             }
         }
         if (Vote.DOWNVOTE == dto.getVoteType()) {
-            if (downvoters.contains(userId)) {
-                downvoters.remove(userId);
-            }
+            if (downvoters.contains(userId)) downvoters.remove(userId);
             else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
@@ -142,14 +139,12 @@ public class CommentService implements CommentServiceI {
 
         comment.setUpvoters(upvoters);
         comment.setDownvoters(downvoters);
-
         this.commentRepository.update(comment);
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
             UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
             comment.setAuthor(fullProfile);
         }
-
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
             comment.setPageProfile(fullPage);
@@ -158,15 +153,16 @@ public class CommentService implements CommentServiceI {
         return CommentMapper.toggleVotes().toResponse(comment);
     }
 
+
+    // ======== Delete Comment ========
+
     @Override
     public void delete(DeleteCommentReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Comment comment = this.commentRepository.getById(dto.getCommentId());
-        if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
-
-        if (comment.getStatus() == Status.DELETED){
+        if (comment == null || comment.getStatus() == Status.DELETED) {
             throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
         }
 

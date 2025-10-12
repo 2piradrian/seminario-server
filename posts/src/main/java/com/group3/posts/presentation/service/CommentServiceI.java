@@ -7,9 +7,9 @@ import com.group3.posts.domain.dto.comment.response.ToggleCommentVotesRes;
 
 public interface CommentServiceI {
 
-    GetCommentPageRes getComments(GetCommentPageReq dto);
-
     CreateCommentRes create(CreateCommentReq dto);
+
+    GetCommentPageRes getComments(GetCommentPageReq dto);
 
     ToggleCommentVotesRes toggleVotes(ToggleCommentVotesReq dto);
 

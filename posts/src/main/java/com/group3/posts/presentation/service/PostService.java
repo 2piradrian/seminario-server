@@ -25,22 +25,66 @@ import java.util.UUID;
 public class PostService implements PostServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
-
     private final PostsRepository postsRepository;
-
     private final UserRepository userRepository;
-
     private final ImagesRepository imagesRepository;
-
     private final PageProfileRepository pageProfileRepository;
-
     private final UserProfileRepository userProfileRepository;
+
+
+    // ======== Create Post ========
+
+    @Override
+    public CreatePostRes create(CreatePostReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        UserProfile author = UserProfile.builder().id(user.getId()).build();
+        Post post = new Post();
+
+        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
+        if (type == PrefixedUUID.EntityType.USER) {
+            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            post.setPageProfile(PageProfile.builder().id(null).build());
+            post.setAuthor(author);
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
+            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            }
+            post.setAuthor(author);
+            post.setPageProfile(page);
+        }
+
+        if (dto.getImage() != null) {
+            String imageId = this.imagesRepository.upload(dto.getImage(), secretKeyHelper.getSecret());
+            post.setImageId(imageId);
+        }
+
+        post.setAuthor(author);
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        post.setStatus(Status.ACTIVE);
+        post.setViews(0);
+        post.setUpvoters(List.of());
+        post.setDownvoters(List.of());
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+
+        Post saved = this.postsRepository.save(post);
+        return PostMapper.create().toResponse(saved);
+    }
+
+
+    // ======== Get Post by ID ========
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
+        // Enrich author and page profile
         if (post.getAuthor().getId() != null) {
             UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
             post.setAuthor(fullProfile);
@@ -50,18 +94,22 @@ public class PostService implements PostServiceI {
             post.setPageProfile(fullPage);
         }
 
+        // Increment views
         Integer views = post.getViews();
         post.setViews(views + 1);
-
         this.postsRepository.update(post);
 
         return PostMapper.getById().toResponse(post);
     }
 
+
+    // ======== Get Posts ========
+
     @Override
     public GetPostPageRes getPosts(GetPostPageReq dto) {
         PageContent<Post> posts = this.postsRepository.getAllPosts(dto.getPage(), dto.getSize());
 
+        // Enrich author and page profile for each post
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
                 UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
@@ -75,6 +123,9 @@ public class PostService implements PostServiceI {
 
         return PostMapper.getPage().toResponse(posts);
     }
+
+
+    // ======== Get Posts by Profile ========
 
     @Override
     public GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto) {
@@ -93,6 +144,9 @@ public class PostService implements PostServiceI {
 
         return PostMapper.getPageByProfile().toResponse(posts);
     }
+
+
+    // ======== Get Own Posts ========
 
     @Override
     public GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto) {
@@ -115,84 +169,8 @@ public class PostService implements PostServiceI {
         return PostMapper.getOwnPage().toResponse(posts);
     }
 
-    @Override
-    public CreatePostRes create(CreatePostReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile author = UserProfile.builder().id(user.getId()).build();
-        Post post = new Post();
-
-        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
-        if (type == PrefixedUUID.EntityType.USER) {
-            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-            post.setPageProfile(PageProfile.builder().id(null).build());
-            post.setAuthor(author);
-        }
-        else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
-
-            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
-                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-            }
-            post.setAuthor(author);
-            post.setPageProfile(page);
-        }
-
-        if (dto.getImage() != null) {
-            String imageId = this.imagesRepository.upload(dto.getImage(), secretKeyHelper.getSecret());
-            post.setImageId(imageId);
-        }
-
-        post.setAuthor(author);
-        post.setTitle(dto.getTitle());
-        post.setContent(dto.getContent());
-        post.setStatus(Status.ACTIVE);
-
-        post.setViews(0);
-        post.setUpvoters(List.of());
-        post.setDownvoters(List.of());
-        post.setCreatedAt(LocalDateTime.now());
-        post.setUpdatedAt(LocalDateTime.now());
-
-        Post saved = this.postsRepository.save(post);
-
-        return PostMapper.create().toResponse(saved);
-    }
-
-    @Override
-    public EditPostRes edit(EditPostReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        Post post = this.postsRepository.getById(dto.getPostId());
-        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-
-        if (!post.getAuthor().getId().equals(user.getId())) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        if (post.getPageProfile() != null){
-            // TODO: Search page and verify if is member
-        }
-
-        if (dto.getBase64Image() != null){
-            String postImage = post.getImageId();
-            if (postImage != null) {
-                this.imagesRepository.delete(postImage, secretKeyHelper.getSecret());
-            }
-
-            String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
-            post.setImageId(imageId);
-        }
-
-        post.setTitle(dto.getTitle());
-        post.setContent(dto.getContent());
-        post.setUpdatedAt(LocalDateTime.now());
-
-        Post edited = this.postsRepository.update(post);
-        return PostMapper.edit().toResponse(edited);
-    }
+    // ======== Toggle Post Votes ========
 
     @Override
     public TogglePostVotesRes toggleVotes(TogglePostVotesReq dto) {
@@ -203,15 +181,13 @@ public class PostService implements PostServiceI {
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         String userId = user.getId();
-
         List<String> upvoters = post.getUpvoters();
         List<String> downvoters = post.getDownvoters();
 
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
                 upvoters.remove(userId);
-            }
-            else {
+            } else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
             }
@@ -219,8 +195,7 @@ public class PostService implements PostServiceI {
         if (Vote.DOWNVOTE == dto.getVoteType()) {
             if (downvoters.contains(userId)) {
                 downvoters.remove(userId);
-            }
-            else {
+            } else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
             }
@@ -243,6 +218,38 @@ public class PostService implements PostServiceI {
 
         return PostMapper.toggleVotes().toResponse(post);
     }
+
+
+    // ======== Edit Post ========
+    @Override
+    public EditPostRes edit(EditPostReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Post post = this.postsRepository.getById(dto.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
+        if (!post.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        if (dto.getBase64Image() != null) {
+            String postImage = post.getImageId();
+            if (postImage != null) {
+                this.imagesRepository.delete(postImage, secretKeyHelper.getSecret());
+            }
+            String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
+            post.setImageId(imageId);
+        }
+
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        post.setUpdatedAt(LocalDateTime.now());
+
+        Post edited = this.postsRepository.update(post);
+        return PostMapper.edit().toResponse(edited);
+    }
+
+
+    // ======== Delete Post ========
 
     @Override
     public void delete(DeletePostReq dto) {

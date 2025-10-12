@@ -16,6 +16,16 @@ public class PostController {
 
     private final PostServiceI service;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreatePostReq dto = PostMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
+
     @GetMapping("/get-by-id/{postId}")
     public ResponseEntity<?> getById(
             @PathVariable(value = "postId") String postId
@@ -51,14 +61,14 @@ public class PostController {
         return ResponseEntity.ok(this.service.getOwnPosts(dto));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(
+    @PatchMapping("/toggle-votes")
+    public ResponseEntity<?> toggleVotes(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        CreatePostReq dto = PostMapper.create().toRequest(token, payload);
+        TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.service.create(dto));
+        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @PatchMapping("/edit")
@@ -69,16 +79,6 @@ public class PostController {
         EditPostReq dto = PostMapper.edit().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
-    }
-
-    @PatchMapping("/toggle-votes")
-    public ResponseEntity<?> toggleVotes(
-            @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
-    ) {
-        TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
-
-        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @DeleteMapping("/delete")
