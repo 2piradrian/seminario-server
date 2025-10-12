@@ -26,4 +26,6 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
     """)
     List<PageProfileModel> findByUserId(@Param("userId") String userId);
 
+    List<PageProfileModel> findAllByIdIn(List<String> ids);
+
 }

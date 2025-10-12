@@ -17,5 +17,7 @@ public interface PageRepositoryI {
     PageProfile save(PageProfile page);
 
     PageProfile update(PageProfile page);
+
+    List<PageProfile> getListByIds(List<String> ids);
     
 }

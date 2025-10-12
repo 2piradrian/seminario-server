@@ -44,6 +44,14 @@ public class PageProfileController {
         return ResponseEntity.ok(this.pageService.getUserPages(dto));
     }
 
+    @PostMapping("/get-list-by-id")
+    public ResponseEntity<?> getListById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetPageListByIdsReq dto = PageMapper.getListByIds().toRequest(payload);
+        return ResponseEntity.ok(this.pageService.getListByIds(dto));
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<?> edit(
         @RequestHeader(value = "Authorization") String token,
@@ -65,5 +73,7 @@ public class PageProfileController {
 
         return ResponseEntity.ok().build();
     }
+
+
     
 }

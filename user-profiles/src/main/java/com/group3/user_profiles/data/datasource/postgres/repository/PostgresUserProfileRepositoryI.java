@@ -45,4 +45,6 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     )
     Integer countFollowers(@Param("userId") String userId);
 
+    List<UserProfileModel> findAllByIdIn(List<String> ids);
+
 }

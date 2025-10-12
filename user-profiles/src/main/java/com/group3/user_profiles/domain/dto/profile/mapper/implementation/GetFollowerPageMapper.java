@@ -4,6 +4,7 @@ import com.group3.entity.PageContent;
 import com.group3.user_profiles.domain.dto.profile.request.GetFollowerPageReq;
 import com.group3.user_profiles.domain.dto.profile.response.GetFollowerPageRes;
 
+import java.util.List;
 import java.util.Map;
 
 public class GetFollowerPageMapper {
@@ -16,10 +17,10 @@ public class GetFollowerPageMapper {
         );
     }
 
-    public GetFollowerPageRes toResponse(PageContent<String> followers) {
+    public GetFollowerPageRes toResponse(PageContent<String> followersPage, List<Object> followers) {
         return new GetFollowerPageRes(
-                followers.getContent(),
-                followers.getNextPage()
+                followers,
+                followersPage.getNextPage()
         );
     }
 }

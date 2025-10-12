@@ -8,8 +8,8 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPageByUserIdRes {
+public class GetPageListByIdsRes {
 
     private final List<PageProfile> pages;
-
+    
 }

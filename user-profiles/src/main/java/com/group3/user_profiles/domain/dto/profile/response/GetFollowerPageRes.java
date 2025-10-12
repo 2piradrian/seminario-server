@@ -12,7 +12,8 @@ import java.util.List;
 @Setter
 public class GetFollowerPageRes {
 
-    List<String> followers;
+    List<Object> followers;
 
     Integer nextPage;
+
 }
