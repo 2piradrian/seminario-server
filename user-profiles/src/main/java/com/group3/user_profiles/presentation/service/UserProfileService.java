@@ -100,6 +100,45 @@ public class UserProfileService implements UserProfileServiceI {
     }
 
     @Override
+    public void toggleFollow(ToggleFollowReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
+        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getId()));
+        if (type == PrefixedUUID.EntityType.USER) {
+            UserProfile profileToFollow = this.userProfileRepository.getById(dto.getId());
+            if (profileToFollow == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+            List<String> followList = userProfile.getFollowing();
+            if (followList.contains(profileToFollow.getId())) {
+                followList.remove(profileToFollow.getId());
+            }
+            else {
+                followList.add(profileToFollow.getId());
+            }
+            userProfile.setFollowing(followList);
+            this.userProfileRepository.update(userProfile);
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
+            PageProfile pageProfile = this.pageProfileRepository.getById(dto.getId());
+            if (pageProfile == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+
+            List<String> followList = userProfile.getFollowing();
+            if (followList.contains(pageProfile.getId())) {
+                followList.remove(pageProfile.getId());
+            }
+            else {
+                followList.add(pageProfile.getId());
+            }
+            userProfile.setFollowing(followList);
+            this.userProfileRepository.update(userProfile);
+        }
+    }
+
+    @Override
     public void create(CreateUserProfileReq dto) {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {

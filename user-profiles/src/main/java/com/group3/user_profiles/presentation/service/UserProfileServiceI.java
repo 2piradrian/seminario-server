@@ -9,6 +9,8 @@ public interface UserProfileServiceI {
 
     GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
 
+    void toggleFollow(ToggleFollowReq dto);
+
     void create(CreateUserProfileReq dto);
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);

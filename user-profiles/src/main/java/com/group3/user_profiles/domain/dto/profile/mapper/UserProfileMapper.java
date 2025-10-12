@@ -12,6 +12,10 @@ public class UserProfileMapper {
         return new GetFollowingPageMapper();
     }
 
+    public static ToggleFollowMapper toggleFollow() {
+        return new ToggleFollowMapper();
+    }
+
     public static GetByIdMapper getById() {
         return new GetByIdMapper();
     }
