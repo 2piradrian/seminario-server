@@ -9,14 +9,24 @@ import java.util.List;
 
 public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfileModel, String> {
 
+    // ======== Search ========
+
     PageProfileModel findByName(String name);
-    
+
+    List<PageProfileModel> findAllByIdIn(List<String> ids);
+
+
+    // ======== Custom Search ========
+
     @Query("""
         SELECT p
         FROM PageProfileModel p
         WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))
     """)
     List<PageProfileModel> findByNameLike(@Param("name") String name);
+
+
+    // ======== User Members ========
 
     @Query("""
         SELECT p
@@ -25,7 +35,5 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
         WHERE m = :userId
     """)
     List<PageProfileModel> findByUserId(@Param("userId") String userId);
-
-    List<PageProfileModel> findAllByIdIn(List<String> ids);
 
 }
