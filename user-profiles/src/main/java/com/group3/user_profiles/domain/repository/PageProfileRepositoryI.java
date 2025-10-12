@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PageProfileRepositoryI {
 
-    List<PageProfile> getListByIds(List<String> pageIds);
+    List<PageProfile> getListByIds(List<String> pageIds, String secret);
 
 }

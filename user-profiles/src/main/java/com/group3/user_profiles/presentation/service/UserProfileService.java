@@ -58,7 +58,7 @@ public class UserProfileService implements UserProfileServiceI {
             }
         }
 
-        List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds);
+        List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
 
         List<Object> followers = new ArrayList<>();
