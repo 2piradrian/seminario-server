@@ -34,4 +34,8 @@ public class GetUserProfileByIdRes {
 
     private final List<Instrument> instruments;
 
+    private final Integer followersCount;
+
+    private final Integer followingCount;
+
 }
