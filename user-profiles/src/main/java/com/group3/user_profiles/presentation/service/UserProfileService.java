@@ -44,7 +44,7 @@ public class UserProfileService implements UserProfileServiceI {
         PageContent<String> followersPage =
                 this.userProfileRepository.getFollowing(follower.getId(), dto.getPage(), dto.getSize());
 
-        return UserProfileMapper.GetFollowerPage().toResponse(followersPage);
+        return UserProfileMapper.getFollowerPageMapper().toResponse(followersPage);
     }
 
     @Override
