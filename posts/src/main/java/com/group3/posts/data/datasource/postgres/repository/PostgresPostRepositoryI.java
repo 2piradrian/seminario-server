@@ -8,25 +8,48 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
-    @Query("SELECT p FROM PostModel p WHERE p.status <> :status ORDER BY p.createdAt DESC")
-    Page<PostModel> findAll(@Param("status") Status status, Pageable pageable);
-
-    @Query("SELECT p FROM PostModel p WHERE p.authorId = :userId AND p.status <> :status ORDER BY p.createdAt DESC")
-    Page<PostModel> findByAuthorId(
-        @Param("userId") String userId,
-        @Param("status") Status status,
-        Pageable pageable
+    // ======== Get All Posts (excluding deleted) ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.status <> :status
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findAll(
+            @Param("status") Status status,
+            Pageable pageable
     );
 
-    @Query("SELECT p FROM PostModel p WHERE p.pageId = :pageId AND p.status <> :status ORDER BY p.createdAt DESC")
+
+    // ======== Get Posts by Author ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.authorId = :userId
+        AND p.status <> :status
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findByAuthorId(
+            @Param("userId") String userId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
+
+
+    // ======== Get Posts by Page ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.pageId = :pageId
+        AND p.status <> :status
+        ORDER BY p.createdAt DESC
+    """)
     Page<PostModel> findByPageId(
-        @Param("pageId") String pageId,
-        @Param("status") Status status,
-        Pageable pageable
+            @Param("pageId") String pageId,
+            @Param("status") Status status,
+            Pageable pageable
     );
 
 }

@@ -10,7 +10,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, String> {
 
-    @Query("SELECT c FROM CommentModel c WHERE c.postId = :postId AND c.status = :status ORDER BY c.createdAt DESC")
-    Page<CommentModel> findAllByPostIdAndActiveStatus(@Param("postId") String postId, @Param("status") Status status, Pageable pageable);
+    // ======== Search Comments by Post ========
+
+    @Query("""
+        SELECT c
+        FROM CommentModel c
+        WHERE c.postId = :postId
+        AND c.status = :status
+        ORDER BY c.createdAt DESC
+    """)
+    Page<CommentModel> findAllByPostIdAndActiveStatus(
+            @Param("postId") String postId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
 
 }
