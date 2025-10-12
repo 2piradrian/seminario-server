@@ -1,4 +1,4 @@
-package com.group3.page_profiles.domain.dto.response;
+package com.group3.user_profiles.data.datasource.page_profiles_server.responses;
 
 import com.group3.entity.PageProfile;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,8 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPageByUserIdRes {
+public class GetPageListByIdsRes {
 
     private final List<PageProfile> pages;
-
+    
 }

@@ -74,4 +74,22 @@ public class UserProfileController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/get-followers")
+    public ResponseEntity<?> getFollowers(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowerPageReq dto = UserProfileMapper.getFollowerPage().toRequest(payload);
+
+        return ResponseEntity.ok(this.userService.getFollowers(dto));
+    }
+
+    @PostMapping("/get-following")
+    public ResponseEntity<?> getFollowing(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowingPageReq dto = UserProfileMapper.getFollowingPage().toRequest(payload);
+
+        return ResponseEntity.ok(this.userService.getFollowing(dto));
+    }
+
 }

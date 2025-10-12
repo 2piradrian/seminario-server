@@ -11,6 +11,7 @@ import com.group3.page_profiles.domain.dto.request.*;
 import com.group3.page_profiles.domain.dto.response.CreatePageRes;
 import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
 import com.group3.page_profiles.domain.dto.response.GetPageByUserIdRes;
+import com.group3.page_profiles.domain.dto.response.GetPageListByIdsRes;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +98,16 @@ public class PageProfileService implements PageProfileServiceI {
     }
 
     @Override
+    public GetPageListByIdsRes getListByIds(GetPageListByIdsReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        List<PageProfile> pages = this.pageProfileRepository.getListByIds(dto.getPageIds());
+        return PageMapper.getListByIds().toResponse(pages);
+    }
+
+    @Override
     public void delete(DeletePageReq dto) {
 
         User user = this.userRepository.auth(dto.getToken());
@@ -179,5 +190,5 @@ public class PageProfileService implements PageProfileServiceI {
 
         this.pageProfileRepository.update(page);
     }
-    
+
 }

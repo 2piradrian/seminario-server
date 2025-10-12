@@ -1,7 +1,6 @@
 package com.group3.posts.domain.dto.post.response;
 
-import com.group3.entity.Category;
-import com.group3.entity.Page;
+import com.group3.entity.PageProfile;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class GetPostByIdRes {
 
     private final String postId;
 
-    private final Page page;
+    private final PageProfile page;
 
     private final String imageId;
 

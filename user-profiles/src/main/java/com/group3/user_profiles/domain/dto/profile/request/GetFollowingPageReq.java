@@ -1,0 +1,46 @@
+package com.group3.user_profiles.domain.dto.profile.request;
+
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
+import lombok.Getter;
+
+@Getter
+public class GetFollowingPageReq {
+
+    private final String userId;
+
+    private final Integer page;
+
+    private final Integer size;
+
+    public GetFollowingPageReq(String userId, Integer page, Integer size) {
+        this.userId = userId;
+        this.page = page;
+        this.size = size;
+    }
+
+    public static GetFollowingPageReq create(String userId, Integer page, Integer size) {
+
+        if (userId == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (page == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (page < 0) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        if (size == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (size < 0) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        return new GetFollowingPageReq(userId, page, size);
+    }
+}

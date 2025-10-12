@@ -16,7 +16,7 @@ public class GetByIdMapper {
         return new GetPostByIdRes(
             post.getAuthor(),
             post.getId(),
-            post.getPage(),
+            post.getPageProfile(),
             post.getImageId(),
             post.getTitle(),
             post.getContent(),

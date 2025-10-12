@@ -4,6 +4,14 @@ import com.group3.user_profiles.domain.dto.profile.mapper.implementation.*;
 
 public class UserProfileMapper {
 
+    public static GetFollowerPageMapper getFollowerPage() {
+        return new GetFollowerPageMapper();
+    }
+
+    public static GetFollowingPageMapper getFollowingPage() {
+        return new GetFollowingPageMapper();
+    }
+
     public static GetByIdMapper getById() {
         return new GetByIdMapper();
     }

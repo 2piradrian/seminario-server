@@ -17,7 +17,6 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
 
     Optional<UserProfileModel> findByEmail(String email);
 
-    //TODO: FIX IT 
     @Query("""
         SELECT u
         FROM UserProfileModel u
@@ -31,6 +30,16 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     );
 
     @Query(
+       value = "SELECT user_id FROM user_following WHERE following_id = :userId ORDER BY user_id ASC",
+       countQuery = "SELECT COUNT(*) FROM user_following WHERE following_id = :userId",
+       nativeQuery = true
+    )
+    Page<String> findFollowers(
+            @Param("userId") String userId,
+            Pageable pageable
+    );
+
+    @Query(
        value = "SELECT following_id FROM user_following WHERE user_id = :userId ORDER BY following_id ASC",
        countQuery = "SELECT COUNT(*) FROM user_following WHERE user_id = :userId",
        nativeQuery = true
@@ -39,5 +48,19 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
             @Param("userId") String userId,
             Pageable pageable
     );
+
+    @Query(
+            value = "SELECT COUNT(*) FROM user_following WHERE user_id = :userId",
+            nativeQuery = true
+    )
+    Integer countFollowing(@Param("userId") String userId);
+
+    @Query(
+            value = "SELECT COUNT(*) FROM user_following WHERE following_id = :userId",
+            nativeQuery = true
+    )
+    Integer countFollowers(@Param("userId") String userId);
+
+    List<UserProfileModel> findAllByIdIn(List<String> ids);
 
 }

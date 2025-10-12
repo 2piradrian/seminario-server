@@ -55,4 +55,11 @@ public class PageProfileRepository implements PageRepositoryI {
 
         return PageEntityMapper.toDomain(updated);
     }
+
+    @Override
+    public List<PageProfile> getListByIds(List<String> ids) {
+        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids);
+        return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
+    }
+
 }
