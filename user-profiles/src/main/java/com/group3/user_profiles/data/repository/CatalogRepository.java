@@ -17,10 +17,12 @@ public class CatalogRepository implements CatalogRepositoryI {
 
     private final CatalogServerRepositoryI repository;
 
+
+    // ======== Styles ========
+
     @Override
     public List<Style> getAllStyle() {
         List<Style> styles = this.repository.getAllStyle().getStyles();
-
         return styles == null ? List.of() : styles;
     }
 
@@ -35,6 +37,9 @@ public class CatalogRepository implements CatalogRepositoryI {
         payload.put("ids", styles);
         return this.repository.getStyleListById(payload).getStyles();
     }
+
+
+    // ======== Instruments ========
 
     @Override
     public List<Instrument> getAllInstrument() {

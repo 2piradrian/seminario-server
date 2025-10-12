@@ -17,6 +17,9 @@ public class PageProfileRepository implements PageProfileRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
 
+
+    // ======== Single Page Retrieval ========
+
     @Override
     public PageProfile getById(String id) {
         GetPageByIdRes response = this.repository.getById(id);
@@ -34,6 +37,9 @@ public class PageProfileRepository implements PageProfileRepositoryI {
 
         return page;
     }
+
+
+    // ======== Multiple Pages Retrieval ========
 
     @Override
     public List<PageProfile> getListByIds(List<String> pageIds, String secret) {
