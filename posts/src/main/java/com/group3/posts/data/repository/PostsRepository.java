@@ -20,9 +20,15 @@ public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
 
+
+    // ======== Pagination Helper ========
+
     private int normalizePage(Integer page) {
         return (page != null && page > 0) ? page - 1 : 0;
     }
+
+
+    // ======== Single Post Retrieval ========
 
     @Override
     public Post getById(String postId) {
@@ -33,6 +39,9 @@ public class PostsRepository implements PostRepositoryI {
 
         return PostsEntityMapper.toDomain(postModel);
     }
+
+
+    // ======== Get All Posts with Pagination ========
 
     @Override
     public PageContent<Post> getAllPosts(Integer page, Integer size) {
@@ -51,6 +60,9 @@ public class PostsRepository implements PostRepositoryI {
                 postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
+
+
+    // ======== Get Posts by User ID with Pagination ========
 
     @Override
     public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
@@ -71,6 +83,9 @@ public class PostsRepository implements PostRepositoryI {
         );
     }
 
+
+    // ======== Get Posts by Page ID with Pagination ========
+
     @Override
     public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
@@ -89,6 +104,9 @@ public class PostsRepository implements PostRepositoryI {
                 postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
+
+
+    // ======== Save and Update ========
 
     @Override
     public Post save(Post post) {
