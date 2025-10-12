@@ -8,6 +8,10 @@ public class UserProfileMapper {
         return new GetFollowerPageMapper();
     }
 
+    public static GetFollowingPageMapper getFollowingPage() {
+        return new GetFollowingPageMapper();
+    }
+
     public static GetByIdMapper getById() {
         return new GetByIdMapper();
     }
@@ -25,6 +29,7 @@ public class UserProfileMapper {
     }
 
     public static GetOwnMapper getOwnProfile() {
-        return new GetOwnMapper(); }
+        return new GetOwnMapper();
+    }
 
 }

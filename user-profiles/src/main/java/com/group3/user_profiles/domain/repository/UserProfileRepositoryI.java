@@ -15,6 +15,8 @@ public interface UserProfileRepositoryI {
 
     PageContent<String> getFollowing(String userId, Integer page, Integer size);
 
+    PageContent<String> getFollowers(String userId, Integer page, Integer size);
+
     List<UserProfile> getListByIds(List<String> ids);
 
     Integer getFollowingCount(String userId);

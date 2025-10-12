@@ -43,7 +43,7 @@ public class UserProfileService implements UserProfileServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         PageContent<String> followersPage =
-                this.userProfileRepository.getFollowing(user.getId(), dto.getPage(), dto.getSize());
+                this.userProfileRepository.getFollowers(user.getId(), dto.getPage(), dto.getSize());
 
         List<String> userIds = new ArrayList<>();
         List<String> pageIds = new ArrayList<>();
@@ -66,6 +66,37 @@ public class UserProfileService implements UserProfileServiceI {
         followers.addAll(pageProfiles);
 
         return UserProfileMapper.getFollowerPage().toResponse(followersPage, followers);
+    }
+
+    @Override
+    public GetFollowingPageRes getFollowing(GetFollowingPageReq dto) {
+        UserProfile user = this.userProfileRepository.getById(dto.getUserId());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        PageContent<String> followingPage =
+                this.userProfileRepository.getFollowing(user.getId(), dto.getPage(), dto.getSize());
+
+        List<String> userIds = new ArrayList<>();
+        List<String> pageIds = new ArrayList<>();
+
+        for (String id : followingPage.getContent()) {
+            PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(id));
+            if (type == PrefixedUUID.EntityType.USER) {
+                userIds.add(id);
+            }
+            else if (type == PrefixedUUID.EntityType.PAGE) {
+                pageIds.add(id);
+            }
+        }
+
+        List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
+        List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
+
+        List<Object> following = new ArrayList<>();
+        following.addAll(userProfiles);
+        following.addAll(pageProfiles);
+
+        return UserProfileMapper.getFollowingPage().toResponse(followingPage, following);
     }
 
     @Override

@@ -14,7 +14,6 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
 
     Optional<UserProfileModel> findByEmail(String email);
 
-    //TODO: FIX IT 
     @Query("""
         SELECT u
         FROM UserProfileModel u
@@ -22,6 +21,16 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
         AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
     """)
     List<UserProfileModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
+
+    @Query(
+       value = "SELECT user_id FROM user_following WHERE following_id = :userId ORDER BY user_id ASC",
+       countQuery = "SELECT COUNT(*) FROM user_following WHERE following_id = :userId",
+       nativeQuery = true
+    )
+    Page<String> findFollowers(
+            @Param("userId") String userId,
+            Pageable pageable
+    );
 
     @Query(
        value = "SELECT following_id FROM user_following WHERE user_id = :userId ORDER BY following_id ASC",
