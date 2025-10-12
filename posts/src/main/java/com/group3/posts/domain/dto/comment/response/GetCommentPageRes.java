@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetCommentPageRes {
 
-    List<Comment> comments;
+    private final List<Comment> comments;
 
-    Integer nextPage;
+    private final Integer nextPage;
 }

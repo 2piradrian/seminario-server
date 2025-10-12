@@ -1,13 +1,16 @@
 package com.group3.user_profiles.data.datasource.postgres.repository;
 
+import com.group3.entity.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.group3.user_profiles.data.datasource.postgres.model.UserProfileModel;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfileModel, String> {
@@ -17,10 +20,14 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     @Query("""
         SELECT u
         FROM UserProfileModel u
-        WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :firstName, '%'))
-        AND LOWER(u.surname) LIKE LOWER(CONCAT('%', :surName, '%'))
+        WHERE u.status <> :status
+        AND LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))
     """)
-    List<UserProfileModel> findByFullNameLike(@Param("name") String name, @Param("surname") String surname);
+    Page<UserProfileModel> findByFullNameLike(
+        @Param("fullName") String fullName,
+        @Param("status") Status status,
+        Pageable pageable
+    );
 
     @Query(
        value = "SELECT user_id FROM user_following WHERE following_id = :userId ORDER BY user_id ASC",

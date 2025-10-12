@@ -13,23 +13,23 @@ import java.util.List;
 @AllArgsConstructor
 public class ToggleCommentVotesRes {
 
-    private String commentId;
+    private final String commentId;
 
-    private UserProfile author;
+    private final UserProfile author;
 
-    private String postId;
+    private final String postId;
 
-    private Comment replyTo;
+    private final Comment replyTo;
 
-    private String content;
+    private final String content;
 
     private List<String> upvoters;
 
     private List<String> downvoters;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
     private PageProfile page;
 

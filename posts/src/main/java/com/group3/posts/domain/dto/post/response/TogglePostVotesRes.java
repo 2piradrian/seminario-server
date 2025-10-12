@@ -20,7 +20,7 @@ public class TogglePostVotesRes {
 
     private final String imageId;
 
-    private  final String title;
+    private final String title;
 
     private final String content;
 

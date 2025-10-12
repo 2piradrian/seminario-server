@@ -38,4 +38,6 @@ public class UserProfile {
 
     private List<String> following;
 
+    private Status status;
+
 }

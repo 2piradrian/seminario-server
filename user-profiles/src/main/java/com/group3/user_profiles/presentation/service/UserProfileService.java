@@ -121,6 +121,7 @@ public class UserProfileService implements UserProfileServiceI {
         userProfile.setLongDescription("¡New user!");
         userProfile.setInstruments(List.of());
         userProfile.setStyles(List.of());
+        userProfile.setStatus(Status.ACTIVE);
 
         this.userProfileRepository.save(userProfile);
     }
@@ -134,6 +135,12 @@ public class UserProfileService implements UserProfileServiceI {
         Integer followingCount = this.userProfileRepository.getFollowingCount(userProfile.getId());
 
         return UserProfileMapper.getById().toResponse(userProfile, followersCount, followingCount);
+    }
+
+    @Override
+    public GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto) {
+        PageContent<UserProfile> profiles = this.userProfileRepository.getByFullName(dto.getFullname(), dto.getPage(), dto.getSize());
+        return UserProfileMapper.getByFullname().toResponse(profiles);
     }
 
     @Override

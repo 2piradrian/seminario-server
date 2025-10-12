@@ -13,6 +13,8 @@ public interface UserProfileServiceI {
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
+    GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto);
+
     void update(EditUserProfileReq dto);
 
     void delete(DeleteUserProfileReq dto);

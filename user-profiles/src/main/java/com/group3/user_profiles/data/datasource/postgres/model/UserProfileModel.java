@@ -1,5 +1,6 @@
 package com.group3.user_profiles.data.datasource.postgres.model;
 
+import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,5 +53,8 @@ public class UserProfileModel {
     @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "following_id")
     private List<String> following;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
