@@ -4,8 +4,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class ToggleFollowReq {
 
