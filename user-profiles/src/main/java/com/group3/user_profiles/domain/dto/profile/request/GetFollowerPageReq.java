@@ -7,21 +7,21 @@ import lombok.Getter;
 @Getter
 public class GetFollowerPageReq {
 
-    private final String followerId;
+    private final String userId;
 
     private final Integer page;
 
     private final Integer size;
 
-    public GetFollowerPageReq(String followerId, Integer page, Integer size) {
-        this.followerId = followerId;
+    public GetFollowerPageReq(String userId, Integer page, Integer size) {
+        this.userId = userId;
         this.page = page;
         this.size = size;
     }
 
-    public static GetFollowerPageReq create(String followerId, Integer page, Integer size) {
+    public static GetFollowerPageReq create(String userId, Integer page, Integer size) {
 
-        if (followerId == null) {
+        if (userId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -41,6 +41,6 @@ public class GetFollowerPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFollowerPageReq(followerId, page, size);
+        return new GetFollowerPageReq(userId, page, size);
     }
 }
