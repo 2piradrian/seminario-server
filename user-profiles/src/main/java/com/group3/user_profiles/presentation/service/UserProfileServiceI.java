@@ -5,22 +5,23 @@ import com.group3.user_profiles.domain.dto.profile.response.*;
 
 public interface UserProfileServiceI {
 
-    GetFollowerPageRes getFollowers(GetFollowerPageReq dto);
-
-    GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
-
-    void toggleFollow(ToggleFollowReq dto);
-
     void create(CreateUserProfileReq dto);
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
     GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto);
 
+    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
+
+    GetFollowerPageRes getFollowers(GetFollowerPageReq dto);
+
+    GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
+
+    void toggleFollow(ToggleFollowReq dto);
+
     void update(EditUserProfileReq dto);
 
     void delete(DeleteUserProfileReq dto);
 
-    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
 
 }
