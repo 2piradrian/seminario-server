@@ -4,6 +4,8 @@ import com.group3.entity.PageContent;
 
 import com.group3.entity.UserProfile;
 
+import java.util.List;
+
 
 public interface UserProfileRepositoryI {
 
