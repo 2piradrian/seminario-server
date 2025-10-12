@@ -16,11 +16,23 @@ public class PageProfileRepository implements PageRepositoryI {
 
     private final PostgresPageProfileRepositoryI repository;
 
+
+    // ======== Single Page Retrieval ========
+
     @Override
     public PageProfile getById(String pageId) {
         PageProfileModel pageProfileModel = this.repository.findById(pageId).orElse(null);
         return pageProfileModel != null ? PageEntityMapper.toDomain(pageProfileModel) : null;
     }
+
+    @Override
+    public PageProfile getByName(String name) {
+        PageProfileModel pageProfileModel = this.repository.findByName(name);
+        return pageProfileModel != null ? PageEntityMapper.toDomain(pageProfileModel) : null;
+    }
+
+
+    // ======== Multiple Pages Retrieval ========
 
     @Override
     public List<PageProfile> getByUserId(String userId) {
@@ -35,16 +47,18 @@ public class PageProfileRepository implements PageRepositoryI {
     }
 
     @Override
-    public PageProfile getByName(String name) {
-        PageProfileModel pageProfileModel = this.repository.findByName(name);
-        return pageProfileModel != null ? PageEntityMapper.toDomain(pageProfileModel) : null;
+    public List<PageProfile> getListByIds(List<String> ids) {
+        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids);
+        return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
+
+
+    // ======== Save and Update ========
 
     @Override
     public PageProfile save(PageProfile page) {
         PageProfileModel pageProfileModel = PageEntityMapper.toModel(page);
         PageProfileModel saved = this.repository.save(pageProfileModel);
-
         return PageEntityMapper.toDomain(saved);
     }
 
@@ -52,14 +66,7 @@ public class PageProfileRepository implements PageRepositoryI {
     public PageProfile update(PageProfile page) {
         PageProfileModel pageProfileModel = PageEntityMapper.toModel(page);
         PageProfileModel updated = this.repository.save(pageProfileModel);
-
         return PageEntityMapper.toDomain(updated);
-    }
-
-    @Override
-    public List<PageProfile> getListByIds(List<String> ids) {
-        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids);
-        return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
 
 }

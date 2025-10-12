@@ -15,28 +15,30 @@ public class UserProfileRepository implements ProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
 
+
+    // ======== Single User Profile Retrieval ========
+
     @Override
     public UserProfile getById(String userId) {
 
-        GetUserProfileByIdRes reponse = this.repository.getById(userId);
+        GetUserProfileByIdRes response = this.repository.getById(userId);
 
-        if (reponse == null){
+        if (response == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         }
 
         UserProfile user = new UserProfile();
-
-        user.setId(reponse.getId());
-        user.setEmail(reponse.getEmail());
-        user.setName(reponse.getName());
-        user.setSurname(reponse.getSurname());
-        user.setMemberSince(reponse.getMemberSince());
-        user.setPortraitImage(reponse.getPortraitImage());
-        user.setProfileImage(reponse.getProfileImage());
-        user.setShortDescription(reponse.getShortDescription());
-        user.setLongDescription(reponse.getLongDescription());
-        user.setStyles(reponse.getStyles());
-        user.setInstruments(reponse.getInstruments());
+        user.setId(response.getId());
+        user.setEmail(response.getEmail());
+        user.setName(response.getName());
+        user.setSurname(response.getSurname());
+        user.setMemberSince(response.getMemberSince());
+        user.setPortraitImage(response.getPortraitImage());
+        user.setProfileImage(response.getProfileImage());
+        user.setShortDescription(response.getShortDescription());
+        user.setLongDescription(response.getLongDescription());
+        user.setStyles(response.getStyles());
+        user.setInstruments(response.getInstruments());
 
         return user;
     }

@@ -16,17 +16,25 @@ public class CatalogRepository implements CatalogRepositoryI {
 
     private final CatalogServerRepositoryI repository;
 
+
+    // ======== Retrieve All Page Types ========
+
     @Override
     public List<PageType> getAll() {
         List<PageType> pageTypes = this.repository.getAll().getPageTypes();
-
         return pageTypes == null ? List.of() : pageTypes;
     }
+
+
+    // ======== Retrieve Single Page Type by ID ========
 
     @Override
     public PageType getById(String pageTypeId) {
         return this.repository.getById(pageTypeId).getPageType();
     }
+
+
+    // ======== Retrieve Multiple Page Types by IDs ========
 
     @Override
     public List<PageType> getListById(List<String> pageTypes) {
@@ -34,5 +42,4 @@ public class CatalogRepository implements CatalogRepositoryI {
         payload.put("ids", pageTypes);
         return this.repository.getListById(payload).getPageTypes();
     }
-
 }
