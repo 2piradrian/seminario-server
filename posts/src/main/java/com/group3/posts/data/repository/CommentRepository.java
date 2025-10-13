@@ -34,15 +34,11 @@ public class CommentRepository implements CommentRepositoryI {
     public Comment getById(String commentId) {
         CommentModel commentModel = this.repository.findById(commentId).orElse(null);
 
-        if (commentModel == null || commentModel.getStatus().equals(Status.INACTIVE)) {
+        if (commentModel != null && !commentModel.getStatus().equals(Status.ACTIVE)) {
             return null;
         }
 
-        if (commentModel.getStatus().equals(Status.DELETED)) {
-            commentModel.setAuthorId(Status.DELETED.toString());
-            commentModel.setContent(Status.DELETED.toString());
-        }
-
+        if (commentModel == null) return null;
         return CommentEntityMapper.toDomain(commentModel);
     }
 

@@ -8,13 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
     // ======== Get All Posts (excluding deleted) ========
     @Query("""
         SELECT p
         FROM PostModel p
-        WHERE p.status <> :status
+        WHERE p.status = :status
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findAll(
@@ -28,7 +30,7 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         SELECT p
         FROM PostModel p
         WHERE p.authorId = :userId
-        AND p.status <> :status
+        AND p.status = :status
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByAuthorId(
@@ -43,11 +45,25 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         SELECT p
         FROM PostModel p
         WHERE p.pageId = :pageId
-        AND p.status <> :status
+        AND p.status = :status
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByPageId(
             @Param("pageId") String pageId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
+
+    // ======== Get Posts by Filtered Page or Author ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE (p.authorId IN :ids OR p.pageId IN :ids)
+        AND p.status = :status
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findByFilteredPage(
+            @Param("ids") List<String> ids,
             @Param("status") Status status,
             Pageable pageable
     );

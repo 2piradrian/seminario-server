@@ -35,7 +35,7 @@ public class PostsRepository implements PostRepositoryI {
         PostModel postModel = this.repository.findById(postId).orElse(null);
 
         if (postModel == null) return null;
-        if (postModel.getStatus().equals(Status.DELETED)) return null;
+        if (!postModel.getStatus().equals(Status.ACTIVE)) return null;
 
         return PostsEntityMapper.toDomain(postModel);
     }
@@ -48,7 +48,7 @@ public class PostsRepository implements PostRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findAll(
-                Status.DELETED,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -70,7 +70,7 @@ public class PostsRepository implements PostRepositoryI {
 
         Page<PostModel> postModels = repository.findByAuthorId(
                 userId,
-                Status.DELETED,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -92,7 +92,7 @@ public class PostsRepository implements PostRepositoryI {
 
         Page<PostModel> postModels = repository.findByPageId(
                 pageId,
-                Status.DELETED,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
