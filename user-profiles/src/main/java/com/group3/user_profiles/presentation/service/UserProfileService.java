@@ -213,6 +213,10 @@ public class UserProfileService implements UserProfileServiceI {
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
+        if (userProfile.getStatus() == Status.ACTIVE) {
+            throw new ErrorHandler(ErrorType.USER_ALREADY_ACTIVATED);
+        }
+
         userProfile.setStatus(Status.ACTIVE);
 
         this.userProfileRepository.update(userProfile);
