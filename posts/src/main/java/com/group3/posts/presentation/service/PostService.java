@@ -124,6 +124,16 @@ public class PostService implements PostServiceI {
         return PostMapper.getPage().toResponse(posts);
     }
 
+    // ======== Get Filtered Posts ========
+
+    @Override
+    public GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getIds(), dto.getPage(), dto.getSize());
+
+        return PostMapper.getFilteredPage().toResponse(posts);
+    }
+
 
     // ======== Get Posts by Profile ========
 

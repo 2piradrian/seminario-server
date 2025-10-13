@@ -185,7 +185,8 @@ public class UserProfileService implements UserProfileServiceI {
 
             userProfile.setFollowing(followList);
             this.userProfileRepository.update(userProfile);
-        } else if (type == PrefixedUUID.EntityType.PAGE) {
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile pageProfile = this.pageProfileRepository.getById(dto.getId());
             if (pageProfile == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
