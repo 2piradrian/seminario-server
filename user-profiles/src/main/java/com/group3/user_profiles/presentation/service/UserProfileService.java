@@ -51,7 +51,7 @@ public class UserProfileService implements UserProfileServiceI {
         userProfile.setLongDescription("¡New user!");
         userProfile.setInstruments(List.of());
         userProfile.setStyles(List.of());
-        userProfile.setStatus(Status.ACTIVE);
+        userProfile.setStatus(Status.INACTIVE);
 
         this.userProfileRepository.save(userProfile);
     }
@@ -71,12 +71,19 @@ public class UserProfileService implements UserProfileServiceI {
     }
 
 
-    // ======== Get User Profile by Fullname ========
+    // ======== Get User Profile Page Filtered ========
 
     @Override
-    public GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto) {
-        PageContent<UserProfile> profiles = this.userProfileRepository.getByFullName(dto.getFullname(), dto.getPage(), dto.getSize());
-        return UserProfileMapper.getByFullname().toResponse(profiles);
+    public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
+        PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
+            dto.getFullname(),
+            dto.getStyles().stream().map(style -> style.getName()).toList(),
+            dto.getInstruments().stream().map(instrument -> instrument.getName()).toList(),
+            dto.getIds(),
+            dto.getPage(),
+            dto.getSize());
+
+        return UserProfileMapper.getFiltered().toResponse(profiles);
     }
 
 
@@ -197,6 +204,18 @@ public class UserProfileService implements UserProfileServiceI {
             userProfile.setFollowing(followList);
             this.userProfileRepository.update(userProfile);
         }
+    }
+
+    // ======== Active User Profile ========
+
+    @Override
+    public void active(ActiveUserProfileReq dto) {
+        UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
+        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        userProfile.setStatus(Status.ACTIVE);
+
+        this.userProfileRepository.update(userProfile);
     }
 
 

@@ -9,7 +9,7 @@ public interface UserProfileServiceI {
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
-    GetUserProfilePageByFullnameRes getProfileByFullname(GetUserProfilePageByFullnameReq dto);
+    GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto);
 
     GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
 
@@ -18,6 +18,8 @@ public interface UserProfileServiceI {
     GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
 
     void toggleFollow(ToggleFollowReq dto);
+
+    void active(ActiveUserProfileReq dto);
 
     void update(EditUserProfileReq dto);
 
