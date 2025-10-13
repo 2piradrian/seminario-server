@@ -44,6 +44,15 @@ public class PostController {
         return ResponseEntity.ok(this.service.getPosts(dto));
     }
 
+    @PostMapping("/get-filtered-posts")
+    public ResponseEntity<?> getFilteredPosts(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(payload);
+
+        return ResponseEntity.ok(this.service.getFilteredPosts(dto));
+    }
+
     @PostMapping("/get-by-profile")
     public ResponseEntity<?> getPostsByProfile(
             @RequestBody Map<String, Object> payload
