@@ -9,12 +9,14 @@ public interface PostRepositoryI {
 
     PageContent<Post> getAllPosts(Integer page, Integer size);
 
-    Post save(Post post);
-
-    Post update(Post post);
-
     PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size);
 
     PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size);
+
+    PageContent<Post> getFilteredPosts(java.util.List<String> ids, Integer page, Integer size);
+
+    Post save(Post post);
+
+    Post update(Post post);
 
 }

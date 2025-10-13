@@ -106,6 +106,28 @@ public class PostsRepository implements PostRepositoryI {
     }
 
 
+    // ======== Get Posts by Filtered Page or Author with Pagination ========
+
+    @Override
+    public PageContent<Post> getFilteredPosts(java.util.List<String> ids, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<PostModel> postModels = repository.findByFilteredPage(
+                ids,
+                Status.ACTIVE,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber() + 1,
+                postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
+
     // ======== Save and Update ========
 
     @Override
