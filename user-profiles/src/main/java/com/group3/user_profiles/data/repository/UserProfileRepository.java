@@ -1,5 +1,6 @@
 package com.group3.user_profiles.data.repository;
 
+import com.group3.entity.Instrument;
 import com.group3.entity.PageContent;
 import com.group3.entity.Status;
 import com.group3.entity.UserProfile;
@@ -44,15 +45,18 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     }
 
 
-    // ======== Search by Full Name with Pagination ========
+    // ======== Search filtered with Pagination ========
 
     @Override
-    public PageContent<UserProfile> getByFullName(String fullname, Integer page, Integer size) {
+    public PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<UserProfileModel> profilesModels = repository.findByFullNameLike(
+        Page<UserProfileModel> profilesModels = repository.findByFilteredPage(
                 fullname,
-                Status.DELETED,
+                Status.ACTIVE,
+                styles,
+                instruments,
+                ids,
                 PageRequest.of(pageIndex, size)
         );
 
