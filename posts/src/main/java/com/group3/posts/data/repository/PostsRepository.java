@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -109,7 +110,7 @@ public class PostsRepository implements PostRepositoryI {
     // ======== Get Posts by Filtered Page or Author with Pagination ========
 
     @Override
-    public PageContent<Post> getFilteredPosts(java.util.List<String> ids, Integer page, Integer size) {
+    public PageContent<Post> getFilteredPosts(List<String> ids, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByFilteredPage(
