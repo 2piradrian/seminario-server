@@ -1,6 +1,8 @@
 package com.group3.user_profiles.data.datasource.postgres.repository;
 
+import com.group3.entity.Instrument;
 import com.group3.entity.Status;
+import com.group3.entity.Style;
 import com.group3.user_profiles.data.datasource.postgres.model.UserProfileModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,18 +22,37 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     List<UserProfileModel> findAllByIdIn(List<String> ids);
 
 
-    // ======== Custom Search ========
+    // ======== Get filtered By Filtered Pafe ========
 
-    @Query("""
-        SELECT u
+    @Query(value = """
+        SELECT DISTINCT u
         FROM UserProfileModel u
-        WHERE u.status <> :status
-        AND LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))
+        LEFT JOIN u.styles s
+        LEFT JOIN u.instruments i
+        WHERE u.status = :status
+        AND (LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%')))
+        AND (:#{#styles.isEmpty()} = true OR s IN :styles)
+        AND (:#{#instruments.isEmpty()} = true OR i IN :instruments)
+        AND (:#{#idsProfile.isEmpty()} = true OR u.id IN :idsProfile)
+    """,
+        countQuery = """
+        SELECT COUNT(DISTINCT u.id)
+        FROM UserProfileModel u
+        LEFT JOIN u.styles s
+        LEFT JOIN u.instruments i
+        WHERE u.status = :status
+        AND (LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%')))
+        AND (:#{#styles.isEmpty()} = true OR s IN :styles)
+        AND (:#{#instruments.isEmpty()} = true OR i IN :instruments)
+        AND (:#{#idsProfile.isEmpty()} = true OR u.id IN :idsProfile)
     """)
-    Page<UserProfileModel> findByFullNameLike(
-            @Param("fullName") String fullName,
-            @Param("status") Status status,
-            Pageable pageable
+    Page<UserProfileModel> findByFilteredPage(
+        @Param("fullName") String fullName,
+        @Param("status") Status status,
+        @Param("styles") List<String> styles,           // Corregido: de List<Style> a List<String>
+        @Param("instruments") List<String> instruments, // Corregido: de List<Instrument> a List<String>
+        @Param("idsProfile") List<String> idsProfile,     // Corregido: de List<Integer> a List<String>
+        Pageable pageable
     );
 
 
