@@ -1,6 +1,7 @@
 package com.group3.user_profiles.presentation.controller;
 
 import com.group3.user_profiles.domain.dto.profile.mapper.UserProfileMapper;
+import com.group3.user_profiles.domain.dto.profile.mapper.implementation.ActiveMapper;
 import com.group3.user_profiles.domain.dto.profile.request.*;
 import com.group3.user_profiles.presentation.service.UserProfileService;
 import lombok.AllArgsConstructor;
@@ -25,13 +26,13 @@ public class UserProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PostMapping("/get-by-fullname")
+    /*@PostMapping("/get-by-fullname")
     public ResponseEntity<?> getByFullname(
         @RequestBody Map<String, Object> payload
     ) {
-        GetUserProfilePageByFullnameReq dto = UserProfileMapper.getByFullname().toRequest(payload);
+        GetUserProfilePageFilteredReq dto = UserProfileMapper.getByFullname().toRequest(payload);
         return ResponseEntity.ok(this.userService.getProfileByFullname(dto));
-    }
+    }*/
 
     @PostMapping("/create")
     public ResponseEntity<?> create(
@@ -60,6 +61,16 @@ public class UserProfileController {
     ) {
         EditUserProfileReq dto = UserProfileMapper.update().toRequest(token, payload);
         this.userService.update(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/active/{userId}")
+    public ResponseEntity<?> active(
+        @PathVariable(value = "userId") String userId
+    ) {
+        ActiveUserProfileReq dto = UserProfileMapper.active().toRequest(userId);
+        this.userService.active(dto);
 
         return ResponseEntity.ok().build();
     }
