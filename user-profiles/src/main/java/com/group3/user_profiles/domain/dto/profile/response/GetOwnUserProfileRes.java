@@ -20,7 +20,7 @@ public class GetOwnUserProfileRes {
 
     private final String email;
 
-    private LocalDateTime memberSince;
+    private final LocalDateTime memberSince;
 
     private final String portraitImage;
 

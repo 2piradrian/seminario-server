@@ -1,6 +1,5 @@
 package com.group3.user_profiles.data.repository;
 
-import com.group3.entity.Instrument;
 import com.group3.entity.PageContent;
 import com.group3.entity.Status;
 import com.group3.entity.UserProfile;
@@ -111,13 +110,13 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     // ======== Counts ========
 
     @Override
-    public Integer getFollowingCount(String userId) {
-        return repository.countFollowing(userId);
+    public Integer getFollowingCount(String id) {
+        return repository.countFollowing(id);
     }
 
     @Override
-    public Integer getFollowersCount(String userId) {
-        return repository.countFollowers(userId);
+    public Integer getFollowersCount(String id) {
+        return repository.countFollowers(id);
     }
 
 

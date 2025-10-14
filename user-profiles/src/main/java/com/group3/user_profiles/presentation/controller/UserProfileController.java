@@ -17,11 +17,22 @@ public class UserProfileController {
 
     private final UserProfileService userService;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+            @RequestBody Map<String, Object> payload
+    ){
+        CreateUserProfileReq dto = UserProfileMapper.create().toRequest(payload);
+        this.userService.create(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "userId") String userId
     ) {
-        GetUserProfileByIdReq dto = UserProfileMapper.getById().toRequest(userId);
+        GetUserProfileByIdReq dto = UserProfileMapper.getById().toRequest(userId, token);
 
         return ResponseEntity.ok(this.userService.getById(dto));
     }
@@ -32,16 +43,6 @@ public class UserProfileController {
     ) {
         GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<?> create(
-        @RequestBody Map<String, Object> payload
-    ){
-        CreateUserProfileReq dto = UserProfileMapper.create().toRequest(payload);
-        this.userService.create(dto);
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-own-profile")
@@ -100,6 +101,15 @@ public class UserProfileController {
         GetFollowingPageReq dto = UserProfileMapper.getFollowingPage().toRequest(payload);
 
         return ResponseEntity.ok(this.userService.getFollowing(dto));
+    }
+
+    @PostMapping("/get-followers-by-id")
+    public ResponseEntity<?> getFollowersById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowersByIdReq dto = UserProfileMapper.getFollowersById().toRequest(payload);
+
+        return ResponseEntity.ok(this.userService.getFollowersById(dto));
     }
 
     @PostMapping("/toggle-follow")

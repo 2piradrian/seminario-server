@@ -13,7 +13,7 @@ public class GetFollowingPageReq {
 
     private final Integer size;
 
-    public GetFollowingPageReq(String userId, Integer page, Integer size) {
+    private GetFollowingPageReq(String userId, Integer page, Integer size) {
         this.userId = userId;
         this.page = page;
         this.size = size;

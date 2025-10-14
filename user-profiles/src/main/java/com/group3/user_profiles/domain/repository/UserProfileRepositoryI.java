@@ -21,9 +21,9 @@ public interface UserProfileRepositoryI {
 
     List<UserProfile> getListByIds(List<String> ids);
 
-    Integer getFollowingCount(String userId);
+    Integer getFollowingCount(String id);
 
-    Integer getFollowersCount(String userId);
+    Integer getFollowersCount(String id);
 
     UserProfile save(UserProfile user);
 

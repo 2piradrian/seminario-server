@@ -55,7 +55,7 @@ public class PageProfileService implements PageProfileServiceI {
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 
-        UserProfile owner = this.userProfileRepository.getById(user.getId());
+        UserProfile owner = this.userProfileRepository.getById(user.getId(), dto.getToken());
         if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         page.setOwner(owner);
         page.setMembers(List.of(owner));
@@ -80,7 +80,9 @@ public class PageProfileService implements PageProfileServiceI {
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
         if (page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        return PageMapper.getPage().toResponse(page);
+        Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId());
+
+        return PageMapper.getPage().toResponse(page, followers);
     }
 
     // ======== Get Page Profile Page Filtered ========
@@ -161,7 +163,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(userProfileRepository::getById)
+                .map(memberId -> userProfileRepository.getById(memberId, dto.getToken()))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
@@ -170,7 +172,7 @@ public class PageProfileService implements PageProfileServiceI {
         Set<UserProfile> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            UserProfile userProfile = userProfileRepository.getById(id);
+            UserProfile userProfile = userProfileRepository.getById(id, dto.getToken());
             if (existingMembers.add(userProfile)) {
                 members.add(userProfile);
             }

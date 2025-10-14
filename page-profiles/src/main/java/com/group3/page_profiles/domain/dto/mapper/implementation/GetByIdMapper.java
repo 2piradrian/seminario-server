@@ -13,7 +13,7 @@ public class GetByIdMapper {
         );
     }
 
-    public GetPageByIdRes toResponse(PageProfile page) {
+    public GetPageByIdRes toResponse(PageProfile page, Integer followers) {
         return new GetPageByIdRes(
             page.getId(),
             page.getName(),
@@ -23,7 +23,8 @@ public class GetByIdMapper {
             page.getLongDescription(),
             page.getOwner(),
             page.getMembers(),
-            page.getPageType()
+            page.getPageType(),
+            followers
         );
     }
     

@@ -9,6 +9,8 @@ import com.group3.page_profiles.domain.repository.ProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 @Repository
 @AllArgsConstructor
 public class UserProfileRepository implements ProfileRepositoryI {
@@ -19,9 +21,9 @@ public class UserProfileRepository implements ProfileRepositoryI {
     // ======== Single User Profile Retrieval ========
 
     @Override
-    public UserProfile getById(String userId) {
+    public UserProfile getById(String userId, String token) {
 
-        GetUserProfileByIdRes response = this.repository.getById(userId);
+        GetUserProfileByIdRes response = this.repository.getById(userId, token);
 
         if (response == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -41,6 +43,13 @@ public class UserProfileRepository implements ProfileRepositoryI {
         user.setInstruments(response.getInstruments());
 
         return user;
+    }
+
+    // ======== Get Followers Count By Id ========
+
+    @Override
+    public Integer getFollowersById(String id) {
+        return this.repository.getFollowersById(Map.of("id", id)).getFollowersCount();
     }
 
 }

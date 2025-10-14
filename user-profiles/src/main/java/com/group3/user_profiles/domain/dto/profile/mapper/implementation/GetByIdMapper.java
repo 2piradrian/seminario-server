@@ -6,13 +6,14 @@ import com.group3.user_profiles.domain.dto.profile.response.GetUserProfileByIdRe
 
 public class GetByIdMapper {
 
-    public GetUserProfileByIdReq toRequest(String userId) {
+    public GetUserProfileByIdReq toRequest(String userId, String token) {
         return GetUserProfileByIdReq.create(
-            userId
+            userId,
+            token
         );
     }
 
-    public GetUserProfileByIdRes toResponse(UserProfile userProfile, Integer followersCount, Integer followingCount) {
+    public GetUserProfileByIdRes toResponse(UserProfile userProfile, Integer followersCount, Integer followingCount, Boolean ownProfile, Boolean isFollowing) {
         return new GetUserProfileByIdRes(
             userProfile.getId(),
             userProfile.getName(),
@@ -26,7 +27,9 @@ public class GetByIdMapper {
             userProfile.getStyles(),
             userProfile.getInstruments(),
             followersCount,
-            followingCount
+            followingCount,
+            ownProfile,
+            isFollowing
         );
     }
 

@@ -3,14 +3,10 @@ package com.group3.user_profiles.domain.dto.profile.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
-public class GetFollowerPageRes {
+public class GetFollowersByIdRes {
 
-    private final List<Object> followers;
-
-    private final Integer nextPage;
+    private final Integer followersCount;
 
 }

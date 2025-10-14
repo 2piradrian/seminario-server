@@ -20,7 +20,7 @@ public class GetUserProfileByIdRes {
 
     private final String email;
 
-    private LocalDateTime memberSince;
+    private final LocalDateTime memberSince;
 
     private final String portraitImage;
 
@@ -37,5 +37,9 @@ public class GetUserProfileByIdRes {
     private final Integer followersCount;
 
     private final Integer followingCount;
+
+    private final Boolean ownProfile;
+
+    private final Boolean isFollowing;
 
 }

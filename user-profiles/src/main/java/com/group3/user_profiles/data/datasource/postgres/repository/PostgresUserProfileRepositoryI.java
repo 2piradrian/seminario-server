@@ -68,15 +68,15 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     // ======== Count ========
 
     @Query(
-            value = "SELECT COUNT(*) FROM user_following WHERE user_id = :userId",
+            value = "SELECT COUNT(*) FROM user_following WHERE user_id = :id",
             nativeQuery = true
     )
-    Integer countFollowing(@Param("userId") String userId);
+    Integer countFollowing(@Param("id") String id);
 
     @Query(
-            value = "SELECT COUNT(*) FROM user_following WHERE following_id = :userId",
+            value = "SELECT COUNT(*) FROM user_following WHERE following_id = :id",
             nativeQuery = true
     )
-    Integer countFollowers(@Param("userId") String userId);
+    Integer countFollowers(@Param("id") String id);
 
 }
