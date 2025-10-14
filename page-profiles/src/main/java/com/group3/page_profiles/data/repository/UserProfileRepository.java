@@ -21,9 +21,9 @@ public class UserProfileRepository implements ProfileRepositoryI {
     // ======== Single User Profile Retrieval ========
 
     @Override
-    public UserProfile getById(String userId) {
+    public UserProfile getById(String userId, String token) {
 
-        GetUserProfileByIdRes response = this.repository.getById(userId);
+        GetUserProfileByIdRes response = this.repository.getById(userId, token);
 
         if (response == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
