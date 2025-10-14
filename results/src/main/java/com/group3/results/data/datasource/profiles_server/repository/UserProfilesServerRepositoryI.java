@@ -14,6 +14,6 @@ import java.util.Map;
 public interface UserProfilesServerRepositoryI {
 
     @GetMapping("/api/profiles/get-filtered")
-    GetUserProfilePageFilteredRes findByFilteredPage(@RequestBody Map<String, Object> payload);
+    GetUserProfilePageFilteredRes getUserProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
 }

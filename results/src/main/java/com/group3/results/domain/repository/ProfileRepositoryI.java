@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ProfileRepositoryI {
 
-    List<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret);
+    List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret);
 
 }
