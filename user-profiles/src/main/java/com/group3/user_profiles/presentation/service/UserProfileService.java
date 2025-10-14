@@ -181,6 +181,17 @@ public class UserProfileService implements UserProfileServiceI {
     }
 
 
+    // ======== Get Followers By Id ========
+
+    @Override
+    public GetFollowersByIdRes getFollowersById(GetFollowersByIdReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Integer followers = this.userProfileRepository.getFollowersCount(dto.getId());
+        return UserProfileMapper.getFollowersById().toResponse(followers);
+    }
+
+
     // ======== Toggle Follow ========
 
     @Override
@@ -190,6 +201,8 @@ public class UserProfileService implements UserProfileServiceI {
 
         UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (user.getId().equals(dto.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getId()));
 

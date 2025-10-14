@@ -103,6 +103,15 @@ public class UserProfileController {
         return ResponseEntity.ok(this.userService.getFollowing(dto));
     }
 
+    @PostMapping("/get-followers-by-id")
+    public ResponseEntity<?> getFollowersById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowersByIdReq dto = UserProfileMapper.getFollowersById().toRequest(payload);
+
+        return ResponseEntity.ok(this.userService.getFollowersById(dto));
+    }
+
     @PostMapping("/toggle-follow")
     public ResponseEntity<?> toggleFollow(
             @RequestHeader(value = "Authorization") String token,

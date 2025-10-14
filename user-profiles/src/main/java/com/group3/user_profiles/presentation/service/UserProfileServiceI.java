@@ -17,6 +17,8 @@ public interface UserProfileServiceI {
 
     GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
 
+    GetFollowersByIdRes getFollowersById(GetFollowersByIdReq dto);
+
     void toggleFollow(ToggleFollowReq dto);
 
     void active(ActiveUserProfileReq dto);

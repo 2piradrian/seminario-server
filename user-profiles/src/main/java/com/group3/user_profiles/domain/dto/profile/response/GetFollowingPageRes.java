@@ -8,11 +8,10 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@Setter
 public class GetFollowingPageRes {
 
-    List<Object> following;
+    private final List<Object> following;
 
-    Integer nextPage;
+    private final Integer nextPage;
 
 }
