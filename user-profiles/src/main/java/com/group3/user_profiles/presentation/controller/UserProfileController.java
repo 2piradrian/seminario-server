@@ -44,7 +44,6 @@ public class UserProfileController {
         return ResponseEntity.ok().build();
     }
 
-
     @GetMapping("/get-own-profile")
     public ResponseEntity<?> getOwnProfile(
         @RequestHeader(value = "Authorization") String token
