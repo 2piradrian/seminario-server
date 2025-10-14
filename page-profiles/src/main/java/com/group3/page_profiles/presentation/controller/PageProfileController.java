@@ -35,6 +35,14 @@ public class PageProfileController {
         return ResponseEntity.ok(this.pageService.getById(dto));
     }
 
+    @PostMapping("/get-filtered")
+    public ResponseEntity<?> getFiltered(
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(payload);
+        return ResponseEntity.ok(this.pageService.getProfileFiltered(dto));
+    }
+
     @GetMapping("/get-by-user-id/{userId}")
     public ResponseEntity<?> getOwnProfile(
         @PathVariable(value = "userId") String userId
