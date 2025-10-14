@@ -22,36 +22,22 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     List<UserProfileModel> findAllByIdIn(List<String> ids);
 
 
-    // ======== Get filtered By Filtered Pafe ========
+    // ======== Get filtered By Filtered Page ========
 
-    @Query(value = """
-        SELECT DISTINCT u
-        FROM UserProfileModel u
-        LEFT JOIN u.styles s
-        LEFT JOIN u.instruments i
-        WHERE u.status = :status
-        AND (LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%')))
-        AND (:#{#styles.isEmpty()} = true OR s IN :styles)
-        AND (:#{#instruments.isEmpty()} = true OR i IN :instruments)
-        AND (:#{#idsProfile.isEmpty()} = true OR u.id IN :idsProfile)
-    """,
-        countQuery = """
-        SELECT COUNT(DISTINCT u.id)
-        FROM UserProfileModel u
-        LEFT JOIN u.styles s
-        LEFT JOIN u.instruments i
-        WHERE u.status = :status
-        AND (LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(CONCAT('%', :fullName, '%')))
-        AND (:#{#styles.isEmpty()} = true OR s IN :styles)
-        AND (:#{#instruments.isEmpty()} = true OR i IN :instruments)
-        AND (:#{#idsProfile.isEmpty()} = true OR u.id IN :idsProfile)
+    @Query("""
+        SELECT p FROM UserProfileModel p WHERE
+        p.status = :status AND
+        (:fullName IS NULL OR LOWER(CONCAT(p.name, ' ', p.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))) AND
+        (:#{#styles == null or #styles.isEmpty()} = true OR p.id IN (SELECT p_s.id FROM UserProfileModel p_s JOIN p_s.styles s WHERE s IN :styles)) AND
+        (:#{#instruments == null or #instruments.isEmpty()} = true OR p.id IN (SELECT p_i.id FROM UserProfileModel p_i JOIN p_i.instruments i WHERE i IN :instruments)) AND
+        (:#{#idsProfile == null or #idsProfile.isEmpty()} = true OR p.id IN (SELECT p_f.id FROM UserProfileModel p_f JOIN p_f.following f WHERE f IN :idsProfile))
     """)
     Page<UserProfileModel> findByFilteredPage(
         @Param("fullName") String fullName,
         @Param("status") Status status,
-        @Param("styles") List<String> styles,           // Corregido: de List<Style> a List<String>
-        @Param("instruments") List<String> instruments, // Corregido: de List<Instrument> a List<String>
-        @Param("idsProfile") List<String> idsProfile,     // Corregido: de List<Integer> a List<String>
+        @Param("styles") List<String> styles,
+        @Param("instruments") List<String> instruments,
+        @Param("idsProfile") List<String> idsProfile,
         Pageable pageable
     );
 
