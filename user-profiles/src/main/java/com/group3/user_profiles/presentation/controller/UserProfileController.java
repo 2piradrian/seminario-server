@@ -26,13 +26,13 @@ public class UserProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    /*@PostMapping("/get-by-fullname")
-    public ResponseEntity<?> getByFullname(
+    @PostMapping("/get-filtered")
+    public ResponseEntity<?> getFiltered(
         @RequestBody Map<String, Object> payload
     ) {
-        GetUserProfilePageFilteredReq dto = UserProfileMapper.getByFullname().toRequest(payload);
-        return ResponseEntity.ok(this.userService.getProfileByFullname(dto));
-    }*/
+        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
+        return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
+    }
 
     @PostMapping("/create")
     public ResponseEntity<?> create(
