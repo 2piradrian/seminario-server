@@ -9,18 +9,24 @@ public class GetUserProfileByIdReq {
 
     private final String userId;
 
-    private GetUserProfileByIdReq(String userId){
+    private final String token;
+
+    private GetUserProfileByIdReq(String userId, String token){
         this.userId = userId;
+        this.token = token;
     }
 
-    public static GetUserProfileByIdReq create(String userId){
+    public static GetUserProfileByIdReq create(String userId, String token){
 
         if (userId == null){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetUserProfileByIdReq(userId);
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
+        return new GetUserProfileByIdReq(userId, token);
     }
 
 }

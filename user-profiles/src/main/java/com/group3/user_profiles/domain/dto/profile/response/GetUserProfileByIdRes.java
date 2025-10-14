@@ -38,4 +38,8 @@ public class GetUserProfileByIdRes {
 
     private final Integer followingCount;
 
+    private final Boolean ownProfile;
+
+    private final Boolean isFollowing;
+
 }

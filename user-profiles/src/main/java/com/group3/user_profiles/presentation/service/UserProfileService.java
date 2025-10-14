@@ -61,13 +61,22 @@ public class UserProfileService implements UserProfileServiceI {
 
     @Override
     public GetUserProfileByIdRes getById(GetUserProfileByIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile sessionProfile = this.userProfileRepository.getById(user.getId());
+        if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         Integer followersCount = this.userProfileRepository.getFollowersCount(userProfile.getId());
         Integer followingCount = this.userProfileRepository.getFollowingCount(userProfile.getId());
 
-        return UserProfileMapper.getById().toResponse(userProfile, followersCount, followingCount);
+        Boolean ownProfile = user.getId().equals(userProfile.getId());
+        Boolean isFollowing = sessionProfile.getFollowing().contains(userProfile.getId());
+
+        return UserProfileMapper.getById().toResponse(userProfile, followersCount, followingCount, ownProfile, isFollowing);
     }
 
 

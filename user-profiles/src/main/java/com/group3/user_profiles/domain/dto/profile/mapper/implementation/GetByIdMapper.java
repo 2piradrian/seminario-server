@@ -12,7 +12,7 @@ public class GetByIdMapper {
         );
     }
 
-    public GetUserProfileByIdRes toResponse(UserProfile userProfile, Integer followersCount, Integer followingCount) {
+    public GetUserProfileByIdRes toResponse(UserProfile userProfile, Integer followersCount, Integer followingCount, Boolean ownProfile, Boolean isFollowing) {
         return new GetUserProfileByIdRes(
             userProfile.getId(),
             userProfile.getName(),
@@ -26,7 +26,9 @@ public class GetByIdMapper {
             userProfile.getStyles(),
             userProfile.getInstruments(),
             followersCount,
-            followingCount
+            followingCount,
+            ownProfile,
+            isFollowing
         );
     }
 
