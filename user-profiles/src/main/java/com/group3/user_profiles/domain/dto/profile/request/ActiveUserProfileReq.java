@@ -9,17 +9,24 @@ public class ActiveUserProfileReq {
 
     private final String userId;
 
-    private ActiveUserProfileReq(String userId) {
+    private final String secret;
+
+    private ActiveUserProfileReq(String userId, String secret) {
         this.userId = userId;
+        this.secret = secret;
     }
 
-    public static ActiveUserProfileReq create(String userId) {
+    public static ActiveUserProfileReq create(String userId, String secret) {
 
         if (userId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new ActiveUserProfileReq(userId);
+        if (secret == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        return new ActiveUserProfileReq(userId, secret);
     }
 
 }

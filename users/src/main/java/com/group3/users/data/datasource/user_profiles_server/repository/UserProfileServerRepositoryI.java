@@ -18,7 +18,7 @@ public interface UserProfileServerRepositoryI {
     @PostMapping("/api/user-profiles/get-own-profile")
     GetOwnUserProfileRes getOwnProfile(@RequestHeader(value = "Authorization") String token);
 
-    @PutMapping("/api/user-profiles/active/{userId}")
-    void active(@PathVariable(value = "userId") String userId);
+    @PutMapping("/api/user-profiles/active")
+    void active(@RequestBody Map<String, Object> payload);
 
 }

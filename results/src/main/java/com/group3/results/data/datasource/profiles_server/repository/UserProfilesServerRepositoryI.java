@@ -1,7 +1,7 @@
 package com.group3.results.data.datasource.profiles_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
-import com.group3.results.data.datasource.profiles_server.responses.GetUserProfilePageByFullnameRes;
+import com.group3.results.data.datasource.profiles_server.responses.GetUserProfilePageFilteredRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,6 @@ import java.util.Map;
 public interface UserProfilesServerRepositoryI {
 
     @GetMapping("/api/profiles/get-filtered")
-    GetUserProfilePageByFullnameRes findByFilteredPage(@RequestBody Map<String, Object> payload);
+    GetUserProfilePageFilteredRes findByFilteredPage(@RequestBody Map<String, Object> payload);
 
 }

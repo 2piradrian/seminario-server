@@ -65,11 +65,11 @@ public class UserProfileController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/active/{userId}")
+    @PutMapping("/active")
     public ResponseEntity<?> active(
-        @PathVariable(value = "userId") String userId
+        @RequestBody Map<String, Object> payload
     ) {
-        ActiveUserProfileReq dto = UserProfileMapper.active().toRequest(userId);
+        ActiveUserProfileReq dto = UserProfileMapper.active().toRequest(payload);
         this.userService.active(dto);
 
         return ResponseEntity.ok().build();

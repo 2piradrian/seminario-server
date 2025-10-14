@@ -27,8 +27,12 @@ public class UserProfileRepository implements ProfileRepositoryI {
     }
 
     @Override
-    public void active(String userId) {
-        this.repository.active(userId);
+    public void active(String userId, String secret) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("userId", userId);
+        payload.put("secret", secret);
+
+        this.repository.active(payload);
     }
 
 }

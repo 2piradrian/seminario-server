@@ -84,6 +84,8 @@ public class UserProfileService implements UserProfileServiceI {
 
     @Override
     public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
             dto.getFullname(),
             dto.getStyles().stream().map(Style::getId).toList(),
@@ -219,6 +221,8 @@ public class UserProfileService implements UserProfileServiceI {
 
     @Override
     public void active(ActiveUserProfileReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
