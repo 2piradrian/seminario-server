@@ -50,7 +50,7 @@ public class GetUserProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (fullname == null || fullname.isBlank()) {
+        if (fullname == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
