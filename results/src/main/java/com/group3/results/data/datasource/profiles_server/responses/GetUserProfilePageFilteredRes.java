@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetUserProfilePageByFullnameRes {
+public class GetUserProfilePageFilteredRes {
 
     private final List<UserProfile> profiles;
 
