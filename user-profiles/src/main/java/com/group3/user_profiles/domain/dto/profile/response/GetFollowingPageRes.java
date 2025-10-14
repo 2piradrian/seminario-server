@@ -8,7 +8,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@Setter
 public class GetFollowingPageRes {
 
     List<Object> following;

@@ -9,11 +9,10 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@Setter
 public class GetFollowerPageRes {
 
-    List<Object> followers;
+    private final List<Object> followers;
 
-    Integer nextPage;
+    private final Integer nextPage;
 
 }
