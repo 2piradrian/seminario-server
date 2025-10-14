@@ -130,7 +130,7 @@ public class AuthService implements AuthServiceI {
         }
 
         user.setStatus(Status.ACTIVE);
-        this.userProfileRepository.active(user.getId());
+        this.userProfileRepository.active(user.getId(), secretKeyHelper.getSecret());
 
         this.userRepository.update(user);
     }
