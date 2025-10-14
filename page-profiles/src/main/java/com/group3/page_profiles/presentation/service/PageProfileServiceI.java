@@ -1,10 +1,7 @@
 package com.group3.page_profiles.presentation.service;
 
 import com.group3.page_profiles.domain.dto.request.*;
-import com.group3.page_profiles.domain.dto.response.CreatePageRes;
-import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
-import com.group3.page_profiles.domain.dto.response.GetPageByUserIdRes;
-import com.group3.page_profiles.domain.dto.response.GetPageListByIdsRes;
+import com.group3.page_profiles.domain.dto.response.*;
 
 public interface PageProfileServiceI {
 
@@ -13,6 +10,8 @@ public interface PageProfileServiceI {
     GetPageByIdRes getById(GetPageByIdReq dto);
 
     GetPageByUserIdRes getUserPages(GetPageByUserIdReq dto);
+
+    GetPageProfilePageFilteredRes getProfileFiltered(GetPageProfilePageFilteredReq dto);
 
     GetPageListByIdsRes getListByIds(GetPageListByIdsReq dto);
 

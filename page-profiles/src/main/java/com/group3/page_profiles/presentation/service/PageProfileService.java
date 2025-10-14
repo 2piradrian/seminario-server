@@ -83,6 +83,24 @@ public class PageProfileService implements PageProfileServiceI {
         return PageMapper.getPage().toResponse(page);
     }
 
+    // ======== Get Page Profile Page Filtered ========
+
+    @Override
+    public GetPageProfilePageFilteredRes getProfileFiltered(GetPageProfilePageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PageContent<PageProfile> pages = this.pageProfileRepository.getFilteredPage(
+            dto.getName(),
+            dto.getPageTypeId(),
+            dto.getMemberIds(),
+            dto.getPage(),
+            dto.getSize()
+        );
+
+        return PageMapper.getFiltered().toResponse(pages);
+    }
 
     // ======== Get Pages by User ========
 
