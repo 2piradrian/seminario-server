@@ -77,8 +77,8 @@ public class UserProfileService implements UserProfileServiceI {
     public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
         PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
             dto.getFullname(),
-            dto.getStyles().stream().map(style -> style.getName()).toList(),
-            dto.getInstruments().stream().map(instrument -> instrument.getName()).toList(),
+            dto.getStyles().stream().map(Style::getId).toList(),
+            dto.getInstruments().stream().map(Instrument::getId).toList(),
             dto.getIds(),
             dto.getPage(),
             dto.getSize());
