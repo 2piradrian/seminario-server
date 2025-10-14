@@ -1,6 +1,8 @@
 package com.group3.page_profiles.domain.repository;
 
+import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
+import com.group3.entity.UserProfile;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ public interface PageRepositoryI {
 
     List<PageProfile> getByUserId(String name);
 
-    List<PageProfile> getByNameLike(String userId);
+    PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size);
 
     PageProfile getByName(String name);
 
