@@ -1,20 +1,31 @@
 package com.group3.page_profiles.data.repository;
 
+import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
+import com.group3.entity.Status;
 import com.group3.page_profiles.data.datasource.postgres.mapper.PageEntityMapper;
 import com.group3.page_profiles.data.datasource.postgres.model.PageProfileModel;
 import com.group3.page_profiles.data.datasource.postgres.repository.PostgresPageProfileRepositoryI;
 import com.group3.page_profiles.domain.repository.PageRepositoryI;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
 public class PageProfileRepository implements PageRepositoryI {
 
     private final PostgresPageProfileRepositoryI repository;
+
+    // ======== Pagination Helper ========
+
+    private int normalizePage(Integer page) {
+        return (page != null && page > 0) ? page - 1 : 0;
+    }
 
 
     // ======== Single Page Retrieval ========
@@ -41,10 +52,28 @@ public class PageProfileRepository implements PageRepositoryI {
     }
 
     @Override
-    public List<PageProfile> getByNameLike(String name) {
-        List<PageProfileModel> pageProfileModels = this.repository.findByNameLike(name);
-        return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
+    public PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<PageProfileModel> pageProfileModels = repository.findByFilteredPage(
+            name,
+            Status.ACTIVE,
+            pageTypeId,
+            memberIds,
+            PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+            pageProfileModels.getContent().stream()
+                .map(PageEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+
+            pageProfileModels.getNumber() + 1,
+
+            pageProfileModels.hasNext() ? pageProfileModels.getNumber() + 2 : null
+        );
     }
+
 
     @Override
     public List<PageProfile> getListByIds(List<String> ids) {
