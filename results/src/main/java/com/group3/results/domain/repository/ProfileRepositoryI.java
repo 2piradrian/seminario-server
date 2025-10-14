@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ProfileRepositoryI {
 
-    List<UserProfile> getByFullName(String fullname, Integer page, Integer size);
+    List<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size);
 
 }
