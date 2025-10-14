@@ -6,4 +6,6 @@ public interface ProfileRepositoryI {
 
     UserProfile getById(String userId);
 
+    Integer getFollowersById(String id);
+
 }

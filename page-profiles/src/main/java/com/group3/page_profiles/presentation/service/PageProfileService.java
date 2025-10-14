@@ -80,7 +80,9 @@ public class PageProfileService implements PageProfileServiceI {
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
         if (page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        return PageMapper.getPage().toResponse(page);
+        Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId());
+
+        return PageMapper.getPage().toResponse(page, followers);
     }
 
 
