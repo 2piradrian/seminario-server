@@ -24,6 +24,10 @@ public class PageMapper {
         return new EditMapper();
     }
 
+    public static GetPageFilteredMapper getFiltered(){
+        return new GetPageFilteredMapper();
+    }
+
     public static GetListByIdsMapper getListByIds() {
         return new GetListByIdsMapper();
     }
