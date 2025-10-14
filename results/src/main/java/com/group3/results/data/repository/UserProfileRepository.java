@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -17,15 +18,18 @@ public class UserProfileRepository implements ProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
 
-    PageContent<UserProfile> getByFullName(String fullname, Integer page, Integer size){
+    public List<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size){
 
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("page",page);
         payload.put("size",size);
         payload.put("fullname",fullname);
+        payload.put("styles", styles);
+        payload.put("instruments", instruments);
+        payload.put("ids",ids);
 
-        GetUserProfilePageByFullnameRes response = repository.findByFullNameLike(payload)
+        GetUserProfilePageByFullnameRes response = repository.findByFilteredPage(payload);
 
         return response.getProfiles();
     }
