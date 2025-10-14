@@ -17,11 +17,22 @@ public class UserProfileController {
 
     private final UserProfileService userService;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+            @RequestBody Map<String, Object> payload
+    ){
+        CreateUserProfileReq dto = UserProfileMapper.create().toRequest(payload);
+        this.userService.create(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "userId") String userId
     ) {
-        GetUserProfileByIdReq dto = UserProfileMapper.getById().toRequest(userId);
+        GetUserProfileByIdReq dto = UserProfileMapper.getById().toRequest(userId, token);
 
         return ResponseEntity.ok(this.userService.getById(dto));
     }
@@ -32,16 +43,6 @@ public class UserProfileController {
     ) {
         GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<?> create(
-        @RequestBody Map<String, Object> payload
-    ){
-        CreateUserProfileReq dto = UserProfileMapper.create().toRequest(payload);
-        this.userService.create(dto);
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-own-profile")

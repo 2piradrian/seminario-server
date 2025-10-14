@@ -6,9 +6,10 @@ import com.group3.user_profiles.domain.dto.profile.response.GetUserProfileByIdRe
 
 public class GetByIdMapper {
 
-    public GetUserProfileByIdReq toRequest(String userId) {
+    public GetUserProfileByIdReq toRequest(String userId, String token) {
         return GetUserProfileByIdReq.create(
-            userId
+            userId,
+            token
         );
     }
 
