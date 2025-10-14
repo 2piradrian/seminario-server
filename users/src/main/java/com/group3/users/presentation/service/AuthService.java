@@ -1,10 +1,7 @@
 package com.group3.users.presentation.service;
 
 import com.group3.config.PrefixedUUID;
-import com.group3.entity.Role;
-import com.group3.entity.Status;
-import com.group3.entity.Token;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
@@ -133,6 +130,7 @@ public class AuthService implements AuthServiceI {
         }
 
         user.setStatus(Status.ACTIVE);
+        this.userProfileRepository.active(user.getId());
 
         this.userRepository.update(user);
     }
