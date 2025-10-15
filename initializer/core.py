@@ -37,7 +37,9 @@ def main():
     run_maven_install()
     for svc in ["registry", "config", "gateway"]:
         open_terminal_and_run(svc, services[svc])
-        time.sleep(delay_seconds)
+
+        if svc == "registy" or svc == "config":
+            time.sleep(delay_seconds)
 
 
 if __name__ == "__main__":
