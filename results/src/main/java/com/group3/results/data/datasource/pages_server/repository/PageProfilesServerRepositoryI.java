@@ -1,7 +1,7 @@
-package com.group3.results.data.datasource.pages_profiles.repository;
+package com.group3.results.data.datasource.pages_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
-import com.group3.results.data.datasource.pages_profiles.responses.GetPageProfilePageFilteredRes;
+import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

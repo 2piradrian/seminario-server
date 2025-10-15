@@ -1,11 +1,8 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.PageProfile;
-import com.group3.entity.UserProfile;
-import com.group3.results.data.datasource.pages_profiles.repository.PageProfilesServerRepositoryI;
-import com.group3.results.data.datasource.pages_profiles.responses.GetPageProfilePageFilteredRes;
-import com.group3.results.data.datasource.profiles_server.repository.UserProfilesServerRepositoryI;
-import com.group3.results.data.datasource.profiles_server.responses.GetUserProfilePageFilteredRes;
+import com.group3.results.data.datasource.pages_server.repository.PageProfilesServerRepositoryI;
+import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
 import com.group3.results.domain.repository.PageRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
