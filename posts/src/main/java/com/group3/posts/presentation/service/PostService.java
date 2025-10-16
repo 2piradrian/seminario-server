@@ -29,7 +29,7 @@ public class PostService implements PostServiceI {
     private final UserRepository userRepository;
     private final ImagesRepository imagesRepository;
     private final PageProfileRepository pageProfileRepository;
-    private final UserUserProfileRepository userProfileRepository;
+    private final UserProfileRepository userProfileRepository;
 
 
     // ======== Create Post ========

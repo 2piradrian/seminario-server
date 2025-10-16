@@ -23,7 +23,7 @@ public class UserProfileRepository implements ProfileRepositoryI {
     @Override
     public UserProfile getById(String userId, String token) {
 
-        GetUserProfileByIdRes response = this.repository.getById(userId, token);
+        GetUserProfileByIdRes response = this.repository.getById(token, userId);
 
         if (response == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

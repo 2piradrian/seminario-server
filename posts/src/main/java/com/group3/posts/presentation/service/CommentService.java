@@ -28,7 +28,7 @@ public class CommentService implements CommentServiceI {
     private final CommentRepository commentRepository;
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
-    private final UserUserProfileRepository userProfileRepository;
+    private final UserProfileRepository userProfileRepository;
     private final PageProfileRepository pageProfileRepository;
 
 
