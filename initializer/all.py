@@ -45,7 +45,7 @@ def main():
     for svc in ["registry", "config", "gateway", "posts", "user-profiles", "results", "users", "catalog", "images", "page-profiles"]:
         open_terminal_and_run(svc, services[svc])
 
-        if svc == "registy" or svc == "config":
+        if svc == "registry" or svc == "config":
             time.sleep(delay_seconds)
 
 
