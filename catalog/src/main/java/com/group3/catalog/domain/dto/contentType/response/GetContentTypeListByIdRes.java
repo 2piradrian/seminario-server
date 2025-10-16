@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetContentTypeListByIdRes {
 
-    List<ContentType> contentTypes;
+    private final List<ContentType> contentTypes;
 
 }
