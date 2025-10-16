@@ -40,4 +40,6 @@ public class UserProfile {
 
     private Status status;
 
+    private ContentType contentType;
+
 }
