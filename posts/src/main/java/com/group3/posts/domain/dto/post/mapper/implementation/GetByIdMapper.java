@@ -6,7 +6,7 @@ import com.group3.posts.domain.dto.post.response.GetPostByIdRes;
 
 public class GetByIdMapper {
 
-    public GetPostByIdReq toRequest(String token, String postId) {
+    public GetPostByIdReq toRequest(String postId, String token) {
         return GetPostByIdReq.create(
             postId,
             token
