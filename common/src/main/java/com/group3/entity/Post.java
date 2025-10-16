@@ -38,6 +38,4 @@ public class Post {
 
     private Status status;
 
-    private ContentType contentType;
-
 }

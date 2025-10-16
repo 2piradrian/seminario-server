@@ -33,6 +33,4 @@ public class PageProfile {
 
     private PageType pageType;
 
-    private ContentType contentType;
-
 }
