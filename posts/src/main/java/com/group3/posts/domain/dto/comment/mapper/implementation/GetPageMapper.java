@@ -9,11 +9,12 @@ import java.util.Map;
 
 public class GetPageMapper {
 
-    public GetCommentPageReq toRequest(Map<String, Object> payload) {
+    public GetCommentPageReq toRequest(String token, Map<String, Object> payload) {
         return GetCommentPageReq.create(
                 (String) payload.get("postId"),
                 (Integer) payload.get("page"),
-                (Integer) payload.get("size")
+                (Integer) payload.get("size"),
+                token
         );
     }
 

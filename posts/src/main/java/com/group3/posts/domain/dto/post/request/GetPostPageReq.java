@@ -11,12 +11,19 @@ public class GetPostPageReq {
 
     private final Integer size;
 
-    private GetPostPageReq(Integer page, Integer size) {
+    private final String token;
+
+    private GetPostPageReq(Integer page, Integer size, String token) {
         this.page = page;
         this.size = size;
+        this.token = token;
     }
 
-    public static GetPostPageReq create(Integer page, Integer size) {
+    public static GetPostPageReq create(Integer page, Integer size, String token) {
+
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (page == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -34,7 +41,7 @@ public class GetPostPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetPostPageReq(page, size);
+        return new GetPostPageReq(page, size, token);
     }
 
 }

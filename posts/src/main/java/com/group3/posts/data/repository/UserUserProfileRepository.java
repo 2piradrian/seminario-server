@@ -5,13 +5,13 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.datasource.user_profiles_server.repository.UserProfilesServerRepositoryI;
 import com.group3.posts.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
-import com.group3.posts.domain.repository.ProfileRepositoryI;
+import com.group3.posts.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
-public class UserProfileRepository implements ProfileRepositoryI {
+public class UserUserProfileRepository implements UserProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
 
@@ -19,9 +19,9 @@ public class UserProfileRepository implements ProfileRepositoryI {
     // ======== Single User Retrieval ========
 
     @Override
-    public UserProfile getById(String userId) {
+    public UserProfile getById(String userId, String token) {
 
-        GetUserProfileByIdRes response = this.repository.getById(userId);
+        GetUserProfileByIdRes response = this.repository.getById(userId, token);
 
         if (response == null){
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

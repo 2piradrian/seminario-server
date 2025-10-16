@@ -31,9 +31,10 @@ public class CommentController {
 
     @PostMapping("/get-comments")
     public ResponseEntity<?> getById(
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        GetCommentPageReq dto = CommentMapper.getPage().toRequest(payload);
+        GetCommentPageReq dto = CommentMapper.getPage().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.getComments(dto));
     }

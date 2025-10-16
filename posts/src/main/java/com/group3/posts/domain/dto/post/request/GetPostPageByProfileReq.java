@@ -13,13 +13,20 @@ public class GetPostPageByProfileReq {
 
     private final String profileId;
 
-    private GetPostPageByProfileReq(Integer page, Integer size, String profileId) {
+    private final String token;
+
+    private GetPostPageByProfileReq(Integer page, Integer size, String profileId, String token) {
         this.page = page;
         this.size = size;
         this.profileId = profileId;
+        this.token = token;
     }
 
-    public static GetPostPageByProfileReq create(Integer page, Integer size, String profileId) {
+    public static GetPostPageByProfileReq create(Integer page, Integer size, String profileId, String token) {
+
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (page == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -41,7 +48,7 @@ public class GetPostPageByProfileReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetPostPageByProfileReq(page, size, profileId);
+        return new GetPostPageByProfileReq(page, size, profileId, token);
     }
 
 }

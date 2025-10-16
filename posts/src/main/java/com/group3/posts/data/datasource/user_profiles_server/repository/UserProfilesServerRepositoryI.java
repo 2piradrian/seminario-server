@@ -6,12 +6,13 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(name = "user-profiles-server", path = "/user-profiles-server")
 @LoadBalancerClient(name = "user-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface UserProfilesServerRepositoryI {
 
     @GetMapping("/api/user-profiles/get-by-id/{userId}")
-    GetUserProfileByIdRes getById(@PathVariable("userId") String userId);
+    GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("userId") String userId);
 
 }

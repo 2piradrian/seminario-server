@@ -13,13 +13,20 @@ public class GetCommentPageReq {
 
     private final Integer size;
 
-    public GetCommentPageReq(String postId, Integer page, Integer size) {
+    private final String token;
+
+    public GetCommentPageReq(String postId, Integer page, Integer size, String token) {
         this.postId = postId;
         this.page = page;
         this.size = size;
+        this.token = token;
     }
 
-    public static GetCommentPageReq create(String postId, Integer page, Integer size) {
+    public static GetCommentPageReq create(String postId, Integer page, Integer size, String token) {
+
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (postId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -41,6 +48,6 @@ public class GetCommentPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetCommentPageReq(postId, page, size);
+        return new GetCommentPageReq(postId, page, size, token);
     }
 }

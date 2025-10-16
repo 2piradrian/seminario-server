@@ -28,7 +28,7 @@ public class CommentService implements CommentServiceI {
     private final CommentRepository commentRepository;
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
+    private final UserUserProfileRepository userProfileRepository;
     private final PageProfileRepository pageProfileRepository;
 
 
@@ -44,7 +44,7 @@ public class CommentService implements CommentServiceI {
         if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
 
         Comment comment = new Comment();
-        UserProfile author = this.userProfileRepository.getById(user.getId());
+        UserProfile author = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
@@ -94,7 +94,7 @@ public class CommentService implements CommentServiceI {
         comments.getContent().forEach(
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
-                        UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
+                        UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId(), dto.getToken());
                         comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
@@ -142,7 +142,7 @@ public class CommentService implements CommentServiceI {
         this.commentRepository.update(comment);
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId(), dto.getToken());
             comment.setAuthor(fullProfile);
         }
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {

@@ -29,7 +29,7 @@ public class PostService implements PostServiceI {
     private final UserRepository userRepository;
     private final ImagesRepository imagesRepository;
     private final PageProfileRepository pageProfileRepository;
-    private final UserProfileRepository userProfileRepository;
+    private final UserUserProfileRepository userProfileRepository;
 
 
     // ======== Create Post ========
@@ -86,7 +86,7 @@ public class PostService implements PostServiceI {
 
         // Enrich author and page profile
         if (post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
             post.setAuthor(fullProfile);
         }
         if (post.getPageProfile().getId() != null) {
@@ -112,7 +112,7 @@ public class PostService implements PostServiceI {
         // Enrich author and page profile for each post
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
@@ -143,7 +143,7 @@ public class PostService implements PostServiceI {
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
@@ -167,7 +167,7 @@ public class PostService implements PostServiceI {
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
@@ -217,7 +217,7 @@ public class PostService implements PostServiceI {
         this.postsRepository.update(post);
 
         if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
             post.setAuthor(fullProfile);
         }
 
