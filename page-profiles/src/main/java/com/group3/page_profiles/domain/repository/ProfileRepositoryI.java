@@ -6,6 +6,6 @@ public interface ProfileRepositoryI {
 
     UserProfile getById(String userId, String token);
 
-    Integer getFollowersById(String id);
+    Integer getFollowersById(String id, String secret);
 
 }

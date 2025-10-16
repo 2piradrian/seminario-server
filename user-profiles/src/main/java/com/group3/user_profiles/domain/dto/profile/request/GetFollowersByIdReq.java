@@ -18,11 +18,11 @@ public class GetFollowersByIdReq {
 
     public static GetFollowersByIdReq create(String id, String secret) {
 
-        if (id == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        if (secret == null || secret.isEmpty()) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (secret == null || secret.isEmpty()) {
+        if (id == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
