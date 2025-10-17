@@ -27,4 +27,6 @@ public class ResultController {
         return ResponseEntity.ok(this.resultService.getProfilesFiltered(dto));
     }
 
+
+
 }
