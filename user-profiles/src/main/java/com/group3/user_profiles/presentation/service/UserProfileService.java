@@ -86,6 +86,9 @@ public class UserProfileService implements UserProfileServiceI {
     public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
             dto.getFullname(),
             dto.getStyles().stream().map(Style::getId).toList(),

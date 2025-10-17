@@ -37,11 +37,12 @@ public class UserProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PostMapping("/get-filtered")
+    @PostMapping("/get-user-filtered")
     public ResponseEntity<?> getFiltered(
+        @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
+        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(token, payload);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
     }
 
