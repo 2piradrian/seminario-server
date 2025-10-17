@@ -27,10 +27,9 @@ public class GetProfilesMapper {
         );
     }
 
-    public GetProfilesFilteredRes toResponse(PageContent<String> profilesPage, List<Object> profiles) {
+    public GetProfilesFilteredRes toResponse(List<Object> profiles) {
         return new GetProfilesFilteredRes(
-            profiles,
-            profilesPage.getNextPage()
+            profiles
         );
     }
 

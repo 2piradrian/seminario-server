@@ -11,6 +11,4 @@ public class GetProfilesFilteredRes {
 
     private final List<Object> profiles;
 
-    private final Integer nextPage;
-
 }
