@@ -17,10 +17,9 @@ public class GetFeedMapper {
         );
     }
 
-    public GetFeedPageRes toResponse(List<Post> posts, Integer nextPage) {
+    public GetFeedPageRes toResponse(List<Post> posts) {
         return new GetFeedPageRes(
-            posts,
-            nextPage
+            posts
         );
     }
 

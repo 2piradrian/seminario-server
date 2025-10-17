@@ -71,9 +71,17 @@ public class ResultService implements ResultServiceI {
 
         User user = new User();
 
+        UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
+        List<Post> posts = this.postRepository.getFilteredPosts(
+            profile.getFollowing(),
+            dto.getPage(),
+            dto.getSize(),
+            "",
+            secretKeyHelper.getSecret()
+        );
 
-        return null;
+        return ResultsMapper.getFeed().toResponse(posts);
     }
 
 

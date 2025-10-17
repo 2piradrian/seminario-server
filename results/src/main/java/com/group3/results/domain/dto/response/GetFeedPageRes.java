@@ -12,6 +12,4 @@ public class GetFeedPageRes {
 
     private final List<Post> posts;
 
-    private final Integer nextPage;
-
 }
