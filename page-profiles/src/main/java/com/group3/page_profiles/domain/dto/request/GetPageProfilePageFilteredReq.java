@@ -9,8 +9,6 @@ import java.util.List;
 @Getter
 public class GetPageProfilePageFilteredReq {
 
-    private final String token;
-
     private final String secret;
 
     private final Integer page;
@@ -23,8 +21,7 @@ public class GetPageProfilePageFilteredReq {
 
     private final List<String> memberIds;
 
-    private GetPageProfilePageFilteredReq(String token, String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
-        this.token = token;
+    private GetPageProfilePageFilteredReq(String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -33,11 +30,7 @@ public class GetPageProfilePageFilteredReq {
         this.memberIds = memberIds;
     }
 
-    public static GetPageProfilePageFilteredReq create(String token, String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
-
-        if (token == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
+    public static GetPageProfilePageFilteredReq create(String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -55,7 +48,7 @@ public class GetPageProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetPageProfilePageFilteredReq(token, secret, page, size, name, pageTypeId, memberIds);
+        return new GetPageProfilePageFilteredReq(secret, page, size, name, pageTypeId, memberIds);
     }
 
 }
