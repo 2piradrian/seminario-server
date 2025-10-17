@@ -40,7 +40,7 @@ public class GetSerchResultFilteredReq {
 
     public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, List<String> ids, String pageTypeId) {
 
-        if (token == null) {
+        if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
