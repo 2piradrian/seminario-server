@@ -21,6 +21,7 @@ public class GetFilteredPageMapper {
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),
             objectMapper.convertValue(payload.get("ids"), new TypeReference<List<String>>() {}),
+            (String) payload.get("text"),
             (String) payload.get("secret")
         );
     }
