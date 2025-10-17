@@ -64,3 +64,8 @@ INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Anuncios generales
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Equipamiento / Backline disponible');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Sonidista / Iluminación');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Disponibilidad / Agenda');
+
+-- Categorías: Tipos de contenidos
+INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Posts');
+INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Usuarios');
+INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Páginas');
