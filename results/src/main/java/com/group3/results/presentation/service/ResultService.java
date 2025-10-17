@@ -1,14 +1,13 @@
 package com.group3.results.presentation.service;
 
-import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.PageProfileRepository;
 import com.group3.results.data.repository.PostRepository;
 import com.group3.results.data.repository.UserProfileRepository;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
-import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
-import com.group3.results.domain.dto.response.GetProfilesFilteredRes;
+import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
+import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class ResultService implements ResultServiceI {
     private final SecretKeyHelper secretKeyHelper;
 
     @Override
-    public GetProfilesFilteredRes getProfilesFiltered(GetProfilesFilteredReq dto) {
+    public GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto) {
 
         List<UserProfile> userProfiles =
             this.userProfileRepository.getUserFilteredPage(

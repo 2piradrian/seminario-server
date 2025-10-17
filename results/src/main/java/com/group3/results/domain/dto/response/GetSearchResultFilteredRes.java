@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetProfilesFilteredRes {
+public class GetSearchResultFilteredRes {
 
     private final List<UserProfile> userProfiles;
 

@@ -1,10 +1,10 @@
 package com.group3.results.presentation.service;
 
-import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
-import com.group3.results.domain.dto.response.GetProfilesFilteredRes;
+import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
+import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
 public interface ResultServiceI {
 
-    GetProfilesFilteredRes getProfilesFiltered(GetProfilesFilteredReq dto);
+    GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto);
 
 }

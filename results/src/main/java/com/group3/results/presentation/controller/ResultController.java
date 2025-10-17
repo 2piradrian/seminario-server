@@ -1,7 +1,7 @@
 package com.group3.results.presentation.controller;
 
 import com.group3.results.domain.dto.mapper.ResultsMapper;
-import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
+import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.presentation.service.ResultService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class ResultController {
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetProfilesFilteredReq dto = ResultsMapper.getProfilesFiltered().toRequest(token, payload);
+        GetSerchResultFilteredReq dto = ResultsMapper.getProfilesFiltered().toRequest(token, payload);
         return ResponseEntity.ok(this.resultService.getProfilesFiltered(dto));
     }
 

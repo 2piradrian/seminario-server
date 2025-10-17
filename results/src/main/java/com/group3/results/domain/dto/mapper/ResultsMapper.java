@@ -1,11 +1,11 @@
 package com.group3.results.domain.dto.mapper;
 
-import com.group3.results.domain.dto.mapper.implementation.GetProfilesMapper;
+import com.group3.results.domain.dto.mapper.implementation.GetSearchResultMapper;
 
 public class ResultsMapper {
 
-    public static GetProfilesMapper getProfilesFiltered() {
-        return new GetProfilesMapper();
+    public static GetSearchResultMapper getProfilesFiltered() {
+        return new GetSearchResultMapper();
     }
 
 }
