@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PostRepositoryI {
 
-    List<Post> getFilteredPosts(List<String> ids, Integer page, Integer size, String text, String secret);
+    List<Post> getFilteredPosts(String token, List<String> ids, Integer page, Integer size, String text, String secret);
 
 }

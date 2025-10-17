@@ -13,8 +13,9 @@ public class GetProfilesMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetProfilesFilteredReq toRequest(Map<String, Object> payload) {
+    public GetProfilesFilteredReq toRequest(String token, Map<String, Object> payload) {
         return GetProfilesFilteredReq.create(
+            token,
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),
             (String) payload.get("name"),
