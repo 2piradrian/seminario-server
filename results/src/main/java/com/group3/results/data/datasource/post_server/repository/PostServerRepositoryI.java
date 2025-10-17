@@ -4,7 +4,6 @@ import com.group3.results.config.beans.LoadBalancerConfiguration;
 import com.group3.results.data.datasource.post_server.responses.GetFilteredPostPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
