@@ -129,7 +129,7 @@ public class PostService implements PostServiceI {
     @Override
     public GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getIds(), dto.getPage(), dto.getSize());
+        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getIds(), dto.getPage(), dto.getSize(), dto.getText());
 
         return PostMapper.getFilteredPage().toResponse(posts);
     }
