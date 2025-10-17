@@ -31,7 +31,7 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         payload.put("ids",ids);
         payload.put("secret",secret);
 
-        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(token, payload);
+        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(payload);
 
         return response.getProfiles();
     }

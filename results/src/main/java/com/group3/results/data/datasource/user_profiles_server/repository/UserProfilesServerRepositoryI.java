@@ -17,6 +17,6 @@ public interface UserProfilesServerRepositoryI {
     GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("userId") String userId);
 
     @PostMapping("/api/user-profiles/get-user-filtered")
-    GetUserProfilePageFilteredRes getUserProfileFilteredPage(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
+    GetUserProfilePageFilteredRes getUserProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
 }

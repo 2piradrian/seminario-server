@@ -27,7 +27,7 @@ public class PageProfileRepository implements PageRepositoryI {
         payload.put("size",size);
         payload.put("secret",secret);
 
-        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(token, payload);
+        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(payload);
 
         return response.getPages();
     }

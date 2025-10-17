@@ -34,7 +34,7 @@ public class PostRepository implements PostRepositoryI {
         payload.put("text", text);
         payload.put("secret", secret);
 
-        GetFilteredPostPageRes response = repository.getFilteredPosts(token, payload);
+        GetFilteredPostPageRes response = repository.getFilteredPosts(payload);
 
         return response.getPosts();
     }
