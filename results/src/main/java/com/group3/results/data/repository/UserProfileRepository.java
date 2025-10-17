@@ -17,7 +17,7 @@ public class UserProfileRepository implements ProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
 
-    public List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret){
+    public List<UserProfile> getUserFilteredPage(String token, String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret){
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("fullname",fullname);
@@ -28,7 +28,7 @@ public class UserProfileRepository implements ProfileRepositoryI {
         payload.put("ids",ids);
         payload.put("secret",secret);
 
-        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(payload);
+        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(token, payload);
 
         return response.getProfiles();
     }

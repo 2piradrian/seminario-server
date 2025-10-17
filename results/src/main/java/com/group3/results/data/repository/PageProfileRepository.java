@@ -17,7 +17,7 @@ public class PageProfileRepository implements PageRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
 
-    public List<PageProfile> getPageFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
+    public List<PageProfile> getPageFilteredPage(String token, String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("name", name);
@@ -27,7 +27,7 @@ public class PageProfileRepository implements PageRepositoryI {
         payload.put("size",size);
         payload.put("secret",secret);
 
-        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(payload);
+        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(token, payload);
 
         return response.getPages();
     }

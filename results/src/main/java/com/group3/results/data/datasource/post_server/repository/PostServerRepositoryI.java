@@ -6,6 +6,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
@@ -14,6 +15,6 @@ import java.util.Map;
 public interface PostServerRepositoryI {
 
     @PostMapping("/api/posts/get-filtered-posts")
-    GetFilteredPostPageRes getFilteredPosts(@RequestBody Map<String, Object> payload);
+    GetFilteredPostPageRes getFilteredPosts(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
 
 }
