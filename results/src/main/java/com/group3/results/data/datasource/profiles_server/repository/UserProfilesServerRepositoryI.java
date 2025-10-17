@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "profiles-server", path = "/profiles-server")
-@LoadBalancerClient(name = "profiles-server", configuration = LoadBalancerConfiguration.class)
+@FeignClient(name = "user-profiles-server", path = "/user-profiles-server")
+@LoadBalancerClient(name = "user-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface UserProfilesServerRepositoryI {
 
     @GetMapping("/api/profiles/get-filtered")
