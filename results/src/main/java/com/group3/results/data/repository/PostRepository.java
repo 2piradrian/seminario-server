@@ -27,7 +27,6 @@ public class PostRepository implements PostRepositoryI {
     public List<Post> getFilteredPosts(String token, List<String> ids, Integer page, Integer size, String text, String secret) {
         Map<String,Object> payload = new HashMap<>();
 
-
         payload.put("page", page);
         payload.put("size", size);
         payload.put("ids", ids);

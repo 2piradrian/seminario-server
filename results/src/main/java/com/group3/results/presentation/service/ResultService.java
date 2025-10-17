@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -76,8 +77,12 @@ public class ResultService implements ResultServiceI {
 
         UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
+        List<String> profiles = new ArrayList<>(List.of());
+        profiles.addAll(profile.getFollowing());
+        profiles.add(profile.getId());
+
         List<Post> posts = this.postRepository.getFilteredPosts(
-            profile.getFollowing(),
+            profiles.stream().toList(),
             dto.getPage(),
             dto.getSize(),
             "",
