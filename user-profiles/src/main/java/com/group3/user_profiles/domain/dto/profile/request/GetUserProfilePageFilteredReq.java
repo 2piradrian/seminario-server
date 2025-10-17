@@ -11,6 +11,8 @@ import java.util.List;
 @Getter
 public class GetUserProfilePageFilteredReq {
 
+    private final String token;
+
     private final String secret;
 
     private final Integer page;
@@ -25,7 +27,8 @@ public class GetUserProfilePageFilteredReq {
 
     private final List<String> ids;
 
-    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+    private GetUserProfilePageFilteredReq(String token, String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+        this.token = token;
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -35,7 +38,11 @@ public class GetUserProfilePageFilteredReq {
         this.ids = ids;
     }
 
-    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+    public static GetUserProfilePageFilteredReq create(String token, String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -65,7 +72,7 @@ public class GetUserProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetUserProfilePageFilteredReq(secret, page, size, fullname, styles, instruments, ids);
+        return new GetUserProfilePageFilteredReq(token, secret, page, size, fullname, styles, instruments, ids);
     }
 
 }
