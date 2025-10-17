@@ -1,6 +1,7 @@
 package com.group3.results.presentation.controller;
 
 import com.group3.results.domain.dto.mapper.ResultsMapper;
+import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.presentation.service.ResultService;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,13 @@ public class ResultController {
         return ResponseEntity.ok(this.resultService.getProfilesFiltered(dto));
     }
 
-
+    @PostMapping("/get-feed-post-filtered")
+    public ResponseEntity<?> getFeedPost(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetFeedPageReq dto = ResultsMapper.getFeed().toRequest(token, payload);
+        return ResponseEntity.ok(this.resultService.getFeedPage(dto));
+    }
 
 }
