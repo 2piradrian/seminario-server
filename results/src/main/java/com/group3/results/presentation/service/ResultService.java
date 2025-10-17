@@ -78,10 +78,12 @@ public class ResultService implements ResultServiceI {
         UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
         List<String> profiles = new ArrayList<>(List.of());
+
         profiles.addAll(profile.getFollowing());
         profiles.add(profile.getId());
 
         List<Post> posts = this.postRepository.getFilteredPosts(
+            dto.getToken(),
             profiles.stream().toList(),
             dto.getPage(),
             dto.getSize(),
