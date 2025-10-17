@@ -39,10 +39,9 @@ public class UserProfileController {
 
     @PostMapping("/get-user-filtered")
     public ResponseEntity<?> getFiltered(
-        @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(token, payload);
+        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
     }
 

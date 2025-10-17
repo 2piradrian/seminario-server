@@ -93,9 +93,6 @@ public class PageProfileService implements PageProfileServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
         PageContent<PageProfile> pages = this.pageProfileRepository.getFilteredPage(
             dto.getName(),
             dto.getPageTypeId(),

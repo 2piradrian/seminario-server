@@ -16,9 +16,8 @@ public class GetPageFilteredMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetUserProfilePageFilteredReq toRequest(String token, Map<String, Object> payload) {
+    public GetUserProfilePageFilteredReq toRequest(Map<String, Object> payload) {
         return GetUserProfilePageFilteredReq.create(
-            token,
             (String) payload.get("secret"),
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),

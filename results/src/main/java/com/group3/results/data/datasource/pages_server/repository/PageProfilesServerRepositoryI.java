@@ -15,6 +15,6 @@ import java.util.Map;
 public interface PageProfilesServerRepositoryI {
 
     @PostMapping("/api/page-profiles/get-page-filtered")
-    GetPageProfilePageFilteredRes getPageProfileFilteredPage(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Object> payload);
+    GetPageProfilePageFilteredRes getPageProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
 }

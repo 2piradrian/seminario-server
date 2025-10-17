@@ -37,10 +37,9 @@ public class PageProfileController {
 
     @PostMapping("/get-page-filtered")
     public ResponseEntity<?> getFiltered(
-        @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(token, payload);
+        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(payload);
         return ResponseEntity.ok(this.pageService.getProfileFiltered(dto));
     }
 

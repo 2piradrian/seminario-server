@@ -1,6 +1,9 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.PageProfile;
+import com.group3.entity.User;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.pages_server.repository.PageProfilesServerRepositoryI;
 import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
 import com.group3.results.domain.repository.PageRepositoryI;
@@ -16,8 +19,13 @@ import java.util.Map;
 public class PageProfileRepository implements PageRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
+    private final UserRepository userRepository;
 
     public List<PageProfile> getPageFilteredPage(String token, String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
+
+        User user = this.userRepository.auth(token);
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("name", name);
@@ -27,7 +35,7 @@ public class PageProfileRepository implements PageRepositoryI {
         payload.put("size",size);
         payload.put("secret",secret);
 
-        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(token, payload);
+        GetPageProfilePageFilteredRes response = repository.getPageProfileFilteredPage(payload);
 
         return response.getPages();
     }

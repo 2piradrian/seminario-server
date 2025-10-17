@@ -1,5 +1,6 @@
 package com.group3.results.data.repository;
 
+import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
@@ -19,8 +20,13 @@ import java.util.Map;
 public class UserProfileRepository implements UserProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
+    private final UserRepository userRepository;
 
     public List<UserProfile> getUserFilteredPage(String token, String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret){
+
+        User user = this.userRepository.auth(token);
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("fullname",fullname);
@@ -31,7 +37,7 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         payload.put("ids",ids);
         payload.put("secret",secret);
 
-        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(token, payload);
+        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(payload);
 
         return response.getProfiles();
     }
