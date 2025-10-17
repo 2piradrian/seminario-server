@@ -4,6 +4,7 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.PageProfileRepository;
+import com.group3.results.data.repository.PostRepository;
 import com.group3.results.data.repository.UserProfileRepository;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
 import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
@@ -22,6 +23,7 @@ public class ResultService implements ResultServiceI {
 
     private final UserProfileRepository userProfileRepository;
     private final PageProfileRepository pageProfileRepository;
+    private final PostRepository postRepository;
     private final SecretKeyHelper secretKeyHelper;
 
     @Override
@@ -48,10 +50,15 @@ public class ResultService implements ResultServiceI {
                 this.secretKeyHelper.getSecret()
             );
 
-        List<Object> profiles = new ArrayList<>();
-        profiles.addAll(userProfiles);
-        profiles.addAll(pageProfiles);
+        List<Post> posts =
+            this.postRepository.getFilteredPosts(
+                dto.getIds(),
+                dto.getPage(),
+                dto.getSize(),
+                dto.getName(),
+                this.secretKeyHelper.getSecret()
+            );
 
-        return ResultsMapper.getProfilesFiltered().toResponse(profiles);
+        return ResultsMapper.getProfilesFiltered().toResponse(userProfiles, pageProfiles, posts);
     }
 }
