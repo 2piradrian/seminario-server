@@ -1,4 +1,4 @@
-package com.group3.results.data.datasource.profiles_server.responses;
+package com.group3.results.data.datasource.user_profiles_server.responses;
 
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;

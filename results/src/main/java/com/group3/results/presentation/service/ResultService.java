@@ -6,7 +6,9 @@ import com.group3.results.data.repository.PageProfileRepository;
 import com.group3.results.data.repository.PostRepository;
 import com.group3.results.data.repository.UserProfileRepository;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
+import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
+import com.group3.results.domain.dto.response.GetFeedPageRes;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ResultService implements ResultServiceI {
 
-    private final UserProfileRepository userProfileRepository;
-    private final PageProfileRepository pageProfileRepository;
-    private final PostRepository postRepository;
     private final SecretKeyHelper secretKeyHelper;
+
+    private final UserProfileRepository userProfileRepository;
+
+    private final PageProfileRepository pageProfileRepository;
+
+    private final PostRepository postRepository;
+
 
     @Override
     public GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto) {
@@ -62,4 +68,24 @@ public class ResultService implements ResultServiceI {
 
         return ResultsMapper.getProfilesFiltered().toResponse(userProfiles, pageProfiles, posts);
     }
+
+    @Override
+    public GetFeedPageRes getFeedPage(GetFeedPageReq dto) {
+
+        User user = new User();
+
+        UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
+
+        List<Post> posts = this.postRepository.getFilteredPosts(
+            profile.getFollowing(),
+            dto.getPage(),
+            dto.getSize(),
+            "",
+            secretKeyHelper.getSecret()
+        );
+
+        return ResultsMapper.getFeed().toResponse(posts);
+    }
+
+
 }
