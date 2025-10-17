@@ -2,9 +2,7 @@ package com.group3.results.domain.dto.mapper.implementation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group3.entity.Instrument;
-import com.group3.entity.PageContent;
-import com.group3.entity.Style;
+import com.group3.entity.*;
 import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
 import com.group3.results.domain.dto.response.GetProfilesFilteredRes;
 
@@ -27,9 +25,11 @@ public class GetProfilesMapper {
         );
     }
 
-    public GetProfilesFilteredRes toResponse(List<Object> profiles) {
+    public GetProfilesFilteredRes toResponse(List<UserProfile> userProfiles, List<PageProfile> pageProfiles, List<Post> posts) {
         return new GetProfilesFilteredRes(
-            profiles
+            userProfiles,
+            pageProfiles,
+            posts
         );
     }
 
