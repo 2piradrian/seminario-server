@@ -1,19 +1,19 @@
 package com.group3.results.presentation.service;
 
-import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.PageProfileRepository;
 import com.group3.results.data.repository.PostRepository;
 import com.group3.results.data.repository.UserProfileRepository;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
+import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
+import com.group3.results.domain.dto.response.GetFeedPageRes;
 import com.group3.results.domain.dto.response.GetProfilesFilteredRes;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -21,10 +21,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ResultService implements ResultServiceI {
 
-    private final UserProfileRepository userProfileRepository;
-    private final PageProfileRepository pageProfileRepository;
-    private final PostRepository postRepository;
     private final SecretKeyHelper secretKeyHelper;
+
+    private final UserProfileRepository userProfileRepository;
+
+    private final PageProfileRepository pageProfileRepository;
+
+    private final PostRepository postRepository;
+
 
     @Override
     public GetProfilesFilteredRes getProfilesFiltered(GetProfilesFilteredReq dto) {
@@ -61,4 +65,16 @@ public class ResultService implements ResultServiceI {
 
         return ResultsMapper.getProfilesFiltered().toResponse(userProfiles, pageProfiles, posts);
     }
+
+    @Override
+    public GetFeedPageRes getFeedPage(GetFeedPageReq dto) {
+
+        User user = new User();
+
+
+
+        return null;
+    }
+
+
 }
