@@ -13,7 +13,7 @@ import java.util.Map;
 @LoadBalancerClient(name = "user-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface UserProfilesServerRepositoryI {
 
-    @PostMapping("/api/profiles/get-filtered")
+    @PostMapping("/api/user-profiles/get-filtered")
     GetUserProfilePageFilteredRes getUserProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
 }
