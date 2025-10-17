@@ -23,7 +23,7 @@ public class ToggleFollowReq {
         String token,
         String id
     ){
-        if (token == null){
+        if (token == null || token.isEmpty()){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 

@@ -16,7 +16,7 @@ public interface UserProfilesServerRepositoryI {
     @GetMapping("/api/user-profiles/get-by-id/{userId}")
     GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("userId") String userId);
 
-    @PostMapping("/get-followers-by-id")
+    @PostMapping("/api/user-profiles/get-followers-by-id")
     GetFollowersByIdRes getFollowersById(@RequestBody Map<String, Object> payload);
 
 }

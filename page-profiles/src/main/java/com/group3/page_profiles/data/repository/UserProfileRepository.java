@@ -9,6 +9,7 @@ import com.group3.page_profiles.domain.repository.ProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Repository
@@ -48,8 +49,12 @@ public class UserProfileRepository implements ProfileRepositoryI {
     // ======== Get Followers Count By Id ========
 
     @Override
-    public Integer getFollowersById(String id) {
-        return this.repository.getFollowersById(Map.of("id", id)).getFollowersCount();
+    public Integer getFollowersById(String id, String secret) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("id", id);
+        payload.put("secret", secret);
+
+        return this.repository.getFollowersById(payload).getFollowersCount();
     }
 
 }
