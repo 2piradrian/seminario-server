@@ -5,10 +5,7 @@ import com.group3.results.domain.dto.request.GetProfilesFilteredReq;
 import com.group3.results.presentation.service.ResultService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -19,11 +16,12 @@ public class ResultController {
 
     private final ResultService resultService;
 
-    @PostMapping("/get-filtered")
+    @PostMapping("/get-search-result-filtered")
     public ResponseEntity<?> getFiltered(
+        @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetProfilesFilteredReq dto = ResultsMapper.getProfilesFiltered().toRequest(payload);
+        GetProfilesFilteredReq dto = ResultsMapper.getProfilesFiltered().toRequest(token, payload);
         return ResponseEntity.ok(this.resultService.getProfilesFiltered(dto));
     }
 

@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -31,6 +30,7 @@ public class ResultService implements ResultServiceI {
 
         List<UserProfile> userProfiles =
             this.userProfileRepository.getUserFilteredPage(
+                dto.getToken(),
                 dto.getName(),
                 dto.getStyles().stream().map(Style::getId).toList(),
                 dto.getInstruments().stream().map(Instrument::getId).toList(),
@@ -42,6 +42,7 @@ public class ResultService implements ResultServiceI {
 
         List<PageProfile> pageProfiles =
             this.pageProfileRepository.getPageFilteredPage(
+                dto.getToken(),
                 dto.getName(),
                 dto.getPageTypeId(),
                 dto.getIds(),
@@ -52,6 +53,7 @@ public class ResultService implements ResultServiceI {
 
         List<Post> posts =
             this.postRepository.getFilteredPosts(
+                dto.getToken(),
                 dto.getIds(),
                 dto.getPage(),
                 dto.getSize(),
