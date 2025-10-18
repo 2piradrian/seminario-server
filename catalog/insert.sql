@@ -29,11 +29,10 @@ INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Bongos');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Djembe');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Tabla');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Kalimba');
-INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Harmónica');
-INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Melódica');
+INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Armónica');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Fagote');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Corneta');
-INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Órgano'));
+INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Órgano');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Synthesizer');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Recorder');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Bagpipes');
@@ -41,7 +40,7 @@ INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Sax Tenor');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Sax Alto');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Sax Barítono');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Tuba');
-INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Cornetín'));
+INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Cornetín');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Claves');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Campanas');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Triangle');
@@ -83,37 +82,35 @@ INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Bachata');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Trance');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Drum & Bass');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Dubstep');
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Ambient'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Chillout'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'House Deep'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Tech House'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Hard Rock'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Grunge'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Emo'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Post Rock'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Avant-Garde'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Experimental'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Industrial'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Krautrock'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Garage Rock'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Punk'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Ska'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Post-Punk'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Folk Rock'));
-INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Neo-Soul'));
-
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Ambient');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Chillout');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'House Deep');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Tech House');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Hard Rock');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Grunge');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Emo');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Post Rock');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Avant-Garde');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Experimental');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Industrial');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Krautrock');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Garage Rock');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Punk');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Ska');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Post-Punk');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Folk Rock');
+INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Neo-Soul');
 
 -- Inserts para Tipos de página
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Banda');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'General');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Marca');
 
+-- Inserts para categorías
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Ofrezco servicio');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Busco músicos');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Busco banda');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Reemplazo urgente');
-
--- Categorías: Tipo de show / contenido
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Show en vivo');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Sesionista de estudio');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Tributo');
@@ -121,8 +118,6 @@ INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Covers');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Originales');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'DJ Set');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Acústico / Unplugged');
-
--- Categorías: Servicios musicales
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Clases');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Composición por encargo');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Arreglos musicales');
@@ -130,23 +125,19 @@ INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Producción musica
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Mezcla');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Mastering');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Grabación móvil');
-
--- Categorías: Tipo de evento
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Casamiento / Evento social');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Fiesta de 15');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Evento corporativo');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Bar / Restobar');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Festival');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Teatro / Sala');
-
--- Categorías: Comunidad / logística
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Colaboraciones');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Anuncios generales');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Equipamiento / Backline disponible');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Sonidista / Iluminación');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Disponibilidad / Agenda');
 
--- Categorías: Tipos de contenidos
+-- Inserts para Tipos de contenidos
 INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Posts');
 INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Usuarios');
 INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Páginas');
