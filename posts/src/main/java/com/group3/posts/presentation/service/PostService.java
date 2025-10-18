@@ -81,13 +81,8 @@ public class PostService implements PostServiceI {
 
     @Override
     public GetPostByIdRes getById(GetPostByIdReq dto) {
-
-        log.info(dto.getToken());
-
         User user = userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        log.info(dto.getPostId());
 
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
