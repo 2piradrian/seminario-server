@@ -49,15 +49,6 @@ public class GetFilteredPostPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (ids == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (text == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-
-        }
-
         return new GetFilteredPostPageReq(page, size, ids,text, secret);
     }
 
