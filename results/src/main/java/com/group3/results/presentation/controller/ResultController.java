@@ -17,8 +17,8 @@ public class ResultController {
 
     private final ResultService resultService;
 
-    @PostMapping("/get-search-result-filtered")
-    public ResponseEntity<?> getFiltered(
+    @PostMapping("/get-search-result")
+    public ResponseEntity<?> getSearchResult(
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
