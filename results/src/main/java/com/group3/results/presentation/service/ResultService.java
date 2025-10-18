@@ -96,8 +96,6 @@ public class ResultService implements ResultServiceI {
 
         List<String> profiles = new ArrayList<>(List.of());
 
-        log.info(profile.getFollowing().toString());
-
         profiles.addAll(profile.getFollowing());
         profiles.add(profile.getId());
 
