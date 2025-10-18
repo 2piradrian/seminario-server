@@ -26,7 +26,7 @@ public class ResultController {
         return ResponseEntity.ok(this.resultService.getSearchResult(dto));
     }
 
-    @PostMapping("/get-feed-post-filtered")
+    @PostMapping("/get-feed-post")
     public ResponseEntity<?> getFeedPost(
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
