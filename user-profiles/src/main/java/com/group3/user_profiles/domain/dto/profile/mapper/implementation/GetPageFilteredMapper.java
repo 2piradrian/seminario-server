@@ -22,8 +22,8 @@ public class GetPageFilteredMapper {
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),
             (String) payload.get("fullname"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
+            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<String>>() {}),
+            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<String>>() {}),
             objectMapper.convertValue(payload.get("ids"), new TypeReference<List<String>>() {})
 
         );

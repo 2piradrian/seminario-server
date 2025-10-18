@@ -19,13 +19,13 @@ public class GetUserProfilePageFilteredReq {
 
     private final String fullname;
 
-    private final List<Style> styles;
+    private final List<String> styles;
 
-    private final List<Instrument> instruments;
+    private final List<String> instruments;
 
     private final List<String> ids;
 
-    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments, List<String> ids) {
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -35,7 +35,7 @@ public class GetUserProfilePageFilteredReq {
         this.ids = ids;
     }
 
-    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<Style> styles, List<Instrument> instruments, List<String> ids) {
+    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments, List<String> ids) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);

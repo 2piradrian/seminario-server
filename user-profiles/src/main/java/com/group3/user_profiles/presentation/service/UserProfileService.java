@@ -103,8 +103,8 @@ public class UserProfileService implements UserProfileServiceI {
 
         PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
             dto.getFullname(),
-            dto.getStyles().stream().map(Style::getId).toList(),
-            dto.getInstruments().stream().map(Instrument::getId).toList(),
+            dto.getStyles(),
+            dto.getInstruments(),
             dto.getIds(),
             dto.getPage(),
             dto.getSize());
