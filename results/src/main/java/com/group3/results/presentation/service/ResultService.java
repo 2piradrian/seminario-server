@@ -1,10 +1,13 @@
 package com.group3.results.presentation.service;
 
 import com.group3.entity.*;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.PageProfileRepository;
 import com.group3.results.data.repository.PostRepository;
 import com.group3.results.data.repository.UserProfileRepository;
+import com.group3.results.data.repository.UserRepository;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
@@ -30,9 +33,13 @@ public class ResultService implements ResultServiceI {
 
     private final PostRepository postRepository;
 
+    private final UserRepository userRepository;
+
 
     @Override
     public GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         List<UserProfile> userProfiles =
             this.userProfileRepository.getUserFilteredPage(
@@ -72,8 +79,8 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetFeedPageRes getFeedPage(GetFeedPageReq dto) {
-
-        User user = new User();
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
