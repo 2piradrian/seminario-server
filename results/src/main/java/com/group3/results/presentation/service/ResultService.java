@@ -91,9 +91,12 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = this.userProfileRepository.getById(user.getId(), dto.getToken());
+        UserProfile profile = this.userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<String> profiles = new ArrayList<>(List.of());
+
+        log.info(profile.getFollowing().toString());
 
         profiles.addAll(profile.getFollowing());
         profiles.add(profile.getId());

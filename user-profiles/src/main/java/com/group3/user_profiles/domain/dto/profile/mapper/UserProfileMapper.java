@@ -24,6 +24,10 @@ public class UserProfileMapper {
         return new GetByIdMapper();
     }
 
+    public static GetByIdWithFollowingMapper getByIdWithFollowing() {
+        return new GetByIdWithFollowingMapper();
+    }
+
     public static CreateMapper create(){
         return new CreateMapper();
     }

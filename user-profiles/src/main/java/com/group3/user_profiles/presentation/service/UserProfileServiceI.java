@@ -9,6 +9,8 @@ public interface UserProfileServiceI {
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
+    GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto);
+
     GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto);
 
     GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);

@@ -3,6 +3,7 @@ package com.group3.user_profiles.presentation.controller;
 import com.group3.user_profiles.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.user_profiles.domain.dto.profile.mapper.implementation.ActiveMapper;
 import com.group3.user_profiles.domain.dto.profile.request.*;
+import com.group3.user_profiles.domain.dto.profile.response.GetUserProfileWithFollowingByIdRes;
 import com.group3.user_profiles.presentation.service.UserProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,16 @@ public class UserProfileController {
         @PathVariable(value = "userId") String userId
     ) {
         GetUserProfileByIdReq dto = UserProfileMapper.getById().toRequest(userId, token);
+
+        return ResponseEntity.ok(this.userService.getById(dto));
+    }
+
+    @PostMapping("/get-by-id-with-following/{userId}")
+    public ResponseEntity<?> getByIdWithFollowing(
+            @PathVariable(value = "userId") String userId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetUserProfileWithFollowingByIdReq dto = UserProfileMapper.getByIdWithFollowing().toRequest(userId, payload);
 
         return ResponseEntity.ok(this.userService.getById(dto));
     }

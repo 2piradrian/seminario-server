@@ -52,6 +52,7 @@ public class UserProfileService implements UserProfileServiceI {
         userProfile.setInstruments(List.of());
         userProfile.setStyles(List.of());
         userProfile.setStatus(Status.INACTIVE);
+        userProfile.setFollowing(List.of());
 
         this.userProfileRepository.save(userProfile);
     }
@@ -77,6 +78,16 @@ public class UserProfileService implements UserProfileServiceI {
         Boolean isFollowing = sessionProfile.getFollowing().contains(userProfile.getId());
 
         return UserProfileMapper.getById().toResponse(userProfile, followersCount, followingCount, ownProfile, isFollowing);
+    }
+
+    @Override
+    public GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
+        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        return UserProfileMapper.getByIdWithFollowing().toResponse(userProfile);
     }
 
 

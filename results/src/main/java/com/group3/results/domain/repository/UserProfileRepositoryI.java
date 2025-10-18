@@ -10,4 +10,6 @@ public interface UserProfileRepositoryI {
 
     UserProfile getById(String userId, String token);
 
+    UserProfile getByIdWithFollowing(String userId, String secret);
+
 }

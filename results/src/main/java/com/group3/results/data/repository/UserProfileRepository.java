@@ -7,6 +7,7 @@ import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.user_profiles_server.repository.UserProfilesServerRepositoryI;
 import com.group3.results.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
 import com.group3.results.data.datasource.user_profiles_server.responses.GetUserProfilePageFilteredRes;
+import com.group3.results.data.datasource.user_profiles_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.results.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -33,7 +34,7 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         payload.put("ids",ids);
         payload.put("secret",secret);
 
-        GetUserProfilePageFilteredRes response = repository.getUserProfileFilteredPage(payload);
+        GetUserProfilePageFilteredRes response = this.repository.getUserProfileFilteredPage(payload);
 
         return response.getProfiles();
     }
@@ -62,6 +63,32 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         user.setLongDescription(response.getLongDescription());
         user.setStyles(response.getStyles());
         user.setInstruments(response.getInstruments());
+
+        return user;
+    }
+
+    @Override
+    public UserProfile getByIdWithFollowing(String userId, String secret) {
+
+        Map<String,Object> payload = new HashMap<>();
+        payload.put("secret",secret);
+
+        GetUserProfileWithFollowingByIdRes response = this.repository.getByIdWithFollowing(userId, payload);
+
+        if (response == null){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        UserProfile user = new UserProfile();
+
+        user.setId(response.getId());
+        user.setEmail(response.getEmail());
+        user.setName(response.getName());
+        user.setSurname(response.getSurname());
+        user.setMemberSince(response.getMemberSince());
+        user.setStyles(response.getStyles());
+        user.setInstruments(response.getInstruments());
+        user.setFollowing(response.getFollowing());
 
         return user;
     }
