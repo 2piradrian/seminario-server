@@ -69,6 +69,12 @@ public class UserProfileService implements UserProfileServiceI {
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
+        List<Style> styles = this.catalogRepository.getStyleListById(userProfile.getStyles().stream().map(Style::getId).toList());
+        userProfile.setStyles(styles);
+
+        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(userProfile.getInstruments().stream().map(Instrument::getId).toList());
+        userProfile.setInstruments(instruments);
+
         Integer followersCount = this.userProfileRepository.getFollowersCount(userProfile.getId());
         Integer followingCount = this.userProfileRepository.getFollowingCount(userProfile.getId());
 
@@ -84,12 +90,6 @@ public class UserProfileService implements UserProfileServiceI {
 
         UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
         if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        List<Style> styles = this.catalogRepository.getStyleListById(userProfile.getStyles().stream().map(Style::getId).toList());
-        userProfile.setStyles(styles);
-
-        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(userProfile.getInstruments().stream().map(Instrument::getId).toList());
-        userProfile.setInstruments(instruments);
 
         return UserProfileMapper.getByIdWithFollowing().toResponse(userProfile);
     }
