@@ -22,6 +22,7 @@ public class GetSearchResultMapper {
             objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
             objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
             objectMapper.convertValue(payload.get("ids"), new TypeReference<List<String>>() {}),
+            (String) payload.get("contentTypeId"),
             (String) payload.get("pageTypeId")
         );
     }
