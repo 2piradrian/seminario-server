@@ -4,10 +4,7 @@ import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.results.config.helpers.SecretKeyHelper;
-import com.group3.results.data.repository.PageProfileRepository;
-import com.group3.results.data.repository.PostRepository;
-import com.group3.results.data.repository.UserProfileRepository;
-import com.group3.results.data.repository.UserRepository;
+import com.group3.results.data.repository.*;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
@@ -35,6 +32,7 @@ public class ResultService implements ResultServiceI {
 
     private final UserRepository userRepository;
 
+    private final CatalogRepository catalogRepository;
 
     @Override
     public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
@@ -42,45 +40,74 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<UserProfile> userProfiles =
-            this.userProfileRepository.getUserFilteredPage(
-                dto.getName(),
-                dto.getStyles().stream().map(Style::getId).toList(),
-                dto.getInstruments().stream().map(Instrument::getId).toList(),
-                dto.getIds(),
-                dto.getPage(),
-                dto.getSize(),
-                this.secretKeyHelper.getSecret()
-                );
+        ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
+        if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
-        List<PageProfile> pageProfiles =
-            this.pageProfileRepository.getPageFilteredPage(
+        List<UserProfile> userProfiles = new ArrayList<>(List.of());
+        List<Post> posts = new ArrayList<>(List.of());
+        List<PageProfile> pageProfiles = new ArrayList<>(List.of());
+
+        if (contentType.getName().equals("Páginas")){
+            pageProfiles.addAll(
+                this.pageProfileRepository.getPageFilteredPage(
                 dto.getName(),
                 dto.getPageTypeId(),
                 dto.getIds(),
                 dto.getPage(),
                 dto.getSize(),
-                this.secretKeyHelper.getSecret()
+                this.secretKeyHelper.getSecret())
             );
+            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
+        }
 
-        List<Post> posts =
-            this.postRepository.getFilteredPosts(
-                dto.getIds(),
-                dto.getPage(),
-                dto.getSize(),
-                dto.getName(),
-                this.secretKeyHelper.getSecret()
-            );
+        if (contentType.getName().equals("Usuarios")){
 
-        for (Post post : posts) {
-            if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(fullProfile);
+            List<String> styleIds = new ArrayList<>();
+            if (dto.getStyles() != null) {
+                styleIds = dto.getStyles().stream().map(Style::getId).toList();
             }
-            if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-                post.setPageProfile(fullPage);
+
+            List<String> instrumentIds = new ArrayList<>();
+            if (dto.getInstruments() != null) {
+                instrumentIds = dto.getInstruments().stream().map(Instrument::getId).toList();
             }
+
+            userProfiles.addAll(
+                this.userProfileRepository.getUserFilteredPage(
+                    dto.getName(),
+                    styleIds,
+                    instrumentIds,
+                    dto.getIds(),
+                    dto.getPage(),
+                    dto.getSize(),
+                    this.secretKeyHelper.getSecret()
+            ));
+            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
+        }
+
+        if (contentType.getName().equals("Posts")) {
+            List<Post> postsResult =
+                this.postRepository.getFilteredPosts(
+                    dto.getIds(),
+                    dto.getPage(),
+                    dto.getSize(),
+                    dto.getName(),
+                    this.secretKeyHelper.getSecret()
+                );
+
+            for (Post post : postsResult) {
+                if (post.getAuthor().getId() != null) {
+                    UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                    post.setAuthor(fullProfile);
+                }
+                if (post.getPageProfile().getId() != null) {
+                    PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                    post.setPageProfile(fullPage);
+                }
+            }
+
+            posts.addAll(postsResult);
+            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
         return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
