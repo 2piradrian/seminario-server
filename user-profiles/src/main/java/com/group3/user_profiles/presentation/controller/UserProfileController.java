@@ -98,18 +98,20 @@ public class UserProfileController {
 
     @PostMapping("/get-followers")
     public ResponseEntity<?> getFollowers(
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        GetFollowerPageReq dto = UserProfileMapper.getFollowerPage().toRequest(payload);
+        GetFollowerPageReq dto = UserProfileMapper.getFollowerPage().toRequest(token, payload);
 
         return ResponseEntity.ok(this.userService.getFollowers(dto));
     }
 
     @PostMapping("/get-following")
     public ResponseEntity<?> getFollowing(
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        GetFollowingPageReq dto = UserProfileMapper.getFollowingPage().toRequest(payload);
+        GetFollowingPageReq dto = UserProfileMapper.getFollowingPage().toRequest(token, payload);
 
         return ResponseEntity.ok(this.userService.getFollowing(dto));
     }

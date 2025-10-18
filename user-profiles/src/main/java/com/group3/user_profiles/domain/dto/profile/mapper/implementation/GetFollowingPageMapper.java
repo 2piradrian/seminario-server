@@ -18,7 +18,7 @@ public class GetFollowingPageMapper {
         );
     }
 
-    public GetFollowingPageRes toResponse(PageContent<String> followingPage, List<Object> following) {
+    public GetFollowingPageRes toResponse(PageContent<String> followingPage, List<Map<String, Object>> following) {
         return new GetFollowingPageRes(
                 following,
                 followingPage.getNextPage()
