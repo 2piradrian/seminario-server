@@ -36,7 +36,6 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
-
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -48,6 +47,8 @@ public class ResultService implements ResultServiceI {
         List<PageProfile> pageProfiles = new ArrayList<>(List.of());
 
         if (contentType.getName().equals("Páginas")){
+            // 1. Lista guardando el resultado
+            // 2. Append de la lista
             pageProfiles.addAll(
                 this.pageProfileRepository.getPageFilteredPage(
                 dto.getName(),
@@ -63,14 +64,10 @@ public class ResultService implements ResultServiceI {
         if (contentType.getName().equals("Usuarios")){
 
             List<String> styleIds = new ArrayList<>();
-            if (dto.getStyles() != null) {
-                styleIds = dto.getStyles().stream().map(Style::getId).toList();
-            }
+            if (dto.getStyles() != null) styleIds = dto.getStyles().stream().map(Style::getId).toList();
 
             List<String> instrumentIds = new ArrayList<>();
-            if (dto.getInstruments() != null) {
-                instrumentIds = dto.getInstruments().stream().map(Instrument::getId).toList();
-            }
+            if (dto.getInstruments() != null) instrumentIds = dto.getInstruments().stream().map(Instrument::getId).toList();
 
             userProfiles.addAll(
                 this.userProfileRepository.getUserFilteredPage(
