@@ -5,7 +5,7 @@ import com.group3.results.domain.dto.mapper.implementation.GetSearchResultMapper
 
 public class ResultsMapper {
 
-    public static GetSearchResultMapper getProfilesFiltered() {
+    public static GetSearchResultMapper getSearchResult() {
         return new GetSearchResultMapper();
     }
 

@@ -22,8 +22,8 @@ public class ResultController {
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetSerchResultFilteredReq dto = ResultsMapper.getProfilesFiltered().toRequest(token, payload);
-        return ResponseEntity.ok(this.resultService.getProfilesFiltered(dto));
+        GetSerchResultFilteredReq dto = ResultsMapper.getSearchResult().toRequest(token, payload);
+        return ResponseEntity.ok(this.resultService.getSearchResult(dto));
     }
 
     @PostMapping("/get-feed-post-filtered")

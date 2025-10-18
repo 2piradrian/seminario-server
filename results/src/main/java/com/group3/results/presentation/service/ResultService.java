@@ -37,7 +37,7 @@ public class ResultService implements ResultServiceI {
 
 
     @Override
-    public GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto) {
+    public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
 
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -72,7 +72,7 @@ public class ResultService implements ResultServiceI {
                 this.secretKeyHelper.getSecret()
             );
 
-        return ResultsMapper.getProfilesFiltered().toResponse(userProfiles, pageProfiles, posts);
+        return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
     }
 
     @Override

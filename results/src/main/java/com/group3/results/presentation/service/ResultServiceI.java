@@ -7,7 +7,7 @@ import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
 public interface ResultServiceI {
 
-    GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto);
+    GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto);
 
     GetFeedPageRes getFeedPage(GetFeedPageReq dto);
 
