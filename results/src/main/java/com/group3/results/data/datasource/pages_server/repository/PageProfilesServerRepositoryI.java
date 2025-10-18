@@ -1,12 +1,12 @@
 package com.group3.results.data.datasource.pages_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.pages_server.responses.GetPageByIdRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,4 +17,6 @@ public interface PageProfilesServerRepositoryI {
     @PostMapping("/api/page-profiles/get-page-filtered")
     GetPageProfilePageFilteredRes getPageProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
+    @GetMapping("/api/page-profiles/get-by-id/{pageId}")
+    GetPageByIdRes getById(@PathVariable(value = "pageId") String pageId);
 }
