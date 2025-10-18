@@ -18,7 +18,7 @@ public class GetSerchResultFilteredReq {
 
     private final Integer size;
 
-    private final String name;
+    private final String name; // TODO: text
 
     private final List<Style> styles;
 
