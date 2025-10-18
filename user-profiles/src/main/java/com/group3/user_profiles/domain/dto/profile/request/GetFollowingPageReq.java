@@ -13,13 +13,20 @@ public class GetFollowingPageReq {
 
     private final Integer size;
 
-    private GetFollowingPageReq(String userId, Integer page, Integer size) {
+    private final String token;
+
+    private GetFollowingPageReq(String userId, Integer page, Integer size, String token) {
         this.userId = userId;
         this.page = page;
         this.size = size;
+        this.token = token;
     }
 
-    public static GetFollowingPageReq create(String userId, Integer page, Integer size) {
+    public static GetFollowingPageReq create(String userId, Integer page, Integer size, String token) {
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (userId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -41,6 +48,7 @@ public class GetFollowingPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFollowingPageReq(userId, page, size);
+        return new GetFollowingPageReq(userId, page, size, token);
     }
+
 }

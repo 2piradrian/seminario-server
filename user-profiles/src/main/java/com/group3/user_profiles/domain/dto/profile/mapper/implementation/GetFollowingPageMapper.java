@@ -9,11 +9,12 @@ import java.util.Map;
 
 public class GetFollowingPageMapper {
 
-    public GetFollowingPageReq toRequest(Map<String, Object> payload) {
+    public GetFollowingPageReq toRequest(String token, Map<String, Object> payload) {
         return GetFollowingPageReq.create(
                 (String) payload.get("userId"),
                 (Integer) payload.get("page"),
-                (Integer) payload.get("size")
+                (Integer) payload.get("size"),
+                token
         );
     }
 

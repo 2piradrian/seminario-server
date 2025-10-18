@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -136,6 +134,9 @@ public class UserProfileService implements UserProfileServiceI {
 
     @Override
     public GetFollowerPageRes getFollowers(GetFollowerPageReq dto) {
+        User authUser = this.userRepository.auth(dto.getToken());
+        if (authUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         UserProfile user = this.userProfileRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
@@ -154,18 +155,44 @@ public class UserProfileService implements UserProfileServiceI {
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
 
-        List<Object> followers = new ArrayList<>();
-        followers.addAll(userProfiles);
-        followers.addAll(pageProfiles);
+        List<String> followingIds = this.userProfileRepository.getById(authUser.getId()).getFollowing();
+        Set<String> followingSet = new HashSet<>(followingIds);
 
-        return UserProfileMapper.getFollowerPage().toResponse(followersPage, followers);
+        List<Map<String, Object>> followers = new ArrayList<>();
+
+        for (UserProfile profile : userProfiles) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", profile.getId());
+            map.put("name", profile.getName());
+            map.put("surname", profile.getSurname());
+            map.put("profileImage", profile.getProfileImage());
+            map.put("shortDescription", profile.getShortDescription());
+            map.put("isFollowing", followingSet.contains(profile.getId()));
+            followers.add(map);
+        }
+
+        for (PageProfile page : pageProfiles) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", page.getId());
+            map.put("name", page.getName());
+            map.put("profileImage", page.getProfileImage());
+            map.put("shortDescription", page.getShortDescription());
+            map.put("isFollowing", followingSet.contains(page.getId()));
+            followers.add(map);
+        }
+
+        return new GetFollowerPageRes(followers, followersPage.getNextPage());
     }
+
 
 
     // ======== Get Following ========
 
     @Override
     public GetFollowingPageRes getFollowing(GetFollowingPageReq dto) {
+        User authUser = this.userRepository.auth(dto.getToken());
+        if (authUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         UserProfile user = this.userProfileRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
@@ -184,11 +211,30 @@ public class UserProfileService implements UserProfileServiceI {
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
 
-        List<Object> following = new ArrayList<>();
-        following.addAll(userProfiles);
-        following.addAll(pageProfiles);
+        List<Map<String, Object>> following = new ArrayList<>();
 
-        return UserProfileMapper.getFollowingPage().toResponse(followingPage, following);
+        for (UserProfile profile : userProfiles) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", profile.getId());
+            map.put("name", profile.getName());
+            map.put("surname", profile.getSurname());
+            map.put("profileImage", profile.getProfileImage());
+            map.put("shortDescription", profile.getShortDescription());
+            map.put("isFollowing", true);
+            following.add(map);
+        }
+
+        for (PageProfile page : pageProfiles) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", page.getId());
+            map.put("name", page.getName());
+            map.put("profileImage", page.getProfileImage());
+            map.put("shortDescription", page.getShortDescription());
+            map.put("isFollowing", true);
+            following.add(map);
+        }
+
+        return new GetFollowingPageRes(following, followingPage.getNextPage());
     }
 
 
