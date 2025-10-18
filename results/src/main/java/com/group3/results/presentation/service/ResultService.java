@@ -72,6 +72,17 @@ public class ResultService implements ResultServiceI {
                 this.secretKeyHelper.getSecret()
             );
 
+        for (Post post : posts) {
+            if (post.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullProfile);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                post.setPageProfile(fullPage);
+            }
+        }
+
         return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
     }
 
