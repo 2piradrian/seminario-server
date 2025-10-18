@@ -25,9 +25,9 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
         SELECT p FROM PageProfileModel p WHERE
         p.status = :status AND
         (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND
-        (:pageTypeId IS NULL OR p.pageTypeId = :pageTypeId) AND
+        (:pageTypeId IS NULL OR :pageTypeId = '' OR p.pageTypeId = :pageTypeId) AND
         (:#{#memberIds == null or #memberIds.isEmpty()} = true OR p.id IN (
-            SELECT p_m.id FROM PageProfileModel p_m JOIN p_m.members m WHERE m IN :memberIds
+        SELECT p_m.id FROM PageProfileModel p_m JOIN p_m.members m WHERE m IN :memberIds
         ))
     """)
     Page<PageProfileModel> findByFilteredPage(
