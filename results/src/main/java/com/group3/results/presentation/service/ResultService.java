@@ -38,12 +38,12 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetSearchResultFilteredRes getProfilesFiltered(GetSerchResultFilteredReq dto) {
+
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         List<UserProfile> userProfiles =
             this.userProfileRepository.getUserFilteredPage(
-                dto.getToken(),
                 dto.getName(),
                 dto.getStyles().stream().map(Style::getId).toList(),
                 dto.getInstruments().stream().map(Instrument::getId).toList(),
@@ -55,7 +55,6 @@ public class ResultService implements ResultServiceI {
 
         List<PageProfile> pageProfiles =
             this.pageProfileRepository.getPageFilteredPage(
-                dto.getToken(),
                 dto.getName(),
                 dto.getPageTypeId(),
                 dto.getIds(),
@@ -66,7 +65,6 @@ public class ResultService implements ResultServiceI {
 
         List<Post> posts =
             this.postRepository.getFilteredPosts(
-                dto.getToken(),
                 dto.getIds(),
                 dto.getPage(),
                 dto.getSize(),
@@ -90,7 +88,6 @@ public class ResultService implements ResultServiceI {
         profiles.add(profile.getId());
 
         List<Post> posts = this.postRepository.getFilteredPosts(
-            dto.getToken(),
             profiles.stream().toList(),
             dto.getPage(),
             dto.getSize(),

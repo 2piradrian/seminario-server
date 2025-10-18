@@ -19,12 +19,8 @@ import java.util.Map;
 public class PageProfileRepository implements PageRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
-    private final UserRepository userRepository;
 
-    public List<PageProfile> getPageFilteredPage(String token, String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
-
-        User user = this.userRepository.auth(token);
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+    public List<PageProfile> getPageFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
 
         Map<String,Object> payload = new HashMap<>();
 

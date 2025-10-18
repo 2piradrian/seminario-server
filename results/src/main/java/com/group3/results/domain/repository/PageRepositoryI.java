@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PageRepositoryI {
 
-    List<PageProfile> getPageFilteredPage(String token, String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret);
+    List<PageProfile> getPageFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret);
 
 }

@@ -20,12 +20,8 @@ import java.util.Map;
 public class UserProfileRepository implements UserProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
-    private final UserRepository userRepository;
 
-    public List<UserProfile> getUserFilteredPage(String token, String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret){
-
-        User user = this.userRepository.auth(token);
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+    public List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size, String secret){
 
         Map<String,Object> payload = new HashMap<>();
 

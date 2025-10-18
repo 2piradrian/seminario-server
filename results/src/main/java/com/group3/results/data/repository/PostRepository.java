@@ -24,13 +24,9 @@ import java.util.Map;
 public class PostRepository implements PostRepositoryI {
 
     private final PostServerRepositoryI repository;
-    private final UserRepository userRepository;
 
     @Override
-    public List<Post> getFilteredPosts(String token, List<String> ids, Integer page, Integer size, String text, String secret) {
-
-        User user = this.userRepository.auth(token);
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+    public List<Post> getFilteredPosts(List<String> ids, Integer page, Integer size, String text, String secret) {
 
         Map<String,Object> payload = new HashMap<>();
 
