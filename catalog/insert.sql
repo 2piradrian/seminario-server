@@ -139,6 +139,7 @@ INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Sonidista / Ilumin
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Disponibilidad / Agenda');
 
 -- Inserts para Tipos de contenidos
-INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Posts');
-INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Usuarios');
-INSERT INTO content_types (id, name) VALUES (gen_random_uuid(), 'Páginas');
+INSERT INTO content_types (id, name) VALUES ('post', 'Posts');
+INSERT INTO content_types (id, name) VALUES ('userprofile', 'Usuarios');
+INSERT INTO content_types (id, name) VALUES ('pageprofile', 'Páginas');
+INSERT INTO content_types (id, name) VALUES ('event', 'Eventos');
