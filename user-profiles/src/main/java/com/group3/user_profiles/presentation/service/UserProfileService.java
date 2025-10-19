@@ -255,7 +255,7 @@ public class UserProfileService implements UserProfileServiceI {
             this.userProfileRepository.update(userProfile);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile pageProfile = this.pageProfileRepository.getById(dto.getId());
+            PageProfile pageProfile = this.pageProfileRepository.getById(dto.getId(), dto.getToken());
             if (pageProfile == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
             List<String> followList = userProfile.getFollowing();
