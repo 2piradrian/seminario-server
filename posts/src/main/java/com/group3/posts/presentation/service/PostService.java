@@ -122,6 +122,9 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
+            // Do not return upvoters and downvoters ids, just the quantities
+            post.setUpvoters(null);
+            post.setDownvoters(null);
         }
 
         return PostMapper.getPage().toResponse(posts);

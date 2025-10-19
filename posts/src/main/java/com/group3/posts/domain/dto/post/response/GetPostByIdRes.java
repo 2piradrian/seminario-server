@@ -26,9 +26,9 @@ public class GetPostByIdRes {
 
     private final Integer views;
 
-    private final List<String> upvoters;
+    private final Integer upvotersQuantity;
 
-    private final List<String> downvoters;
+    private final Integer downvotersQuantity;
 
     private final LocalDateTime createdAt;
 
