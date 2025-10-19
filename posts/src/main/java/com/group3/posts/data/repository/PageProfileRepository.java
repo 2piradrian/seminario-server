@@ -17,8 +17,8 @@ public class PageProfileRepository implements PagesRepositoryI {
     // ======== Get Page by ID ========
 
     @Override
-    public PageProfile getById(String id) {
-        GetPageByIdRes response = this.repository.getById(id);
+    public PageProfile getById(String id, String token) {
+        GetPageByIdRes response = this.repository.getById(id, token);
 
         PageProfile page = new PageProfile();
         page.setId(response.getId());

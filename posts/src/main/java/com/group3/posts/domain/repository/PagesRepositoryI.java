@@ -4,5 +4,5 @@ import com.group3.entity.PageProfile;
 
 public interface PagesRepositoryI {
 
-    PageProfile getById(String id);
+    PageProfile getById(String id, String token);
 }

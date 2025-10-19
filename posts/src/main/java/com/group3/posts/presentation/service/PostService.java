@@ -49,7 +49,7 @@ public class PostService implements PostServiceI {
             post.setAuthor(author);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
@@ -93,7 +93,7 @@ public class PostService implements PostServiceI {
             post.setAuthor(fullProfile);
         }
         if (post.getPageProfile().getId() != null) {
-            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
             post.setPageProfile(fullPage);
         }
 
@@ -119,7 +119,7 @@ public class PostService implements PostServiceI {
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
         }
@@ -159,7 +159,7 @@ public class PostService implements PostServiceI {
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
         }
@@ -183,7 +183,7 @@ public class PostService implements PostServiceI {
                 post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
         }
@@ -234,7 +234,7 @@ public class PostService implements PostServiceI {
         }
 
         if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
             post.setPageProfile(fullPage);
         }
 

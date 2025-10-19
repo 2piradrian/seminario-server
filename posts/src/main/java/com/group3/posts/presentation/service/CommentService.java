@@ -52,7 +52,7 @@ public class CommentService implements CommentServiceI {
             comment.setPageProfile(PageProfile.builder().id(null).build());
             comment.setAuthor(author);
         } else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
@@ -98,7 +98,7 @@ public class CommentService implements CommentServiceI {
                         comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
-                        PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
+                        PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
                         comment.setPageProfile(fullPage);
                     }
                 }
@@ -146,7 +146,7 @@ public class CommentService implements CommentServiceI {
             comment.setAuthor(fullProfile);
         }
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
-            PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId());
+            PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
             comment.setPageProfile(fullPage);
         }
 
