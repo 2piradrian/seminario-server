@@ -36,82 +36,78 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
+        User user = userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = this.userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        UserProfile profile = userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
         if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
+        ContentType contentType = catalogRepository.getContentById(dto.getContentTypeId());
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
-        List<UserProfile> userProfiles = new ArrayList<>(List.of());
-        List<Post> posts = new ArrayList<>(List.of());
-        List<PageProfile> pageProfiles = new ArrayList<>(List.of());
+        String secret = secretKeyHelper.getSecret();
+        List<UserProfile> userProfiles = new ArrayList<>();
+        List<PageProfile> pageProfiles = new ArrayList<>();
+        List<Post> posts = new ArrayList<>();
 
-        if (contentType.getName().equals("Páginas")){
-            List<PageProfile> pageResponse =
-                this.pageProfileRepository.getPageFilteredPage(
-                    dto.getText(),
-                    dto.getPageTypeId(),
-                    dto.getPage(),
-                    dto.getSize(),
-                    this.secretKeyHelper.getSecret()
-                );
-            pageProfiles.addAll(pageResponse);
-            for (PageProfile p : pageProfiles) {
-                p.setIsFollowing(profile.getFollowing().contains(p.getId()));
-            }
-            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
-        }
+        switch (contentType.getName()) {
 
-        if (contentType.getName().equals("Usuarios")){
-
-            List<String> styleIds = new ArrayList<>();
-            if (dto.getStyles() != null) styleIds = dto.getStyles().stream().map(Style::getId).toList();
-
-            List<String> instrumentIds = new ArrayList<>();
-            if (dto.getInstruments() != null) instrumentIds = dto.getInstruments().stream().map(Instrument::getId).toList();
-
-            List<UserProfile> userResponse =
-                this.userProfileRepository.getUserFilteredPage(
-                    dto.getText(),
-                    styleIds,
-                    instrumentIds,
-                    dto.getPage(),
-                    dto.getSize(),
-                    this.secretKeyHelper.getSecret()
+            case "Páginas" -> {
+                pageProfiles = pageProfileRepository.getPageFilteredPage(
+                        dto.getText(),
+                        dto.getPageTypeId(),
+                        dto.getPage(),
+                        dto.getSize(),
+                        secret
                 );
 
-            userProfiles.addAll(userResponse);
-            for (UserProfile p : userProfiles) {
-                p.setIsFollowing(profile.getFollowing().contains(user.getId()));
-            }
-            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
-        }
-
-        if (contentType.getName().equals("Posts")) {
-            List<Post> postsResponse =
-                this.postRepository.getFilteredPosts(
-                    dto.getPage(),
-                    dto.getSize(),
-                    dto.getText(),
-                    this.secretKeyHelper.getSecret()
-                );
-
-            for (Post post : postsResponse) {
-                if (post.getAuthor().getId() != null) {
-                    UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
-                    post.setAuthor(fullProfile);
-                }
-                if (post.getPageProfile().getId() != null) {
-                    PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-                    post.setPageProfile(fullPage);
+                for (PageProfile page : pageProfiles) {
+                    page.setIsFollowing(profile.getFollowing().contains(page.getId()));
                 }
             }
 
-            posts.addAll(postsResponse);
-            return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
+            case "Usuarios" -> {
+                List<String> styleIds = dto.getStyles() != null
+                        ? dto.getStyles().stream().map(Style::getId).toList()
+                        : List.of();
+
+                List<String> instrumentIds = dto.getInstruments() != null
+                        ? dto.getInstruments().stream().map(Instrument::getId).toList()
+                        : List.of();
+
+                userProfiles = userProfileRepository.getUserFilteredPage(
+                        dto.getText(),
+                        styleIds,
+                        instrumentIds,
+                        dto.getPage(),
+                        dto.getSize(),
+                        secret
+                );
+
+                for (UserProfile u : userProfiles) {
+                    u.setIsFollowing(profile.getFollowing().contains(u.getId()));
+                }
+            }
+
+            case "Posts" -> {
+                posts = postRepository.getFilteredPosts(
+                        dto.getPage(),
+                        dto.getSize(),
+                        dto.getText(),
+                        secret
+                );
+
+                for (Post post : posts) {
+                    if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                        UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                        post.setAuthor(author);
+                    }
+                    if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                        PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId());
+                        post.setPageProfile(page);
+                    }
+                }
+            }
         }
 
         return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
