@@ -80,6 +80,20 @@ public class PageProfileService implements PageProfileServiceI {
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
         if (page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
+        for (UserProfile member : page.getMembers()){
+            if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+            UserProfile completeMember = this.userProfileRepository.getById(member.getId(), dto.getToken());
+            if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+            member.setPortraitImage(completeMember.getPortraitImage());
+            member.setProfileImage(completeMember.getProfileImage());
+            member.setName(completeMember.getName());
+            member.setSurname(completeMember.getSurname());
+            member.setStyles(completeMember.getStyles());
+            member.setInstruments(completeMember.getInstruments());
+        }
+
         Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
         return PageMapper.getPage().toResponse(page, followers);

@@ -7,9 +7,10 @@ import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
 
 public class GetByIdMapper {
 
-    public GetPageByIdReq toRequest(String pageId) {
+    public GetPageByIdReq toRequest(String token, String pageId) {
         return GetPageByIdReq.create(
-            pageId
+            pageId,
+            token
         );
     }
 

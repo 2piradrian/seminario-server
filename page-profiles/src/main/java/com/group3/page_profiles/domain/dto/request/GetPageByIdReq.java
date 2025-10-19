@@ -9,17 +9,24 @@ public class GetPageByIdReq {
     
     private final String pageId;
 
-    private GetPageByIdReq(String pageId){
+    private final String token;
+
+    private GetPageByIdReq(String pageId, String token){
         this.pageId = pageId;
+        this.token = token;
     }
 
-    public static GetPageByIdReq create(String pageId){
+    public static GetPageByIdReq create(String pageId, String token){
+
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (pageId == null || pageId.isEmpty()){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetPageByIdReq(pageId);
+        return new GetPageByIdReq(pageId, token);
 
     }
 }
