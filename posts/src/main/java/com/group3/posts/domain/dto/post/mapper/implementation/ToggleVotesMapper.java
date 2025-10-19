@@ -25,8 +25,8 @@ public class ToggleVotesMapper {
             post.getTitle(),
             post.getContent(),
             post.getViews(),
-            post.getUpvoters().size(),
-            post.getDownvoters().size(),
+            post.getUpvotersQuantity(),
+            post.getDownvotersQuantity(),
             post.getCreatedAt()
         );
     }

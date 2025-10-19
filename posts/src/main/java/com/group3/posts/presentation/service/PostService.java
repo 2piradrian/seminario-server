@@ -102,6 +102,9 @@ public class PostService implements PostServiceI {
         post.setViews(views + 1);
         this.postsRepository.update(post);
 
+        post.setVotersQuantities();
+        post.setVotersToNull();
+
         return PostMapper.getById().toResponse(post);
     }
 
@@ -122,9 +125,8 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
-            // Do not return upvoters and downvoters ids, just the quantities
-            post.setUpvoters(null);
-            post.setDownvoters(null);
+            post.setVotersQuantities();
+            post.setVotersToNull();
         }
 
         return PostMapper.getPage().toResponse(posts);
@@ -136,6 +138,11 @@ public class PostService implements PostServiceI {
     public GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText());
+
+        for (Post post : posts.getContent()) {
+            post.setVotersQuantities();
+            post.setVotersToNull();
+        }
 
         return PostMapper.getFilteredPage().toResponse(posts);
     }
@@ -165,6 +172,8 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
+            post.setVotersQuantities();
+            post.setVotersToNull();
         }
 
         return PostMapper.getPageByProfile().toResponse(posts);
@@ -189,6 +198,8 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
+            post.setVotersQuantities();
+            post.setVotersToNull();
         }
 
         return PostMapper.getOwnPage().toResponse(posts);
@@ -240,6 +251,9 @@ public class PostService implements PostServiceI {
             PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
             post.setPageProfile(fullPage);
         }
+
+        post.setVotersQuantities();
+        post.setVotersToNull();
 
         return PostMapper.toggleVotes().toResponse(post);
     }
