@@ -97,7 +97,6 @@ public class PageProfileService implements PageProfileServiceI {
         PageContent<PageProfile> pages = this.pageProfileRepository.getFilteredPage(
             dto.getName(),
             dto.getPageTypeId(),
-            dto.getMemberIds(),
             dto.getPage(),
             dto.getSize()
         );
