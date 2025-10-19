@@ -32,7 +32,8 @@ public class PageEntityMapper {
                 })
                 .collect(java.util.stream.Collectors.toList()),
             page.getStatus(),
-            new PageType(page.getPageTypeId(), null)
+            new PageType(page.getPageTypeId(), null),
+            false
         );
     }
 
