@@ -105,7 +105,6 @@ public class UserProfileService implements UserProfileServiceI {
             dto.getFullname(),
             dto.getStyles(),
             dto.getInstruments(),
-            dto.getIds(),
             dto.getPage(),
             dto.getSize());
 
