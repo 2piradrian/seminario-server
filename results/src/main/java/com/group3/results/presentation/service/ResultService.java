@@ -50,9 +50,11 @@ public class ResultService implements ResultServiceI {
         List<PageProfile> pageProfiles = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
 
-        switch (contentType.getName()) {
+        ContentTypeEnum type = ContentTypeEnum.fromName(contentType.getId());
 
-            case "Páginas" -> {
+        switch (type) {
+
+            case PAGEPROFILE -> {
                 pageProfiles = pageProfileRepository.getPageFilteredPage(
                         dto.getText(),
                         dto.getPageTypeId(),
@@ -66,7 +68,7 @@ public class ResultService implements ResultServiceI {
                 }
             }
 
-            case "Usuarios" -> {
+            case USERPROFILE -> {
                 List<String> styleIds = dto.getStyles() != null
                         ? dto.getStyles().stream().map(Style::getId).toList()
                         : List.of();
@@ -89,7 +91,7 @@ public class ResultService implements ResultServiceI {
                 }
             }
 
-            case "Posts" -> {
+            case POST -> {
                 posts = postRepository.getFilteredPosts(
                         dto.getPage(),
                         dto.getSize(),
