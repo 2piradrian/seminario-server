@@ -78,7 +78,6 @@ public class PageProfileService implements PageProfileServiceI {
     public GetPageByIdRes getById(GetPageByIdReq dto) {
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
-        if (page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         for (UserProfile member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
