@@ -23,13 +23,12 @@ public class PageProfileRepository implements PageRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
 
-    public List<PageProfile> getPageFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size, String secret){
+    public List<PageProfile> getPageFilteredPage(String name, String pageTypeId, Integer page, Integer size, String secret){
 
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("name", name);
         payload.put("pageTypeId", pageTypeId);
-        payload.put("memberIds", memberIds);
         payload.put("page",page);
         payload.put("size",size);
         payload.put("secret",secret);
