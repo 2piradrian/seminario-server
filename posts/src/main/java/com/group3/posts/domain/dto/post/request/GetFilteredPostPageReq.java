@@ -13,21 +13,18 @@ public class GetFilteredPostPageReq {
 
     private final Integer size;
 
-    private final List<String> ids;
-
     private final String text;
 
     private final String secret;
 
-    private GetFilteredPostPageReq(Integer page, Integer size, List<String> ids, String text, String secret) {
+    private GetFilteredPostPageReq(Integer page, Integer size, String text, String secret) {
         this.page = page;
         this.size = size;
-        this.ids = ids;
         this.text = text;
         this.secret = secret;
     }
 
-    public static GetFilteredPostPageReq create(Integer page, Integer size, List<String> ids, String text, String secret) {
+    public static GetFilteredPostPageReq create(Integer page, Integer size, String text, String secret) {
 
         if (secret == null || secret.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -49,7 +46,7 @@ public class GetFilteredPostPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFilteredPostPageReq(page, size, ids,text, secret);
+        return new GetFilteredPostPageReq(page, size,text, secret);
     }
 
 }
