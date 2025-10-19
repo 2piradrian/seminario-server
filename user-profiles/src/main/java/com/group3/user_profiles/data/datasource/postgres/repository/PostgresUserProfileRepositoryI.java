@@ -27,17 +27,15 @@ public interface PostgresUserProfileRepositoryI extends JpaRepository<UserProfil
     @Query("""
         SELECT p FROM UserProfileModel p WHERE
         p.status = :status AND
-        (:fullName IS NULL OR LOWER(CONCAT(p.name, ' ', p.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))) AND
+        (:#{#fullName == null or #fullName.isEmpty()} = true OR LOWER(CONCAT(p.name, ' ', p.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))) AND
         (:#{#styles == null or #styles.isEmpty()} = true OR p.id IN (SELECT p_s.id FROM UserProfileModel p_s JOIN p_s.styles s WHERE s IN :styles)) AND
-        (:#{#instruments == null or #instruments.isEmpty()} = true OR p.id IN (SELECT p_i.id FROM UserProfileModel p_i JOIN p_i.instruments i WHERE i IN :instruments)) AND
-        (:#{#idsProfile == null or #idsProfile.isEmpty()} = true OR p.id IN (SELECT p_f.id FROM UserProfileModel p_f JOIN p_f.following f WHERE f IN :idsProfile))
+        (:#{#instruments == null or #instruments.isEmpty()} = true OR p.id IN (SELECT p_i.id FROM UserProfileModel p_i JOIN p_i.instruments i WHERE i IN :instruments))
     """)
     Page<UserProfileModel> findByFilteredPage(
         @Param("fullName") String fullName,
         @Param("status") Status status,
         @Param("styles") List<String> styles,
         @Param("instruments") List<String> instruments,
-        @Param("idsProfile") List<String> idsProfile,
         Pageable pageable
     );
 

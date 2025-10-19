@@ -47,7 +47,7 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     // ======== Search filtered with Pagination ========
 
     @Override
-    public PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size) {
+    public PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<UserProfileModel> profilesModels = repository.findByFilteredPage(
@@ -55,7 +55,6 @@ public class UserProfileRepository implements UserProfileRepositoryI {
                 Status.ACTIVE,
                 styles,
                 instruments,
-                ids,
                 PageRequest.of(pageIndex, size)
         );
 
