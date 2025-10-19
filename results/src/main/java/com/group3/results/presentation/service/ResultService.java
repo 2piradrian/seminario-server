@@ -53,7 +53,6 @@ public class ResultService implements ResultServiceI {
                 this.pageProfileRepository.getPageFilteredPage(
                 dto.getName(),
                 dto.getPageTypeId(),
-                List.of(),
                 dto.getPage(),
                 dto.getSize(),
                 this.secretKeyHelper.getSecret())
@@ -74,7 +73,6 @@ public class ResultService implements ResultServiceI {
                     dto.getName(),
                     styleIds,
                     instrumentIds,
-                    List.of(),
                     dto.getPage(),
                     dto.getSize(),
                     this.secretKeyHelper.getSecret()
@@ -85,7 +83,6 @@ public class ResultService implements ResultServiceI {
         if (contentType.getName().equals("Posts")) {
             List<Post> postsResult =
                 this.postRepository.getFilteredPosts(
-                    List.of(),
                     dto.getPage(),
                     dto.getSize(),
                     dto.getName(),
@@ -124,7 +121,6 @@ public class ResultService implements ResultServiceI {
         profiles.add(profile.getId());
 
         List<Post> posts = this.postRepository.getFilteredPosts(
-            profiles.stream().toList(),
             dto.getPage(),
             dto.getSize(),
             "",
