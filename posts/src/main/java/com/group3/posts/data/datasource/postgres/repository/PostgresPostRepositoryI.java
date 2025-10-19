@@ -59,21 +59,15 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     @Query("""
         SELECT p FROM PostModel p WHERE
         p.status = :status
-        AND 
-        (
-            :text IS NULL OR 
-            (LOWER(p.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
-            LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
-        )
         AND
         (
-            :#{#ids == null or #ids.isEmpty()} = true OR 
-            (p.authorId IN :ids OR p.pageId IN :ids)
+            (:#{#text == null or #text.isEmpty()} = true) OR
+            (LOWER(p.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
+             LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
         )
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByFilteredPage(
-        @Param("ids") List<String> ids,
         @Param("status") Status status,
         @Param("text") String text,
         Pageable pageable
