@@ -47,16 +47,15 @@ public class ResultService implements ResultServiceI {
         List<PageProfile> pageProfiles = new ArrayList<>(List.of());
 
         if (contentType.getName().equals("Páginas")){
-            // 1. Lista guardando el resultado
-            // 2. Append de la lista
-            pageProfiles.addAll(
+            List<PageProfile> pageResponse =
                 this.pageProfileRepository.getPageFilteredPage(
-                dto.getName(),
-                dto.getPageTypeId(),
-                dto.getPage(),
-                dto.getSize(),
-                this.secretKeyHelper.getSecret())
-            );
+                    dto.getName(),
+                    dto.getPageTypeId(),
+                    dto.getPage(),
+                    dto.getSize(),
+                    this.secretKeyHelper.getSecret()
+                );
+            pageProfiles.addAll(pageResponse);
             return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
@@ -68,7 +67,7 @@ public class ResultService implements ResultServiceI {
             List<String> instrumentIds = new ArrayList<>();
             if (dto.getInstruments() != null) instrumentIds = dto.getInstruments().stream().map(Instrument::getId).toList();
 
-            userProfiles.addAll(
+            List<UserProfile> userResponse =
                 this.userProfileRepository.getUserFilteredPage(
                     dto.getName(),
                     styleIds,
@@ -76,12 +75,14 @@ public class ResultService implements ResultServiceI {
                     dto.getPage(),
                     dto.getSize(),
                     this.secretKeyHelper.getSecret()
-            ));
+                );
+
+            userProfiles.addAll(userResponse);
             return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
         if (contentType.getName().equals("Posts")) {
-            List<Post> postsResult =
+            List<Post> postsResponse =
                 this.postRepository.getFilteredPosts(
                     dto.getPage(),
                     dto.getSize(),
@@ -89,7 +90,7 @@ public class ResultService implements ResultServiceI {
                     this.secretKeyHelper.getSecret()
                 );
 
-            for (Post post : postsResult) {
+            for (Post post : postsResponse) {
                 if (post.getAuthor().getId() != null) {
                     UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
                     post.setAuthor(fullProfile);
@@ -100,7 +101,7 @@ public class ResultService implements ResultServiceI {
                 }
             }
 
-            posts.addAll(postsResult);
+            posts.addAll(postsResponse);
             return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
