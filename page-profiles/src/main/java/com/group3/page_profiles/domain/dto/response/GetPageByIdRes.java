@@ -29,6 +29,6 @@ public class GetPageByIdRes {
 
     private final PageType pageType;
 
-    private final Integer followers;
+    private final Integer followersCount;
     
 }
