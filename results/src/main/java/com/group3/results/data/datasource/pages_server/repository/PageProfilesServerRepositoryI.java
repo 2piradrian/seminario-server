@@ -18,5 +18,5 @@ public interface PageProfilesServerRepositoryI {
     GetPageProfilePageFilteredRes getPageProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
     @GetMapping("/api/page-profiles/get-by-id/{pageId}")
-    GetPageByIdRes getById(@PathVariable(value = "pageId") String pageId);
+    GetPageByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "pageId") String pageId);
 }

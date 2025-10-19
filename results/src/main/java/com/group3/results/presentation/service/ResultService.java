@@ -105,7 +105,7 @@ public class ResultService implements ResultServiceI {
                         post.setAuthor(author);
                     }
                     if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                        PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId());
+                        PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                         post.setPageProfile(page);
                     }
                 }
@@ -141,7 +141,7 @@ public class ResultService implements ResultServiceI {
                 post.setAuthor(author);
             }
             if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(page);
             }
         }

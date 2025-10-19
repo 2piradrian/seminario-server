@@ -41,8 +41,8 @@ public class PageProfileRepository implements PageRepositoryI {
     // ======== Get Page by ID ========
 
     @Override
-    public PageProfile getById(String id) {
-        GetPageByIdRes response = this.repository.getById(id);
+    public PageProfile getById(String id, String token) {
+        GetPageByIdRes response = this.repository.getById(token, id);
 
         if (response == null){
             throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);

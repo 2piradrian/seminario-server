@@ -9,6 +9,6 @@ public interface PageRepositoryI {
 
     List<PageProfile> getPageFilteredPage(String name, String pageTypeId, Integer page, Integer size, String secret);
 
-    PageProfile getById(String pageId);
+    PageProfile getById(String pageId, String token);
 
 }
