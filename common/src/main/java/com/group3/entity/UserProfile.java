@@ -40,4 +40,7 @@ public class UserProfile {
 
     private Status status;
 
+    // Domain Variable
+    private Boolean isFollowing;
+
 }

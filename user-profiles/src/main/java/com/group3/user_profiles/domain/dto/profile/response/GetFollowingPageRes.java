@@ -11,7 +11,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetFollowingPageRes {
 
-    private final List<Map<String, Object>> following;
+    private final List<Object> following;
 
     private final Integer nextPage;
 

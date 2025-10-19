@@ -10,7 +10,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetFollowerPageRes {
 
-    private final List<Map<String, Object>> followers;
+    private final List<Object> followers;
 
     private final Integer nextPage;
 

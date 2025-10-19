@@ -106,7 +106,8 @@ public class UserProfileService implements UserProfileServiceI {
             dto.getStyles(),
             dto.getInstruments(),
             dto.getPage(),
-            dto.getSize());
+            dto.getSize()
+        );
 
         return UserProfileMapper.getFiltered().toResponse(profiles);
     }
@@ -163,27 +164,14 @@ public class UserProfileService implements UserProfileServiceI {
         List<String> followingIds = this.userProfileRepository.getById(authUser.getId()).getFollowing();
         Set<String> followingSet = new HashSet<>(followingIds);
 
-        List<Map<String, Object>> followers = new ArrayList<>();
+        List<Object> followers = new ArrayList<>();
 
         for (UserProfile profile : userProfiles) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", profile.getId());
-            map.put("name", profile.getName());
-            map.put("surname", profile.getSurname());
-            map.put("profileImage", profile.getProfileImage());
-            map.put("shortDescription", profile.getShortDescription());
-            map.put("isFollowing", followingSet.contains(profile.getId()));
-            followers.add(map);
+            profile.setIsFollowing(followingSet.contains(profile.getId()));
         }
 
         for (PageProfile page : pageProfiles) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", page.getId());
-            map.put("name", page.getName());
-            map.put("profileImage", page.getProfileImage());
-            map.put("shortDescription", page.getShortDescription());
-            map.put("isFollowing", followingSet.contains(page.getId()));
-            followers.add(map);
+            page.setIsFollowing(followingSet.contains(page.getId()));
         }
 
         return new GetFollowerPageRes(followers, followersPage.getNextPage());
@@ -216,27 +204,14 @@ public class UserProfileService implements UserProfileServiceI {
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
 
-        List<Map<String, Object>> following = new ArrayList<>();
+        List<Object> following = new ArrayList<>();
 
         for (UserProfile profile : userProfiles) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", profile.getId());
-            map.put("name", profile.getName());
-            map.put("surname", profile.getSurname());
-            map.put("profileImage", profile.getProfileImage());
-            map.put("shortDescription", profile.getShortDescription());
-            map.put("isFollowing", true);
-            following.add(map);
+            profile.setIsFollowing(true);
         }
 
         for (PageProfile page : pageProfiles) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", page.getId());
-            map.put("name", page.getName());
-            map.put("profileImage", page.getProfileImage());
-            map.put("shortDescription", page.getShortDescription());
-            map.put("isFollowing", true);
-            following.add(map);
+            page.setIsFollowing(true);
         }
 
         return new GetFollowingPageRes(following, followingPage.getNextPage());

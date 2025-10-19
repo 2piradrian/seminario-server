@@ -33,4 +33,7 @@ public class PageProfile {
 
     private PageType pageType;
 
+    // Domain Variable
+    private Boolean isFollowing;
+
 }

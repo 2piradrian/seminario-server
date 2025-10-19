@@ -29,7 +29,8 @@ public class UserProfileEntityMapper {
                 .map(id -> new Instrument(id, null))
                 .collect(Collectors.toList()),
             userProfileModel.getFollowing(),
-            userProfileModel.getStatus()
+            userProfileModel.getStatus(),
+            false
         );
     }
 
