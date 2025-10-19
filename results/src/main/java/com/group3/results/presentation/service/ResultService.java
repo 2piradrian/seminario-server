@@ -39,6 +39,9 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        UserProfile profile = this.userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
@@ -56,6 +59,9 @@ public class ResultService implements ResultServiceI {
                     this.secretKeyHelper.getSecret()
                 );
             pageProfiles.addAll(pageResponse);
+            for (PageProfile p : pageProfiles) {
+                p.setIsFollowing(profile.getFollowing().contains(p.getId()));
+            }
             return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
@@ -78,6 +84,9 @@ public class ResultService implements ResultServiceI {
                 );
 
             userProfiles.addAll(userResponse);
+            for (UserProfile p : userProfiles) {
+                p.setIsFollowing(profile.getFollowing().contains(user.getId()));
+            }
             return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
         }
 
