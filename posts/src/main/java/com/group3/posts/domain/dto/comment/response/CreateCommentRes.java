@@ -24,9 +24,9 @@ public class CreateCommentRes {
 
     private final String content;
 
-    private List<String> upvoters;
+    private Integer upvotersQuantity;
 
-    private List<String> downvoters;
+    private Integer downvotersQuantity;
 
     private final LocalDateTime createdAt;
 
