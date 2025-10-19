@@ -20,8 +20,7 @@ public class GetPageFilteredMapper {
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),
             (String) payload.get("name"),
-            (String) payload.get("pageTypeId"),
-            objectMapper.convertValue(payload.get("memberIds"), new TypeReference<List<String>>() {})
+            (String) payload.get("pageTypeId")
         );
     }
 

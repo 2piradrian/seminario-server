@@ -12,7 +12,7 @@ public interface PageRepositoryI {
 
     List<PageProfile> getByUserId(String name);
 
-    PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size);
+    PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, Integer page, Integer size);
 
     PageProfile getByName(String name);
 

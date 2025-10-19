@@ -19,18 +19,16 @@ public class GetPageProfilePageFilteredReq {
 
     private final String pageTypeId;
 
-    private final List<String> memberIds;
 
-    private GetPageProfilePageFilteredReq(String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
+    private GetPageProfilePageFilteredReq(String secret, Integer page, Integer size, String name, String pageTypeId) {
         this.secret = secret;
         this.page = page;
         this.size = size;
         this.name = name;
         this.pageTypeId = pageTypeId;
-        this.memberIds = memberIds;
     }
 
-    public static GetPageProfilePageFilteredReq create(String secret, Integer page, Integer size, String name, String pageTypeId, List<String> memberIds) {
+    public static GetPageProfilePageFilteredReq create(String secret, Integer page, Integer size, String name, String pageTypeId) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -44,11 +42,7 @@ public class GetPageProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (name == null || pageTypeId == null || memberIds == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        return new GetPageProfilePageFilteredReq(secret, page, size, name, pageTypeId, memberIds);
+        return new GetPageProfilePageFilteredReq(secret, page, size, name, pageTypeId);
     }
 
 }
