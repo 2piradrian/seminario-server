@@ -63,14 +63,14 @@ public class PostsRepository implements PostRepositoryI {
     }
 
 
-    // ======== Get Posts by User ID with Pagination ========
+    // ======== Get Posts by Author ID with Pagination ========
 
     @Override
-    public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
+    public PageContent<Post> getPostsByAuthorId(String authorId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByAuthorId(
-                userId,
+                authorId,
                 Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
