@@ -105,6 +105,7 @@ INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Neo-Soul');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Banda');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'General');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Marca');
+INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Creador de contenido');
 
 -- Inserts para categorías
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Ofrezco servicio');
