@@ -23,19 +23,16 @@ public class GetUserProfilePageFilteredReq {
 
     private final List<String> instruments;
 
-    private final List<String> ids;
-
-    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments, List<String> ids) {
+    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
         this.secret = secret;
         this.page = page;
         this.size = size;
         this.fullname = fullname;
         this.styles = styles;
         this.instruments = instruments;
-        this.ids = ids;
     }
 
-    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments, List<String> ids) {
+    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -57,15 +54,7 @@ public class GetUserProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (fullname == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if ( styles == null || instruments == null || ids == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        return new GetUserProfilePageFilteredReq(secret, page, size, fullname, styles, instruments, ids);
+        return new GetUserProfilePageFilteredReq(secret, page, size, fullname, styles, instruments);
     }
 
 }

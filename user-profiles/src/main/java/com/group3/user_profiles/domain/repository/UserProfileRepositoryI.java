@@ -13,7 +13,7 @@ public interface UserProfileRepositoryI {
 
     UserProfile getByEmail(String email);
 
-    PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, List<String> ids, Integer page, Integer size);
+    PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size);
 
     PageContent<String> getFollowing(String userId, Integer page, Integer size);
 
