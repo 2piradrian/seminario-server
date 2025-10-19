@@ -16,7 +16,7 @@ public class TogglePostVotesRes {
 
     private final String postId;
 
-    private final PageProfile page;
+    private final PageProfile pageProfile;
 
     private final String imageId;
 
