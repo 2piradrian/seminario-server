@@ -49,7 +49,7 @@ public class ResultService implements ResultServiceI {
         if (contentType.getName().equals("Páginas")){
             List<PageProfile> pageResponse =
                 this.pageProfileRepository.getPageFilteredPage(
-                    dto.getName(),
+                    dto.getText(),
                     dto.getPageTypeId(),
                     dto.getPage(),
                     dto.getSize(),
@@ -69,7 +69,7 @@ public class ResultService implements ResultServiceI {
 
             List<UserProfile> userResponse =
                 this.userProfileRepository.getUserFilteredPage(
-                    dto.getName(),
+                    dto.getText(),
                     styleIds,
                     instrumentIds,
                     dto.getPage(),
@@ -86,7 +86,7 @@ public class ResultService implements ResultServiceI {
                 this.postRepository.getFilteredPosts(
                     dto.getPage(),
                     dto.getSize(),
-                    dto.getName(),
+                    dto.getText(),
                     this.secretKeyHelper.getSecret()
                 );
 

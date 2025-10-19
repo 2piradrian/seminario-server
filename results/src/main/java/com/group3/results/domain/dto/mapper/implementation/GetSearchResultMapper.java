@@ -18,7 +18,7 @@ public class GetSearchResultMapper {
             token,
             (Integer) payload.get("page"),
             (Integer) payload.get("size"),
-            (String) payload.get("name"),
+            (String) payload.get("text"),
             objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
             objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
             (String) payload.get("contentTypeId"),

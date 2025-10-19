@@ -18,7 +18,7 @@ public class GetSerchResultFilteredReq {
 
     private final Integer size;
 
-    private final String name; // TODO: text
+    private final String text;
 
     private final List<Style> styles;
 
@@ -28,18 +28,18 @@ public class GetSerchResultFilteredReq {
 
     private final String contentTypeId;
 
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
         this.token = token;
         this.page = page;
         this.size = size;
-        this.name = name;
+        this.text = text;
         this.styles = styles;
         this.instruments = instruments;
         this.contentTypeId = contentTypeId;
         this.pageTypeId = pageTypeId;
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -65,7 +65,7 @@ public class GetSerchResultFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetSerchResultFilteredReq(token, page, size, name, styles, instruments, contentTypeId, pageTypeId);
+        return new GetSerchResultFilteredReq(token, page, size, text, styles, instruments, contentTypeId, pageTypeId);
     }
 
 }
