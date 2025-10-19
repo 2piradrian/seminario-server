@@ -11,7 +11,7 @@ public interface PostRepositoryI {
 
     PageContent<Post> getAllPosts(Integer page, Integer size);
 
-    PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size);
+    PageContent<Post> getPostsByAuthorId(String userId, Integer page, Integer size);
 
     PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size);
 

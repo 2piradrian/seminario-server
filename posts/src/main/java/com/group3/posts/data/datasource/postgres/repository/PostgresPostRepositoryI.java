@@ -29,12 +29,12 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     @Query("""
         SELECT p
         FROM PostModel p
-        WHERE p.authorId = :userId
+        WHERE p.authorId = :authorId
         AND p.status = :status
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByAuthorId(
-            @Param("userId") String userId,
+            @Param("authorId") String authorId,
             @Param("status") Status status,
             Pageable pageable
     );
