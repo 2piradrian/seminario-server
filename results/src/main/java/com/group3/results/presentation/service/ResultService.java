@@ -135,6 +135,17 @@ public class ResultService implements ResultServiceI {
             secretKeyHelper.getSecret()
         );
 
+        for (Post post : posts) {
+            if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(author);
+            }
+            if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId());
+                post.setPageProfile(page);
+            }
+        }
+
         return ResultsMapper.getFeed().toResponse(posts);
     }
 
