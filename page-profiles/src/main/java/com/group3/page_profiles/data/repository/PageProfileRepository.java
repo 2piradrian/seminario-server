@@ -52,14 +52,13 @@ public class PageProfileRepository implements PageRepositoryI {
     }
 
     @Override
-    public PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, List<String> memberIds, Integer page, Integer size) {
+    public PageContent<PageProfile> getFilteredPage(String name, String pageTypeId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<PageProfileModel> pageProfileModels = repository.findByFilteredPage(
             name,
             Status.ACTIVE,
             pageTypeId,
-            memberIds,
             PageRequest.of(pageIndex, size)
         );
 

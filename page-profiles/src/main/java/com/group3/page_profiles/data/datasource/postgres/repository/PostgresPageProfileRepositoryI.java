@@ -24,17 +24,13 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
     @Query("""
         SELECT p FROM PageProfileModel p WHERE
         p.status = :status AND
-        (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND
-        (:pageTypeId IS NULL OR :pageTypeId = '' OR p.pageTypeId = :pageTypeId) AND
-        (:#{#memberIds == null or #memberIds.isEmpty()} = true OR p.id IN (
-        SELECT p_m.id FROM PageProfileModel p_m JOIN p_m.members m WHERE m IN :memberIds
-        ))
+        (:#{#name == null or #name.isEmpty()} = true OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND
+        (:#{#pageTypeId == null or #pageTypeId.isEmpty()} = true OR p.pageTypeId = :pageTypeId)
     """)
     Page<PageProfileModel> findByFilteredPage(
         @Param("name") String name,
         @Param("status") Status status,
         @Param("pageTypeId") String pageTypeId,
-        @Param("memberIds") List<String> memberIds,
         Pageable pageable
     );
 
