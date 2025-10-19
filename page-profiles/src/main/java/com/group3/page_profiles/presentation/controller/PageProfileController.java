@@ -28,9 +28,10 @@ public class PageProfileController {
 
     @GetMapping("/get-by-id/{pageId}")
     public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "pageId") String pageId
     ) {
-        GetPageByIdReq dto = PageMapper.getPage().toRequest(pageId);
+        GetPageByIdReq dto = PageMapper.getPage().toRequest(token, pageId);
 
         return ResponseEntity.ok(this.pageService.getById(dto));
     }
