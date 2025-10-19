@@ -24,33 +24,26 @@ public class GetSerchResultFilteredReq {
 
     private final List<Instrument> instruments;
 
-    private final List<String> ids;
-
     private final String pageTypeId;
 
     private final String contentTypeId;
 
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, List<String> ids, String contentTypeId, String pageTypeId) {
+    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
         this.token = token;
         this.page = page;
         this.size = size;
         this.name = name;
         this.styles = styles;
         this.instruments = instruments;
-        this.ids = ids;
         this.contentTypeId = contentTypeId;
         this.pageTypeId = pageTypeId;
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, List<String> ids, String contentTypeId, String pageTypeId) {
+    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String name, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
-
-        /*if (name == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }*/
 
         if (page == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
@@ -68,20 +61,11 @@ public class GetSerchResultFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        /*if (styles == null || instruments == null || ids == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (pageTypeId == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-        */
-
         if (contentTypeId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetSerchResultFilteredReq(token, page, size, name, styles, instruments, ids, contentTypeId, pageTypeId);
+        return new GetSerchResultFilteredReq(token, page, size, name, styles, instruments, contentTypeId, pageTypeId);
     }
 
 }
