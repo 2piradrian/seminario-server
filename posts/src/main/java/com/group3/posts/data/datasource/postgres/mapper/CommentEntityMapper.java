@@ -19,7 +19,9 @@ public class CommentEntityMapper {
                 commentModel.getCreatedAt(),
                 commentModel.getUpdatedAt(),
                 PageProfile.builder().id(commentModel.getPageId()).build(),
-                commentModel.getStatus()
+                commentModel.getStatus(),
+                commentModel.getUpvoters().size(),
+                commentModel.getDownvoters().size()
         );
     }
 

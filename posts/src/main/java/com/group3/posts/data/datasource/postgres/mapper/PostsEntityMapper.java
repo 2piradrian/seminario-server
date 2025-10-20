@@ -20,7 +20,9 @@ public class PostsEntityMapper {
             postModel.getDownvoters(),
             postModel.getCreatedAt(),
             postModel.getUpdatedAt(),
-            postModel.getStatus()
+            postModel.getStatus(),
+            postModel.getUpvoters().size(),
+            postModel.getDownvoters().size()
         );
     }
 
