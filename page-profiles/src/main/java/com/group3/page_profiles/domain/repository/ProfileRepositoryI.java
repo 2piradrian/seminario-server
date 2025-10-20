@@ -8,4 +8,5 @@ public interface ProfileRepositoryI {
 
     Integer getFollowersById(String id, String secret);
 
+    UserProfile getByIdWithFollowers(String id, String secret);
 }
