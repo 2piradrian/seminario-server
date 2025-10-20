@@ -82,7 +82,7 @@ public class PageProfileService implements PageProfileServiceI {
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        UserProfile sessionProfile = this.userProfileRepository.getById(user.getId(), dto.getToken());
+        UserProfile sessionProfile = this.userProfileRepository.getByIdWithFollowers(user.getId(), this.secretKeyHelper.getSecret());
         if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         for (UserProfile member : page.getMembers()){
@@ -99,6 +99,7 @@ public class PageProfileService implements PageProfileServiceI {
             member.setInstruments(completeMember.getInstruments());
         }
 
+        System.out.println(sessionProfile.getFollowing());
         Boolean isFollowing = sessionProfile.getFollowing().contains(page.getId());
         Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
