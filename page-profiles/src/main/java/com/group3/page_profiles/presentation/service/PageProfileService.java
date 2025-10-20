@@ -76,8 +76,14 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageByIdRes getById(GetPageByIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+
+        UserProfile sessionProfile = this.userProfileRepository.getById(user.getId(), dto.getToken());
+        if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         for (UserProfile member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -93,9 +99,10 @@ public class PageProfileService implements PageProfileServiceI {
             member.setInstruments(completeMember.getInstruments());
         }
 
+        Boolean isFollowing = sessionProfile.getFollowing().contains(page.getId());
         Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
-        return PageMapper.getPage().toResponse(page, followers);
+        return PageMapper.getPage().toResponse(page, followers, isFollowing);
     }
 
 

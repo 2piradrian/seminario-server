@@ -14,7 +14,7 @@ public class GetByIdMapper {
         );
     }
 
-    public GetPageByIdRes toResponse(PageProfile page, Integer followers) {
+    public GetPageByIdRes toResponse(PageProfile page, Integer followers, Boolean isFollowing) {
         return new GetPageByIdRes(
             page.getId(),
             page.getName(),
@@ -25,7 +25,8 @@ public class GetByIdMapper {
             page.getOwner(),
             page.getMembers(),
             page.getPageType(),
-            followers
+            followers,
+            isFollowing
         );
     }
     
