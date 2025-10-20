@@ -24,10 +24,15 @@ import java.util.*;
 public class UserProfileService implements UserProfileServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
+
     private final UserProfileRepository userProfileRepository;
+
     private final PageProfileRepository pageProfileRepository;
+
     private final CatalogRepository catalogRepository;
+
     private final UserRepository userRepository;
+
     private final ImagesRepository imagesRepository;
 
 
@@ -174,7 +179,10 @@ public class UserProfileService implements UserProfileServiceI {
             page.setIsFollowing(followingSet.contains(page.getId()));
         }
 
-        return new GetFollowerPageRes(followers, followersPage.getNextPage());
+        followers.addAll(userProfiles);
+        followers.addAll(pageProfiles);
+
+        return UserProfileMapper.getFollowerPage().toResponse(followersPage, followers);
     }
 
 
@@ -214,7 +222,10 @@ public class UserProfileService implements UserProfileServiceI {
             page.setIsFollowing(true);
         }
 
-        return new GetFollowingPageRes(following, followingPage.getNextPage());
+        following.addAll(userProfiles);
+        following.addAll(pageProfiles);
+
+        return UserProfileMapper.getFollowingPage().toResponse(followingPage, following);
     }
 
 
