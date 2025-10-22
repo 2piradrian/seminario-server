@@ -23,5 +23,13 @@ public class PageMapper {
     public static EditMapper edit() {
         return new EditMapper();
     }
+
+    public static GetPageFilteredMapper getFiltered(){
+        return new GetPageFilteredMapper();
+    }
+
+    public static GetListByIdsMapper getListByIds() {
+        return new GetListByIdsMapper();
+    }
     
 }

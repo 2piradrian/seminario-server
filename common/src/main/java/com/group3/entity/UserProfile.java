@@ -38,4 +38,9 @@ public class UserProfile {
 
     private List<String> following;
 
+    private Status status;
+
+    // Domain Variable
+    private Boolean isFollowing;
+
 }

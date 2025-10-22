@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UploadImageRes {
 
-    String imageId;
+    private final String imageId;
 
 }

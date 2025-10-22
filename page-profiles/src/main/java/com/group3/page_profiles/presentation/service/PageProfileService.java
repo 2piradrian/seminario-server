@@ -8,9 +8,7 @@ import com.group3.page_profiles.config.helpers.SecretKeyHelper;
 import com.group3.page_profiles.data.repository.*;
 import com.group3.page_profiles.domain.dto.mapper.PageMapper;
 import com.group3.page_profiles.domain.dto.request.*;
-import com.group3.page_profiles.domain.dto.response.CreatePageRes;
-import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
-import com.group3.page_profiles.domain.dto.response.GetPageByUserIdRes;
+import com.group3.page_profiles.domain.dto.response.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +36,9 @@ public class PageProfileService implements PageProfileServiceI {
 
     private final ImagesRepository imagesRepository;
 
+
+    // ======== Create Page ========
+
     @Override
     public CreatePageRes create(CreatePageReq dto) {
 
@@ -48,18 +49,14 @@ public class PageProfileService implements PageProfileServiceI {
         if (existsPage != null) throw new ErrorHandler(ErrorType.PAGENAME_ALREADY_EXISTS);
 
         PageProfile page = new PageProfile();
-
-        String pageId = PrefixedUUID.generate(PrefixedUUID.EntityType.PAGE).toString();
-        page.setId(pageId);
+        page.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.PAGE).toString());
 
         PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
-
         page.setPageType(pageType);
 
-        UserProfile owner = this.userProfileRepository.getById(user.getId());
+        UserProfile owner = this.userProfileRepository.getById(user.getId(), dto.getToken());
         if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
         page.setOwner(owner);
         page.setMembers(List.of(owner));
 
@@ -68,37 +65,158 @@ public class PageProfileService implements PageProfileServiceI {
         page.setProfileImage("");
         page.setShortDescription("¡New page!");
         page.setLongDescription("¡New page!");
-
         page.setStatus(Status.ACTIVE);
 
         PageProfile newPage = this.pageProfileRepository.save(page);
         return PageMapper.create().toResponse(newPage);
     }
 
+
+    // ======== Get Page by ID ========
+
     @Override
     public GetPageByIdRes getById(GetPageByIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        if(page.getOwner() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        UserProfile sessionProfile = this.userProfileRepository.getByIdWithFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        return PageMapper.getPage().toResponse(page);
+        for (UserProfile member : page.getMembers()){
+            if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+            UserProfile completeMember = this.userProfileRepository.getById(member.getId(), dto.getToken());
+            if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+            member.setPortraitImage(completeMember.getPortraitImage());
+            member.setProfileImage(completeMember.getProfileImage());
+            member.setName(completeMember.getName());
+            member.setSurname(completeMember.getSurname());
+            member.setStyles(completeMember.getStyles());
+            member.setInstruments(completeMember.getInstruments());
+        }
+
+        System.out.println(sessionProfile.getFollowing());
+        Boolean isFollowing = sessionProfile.getFollowing().contains(page.getId());
+        Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
+
+        return PageMapper.getPage().toResponse(page, followers, isFollowing);
     }
+
+
+    // ======== Get Page Profile Page Filtered ========
+
+    @Override
+    public GetPageProfilePageFilteredRes getProfileFiltered(GetPageProfilePageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PageContent<PageProfile> pages = this.pageProfileRepository.getFilteredPage(
+            dto.getName(),
+            dto.getPageTypeId(),
+            dto.getPage(),
+            dto.getSize()
+        );
+
+        return PageMapper.getFiltered().toResponse(pages);
+    }
+
+    // ======== Get Pages by User ========
 
     @Override
     public GetPageByUserIdRes getUserPages(GetPageByUserIdReq dto) {
-
         User user = this.userRepository.getById(dto.getUserId());
         if(user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<PageProfile> pages = this.pageProfileRepository.getByUserId(dto.getUserId());
-
         return PageMapper.getUserPages().toResponse(pages);
     }
 
+
+    // ======== Get Pages by List of IDs ========
+
+    @Override
+    public GetPageListByIdsRes getListByIds(GetPageListByIdsReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        List<PageProfile> pages = this.pageProfileRepository.getListByIds(dto.getPageIds());
+        return PageMapper.getListByIds().toResponse(pages);
+    }
+
+
+    // ======== Edit Page ========
+
+    @Override
+    public void edit(EditPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
+        if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+        if (!page.getOwner().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+
+        // ======== Update Profile Image ========
+        if (dto.getProfileImage() != null) {
+            String profileImage = page.getProfileImage();
+            if (profileImage != null) {
+                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+            }
+            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
+            page.setProfileImage(profileId);
+        }
+
+        // ======== Update Portrait Image ========
+        if (dto.getPortraitImage() != null) {
+            String portraitImage = page.getPortraitImage();
+            if (portraitImage != null) {
+                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+            }
+            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            page.setPortraitImage(portraitId);
+        }
+
+        // ======== Validate and Update Members ========
+        dto.getMembers().stream()
+                .map(memberId -> userProfileRepository.getById(memberId, dto.getToken()))
+                .forEach(userProfile -> {
+                    if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+                });
+
+        List<UserProfile> members = page.getMembers();
+        Set<UserProfile> existingMembers = new HashSet<>(members);
+
+        dto.getMembers().forEach(id -> {
+            UserProfile userProfile = userProfileRepository.getById(id, dto.getToken());
+            if (existingMembers.add(userProfile)) {
+                members.add(userProfile);
+            }
+        });
+        page.setMembers(members);
+
+        // ======== Update Page Type and Metadata ========
+        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
+        page.setPageType(pageType);
+
+        page.setName(dto.getName());
+        page.setShortDescription(dto.getShortDescription());
+        page.setLongDescription(dto.getLongDescription());
+
+        this.pageProfileRepository.update(page);
+    }
+
+
+    // ======== Delete Page ========
+
     @Override
     public void delete(DeletePageReq dto) {
-
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
@@ -113,71 +231,7 @@ public class PageProfileService implements PageProfileServiceI {
         }
 
         page.setStatus(Status.DELETED);
-
         this.pageProfileRepository.update(page);
     }
 
-    @Override
-    public void edit(EditPageReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
-        if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
-
-        if (!page.getOwner().getId().equals(user.getId())) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        if (dto.getProfileImage() != null){
-            String profileImage = page.getProfileImage();
-            if (profileImage != null) {
-                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
-            }
-            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
-            page.setProfileImage(profileId);
-        }
-
-        if (dto.getPortraitImage() != null){
-            String portraitImage = page.getPortraitImage();
-            if (portraitImage != null) {
-                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
-            }
-
-            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
-            page.setPortraitImage(portraitId);
-        }
-
-        dto.getMembers().stream()
-            .map(userProfileRepository::getById)
-            .forEach(userProfile -> {
-                if (userProfile == null) {
-                    throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-                }
-            });
-
-        List<UserProfile> members = page.getMembers();
-        Set<UserProfile> existingMembers = new HashSet<>(members);
-
-        dto.getMembers()
-            .forEach(id -> {
-                UserProfile userProfile = userProfileRepository.getById(id);
-                if (existingMembers.add(userProfile)){
-                    members.add(userProfile);
-                }
-            });
-
-        page.setMembers(members);
-
-        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
-        if(pageType == null)throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
-
-        page.setPageType(pageType);
-        page.setName(dto.getName());
-        page.setShortDescription(dto.getShortDescription());
-        page.setLongDescription(dto.getLongDescription());
-
-        this.pageProfileRepository.update(page);
-    }
-    
 }

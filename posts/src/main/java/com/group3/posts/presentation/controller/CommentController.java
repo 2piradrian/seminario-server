@@ -19,15 +19,6 @@ public class CommentController {
 
     private final CommentService service;
 
-    @PostMapping("/get-comments")
-    public ResponseEntity<?> getById(
-            @RequestBody Map<String, Object> payload
-    ) {
-        GetCommentPageReq dto = CommentMapper.getPage().toRequest(payload);
-
-        return ResponseEntity.ok(this.service.getComments(dto));
-    }
-
     @PostMapping("/create")
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
@@ -36,6 +27,16 @@ public class CommentController {
         CreateCommentReq dto = CommentMapper.create().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @PostMapping("/get-comments")
+    public ResponseEntity<?> getById(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetCommentPageReq dto = CommentMapper.getPage().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.getComments(dto));
     }
 
     @PutMapping("/toggle-votes")

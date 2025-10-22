@@ -5,19 +5,21 @@ import com.group3.posts.domain.dto.post.response.*;
 
 public interface PostServiceI {
 
+    CreatePostRes create(CreatePostReq dto);
+
     GetPostByIdRes getById(GetPostByIdReq dto);
 
     GetPostPageRes getPosts(GetPostPageReq dto);
+
+    GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto);
 
     GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto);
 
     GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto);
 
-    CreatePostRes create(CreatePostReq dto);
+    TogglePostVotesRes toggleVotes(TogglePostVotesReq dto);
 
     EditPostRes edit(EditPostReq dto);
-
-    TogglePostVotesRes toggleVotes(TogglePostVotesReq dto);
 
     void delete(DeletePostReq dto);
 

@@ -37,7 +37,6 @@ def main():
     for svc in ["posts", "user-profiles", "users", "catalog", "page-profiles"]:
         print(f"Iniciando docker compose para {svc}...")
         open_terminal_and_docker_compose(svc, services[svc])
-        time.sleep(delay_seconds)
 
 
 if __name__ == "__main__":

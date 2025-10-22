@@ -14,6 +14,9 @@ public class ImagesRepository implements ImagesRepositoryI {
 
     private final ImagesServerRepositoryI repository;
 
+
+    // ======== Upload ========
+
     @Override
     public String upload(String base64Image, String secret) {
         Map<String, Object> payload = new HashMap<>();
@@ -22,6 +25,9 @@ public class ImagesRepository implements ImagesRepositoryI {
 
         return this.repository.upload(payload).getImageId();
     }
+
+
+    // ======== Delete ========
 
     @Override
     public void delete(String imageId, String secret) {

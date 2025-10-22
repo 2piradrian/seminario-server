@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreatePostRes {
 
-    private String postId;
+    private final String postId;
 
 }

@@ -20,37 +20,40 @@ public class CommentRepository implements CommentRepositoryI {
 
     private final PostgresCommentRepositoryI repository;
 
+
+    // ======== Pagination Helper ========
+
     private int normalizePage(Integer page) {
         return (page != null && page > 0) ? page - 1 : 0;
     }
+
+
+    // ======== Single Comment Retrieval ========
 
     @Override
     public Comment getById(String commentId) {
         CommentModel commentModel = this.repository.findById(commentId).orElse(null);
 
-        if (commentModel == null) {
+        if (commentModel != null && !commentModel.getStatus().equals(Status.ACTIVE)) {
             return null;
         }
 
-        if (commentModel.getStatus().equals(Status.INACTIVE)){
-            return null;
-        }
-
-        if (commentModel.getStatus().equals(Status.DELETED)) {
-            commentModel.setAuthorId(Status.DELETED.toString());
-            commentModel.setContent(Status.DELETED.toString());
-
-            return CommentEntityMapper.toDomain(commentModel);
-        }
-
+        if (commentModel == null) return null;
         return CommentEntityMapper.toDomain(commentModel);
     }
+
+
+    // ======== Get Comments by Post ID with Pagination ========
 
     @Override
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<CommentModel> commentModels = this.repository.findAllByPostIdAndActiveStatus(postId, Status.ACTIVE, PageRequest.of(pageIndex, size));
+        Page<CommentModel> commentModels = this.repository.findAllByPostIdAndActiveStatus(
+                postId,
+                Status.ACTIVE,
+                PageRequest.of(pageIndex, size)
+        );
 
         return new PageContent<>(
                 commentModels.getContent().stream()
@@ -61,19 +64,23 @@ public class CommentRepository implements CommentRepositoryI {
         );
     }
 
+
+    // ======== Save Comment ========
+
     @Override
     public Comment save(Comment comment) {
         CommentModel commentModel = CommentEntityMapper.toModel(comment);
         CommentModel saved = this.repository.save(commentModel);
-
         return CommentEntityMapper.toDomain(saved);
     }
+
+
+    // ======== Update Comment ========
 
     @Override
     public Comment update(Comment comment) {
         CommentModel commentModel = CommentEntityMapper.toModel(comment);
         CommentModel updated = this.repository.save(commentModel);
-
         return CommentEntityMapper.toDomain(updated);
     }
 

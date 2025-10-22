@@ -12,7 +12,7 @@ public class GetOwnMapper {
         );
     }
 
-    public GetOwnUserProfileRes toResponse(UserProfile userProfile) {
+    public GetOwnUserProfileRes toResponse(UserProfile userProfile, Integer followersCount, Integer followingCount) {
         return new GetOwnUserProfileRes(
             userProfile.getId(),
             userProfile.getName(),
@@ -24,7 +24,9 @@ public class GetOwnMapper {
             userProfile.getShortDescription(),
             userProfile.getLongDescription(),
             userProfile.getStyles(),
-            userProfile.getInstruments()
+            userProfile.getInstruments(),
+            followersCount,
+            followingCount
         );
     }
 

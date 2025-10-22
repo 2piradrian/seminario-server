@@ -1,9 +1,11 @@
 package com.group3.user_profiles.data.datasource.postgres.model;
 
+import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,5 +54,8 @@ public class UserProfileModel {
     @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "following_id")
     private List<String> following;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }

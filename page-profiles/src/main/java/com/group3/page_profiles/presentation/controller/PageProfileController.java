@@ -16,23 +16,32 @@ public class PageProfileController {
     
     private final PageProfileService pageService;
 
-    @GetMapping("/get-by-id/{pageId}")
-    public ResponseEntity<?> getById(
-        @PathVariable(value = "pageId") String pageId
-    ) {
-        GetPageByIdReq dto = PageMapper.getPage().toRequest(pageId);
-
-        return ResponseEntity.ok(this.pageService.getById(dto));
-    }
-
     @PostMapping("/create")
     public ResponseEntity<?> create(
-        @RequestHeader(value = "Authorization") String token,
-        @RequestBody Map<String, Object> payload
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
     ){
         CreatePageReq dto = PageMapper.create().toRequest(token, payload);
 
         return ResponseEntity.ok(this.pageService.create(dto));
+    }
+
+    @GetMapping("/get-by-id/{pageId}")
+    public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "pageId") String pageId
+    ) {
+        GetPageByIdReq dto = PageMapper.getPage().toRequest(token, pageId);
+
+        return ResponseEntity.ok(this.pageService.getById(dto));
+    }
+
+    @PostMapping("/get-page-filtered")
+    public ResponseEntity<?> getFiltered(
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(payload);
+        return ResponseEntity.ok(this.pageService.getProfileFiltered(dto));
     }
 
     @GetMapping("/get-by-user-id/{userId}")
@@ -42,6 +51,14 @@ public class PageProfileController {
         GetPageByUserIdReq dto = PageMapper.getUserPages().toRequest(userId);
 
         return ResponseEntity.ok(this.pageService.getUserPages(dto));
+    }
+
+    @PostMapping("/get-list-by-id")
+    public ResponseEntity<?> getListById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetPageListByIdsReq dto = PageMapper.getListByIds().toRequest(payload);
+        return ResponseEntity.ok(this.pageService.getListByIds(dto));
     }
 
     @PutMapping("/edit")

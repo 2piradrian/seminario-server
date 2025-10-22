@@ -7,13 +7,14 @@ import com.group3.page_profiles.domain.dto.response.GetPageByIdRes;
 
 public class GetByIdMapper {
 
-    public GetPageByIdReq toRequest(String pageId) {
+    public GetPageByIdReq toRequest(String token, String pageId) {
         return GetPageByIdReq.create(
-            pageId
+            pageId,
+            token
         );
     }
 
-    public GetPageByIdRes toResponse(PageProfile page) {
+    public GetPageByIdRes toResponse(PageProfile page, Integer followers, Boolean isFollowing) {
         return new GetPageByIdRes(
             page.getId(),
             page.getName(),
@@ -23,7 +24,9 @@ public class GetByIdMapper {
             page.getLongDescription(),
             page.getOwner(),
             page.getMembers(),
-            page.getPageType()
+            page.getPageType(),
+            followers,
+            isFollowing
         );
     }
     

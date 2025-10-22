@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetPageByUserIdRes {
 
-    List<PageProfile> pages;
+    private final List<PageProfile> pages;
 
 }

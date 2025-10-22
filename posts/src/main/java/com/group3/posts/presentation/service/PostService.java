@@ -25,95 +25,14 @@ import java.util.UUID;
 public class PostService implements PostServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
-
     private final PostsRepository postsRepository;
-
     private final UserRepository userRepository;
-
     private final ImagesRepository imagesRepository;
-
     private final PageProfileRepository pageProfileRepository;
-
     private final UserProfileRepository userProfileRepository;
 
-    @Override
-    public GetPostByIdRes getById(GetPostByIdReq dto) {
-        Post post = this.postsRepository.getById(dto.getPostId());
-        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
-            post.setAuthor(fullProfile);
-        }
-        if (post.getPageProfile().getId() != null) {
-            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-            post.setPageProfile(fullPage);
-        }
-
-        Integer views = post.getViews();
-        post.setViews(views + 1);
-
-        this.postsRepository.update(post);
-
-        return PostMapper.getById().toResponse(post);
-    }
-
-    @Override
-    public GetPostPageRes getPosts(GetPostPageReq dto) {
-        PageContent<Post> posts = this.postsRepository.getAllPosts(dto.getPage(), dto.getSize());
-
-        for (Post post : posts.getContent()) {
-            if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
-                post.setAuthor(fullProfile);
-            }
-            if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-                post.setPageProfile(fullPage);
-            }
-        }
-
-        return PostMapper.getPage().toResponse(posts);
-    }
-
-    @Override
-    public GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto) {
-        PageContent<Post> posts = this.postsRepository.getPostsByUserId(dto.getProfileId(), dto.getPage(), dto.getSize());
-
-        for (Post post : posts.getContent()) {
-            if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
-                post.setAuthor(fullProfile);
-            }
-            if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-                post.setPageProfile(fullPage);
-            }
-        }
-
-        return PostMapper.getPageByProfile().toResponse(posts);
-    }
-
-    @Override
-    public GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageContent<Post> posts = this.postsRepository.getPostsByUserId(user.getId(), dto.getPage(), dto.getSize());
-
-        for (Post post : posts.getContent()) {
-            if (post.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
-                post.setAuthor(fullProfile);
-            }
-            if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-                post.setPageProfile(fullPage);
-            }
-        }
-
-        return PostMapper.getOwnPage().toResponse(posts);
-    }
+    // ======== Create Post ========
 
     @Override
     public CreatePostRes create(CreatePostReq dto) {
@@ -130,8 +49,7 @@ public class PostService implements PostServiceI {
             post.setAuthor(author);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId());
-
+            PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
@@ -148,7 +66,6 @@ public class PostService implements PostServiceI {
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setStatus(Status.ACTIVE);
-
         post.setViews(0);
         post.setUpvoters(List.of());
         post.setDownvoters(List.of());
@@ -156,10 +73,193 @@ public class PostService implements PostServiceI {
         post.setUpdatedAt(LocalDateTime.now());
 
         Post saved = this.postsRepository.save(post);
-
         return PostMapper.create().toResponse(saved);
     }
 
+
+    // ======== Get Post by ID ========
+
+    @Override
+    public GetPostByIdRes getById(GetPostByIdReq dto) {
+        User user = userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Post post = this.postsRepository.getById(dto.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
+        // Enrich author and page profile
+        if (post.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+            post.setAuthor(fullProfile);
+        }
+        if (post.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+            post.setPageProfile(fullPage);
+        }
+
+        // Increment views
+        Integer views = post.getViews();
+        post.setViews(views + 1);
+        this.postsRepository.update(post);
+
+        post.setVotersQuantities();
+        post.setVotersToNull();
+
+        return PostMapper.getById().toResponse(post);
+    }
+
+
+    // ======== Get Posts ========
+
+    @Override
+    public GetPostPageRes getPosts(GetPostPageReq dto) {
+        PageContent<Post> posts = this.postsRepository.getAllPosts(dto.getPage(), dto.getSize());
+
+        // Enrich author and page profile for each post
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullProfile);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                post.setPageProfile(fullPage);
+            }
+            post.setVotersQuantities();
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getPage().toResponse(posts);
+    }
+
+    // ======== Get Filtered Posts ========
+
+    @Override
+    public GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText());
+
+        for (Post post : posts.getContent()) {
+            post.setVotersQuantities();
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getFilteredPage().toResponse(posts);
+    }
+
+
+    // ======== Get Posts by Profile ========
+
+    @Override
+    public GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto) {
+
+        PageContent<Post> posts = null;
+
+        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
+        if (type == PrefixedUUID.EntityType.USER) {
+            posts = this.postsRepository.getPostsByAuthorId(dto.getProfileId(), dto.getPage(), dto.getSize());
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
+            posts = this.postsRepository.getPostsByPageId(dto.getProfileId(), dto.getPage(), dto.getSize());
+        }
+
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullProfile);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                post.setPageProfile(fullPage);
+            }
+            post.setVotersQuantities();
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getPageByProfile().toResponse(posts);
+    }
+
+
+    // ======== Get Own Posts ========
+
+    @Override
+    public GetOwnPostPageRes getOwnPosts(GetOwnPostPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Post> posts = this.postsRepository.getPostsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullProfile);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                post.setPageProfile(fullPage);
+            }
+            post.setVotersQuantities();
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getOwnPage().toResponse(posts);
+    }
+
+
+    // ======== Toggle Post Votes ========
+
+    @Override
+    public TogglePostVotesRes toggleVotes(TogglePostVotesReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Post post = this.postsRepository.getById(dto.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
+        String userId = user.getId();
+        List<String> upvoters = post.getUpvoters();
+        List<String> downvoters = post.getDownvoters();
+
+        if (Vote.UPVOTE == dto.getVoteType()) {
+            if (upvoters.contains(userId)) {
+                upvoters.remove(userId);
+            } else {
+                upvoters.add(userId);
+                downvoters.remove(userId);
+            }
+        }
+        if (Vote.DOWNVOTE == dto.getVoteType()) {
+            if (downvoters.contains(userId)) {
+                downvoters.remove(userId);
+            } else {
+                downvoters.add(userId);
+                upvoters.remove(userId);
+            }
+        }
+
+        post.setUpvoters(upvoters);
+        post.setDownvoters(downvoters);
+
+        this.postsRepository.update(post);
+
+        if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+            post.setAuthor(fullProfile);
+        }
+
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+            post.setPageProfile(fullPage);
+        }
+
+        post.setVotersQuantities();
+        post.setVotersToNull();
+
+        return PostMapper.toggleVotes().toResponse(post);
+    }
+
+
+    // ======== Edit Post ========
     @Override
     public EditPostRes edit(EditPostReq dto) {
         User user = this.userRepository.auth(dto.getToken());
@@ -168,20 +268,13 @@ public class PostService implements PostServiceI {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        if (!post.getAuthor().getId().equals(user.getId())) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
+        if (!post.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        if (post.getPageProfile() != null){
-            // TODO: Search page and verify if is member
-        }
-
-        if (dto.getBase64Image() != null){
+        if (dto.getBase64Image() != null) {
             String postImage = post.getImageId();
             if (postImage != null) {
                 this.imagesRepository.delete(postImage, secretKeyHelper.getSecret());
             }
-
             String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
             post.setImageId(imageId);
         }
@@ -194,55 +287,8 @@ public class PostService implements PostServiceI {
         return PostMapper.edit().toResponse(edited);
     }
 
-    @Override
-    public TogglePostVotesRes toggleVotes(TogglePostVotesReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        Post post = this.postsRepository.getById(dto.getPostId());
-        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-
-        String userId = user.getId();
-
-        List<String> upvoters = post.getUpvoters();
-        List<String> downvoters = post.getDownvoters();
-
-        if (Vote.UPVOTE == dto.getVoteType()) {
-            if (upvoters.contains(userId)) {
-                upvoters.remove(userId);
-            }
-            else {
-                upvoters.add(userId);
-                downvoters.remove(userId);
-            }
-        }
-        if (Vote.DOWNVOTE == dto.getVoteType()) {
-            if (downvoters.contains(userId)) {
-                downvoters.remove(userId);
-            }
-            else {
-                downvoters.add(userId);
-                upvoters.remove(userId);
-            }
-        }
-
-        post.setUpvoters(upvoters);
-        post.setDownvoters(downvoters);
-
-        this.postsRepository.update(post);
-
-        if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(post.getAuthor().getId());
-            post.setAuthor(fullProfile);
-        }
-
-        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-            PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId());
-            post.setPageProfile(fullPage);
-        }
-
-        return PostMapper.toggleVotes().toResponse(post);
-    }
+    // ======== Delete Post ========
 
     @Override
     public void delete(DeletePostReq dto) {

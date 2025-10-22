@@ -5,38 +5,41 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.datasource.user_profiles_server.repository.UserProfilesServerRepositoryI;
 import com.group3.posts.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
-import com.group3.posts.domain.repository.ProfileRepositoryI;
+import com.group3.posts.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
-public class UserProfileRepository implements ProfileRepositoryI {
+public class UserProfileRepository implements UserProfileRepositoryI {
 
     private final UserProfilesServerRepositoryI repository;
 
+
+    // ======== Single User Retrieval ========
+
     @Override
-    public UserProfile getById(String userId) {
+    public UserProfile getById(String userId, String token) {
 
-        GetUserProfileByIdRes reponse = this.repository.getById(userId);
+        GetUserProfileByIdRes response = this.repository.getById(token, userId);
 
-        if (reponse == null){
+        if (response == null){
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         }
 
         UserProfile user = new UserProfile();
 
-        user.setId(reponse.getId());
-        user.setEmail(reponse.getEmail());
-        user.setName(reponse.getName());
-        user.setSurname(reponse.getSurname());
-        user.setMemberSince(reponse.getMemberSince());
-        user.setPortraitImage(reponse.getPortraitImage());
-        user.setProfileImage(reponse.getProfileImage());
-        user.setShortDescription(reponse.getShortDescription());
-        user.setLongDescription(reponse.getLongDescription());
-        user.setStyles(reponse.getStyles());
-        user.setInstruments(reponse.getInstruments());
+        user.setId(response.getId());
+        user.setEmail(response.getEmail());
+        user.setName(response.getName());
+        user.setSurname(response.getSurname());
+        user.setMemberSince(response.getMemberSince());
+        user.setPortraitImage(response.getPortraitImage());
+        user.setProfileImage(response.getProfileImage());
+        user.setShortDescription(response.getShortDescription());
+        user.setLongDescription(response.getLongDescription());
+        user.setStyles(response.getStyles());
+        user.setInstruments(response.getInstruments());
 
         return user;
     }

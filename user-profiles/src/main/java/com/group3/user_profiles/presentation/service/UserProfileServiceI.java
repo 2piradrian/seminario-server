@@ -9,10 +9,25 @@ public interface UserProfileServiceI {
 
     GetUserProfileByIdRes getById(GetUserProfileByIdReq dto);
 
+    GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto);
+
+    GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto);
+
+    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
+
+    GetFollowerPageRes getFollowers(GetFollowerPageReq dto);
+
+    GetFollowingPageRes getFollowing(GetFollowingPageReq dto);
+
+    GetFollowersByIdRes getFollowersById(GetFollowersByIdReq dto);
+
+    void toggleFollow(ToggleFollowReq dto);
+
+    void active(ActiveUserProfileReq dto);
+
     void update(EditUserProfileReq dto);
 
     void delete(DeleteUserProfileReq dto);
 
-    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
 
 }

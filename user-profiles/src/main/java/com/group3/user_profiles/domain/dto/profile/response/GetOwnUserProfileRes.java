@@ -20,7 +20,7 @@ public class GetOwnUserProfileRes {
 
     private final String email;
 
-    private LocalDateTime memberSince;
+    private final LocalDateTime memberSince;
 
     private final String portraitImage;
 
@@ -34,5 +34,8 @@ public class GetOwnUserProfileRes {
 
     private final List<Instrument> instruments;
 
+    private final Integer followersCount;
+
+    private final Integer followingCount;
 
 }

@@ -12,20 +12,64 @@ import java.util.List;
 
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
-    @Query("SELECT p FROM PostModel p WHERE p.status <> :status ORDER BY p.createdAt DESC")
-    Page<PostModel> findAll(@Param("status") Status status, Pageable pageable);
-
-    @Query("SELECT p FROM PostModel p WHERE p.authorId = :userId AND p.status <> :status ORDER BY p.createdAt DESC")
-    Page<PostModel> findByAuthorId(
-        @Param("userId") String userId,
-        @Param("status") Status status,
-        Pageable pageable
+    // ======== Get All Posts (excluding deleted) ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.status = :status
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findAll(
+            @Param("status") Status status,
+            Pageable pageable
     );
 
-    @Query("SELECT p FROM PostModel p WHERE p.pageId = :pageId AND p.status <> :status ORDER BY p.createdAt DESC")
+
+    // ======== Get Posts by Author ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.authorId = :authorId
+        AND p.status = :status
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findByAuthorId(
+            @Param("authorId") String authorId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
+
+
+    // ======== Get Posts by Page ========
+    @Query("""
+        SELECT p
+        FROM PostModel p
+        WHERE p.pageId = :pageId
+        AND p.status = :status
+        ORDER BY p.createdAt DESC
+    """)
     Page<PostModel> findByPageId(
-        @Param("pageId") String pageId,
+            @Param("pageId") String pageId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
+
+    // ======== Get Posts by Filtered Page or Author ========
+
+    @Query("""
+        SELECT p FROM PostModel p WHERE
+        p.status = :status
+        AND
+        (
+            (:#{#text == null or #text.isEmpty()} = true) OR
+            (LOWER(p.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
+             LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
+        )
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findByFilteredPage(
         @Param("status") Status status,
+        @Param("text") String text,
         Pageable pageable
     );
 

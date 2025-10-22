@@ -14,6 +14,9 @@ public class UserRepository implements UserRepositoryI {
 
     private final UsersServerRepositoryI repository;
 
+
+    // ======== Authentication ========
+
     @Override
     public User auth(String token) {
         AuthUserRes response = this.repository.auth(token);
@@ -26,6 +29,9 @@ public class UserRepository implements UserRepositoryI {
 
         return user;
     }
+
+
+    // ======== Single User Retrieval ========
 
     @Override
     public User getById(String userId) {

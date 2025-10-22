@@ -14,6 +14,7 @@ public class UserProfileRepository implements ProfileRepositoryI {
 
     private final UserProfileServerRepositoryI repository;
 
+    @Override
     public void create(String id, String email, String name, String surname, String secret) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("id", id);
@@ -23,6 +24,15 @@ public class UserProfileRepository implements ProfileRepositoryI {
         payload.put("secret", secret);
 
         this.repository.create(payload);
-    };
+    }
+
+    @Override
+    public void active(String userId, String secret) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("userId", userId);
+        payload.put("secret", secret);
+
+        this.repository.active(payload);
+    }
 
 }

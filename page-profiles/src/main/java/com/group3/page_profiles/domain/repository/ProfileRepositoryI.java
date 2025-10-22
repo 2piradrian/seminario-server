@@ -4,6 +4,9 @@ import com.group3.entity.UserProfile;
 
 public interface ProfileRepositoryI {
 
-    UserProfile getById(String userId);
+    UserProfile getById(String userId, String token);
 
+    Integer getFollowersById(String id, String secret);
+
+    UserProfile getByIdWithFollowers(String id, String secret);
 }

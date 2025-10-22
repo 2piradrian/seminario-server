@@ -36,4 +36,20 @@ public class Comment {
 
     private Status status;
 
+    // Domain variable
+    private Integer upvotersQuantity;
+
+    // Domain variable
+    private Integer downvotersQuantity;
+
+    public void setVotersQuantities(){
+        this.upvotersQuantity = this.upvoters.size();
+        this.downvotersQuantity = this.downvoters.size();
+    }
+
+    public void setVotersToNull(){
+        this.upvoters = null;
+        this.downvoters = null;
+    }
+
 }

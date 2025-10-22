@@ -13,9 +13,12 @@ public class PageProfileRepository implements PagesRepositoryI {
 
     private final PageProfilesServerRepositoryI repository;
 
+
+    // ======== Get Page by ID ========
+
     @Override
-    public PageProfile getById(String id) {
-        GetPageByIdRes response = this.repository.getById(id);
+    public PageProfile getById(String id, String token) {
+        GetPageByIdRes response = this.repository.getById(token, id);
 
         PageProfile page = new PageProfile();
         page.setId(response.getId());
@@ -30,4 +33,5 @@ public class PageProfileRepository implements PagesRepositoryI {
 
         return page;
     }
+
 }

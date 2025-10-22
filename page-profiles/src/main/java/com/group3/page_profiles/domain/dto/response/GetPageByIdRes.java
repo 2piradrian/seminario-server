@@ -27,6 +27,10 @@ public class GetPageByIdRes {
 
     private final List<UserProfile> members;
 
-    private PageType pageType;
+    private final PageType pageType;
+
+    private final Integer followersCount;
+
+    private final Boolean isFollowing;
     
 }

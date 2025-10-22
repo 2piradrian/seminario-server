@@ -24,11 +24,11 @@ public class CreateMapper {
                 comment.getPostId(),
                 comment.getReplyTo(),
                 comment.getContent(),
-                comment.getUpvoters(),
-                comment.getDownvoters(),
+                comment.getUpvotersQuantity(),
+                comment.getDownvotersQuantity(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt(),
-                comment.getPage()
+                comment.getPageProfile()
         );
     }
 
