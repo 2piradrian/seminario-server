@@ -2,7 +2,7 @@ package com.group3.posts.presentation.controller;
 
 import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
-import com.group3.posts.presentation.service.PostServiceI;
+import com.group3.posts.presentation.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,31 +14,53 @@ import java.util.Map;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostServiceI service;
+    private final PostService service;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreatePostReq dto = PostMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
 
     @GetMapping("/get-by-id/{postId}")
     public ResponseEntity<?> getById(
+            @RequestHeader(value = "Authorization") String token,
             @PathVariable(value = "postId") String postId
     ) {
-        GetPostByIdReq dto = PostMapper.getById().toRequest(postId);
+        GetPostByIdReq dto = PostMapper.getById().toRequest(postId, token);
 
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
     @PostMapping("/get-posts")
     public ResponseEntity<?> getPosts(
+            @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        GetPostPageReq dto = PostMapper.getPage().toRequest(payload);
+        GetPostPageReq dto = PostMapper.getPage().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.getPosts(dto));
     }
 
-    @PostMapping("/get-by-profile")
-    public ResponseEntity<?> getPostsByProfile(
+    @PostMapping("/get-filtered-posts")
+    public ResponseEntity<?> getFilteredPosts(
             @RequestBody Map<String, Object> payload
     ) {
-        GetPostPageByProfileReq dto = PostMapper.getPageByProfile().toRequest(payload);
+        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(payload);
+
+        return ResponseEntity.ok(this.service.getFilteredPosts(dto));
+    }
+
+    @PostMapping("/get-by-profile")
+    public ResponseEntity<?> getPostsByProfile(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetPostPageByProfileReq dto = PostMapper.getPageByProfile().toRequest(token, payload);
         return ResponseEntity.ok(this.service.getPostsByProfile(dto));
     }
 
@@ -51,14 +73,14 @@ public class PostController {
         return ResponseEntity.ok(this.service.getOwnPosts(dto));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(
+    @PatchMapping("/toggle-votes")
+    public ResponseEntity<?> toggleVotes(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        CreatePostReq dto = PostMapper.create().toRequest(token, payload);
+        TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.service.create(dto));
+        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @PatchMapping("/edit")
@@ -69,16 +91,6 @@ public class PostController {
         EditPostReq dto = PostMapper.edit().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
-    }
-
-    @PatchMapping("/toggle-votes")
-    public ResponseEntity<?> toggleVotes(
-            @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
-    ) {
-        TogglePostVotesReq dto = PostMapper.toggleVotes().toRequest(token, payload);
-
-        return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
     @DeleteMapping("/delete")

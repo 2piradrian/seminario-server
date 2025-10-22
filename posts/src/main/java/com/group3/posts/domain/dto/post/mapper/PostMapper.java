@@ -12,6 +12,10 @@ public class PostMapper {
         return new GetPageMapper();
     }
 
+    public static GetFilteredPageMapper getFilteredPage() {
+        return new GetFilteredPageMapper();
+    }
+
     public static GetOwnPageMapper getOwnPage() {
         return new GetOwnPageMapper();
     }

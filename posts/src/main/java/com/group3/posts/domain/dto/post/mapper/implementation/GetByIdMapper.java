@@ -6,9 +6,10 @@ import com.group3.posts.domain.dto.post.response.GetPostByIdRes;
 
 public class GetByIdMapper {
 
-    public GetPostByIdReq toRequest(String postId) {
+    public GetPostByIdReq toRequest(String postId, String token) {
         return GetPostByIdReq.create(
-            postId
+            postId,
+            token
         );
     }
 
@@ -16,13 +17,13 @@ public class GetByIdMapper {
         return new GetPostByIdRes(
             post.getAuthor(),
             post.getId(),
-            post.getPage(),
+            post.getPageProfile(),
             post.getImageId(),
             post.getTitle(),
             post.getContent(),
             post.getViews(),
-            post.getUpvoters(),
-            post.getDownvoters(),
+            post.getUpvotersQuantity(),
+            post.getDownvotersQuantity(),
             post.getCreatedAt()
         );
     }

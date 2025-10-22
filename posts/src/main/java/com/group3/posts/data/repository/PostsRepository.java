@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,26 +21,35 @@ public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
 
+
+    // ======== Pagination Helper ========
+
     private int normalizePage(Integer page) {
         return (page != null && page > 0) ? page - 1 : 0;
     }
+
+
+    // ======== Single Post Retrieval ========
 
     @Override
     public Post getById(String postId) {
         PostModel postModel = this.repository.findById(postId).orElse(null);
 
         if (postModel == null) return null;
-        if (postModel.getStatus().equals(Status.DELETED)) return null;
+        if (!postModel.getStatus().equals(Status.ACTIVE)) return null;
 
         return PostsEntityMapper.toDomain(postModel);
     }
+
+
+    // ======== Get All Posts with Pagination ========
 
     @Override
     public PageContent<Post> getAllPosts(Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findAll(
-                Status.DELETED,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -52,13 +62,16 @@ public class PostsRepository implements PostRepositoryI {
         );
     }
 
+
+    // ======== Get Posts by Author ID with Pagination ========
+
     @Override
-    public PageContent<Post> getPostsByUserId(String userId, Integer page, Integer size) {
+    public PageContent<Post> getPostsByAuthorId(String authorId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByAuthorId(
-                userId,
-                Status.DELETED,
+                authorId,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -70,6 +83,9 @@ public class PostsRepository implements PostRepositoryI {
                 postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
+
+
+    // ======== Get Posts by Page ID with Pagination ========
 
     @Override
     public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
@@ -77,7 +93,7 @@ public class PostsRepository implements PostRepositoryI {
 
         Page<PostModel> postModels = repository.findByPageId(
                 pageId,
-                Status.DELETED,
+                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -89,6 +105,31 @@ public class PostsRepository implements PostRepositoryI {
                 postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
+
+
+    // ======== Get Posts by Filtered Page or Author with Pagination ========
+
+    @Override
+    public PageContent<Post> getFilteredPosts(Integer page, Integer size, String text) {
+        int pageIndex = normalizePage(page);
+
+        Page<PostModel> postModels = repository.findByFilteredPage(
+                Status.ACTIVE,
+                text,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                postModels.getContent().stream()
+                        .map(PostsEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                postModels.getNumber() + 1,
+                postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
+
+    // ======== Save and Update ========
 
     @Override
     public Post save(Post post) {

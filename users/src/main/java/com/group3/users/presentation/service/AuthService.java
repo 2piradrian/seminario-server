@@ -1,16 +1,13 @@
 package com.group3.users.presentation.service;
 
 import com.group3.config.PrefixedUUID;
-import com.group3.entity.Role;
-import com.group3.entity.Status;
-import com.group3.entity.Token;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.config.helpers.EmailHelper;
 import com.group3.users.config.helpers.SecretKeyHelper;
-import com.group3.users.data.repository.ProfileRepository;
+import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.*;
@@ -19,10 +16,8 @@ import com.group3.users.domain.dto.auth.response.LoginUserRes;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +32,7 @@ public class AuthService implements AuthServiceI {
 
     private final UserRepository userRepository;
 
-    private final ProfileRepository profileRepository;
+    private final UserProfileRepository userProfileRepository;
 
     private final EmailService emailService;
 
@@ -84,7 +79,7 @@ public class AuthService implements AuthServiceI {
         user.setStatus(Status.INACTIVE);
 
         User saved = this.userRepository.save(user);
-        this.profileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
+        this.userProfileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
 
         Token token = this.authHelper.createToken(saved);
 
@@ -135,6 +130,7 @@ public class AuthService implements AuthServiceI {
         }
 
         user.setStatus(Status.ACTIVE);
+        this.userProfileRepository.active(user.getId(), secretKeyHelper.getSecret());
 
         this.userRepository.update(user);
     }

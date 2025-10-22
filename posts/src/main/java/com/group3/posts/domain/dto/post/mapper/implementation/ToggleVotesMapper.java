@@ -20,13 +20,13 @@ public class ToggleVotesMapper {
         return new TogglePostVotesRes(
             post.getAuthor(),
             post.getId(),
-            post.getPage(),
+            post.getPageProfile(),
             post.getImageId(),
             post.getTitle(),
             post.getContent(),
             post.getViews(),
-            post.getUpvoters(),
-            post.getDownvoters(),
+            post.getUpvotersQuantity(),
+            post.getDownvotersQuantity(),
             post.getCreatedAt()
         );
     }

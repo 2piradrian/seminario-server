@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 public class GetPostPageRes {
 
-    List<Post> posts;
+    private final List<Post> posts;
 
-    Integer nextPage;
+    private final Integer nextPage;
 
 }

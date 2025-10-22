@@ -15,7 +15,7 @@ public class AuthUserReq {
 
     public static AuthUserReq create(String token) {
 
-        if (token == null){
+        if (token == null || token.isEmpty()){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
