@@ -12,7 +12,7 @@
 	<artifactId>user-profiles</artifactId>
 	<version>1.0.0</version>
 	<name>user-profiles</name>
-	<description>User Profiles Server</description>
+	<description>user-profiles</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -112,6 +112,7 @@
 	</dependencyManagement>
 
 	<build>
+	    <finalName>user-profiles</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

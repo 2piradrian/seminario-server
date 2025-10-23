@@ -12,7 +12,7 @@
 	<artifactId>page-profiles</artifactId>
 	<version>1.0.0</version>
 	<name>page-profiles</name>
-	<description>Page Profiles Server</description>
+	<description>page-profiles</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -96,6 +96,7 @@
 	</dependencyManagement>
 
 	<build>
+	    <finalName>page-profiles</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
