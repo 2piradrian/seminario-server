@@ -78,7 +78,7 @@
 	</dependencyManagement>
 
 	<build>
-	    <finalName>gateway</finalName>
+		<finalName>gateway</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -92,9 +92,17 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<excludes>
 						<exclude>
