@@ -17,6 +17,6 @@ public class AuthUserRes {
 
     private Status status;
 
-    private Role rol;
+    private Role role;
 
 }
