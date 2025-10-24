@@ -27,7 +27,7 @@ public class UserModel {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private List<Role> roles;
+    private Role rol;
 
     @Enumerated(EnumType.STRING)
     private Status status;
