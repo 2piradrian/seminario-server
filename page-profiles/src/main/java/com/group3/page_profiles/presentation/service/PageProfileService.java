@@ -222,11 +222,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
 
-        boolean isOwner = page.getOwner().getId().equals(user.getId());
-        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
-        boolean isModerator = user.getRoles().contains(Role.MODERATOR);
-
-        if (!isOwner && !isAdmin && !isModerator) {
+        if (!user.canDelete(page)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
