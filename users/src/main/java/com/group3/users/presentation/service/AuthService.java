@@ -75,7 +75,7 @@ public class AuthService implements AuthServiceI {
         user.setId(userId);
         user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
         user.setEmail(dto.getEmail());
-        user.setRoles(List.of(Role.USER));
+        user.setRole(Role.USER);
         user.setStatus(Status.INACTIVE);
 
         User saved = this.userRepository.save(user);

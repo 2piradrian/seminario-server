@@ -298,11 +298,7 @@ public class PostService implements PostServiceI {
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
-        boolean isAuthor = post.getAuthor().getId().equals(user.getId());
-        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
-        boolean isModerator = user.getRoles().contains(Role.MODERATOR);
-
-        if (!isAuthor && !isAdmin && !isModerator) {
+        if (!user.canDelete(post)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 

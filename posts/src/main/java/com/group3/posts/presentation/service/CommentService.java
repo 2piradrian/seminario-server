@@ -173,11 +173,7 @@ public class CommentService implements CommentServiceI {
             throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
         }
 
-        boolean isAuthor = comment.getAuthor().getId().equals(user.getId());
-        boolean isAdmin = user.getRoles().contains(Role.ADMIN);
-        boolean isModerator = user.getRoles().contains(Role.MODERATOR);
-
-        if (!isAuthor && !isAdmin && !isModerator) {
+        if (!user.canDelete(comment)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 

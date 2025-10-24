@@ -17,7 +17,7 @@ public class GetByIdMapper {
             user.getId(),
             user.getEmail(),
             user.getStatus(),
-            user.getRoles()
+            user.getRole()
         );
     }
 
