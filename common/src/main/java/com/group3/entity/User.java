@@ -19,7 +19,7 @@ public class User {
 
     private Status status;
 
-    private Role rol;
+    private Role role;
 
     private boolean isPageMember(PageProfile pageProfile) {
         return pageProfile != null
@@ -29,24 +29,24 @@ public class User {
     }
 
     public boolean canDelete(Post post){
-        return this.rol.canDelete() ||
+        return this.role.canDelete() ||
         (post.getAuthor() != null && post.getAuthor().getId().equals(this.getId())) ||
         this.isPageMember(post.getPageProfile());
     }
 
     public boolean canDelete(PageProfile page){
-        return this.rol.canDelete() || (page.getOwner()!= null && page.getOwner().getId().equals(this.getId()));
+        return this.role.canDelete() || (page.getOwner()!= null && page.getOwner().getId().equals(this.getId()));
     }
 
     public boolean canDelete(Comment comment){
-        return this.rol.canDelete() ||
+        return this.role.canDelete() ||
                 (comment.getAuthor() != null && comment.getAuthor().getId().equals(this.getId())) ||
                 this.isPageMember(comment.getPageProfile());
     }
 
     /*public boolean canDelete(Event event){
 
-        if(this.rol.canDelete()){
+        if(this.role.canDelete()){
             return true;
         }
 
