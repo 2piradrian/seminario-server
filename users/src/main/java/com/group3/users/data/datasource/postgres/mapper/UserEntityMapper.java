@@ -15,7 +15,7 @@ public class UserEntityMapper {
             userModel.getEmail(),
             userModel.getPassword(),
             userModel.getStatus(),
-            userModel.getRoles()
+            userModel.getRol()
         );
     }
 
@@ -24,7 +24,7 @@ public class UserEntityMapper {
             user.getId(),
             user.getEmail(),
             user.getPassword(),
-            user.getRoles(),
+            user.getRol(),
             user.getStatus()
         );
     }
