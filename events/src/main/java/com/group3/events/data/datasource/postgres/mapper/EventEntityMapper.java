@@ -1,9 +1,9 @@
-package com.group3.events.data.datasource.mapper;
+package com.group3.events.data.datasource.postgres.mapper;
 
 import com.group3.entity.Event;
 import com.group3.entity.PageProfile;
 import com.group3.entity.UserProfile;
-import com.group3.events.data.datasource.model.EventModel;
+import com.group3.events.data.datasource.postgres.model.EventModel;
 
 public class EventEntityMapper {
 

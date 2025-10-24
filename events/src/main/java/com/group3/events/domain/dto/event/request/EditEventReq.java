@@ -9,39 +9,43 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
-public class CreateEventReq {
+public class EditEventReq {
 
     private final String token;
+
+    private final String eventId;
 
     private final String title;
 
     private final String content;
 
-    private final String profileId;
-
-    private final String image;
+    private final String base64Image;
 
     private final Date dateInit;
 
     private final Date dateEnd;
 
-    private CreateEventReq(String token, String title, String content, String profileId, String image, Date dateInit, Date dateEnd) {
+    private EditEventReq(String token, String eventId, String title, String content, String base64Image, Date dateInit, Date dateEnd) {
         this.token = token;
+        this.eventId = eventId;
         this.title = title;
         this.content = content;
-        this.profileId = profileId;
-        this.image = image;
+        this.base64Image = base64Image;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
     }
 
-    public static CreateEventReq create(String token, String title, String content, String profileId, String image, Date dateInit, Date dateEnd) {
+    public static EditEventReq create(String token, String eventId, String title, String content, String base64Image, Date dateInit, Date dateEnd) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (title == null || content == null || profileId == null || dateInit == null || dateEnd == null) {
+        if (eventId == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (title == null || content == null || dateInit == null || dateEnd == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -59,6 +63,7 @@ public class CreateEventReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreateEventReq(token, title, content, profileId, image, dateInit, dateEnd);
+        return new EditEventReq(token, eventId, title, content, base64Image, dateInit, dateEnd);
     }
+
 }

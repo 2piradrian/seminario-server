@@ -2,9 +2,9 @@ package com.group3.events.data.repository;
 
 import com.group3.entity.Event;
 import com.group3.entity.Status;
-import com.group3.events.data.datasource.mapper.EventEntityMapper;
-import com.group3.events.data.datasource.model.EventModel;
-import com.group3.events.data.datasource.repository.PostgresEventRepositoryI;
+import com.group3.events.data.datasource.postgres.mapper.EventEntityMapper;
+import com.group3.events.data.datasource.postgres.model.EventModel;
+import com.group3.events.data.datasource.postgres.repository.PostgresEventRepositoryI;
 import com.group3.events.domain.repository.EventRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -17,16 +17,13 @@ public enum ErrorType {
     POST_NOT_FOUND("Forum not found", 404),
     PAGE_NOT_FOUND("Page not found", 404),
     PAGE_TYPE_NOT_FOUND("Page type not found", 404),
-
+    EVENT_NOT_FOUND("Event not found", 404),
     UNAUTHORIZED("Unauthorized", 401),
     INVALID_PASSWORD("Invalid password", 400),
-
     FULLNAME_ALREADY_EXISTS("Full name of the user already exists", 400),
     EMAIL_ALREADY_EXISTS("Email already exists", 400),
-
-    POST_NOT_ACTIVE("Forum not active", 400),
+    POST_NOT_ACTIVE("Post not active", 400),
     COMMENT_NOT_FOUND("Comment not found", 404),
-
     STYLE_NOT_FOUND("Style not found", 404),
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),

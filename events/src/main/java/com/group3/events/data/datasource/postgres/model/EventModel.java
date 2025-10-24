@@ -1,4 +1,4 @@
-package com.group3.events.data.datasource.model;
+package com.group3.events.data.datasource.postgres.model;
 
 import com.group3.entity.PageProfile;
 import com.group3.entity.Status;
