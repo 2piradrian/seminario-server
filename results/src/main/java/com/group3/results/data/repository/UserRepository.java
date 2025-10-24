@@ -22,7 +22,7 @@ public class UserRepository implements UserRepositoryI {
         User user = new User();
         user.setId(response.getId());
         user.setEmail(response.getEmail());
-        user.setRoles(response.getRoles());
+        user.setRol(response.getRol());
         user.setStatus(response.getStatus());
 
         return user;
