@@ -21,14 +21,24 @@ public class Event {
 
     private PageProfile pageProfile;
 
+    private String title;
+
+    private String content;
+
+    private String imageId;
+
     private Date dateInit;
 
     private Date dateEnd;
+
+    private Integer views;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     private List<String> assist;
+
+    private Status status;
 
 }
