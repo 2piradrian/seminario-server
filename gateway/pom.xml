@@ -12,7 +12,7 @@
 	<artifactId>gateway</artifactId>
 	<version>1.0.0</version>
 	<name>gateway</name>
-	<description>Gateway server</description>
+	<description>gateway</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -78,6 +78,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>gateway</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -91,9 +92,17 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<excludes>
 						<exclude>
