@@ -102,7 +102,6 @@ public class PostService implements PostServiceI {
         post.setViews(views + 1);
         this.postsRepository.update(post);
 
-        post.setVotersQuantities();
         post.setVotersToNull();
 
         return PostMapper.getById().toResponse(post);
@@ -125,7 +124,6 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
-            post.setVotersQuantities();
             post.setVotersToNull();
         }
 
@@ -140,7 +138,6 @@ public class PostService implements PostServiceI {
         PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText());
 
         for (Post post : posts.getContent()) {
-            post.setVotersQuantities();
             post.setVotersToNull();
         }
 
@@ -172,7 +169,6 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
-            post.setVotersQuantities();
             post.setVotersToNull();
         }
 
@@ -198,7 +194,6 @@ public class PostService implements PostServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
                 post.setPageProfile(fullPage);
             }
-            post.setVotersQuantities();
             post.setVotersToNull();
         }
 
@@ -252,7 +247,6 @@ public class PostService implements PostServiceI {
             post.setPageProfile(fullPage);
         }
 
-        post.setVotersQuantities();
         post.setVotersToNull();
 
         return PostMapper.toggleVotes().toResponse(post);

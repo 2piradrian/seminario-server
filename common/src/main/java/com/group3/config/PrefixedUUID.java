@@ -14,7 +14,8 @@ public class PrefixedUUID {
         PAGE((byte) 0b0010),
         POST((byte) 0b0011),
         COMMENT((byte) 0b0100),
-        IMAGE((byte) 0b0101);
+        IMAGE((byte) 0b0101),
+        EVENT((byte) 0b0110);
 
         private final byte prefix;
 
