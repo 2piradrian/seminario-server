@@ -1,5 +1,6 @@
 package com.group3.events.domain.dto.event.mapper.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group3.entity.Event;
 import com.group3.events.domain.dto.event.request.EditEventReq;
 import com.group3.events.domain.dto.event.response.EditEventRes;
@@ -9,6 +10,8 @@ import java.util.Map;
 
 public class EditMapper {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     public EditEventReq toRequest(String token, Map<String, Object> payload) {
         return EditEventReq.create(
                 token,
@@ -16,8 +19,8 @@ public class EditMapper {
                 (String) payload.get("title"),
                 (String) payload.get("content"),
                 (String) payload.get("base64Image"),
-                (Date) payload.get("dateInit"),
-                (Date) payload.get("dateEnd")
+                objectMapper.convertValue(payload.get("dateInit"), Date.class),
+                objectMapper.convertValue(payload.get("dateEnd"), Date.class)
         );
     }
 
