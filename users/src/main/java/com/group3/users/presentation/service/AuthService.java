@@ -38,6 +38,8 @@ public class AuthService implements AuthServiceI {
 
     private final EmailHelper emailHelper;
 
+    // ======== Authenticate User ========
+
     @Override
     public AuthUserRes auth(AuthUserReq dto) {
         String token = this.authHelper.validateToken(dto.getToken());
@@ -64,6 +66,8 @@ public class AuthService implements AuthServiceI {
         return AuthMapper.auth().toResponse(user);
     }
 
+    // ======== Register User ========
+
     @Override
     public void register(RegisterUserReq dto) {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
@@ -85,6 +89,47 @@ public class AuthService implements AuthServiceI {
 
         this.emailService.sendEmail(saved.getEmail(),"Email Validation", this.emailHelper.verifyEmailHTML(token.getAccessToken()));
     }
+
+    // ======== Grant roles to user ========
+
+    @Override
+    public void grantRole(GrantRoleUserReq dto){
+        AuthUserRes adminAuth = this.auth(AuthUserReq.create(dto.getToken()));
+        if (adminAuth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!adminAuth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userUpdated = this.userRepository.getByEmail(dto.getEmail());
+        if (userUpdated == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        Role newRole = Role.fromString(dto.getRoleId());
+        if (newRole == null) throw new ErrorHandler(ErrorType.ROLE_NOT_FOUND);
+
+        if(userUpdated.getRole().equals(newRole)) throw new ErrorHandler(ErrorType.USER_ALREADY_HAS_ROLE);
+
+        userUpdated.setRole(newRole);
+        this.userRepository.update(userUpdated);
+    }
+
+    // ======== Revoke roles to user ========
+
+    @Override
+    public void revokeRole(RevokeRoleUserReq dto){
+        AuthUserRes adminAuth = this.auth(AuthUserReq.create(dto.getToken()));
+        if (adminAuth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!adminAuth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userUpdated = this.userRepository.getByEmail(dto.getEmail());
+        if (userUpdated == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if(!userUpdated.getRole().canDelete()) throw new ErrorHandler(ErrorType.USER_ALREADY_HAS_NO_ROLE);
+
+        userUpdated.setRole(Role.USER);
+        this.userRepository.update(userUpdated);
+    }
+
+    // ======== Login User ========
 
     @Override
     public LoginUserRes login(LoginUserReq dto) {
@@ -108,6 +153,8 @@ public class AuthService implements AuthServiceI {
 
         return AuthMapper.login().toResponse(token);
     }
+
+    // ======== Verify Email ========
 
     @Override
     public void verifyEmail(VerifyEmailReq dto){
@@ -134,6 +181,8 @@ public class AuthService implements AuthServiceI {
 
         this.userRepository.update(user);
     }
+
+    // ======== Resend Verify Email ========
 
     @Override
     public void resendVerifyEmail (ResendEmailReq dto){
