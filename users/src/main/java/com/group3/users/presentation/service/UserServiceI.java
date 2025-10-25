@@ -9,4 +9,6 @@ public interface UserServiceI {
 
     void delete(DeleteUserReq dto);
 
+    GetAllStaffRes getAllStaff(GetAllStaffReq dto);
+
 }
