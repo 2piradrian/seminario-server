@@ -1,6 +1,7 @@
 package com.group3.users.data.repository;
 
 import com.group3.entity.Role;
+import com.group3.entity.Status;
 import com.group3.entity.User;
 import com.group3.users.data.datasource.postgres.mapper.UserEntityMapper;
 import com.group3.users.data.datasource.postgres.model.UserModel;
@@ -32,7 +33,7 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<User> getAllStaff() {
-        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER);
+        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER, Status.ACTIVE);
         return UserEntityMapper.toDomain(models);
     }
 
