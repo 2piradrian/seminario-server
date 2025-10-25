@@ -34,6 +34,19 @@ public class UserService implements UserServiceI {
         return UserMapper.getById().toResponse(user);
     }
 
+    @Override
+    public GetAllStaffRes getAllStaff(GetAllStaffReq dto){
+        AuthUserRes auth = this.authService.auth(AuthUserReq.create(dto.getToken()));
+        if (auth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!auth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        List<User> user = this.userRepository.getAllStaff();
+        user.forEach(u -> u.setPassword(null));
+
+        return UserMapper.getAllStaff().toResponse(user);
+    }
+
     // TODO: verificar si ya no esta deleted
 
     @Override

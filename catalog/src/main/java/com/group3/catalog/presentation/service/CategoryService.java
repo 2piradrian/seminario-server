@@ -28,32 +28,32 @@ public class CategoryService implements CategoryServiceI {
 
     @Override
     public GetAllCategoryRes getAll(){
-        List<Category> Category = this.repository.getAll();
-        return CategoryMapper.getAll().toResponse(Category);
+        List<Category> category = this.repository.getAll();
+        return CategoryMapper.getAll().toResponse(category);
     }
 
     @Override
     public GetCategoryByIdRes getById(GetCategoryByIdReq dto) {
-        Category Category = this.repository.getById(dto.getId());
+        Category category = this.repository.getById(dto.getId());
 
-        if (Category == null) {
+        if (category == null) {
             throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
         }
 
-        return CategoryMapper.getById().toResponse(Category);
+        return CategoryMapper.getById().toResponse(category);
     }
 
     @Override
     public GetCategoryListByIdRes getListById(GetCategoryListByIdReq dto) {
-        List<Category> Categories = dto.getIds().stream()
+        List<Category> categories = dto.getIds().stream()
                 .map(this.repository::getById)
                 .filter(Objects::nonNull)
                 .toList();
 
-        if (Categories.isEmpty()) {
+        if (categories.isEmpty()) {
             return CategoryMapper.getListById().toResponse(List.of());
         }
 
-        return CategoryMapper.getListById().toResponse(Categories);
+        return CategoryMapper.getListById().toResponse(categories);
     }
 }

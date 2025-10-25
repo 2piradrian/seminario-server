@@ -24,4 +24,11 @@ public class AuthMapper {
         return new ResendEmailMapper();
     }
 
+    public static GrantUserMapper grantRole() {
+        return new GrantUserMapper();
+    }
+
+    public static RevokeUserMapper revokeRole() {
+        return new RevokeUserMapper();
+    }
 }

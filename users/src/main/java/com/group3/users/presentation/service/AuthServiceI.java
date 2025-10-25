@@ -16,4 +16,8 @@ public interface AuthServiceI {
 
     void resendVerifyEmail(ResendEmailReq dto);
 
+    void grantRole(GrantRoleUserReq dto);
+
+    void revokeRole(RevokeRoleUserReq dto);
+
 }

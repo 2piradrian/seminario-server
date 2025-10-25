@@ -12,6 +12,8 @@ public enum ErrorType {
     USER_DELETED("User has been banned", 400),
     PASSWORDS_DO_NOT_MATCH("Passwords do not match", 400),
     USER_ALREADY_ACTIVATED("User already activated", 400),
+    USER_ALREADY_HAS_NO_ROLE("User already has no assigned role", 400),
+    USER_ALREADY_HAS_ROLE("User already has assigned role", 400),
 
     USER_NOT_FOUND("User not found", 404),
     POST_NOT_FOUND("Forum not found", 404),
@@ -25,6 +27,7 @@ public enum ErrorType {
     POST_NOT_ACTIVE("Post not active", 400),
     COMMENT_NOT_FOUND("Comment not found", 404),
     STYLE_NOT_FOUND("Style not found", 404),
+    ROLE_NOT_FOUND("Role not found", 404),
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),
     PAGETYPE_NOT_FOUND("Page type not found", 404),

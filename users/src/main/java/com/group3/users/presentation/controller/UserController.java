@@ -23,6 +23,15 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
+    @GetMapping("/get-all-staff")
+    public ResponseEntity<?> getOwnProfile(
+        @RequestHeader(value = "Authorization") String token
+    ) {
+        GetAllStaffReq dto = UserMapper.getAllStaff().toRequest(token);
+
+        return ResponseEntity.ok(this.userService.getAllStaff(dto));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token
