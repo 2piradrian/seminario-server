@@ -12,4 +12,8 @@ public class UserMapper {
         return new DeleteMapper();
     }
 
+    public static GetAllStaffMapper getAllStaff() {
+        return new GetAllStaffMapper();
+    }
+
 }
