@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetStyleListByIdRes {
 
-    List<Style> styles;
+    private final List<Style> styles;
 
 }

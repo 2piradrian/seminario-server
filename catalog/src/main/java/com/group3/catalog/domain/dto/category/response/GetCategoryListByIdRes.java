@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetCategoryListByIdRes {
 
-    List<Category> categories;
+    private final List<Category> categories;
 
 }
 
