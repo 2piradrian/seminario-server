@@ -1,5 +1,6 @@
 package com.group3.users.data.repository;
 
+import com.group3.entity.Role;
 import com.group3.entity.User;
 import com.group3.users.data.datasource.postgres.mapper.UserEntityMapper;
 import com.group3.users.data.datasource.postgres.model.UserModel;
@@ -7,6 +8,8 @@ import com.group3.users.data.datasource.postgres.repository.PostgresUserReposito
 import com.group3.users.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Repository
@@ -25,6 +28,12 @@ public class UserRepository implements UserRepositoryI {
     public User getByEmail(String email) {
         UserModel userModel = this.userRepository.findByEmail(email).orElse(null);
         return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+    }
+
+    @Override
+    public List<User> getAllStaff() {
+        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER);
+        return UserEntityMapper.toDomain(models);
     }
 
     @Override
