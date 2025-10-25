@@ -18,7 +18,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     volumes:
-      - ./logs:/app
+      - ./logs:/app/logs
     networks:
       - app-network
 
