@@ -3,6 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
@@ -14,7 +15,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -23,6 +27,8 @@ import java.util.List;
 public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
+
+    private final UserProfileRepository userProfileRepository;
 
     private final AuthService authService;
 
@@ -41,10 +47,25 @@ public class UserService implements UserServiceI {
 
         if (!auth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<User> user = this.userRepository.getAllStaff();
-        user.forEach(u -> u.setPassword(null));
+        List<User> staffUsers = this.userRepository.getAllStaff();
 
-        return UserMapper.getAllStaff().toResponse(user);
+        Map<Role,List<UserProfile>> staff = new HashMap<>();
+        List<UserProfile> modUsers = new ArrayList<>();
+        List<UserProfile> adminUsers = new ArrayList<>();
+
+        for (User user : staffUsers){
+            UserProfile userProfile = this.userProfileRepository.getById(dto.getToken(), user.getId());
+            if (user.getRole().equals(Role.MODERATOR)){
+                modUsers.add(userProfile);
+            } else if (user.getRole().equals(Role.ADMIN)){
+                adminUsers.add(userProfile);
+            }
+        }
+
+        staff.put(Role.ADMIN,adminUsers);
+        staff.put(Role.MODERATOR,modUsers);
+
+        return UserMapper.getAllStaff().toResponse(staff);
     }
 
     // TODO: verificar si ya no esta deleted
