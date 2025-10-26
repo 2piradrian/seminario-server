@@ -17,7 +17,7 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
     @Query("""
         SELECT u FROM UserModel u 
         WHERE u.role <> :roleExcluded
-        AND u.role = activeStatus
+        AND u.status = :activeStatus
     """)
     List<UserModel> findWithExcludedRole(
         @Param("roleExcluded") Role roleExcluded,
