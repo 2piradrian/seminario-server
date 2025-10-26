@@ -5,11 +5,11 @@ public enum Role {
     MODERATOR,
     ADMIN;
 
-    public boolean canDelete() {
+    public Boolean canDelete() {
         return this == MODERATOR || this == ADMIN;
     }
 
-    public boolean canAsignRole() {
+    public Boolean canAsignRole() {
         return this == ADMIN;
     }
 

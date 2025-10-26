@@ -2,8 +2,10 @@ package com.group3.users.data.datasource.user_profiles_server.repository;
 
 import com.group3.users.config.beans.LoadBalancerConfiguration;
 import com.group3.users.data.datasource.user_profiles_server.responses.GetOwnUserProfileRes;
+import com.group3.users.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -20,5 +22,8 @@ public interface UserProfileServerRepositoryI {
 
     @PutMapping("/api/user-profiles/active")
     void active(@RequestBody Map<String, Object> payload);
+
+    @GetMapping("/api/user-profiles/get-by-id/{userId}")
+    GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
 
 }
