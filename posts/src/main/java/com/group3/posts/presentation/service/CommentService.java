@@ -75,7 +75,6 @@ public class CommentService implements CommentServiceI {
         }
 
         Comment saved = this.commentRepository.save(comment);
-        comment.setVotersQuantities();
         comment.setVotersToNull();
         comment.setId(saved.getId());
 
@@ -103,7 +102,6 @@ public class CommentService implements CommentServiceI {
                         PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
                         comment.setPageProfile(fullPage);
                     }
-                    comment.setVotersQuantities();
                     comment.setVotersToNull();
                 }
         );
@@ -145,7 +143,6 @@ public class CommentService implements CommentServiceI {
         comment.setDownvoters(downvoters);
         this.commentRepository.update(comment);
 
-        comment.setVotersQuantities();
         comment.setVotersToNull();
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {

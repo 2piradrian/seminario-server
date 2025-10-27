@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,16 +17,14 @@ import java.util.List;
 public class UserProfileModel {
 
     @Id
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String name;
-
     private String surname;
-
     private LocalDateTime memberSince;
 
     @Column(columnDefinition = "TEXT")
@@ -37,7 +34,6 @@ public class UserProfileModel {
     private String profileImage;
 
     private String shortDescription;
-
     private String longDescription;
 
     @ElementCollection
@@ -54,6 +50,9 @@ public class UserProfileModel {
     @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "following_id")
     private List<String> following;
+
+    @OneToMany(mappedBy = "reviewedUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewModel> reviews;
 
     @Enumerated(EnumType.STRING)
     private Status status;
