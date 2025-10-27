@@ -15,6 +15,15 @@ public class ReviewRepository implements ReviewRepositoryI {
     private final PostgresReviewRepositoryI repository;
 
 
+    // ======== Get Review by ID ========
+
+    @Override
+    public Review getById(String reviewId) {
+        ReviewModel reviewModel = this.repository.findById(reviewId).orElse(null);
+        return reviewModel != null ? ReviewEntityMapper.toDomain(reviewModel) : null;
+    }
+
+
     // ======== Save and Update ========
 
     @Override
@@ -38,5 +47,4 @@ public class ReviewRepository implements ReviewRepositoryI {
     public void delete(String reviewId) {
         this.repository.deleteById(reviewId);
     }
-
 }

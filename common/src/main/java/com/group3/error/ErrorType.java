@@ -24,6 +24,7 @@ public enum ErrorType {
     EMAIL_ALREADY_EXISTS("Email already exists", 400),
     POST_NOT_ACTIVE("Post not active", 400),
     COMMENT_NOT_FOUND("Comment not found", 404),
+    REVIEW_NOT_FOUND("Review not found", 404),
     STYLE_NOT_FOUND("Style not found", 404),
     INSTRUMENT_NOT_FOUND("Instrument not found", 404),
     CATEGORY_NOT_FOUND("Category not found", 404),

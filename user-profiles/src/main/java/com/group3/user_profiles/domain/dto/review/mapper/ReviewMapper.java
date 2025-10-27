@@ -17,4 +17,5 @@ public class ReviewMapper {
     public static DeleteMapper delete() {
         return new DeleteMapper();
     }
+
 }

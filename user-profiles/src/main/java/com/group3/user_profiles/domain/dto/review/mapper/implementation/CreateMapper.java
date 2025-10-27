@@ -1,6 +1,8 @@
 package com.group3.user_profiles.domain.dto.review.mapper.implementation;
 
+import com.group3.entity.Review;
 import com.group3.user_profiles.domain.dto.review.request.CreateReviewReq;
+import com.group3.user_profiles.domain.dto.review.response.CreateReviewRes;
 
 import java.util.Map;
 
@@ -12,6 +14,12 @@ public class CreateMapper {
             (String) payload.get("review"),
             payload.get("rating") != null ? ((Number) payload.get("rating")).floatValue() : null,
             token
+        );
+    }
+
+    public CreateReviewRes toResponse(Review review) {
+        return new CreateReviewRes(
+                review.getId()
         );
     }
 
