@@ -15,6 +15,7 @@ public class ReviewEntityMapper {
         return new Review(
                 model.getId(),
                 UserProfileEntityMapper.toDomain(model.getReviewedUser()),
+                UserProfileEntityMapper.toDomain(model.getReviewerUser()),
                 model.getReview(),
                 model.getRating()
         );
@@ -23,12 +24,13 @@ public class ReviewEntityMapper {
     public static ReviewModel toModel(Review review) {
         if (review == null) return null;
 
-        ReviewModel model = new ReviewModel();
-        model.setId(review.getId());
-        model.setReviewedUser(UserProfileEntityMapper.toModel(review.getReviewedUser()));
-        model.setReview(review.getReview());
-        model.setRating(review.getRating());
-        return model;
+        return new ReviewModel(
+                review.getId(),
+                UserProfileEntityMapper.toModel(review.getReviewedUser()),
+                UserProfileEntityMapper.toModel(review.getReviewerUser()),
+                review.getReview(),
+                review.getRating()
+        );
     }
 
     public static List<Review> toDomain(List<ReviewModel> models) {

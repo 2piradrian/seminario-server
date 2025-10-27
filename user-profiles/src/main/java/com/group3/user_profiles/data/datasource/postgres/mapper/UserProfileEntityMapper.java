@@ -38,8 +38,11 @@ public class UserProfileEntityMapper {
                         ? userProfileModel.getFollowing()
                         : Collections.emptyList(),
                 userProfileModel.getStatus(),
-                userProfileModel.getReviews() != null
-                        ? ReviewEntityMapper.toDomain(userProfileModel.getReviews())
+                userProfileModel.getReceivedReviews() != null
+                        ? ReviewEntityMapper.toDomain(userProfileModel.getReceivedReviews())
+                        : Collections.emptyList(),
+                userProfileModel.getWrittenReviews() != null
+                        ? ReviewEntityMapper.toDomain(userProfileModel.getWrittenReviews())
                         : Collections.emptyList(),
                 false
         );
@@ -68,8 +71,11 @@ public class UserProfileEntityMapper {
                 ? userProfile.getFollowing()
                 : Collections.emptyList());
         model.setStatus(userProfile.getStatus());
-        model.setReviews(userProfile.getReviews() != null
-                ? ReviewEntityMapper.toModel(userProfile.getReviews())
+        model.setReceivedReviews(userProfile.getReceivedReviews() != null
+                ? ReviewEntityMapper.toModel(userProfile.getReceivedReviews())
+                : Collections.emptyList());
+        model.setWrittenReviews(userProfile.getWrittenReviews() != null
+                ? ReviewEntityMapper.toModel(userProfile.getWrittenReviews())
                 : Collections.emptyList());
 
         return model;

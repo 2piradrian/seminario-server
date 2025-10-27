@@ -34,6 +34,7 @@ public class UserProfileModel {
     private String profileImage;
 
     private String shortDescription;
+
     private String longDescription;
 
     @ElementCollection
@@ -52,7 +53,10 @@ public class UserProfileModel {
     private List<String> following;
 
     @OneToMany(mappedBy = "reviewedUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewModel> reviews;
+    private List<ReviewModel> receivedReviews;
+
+    @OneToMany(mappedBy = "reviewerUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewModel> writtenReviews;
 
     @Enumerated(EnumType.STRING)
     private Status status;
