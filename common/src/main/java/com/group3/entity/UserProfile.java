@@ -40,7 +40,10 @@ public class UserProfile {
 
     private Status status;
 
-    // Domain Variable
-    private Boolean isFollowing;
+    private List<Review> receivedReviews;
 
+    private List<Review> writtenReviews;
+
+    // Domain variable
+    private Boolean isFollowing;
 }
