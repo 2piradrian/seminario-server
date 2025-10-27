@@ -1,0 +1,33 @@
+package com.group3.user_profiles.data.datasource.postgres.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "reviews")
+public class ReviewModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private UserProfileModel author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewed_user_id", nullable = false)
+    private UserProfileModel reviewedUser;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String review;
+
+    @Column(nullable = false)
+    private Float rating;
+
+}

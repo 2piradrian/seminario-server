@@ -1,6 +1,7 @@
 package com.group3.user_profiles.data.datasource.postgres.mapper;
 
 import com.group3.entity.Instrument;
+import com.group3.entity.Review;
 import com.group3.entity.Style;
 import com.group3.entity.UserProfile;
 import com.group3.user_profiles.data.datasource.postgres.model.UserProfileModel;
@@ -30,6 +31,7 @@ public class UserProfileEntityMapper {
                 .collect(Collectors.toList()),
             userProfileModel.getFollowing(),
             userProfileModel.getStatus(),
+            ReviewEntityMapper.toDomain(userProfileModel.getReviews()),
             false
         );
     }
@@ -52,6 +54,7 @@ public class UserProfileEntityMapper {
                 .map(Instrument::getId)
                 .collect(Collectors.toList()),
             userProfile.getFollowing(),
+            ReviewEntityMapper.toModel(userProfile.getReviews(), toModel(userProfile)), // TODO: Stack overflow
             userProfile.getStatus()
         );
     }
