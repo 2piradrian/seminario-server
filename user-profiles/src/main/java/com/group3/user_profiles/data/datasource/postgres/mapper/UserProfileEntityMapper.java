@@ -1,5 +1,7 @@
 package com.group3.user_profiles.data.datasource.postgres.mapper;
 
+import com.group3.entity.Instrument;
+import com.group3.entity.Style;
 import com.group3.entity.UserProfile;
 import com.group3.user_profiles.data.datasource.postgres.model.UserProfileModel;
 
@@ -24,12 +26,12 @@ public class UserProfileEntityMapper {
                 userProfileModel.getLongDescription(),
                 userProfileModel.getStyles() != null
                         ? userProfileModel.getStyles().stream()
-                        .map(id -> new com.group3.entity.Style(id, null))
+                        .map(id -> new Style(id, null))
                         .collect(Collectors.toList())
                         : Collections.emptyList(),
                 userProfileModel.getInstruments() != null
                         ? userProfileModel.getInstruments().stream()
-                        .map(id -> new com.group3.entity.Instrument(id, null))
+                        .map(id -> new Instrument(id, null))
                         .collect(Collectors.toList())
                         : Collections.emptyList(),
                 userProfileModel.getFollowing() != null
@@ -39,7 +41,7 @@ public class UserProfileEntityMapper {
                 userProfileModel.getReviews() != null
                         ? ReviewEntityMapper.toDomain(userProfileModel.getReviews())
                         : Collections.emptyList(),
-                false // isFollowing por defecto
+                false
         );
     }
 
@@ -57,10 +59,10 @@ public class UserProfileEntityMapper {
         model.setShortDescription(userProfile.getShortDescription());
         model.setLongDescription(userProfile.getLongDescription());
         model.setStyles(userProfile.getStyles() != null
-                ? userProfile.getStyles().stream().map(com.group3.entity.Style::getId).collect(Collectors.toList())
+                ? userProfile.getStyles().stream().map(Style::getId).collect(Collectors.toList())
                 : Collections.emptyList());
         model.setInstruments(userProfile.getInstruments() != null
-                ? userProfile.getInstruments().stream().map(com.group3.entity.Instrument::getId).collect(Collectors.toList())
+                ? userProfile.getInstruments().stream().map(Instrument::getId).collect(Collectors.toList())
                 : Collections.emptyList());
         model.setFollowing(userProfile.getFollowing() != null
                 ? userProfile.getFollowing()
