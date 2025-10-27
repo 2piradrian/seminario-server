@@ -1,8 +1,6 @@
 package com.group3.user_profiles.data.datasource.postgres.repository;
 
-import com.group3.entity.Instrument;
 import com.group3.entity.Status;
-import com.group3.entity.Style;
 import com.group3.user_profiles.data.datasource.postgres.model.UserProfileModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
