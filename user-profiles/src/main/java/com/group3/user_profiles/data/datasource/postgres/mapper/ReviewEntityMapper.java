@@ -1,6 +1,7 @@
 package com.group3.user_profiles.data.datasource.postgres.mapper;
 
 import com.group3.entity.Review;
+import com.group3.entity.UserProfile;
 import com.group3.user_profiles.data.datasource.postgres.model.ReviewModel;
 
 import java.util.Collections;
@@ -12,25 +13,26 @@ public class ReviewEntityMapper {
     public static Review toDomain(ReviewModel model) {
         if (model == null) return null;
 
-        return new Review(
-                model.getId(),
-                UserProfileEntityMapper.toDomain(model.getReviewedUser()),
-                UserProfileEntityMapper.toDomain(model.getReviewerUser()),
-                model.getReview(),
-                model.getRating()
-        );
+        return Review.builder()
+                .id(model.getId())
+                .reviewedUser(model.getReviewedUserId() != null ? UserProfile.builder().id(model.getReviewedUserId()).build() : null)
+                .reviewerUser(model.getReviewerUserId() != null ? UserProfile.builder().id(model.getReviewerUserId()).build() : null)
+                .review(model.getReview())
+                .rating(model.getRating())
+                .build();
+
     }
 
     public static ReviewModel toModel(Review review) {
         if (review == null) return null;
 
-        return new ReviewModel(
-                review.getId(),
-                UserProfileEntityMapper.toModel(review.getReviewedUser()),
-                UserProfileEntityMapper.toModel(review.getReviewerUser()),
-                review.getReview(),
-                review.getRating()
-        );
+        ReviewModel model = new ReviewModel();
+        model.setId(review.getId());
+        model.setReviewedUserId(review.getReviewedUser() != null ? review.getReviewedUser().getId() : null);
+        model.setReviewerUserId(review.getReviewerUser() != null ? review.getReviewerUser().getId() : null);
+        model.setReview(review.getReview());
+        model.setRating(review.getRating());
+        return model;
     }
 
     public static List<Review> toDomain(List<ReviewModel> models) {
