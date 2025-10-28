@@ -15,6 +15,8 @@ public class Review {
 
     private UserProfile reviewedUser;
 
+    private UserProfile reviewerUser;
+
     private String review;
 
     private Float rating;

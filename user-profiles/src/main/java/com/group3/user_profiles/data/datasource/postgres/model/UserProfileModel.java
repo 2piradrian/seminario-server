@@ -34,6 +34,7 @@ public class UserProfileModel {
     private String profileImage;
 
     private String shortDescription;
+
     private String longDescription;
 
     @ElementCollection
@@ -50,9 +51,6 @@ public class UserProfileModel {
     @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "following_id")
     private List<String> following;
-
-    @OneToMany(mappedBy = "reviewedUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewModel> reviews;
 
     @Enumerated(EnumType.STRING)
     private Status status;

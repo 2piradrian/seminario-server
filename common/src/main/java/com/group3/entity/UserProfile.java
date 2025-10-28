@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
@@ -41,9 +40,6 @@ public class UserProfile {
 
     private Status status;
 
-    private List<Review> reviews;
-
-    // Domain Variable
+    // Domain variable
     private Boolean isFollowing;
-
 }

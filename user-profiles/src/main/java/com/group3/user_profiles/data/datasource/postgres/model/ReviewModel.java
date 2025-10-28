@@ -16,9 +16,11 @@ public class ReviewModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewed_user_id", nullable = false)
-    private UserProfileModel reviewedUser;
+    @Column(name = "reviewed_user_id", nullable = false)
+    private String reviewedUserId;
+
+    @Column(name = "reviewer_user_id", nullable = false)
+    private String reviewerUserId;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String review;
