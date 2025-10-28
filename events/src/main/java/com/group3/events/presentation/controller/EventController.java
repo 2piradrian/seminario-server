@@ -54,6 +54,16 @@ public class EventController {
         return ResponseEntity.ok(this.service.getOwnAsist(dto));
     }
 
+    @PatchMapping("/toggle-asist")
+    public ResponseEntity<?> toggleAsist(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        ToggleAsistReq dto = EventMapper.toggleAsist().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.toggleAsist(dto));
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
