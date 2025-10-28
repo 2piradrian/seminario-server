@@ -1,8 +1,6 @@
 package com.group3.events.domain.dto.event.mapper;
 
-import com.group3.events.domain.dto.event.mapper.implementation.CreateMapper;
-import com.group3.events.domain.dto.event.mapper.implementation.EditMapper;
-import com.group3.events.domain.dto.event.mapper.implementation.GetByIdMapper;
+import com.group3.events.domain.dto.event.mapper.implementation.*;
 
 public class EventMapper {
 
@@ -14,8 +12,20 @@ public class EventMapper {
         return new GetByIdMapper();
     }
 
+    public static GetOwnEventMapper getOwnPage(){
+        return new GetOwnEventMapper();
+    }
+
+    public static GetOwnAssistsMapper getOwnAsist() {
+        return new GetOwnAssistsMapper();
+    }
+
     public static EditMapper edit() {
         return new EditMapper();
+    }
+
+    public static ToggleAsistMapper toggleAsist(){
+        return new ToggleAsistMapper();
     }
 
 }
