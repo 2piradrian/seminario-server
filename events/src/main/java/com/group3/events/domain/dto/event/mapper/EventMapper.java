@@ -17,11 +17,15 @@ public class EventMapper {
     }
 
     public static GetOwnAssistsMapper getOwnAsist() {
-        return new GetOwnAssistsMapper()
+        return new GetOwnAssistsMapper();
     }
 
     public static EditMapper edit() {
         return new EditMapper();
+    }
+
+    public static ToggleAsistMapper toggleAsist(){
+        return new ToggleAsistMapper();
     }
 
 }
