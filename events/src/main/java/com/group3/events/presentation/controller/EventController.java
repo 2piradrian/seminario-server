@@ -1,9 +1,7 @@
 package com.group3.events.presentation.controller;
 
 import com.group3.events.domain.dto.event.mapper.EventMapper;
-import com.group3.events.domain.dto.event.request.CreateEventReq;
-import com.group3.events.domain.dto.event.request.EditEventReq;
-import com.group3.events.domain.dto.event.request.GetEventByIdReq;
+import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.presentation.service.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +34,24 @@ public class EventController {
         GetEventByIdReq dto = EventMapper.getById().toRequest(eventId, token);
 
         return ResponseEntity.ok(this.service.getById(dto));
+    }
+
+    @PostMapping("/get-own-events")
+    public ResponseEntity<?> getOwnEvents(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetOwnEventPageReq dto = EventMapper.getOwnPage().toRequest(token, payload);
+        return ResponseEntity.ok(this.service.getOwnEvents(dto));
+    }
+
+    @PostMapping("/get-own-asists")
+    public ResponseEntity<?> getOwnAsists(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetOwnEventsAssistedPageReq dto = EventMapper.getOwnAsist().toRequest(token, payload);
+        return ResponseEntity.ok(this.service.getOwnAsist(dto));
     }
 
     @PutMapping("/edit")
