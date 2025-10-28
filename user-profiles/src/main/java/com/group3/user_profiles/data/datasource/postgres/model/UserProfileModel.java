@@ -52,12 +52,6 @@ public class UserProfileModel {
     @Column(name = "following_id")
     private List<String> following;
 
-    @OneToMany(mappedBy = "reviewedUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewModel> receivedReviews;
-
-    @OneToMany(mappedBy = "reviewerUser", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewModel> writtenReviews;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 

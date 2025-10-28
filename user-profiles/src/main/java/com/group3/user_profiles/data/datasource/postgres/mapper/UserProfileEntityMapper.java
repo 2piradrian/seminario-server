@@ -38,12 +38,6 @@ public class UserProfileEntityMapper {
                         ? userProfileModel.getFollowing()
                         : Collections.emptyList(),
                 userProfileModel.getStatus(),
-                userProfileModel.getReceivedReviews() != null
-                        ? ReviewEntityMapper.toDomain(userProfileModel.getReceivedReviews())
-                        : Collections.emptyList(),
-                userProfileModel.getWrittenReviews() != null
-                        ? ReviewEntityMapper.toDomain(userProfileModel.getWrittenReviews())
-                        : Collections.emptyList(),
                 false
         );
     }
@@ -51,34 +45,31 @@ public class UserProfileEntityMapper {
     public static UserProfileModel toModel(UserProfile userProfile) {
         if (userProfile == null) return null;
 
-        UserProfileModel model = new UserProfileModel();
-        model.setId(userProfile.getId());
-        model.setEmail(userProfile.getEmail());
-        model.setName(userProfile.getName());
-        model.setSurname(userProfile.getSurname());
-        model.setMemberSince(userProfile.getMemberSince());
-        model.setPortraitImage(userProfile.getPortraitImage());
-        model.setProfileImage(userProfile.getProfileImage());
-        model.setShortDescription(userProfile.getShortDescription());
-        model.setLongDescription(userProfile.getLongDescription());
-        model.setStyles(userProfile.getStyles() != null
-                ? userProfile.getStyles().stream().map(Style::getId).collect(Collectors.toList())
-                : Collections.emptyList());
-        model.setInstruments(userProfile.getInstruments() != null
-                ? userProfile.getInstruments().stream().map(Instrument::getId).collect(Collectors.toList())
-                : Collections.emptyList());
-        model.setFollowing(userProfile.getFollowing() != null
-                ? userProfile.getFollowing()
-                : Collections.emptyList());
-        model.setStatus(userProfile.getStatus());
-        model.setReceivedReviews(userProfile.getReceivedReviews() != null
-                ? ReviewEntityMapper.toModel(userProfile.getReceivedReviews())
-                : Collections.emptyList());
-        model.setWrittenReviews(userProfile.getWrittenReviews() != null
-                ? ReviewEntityMapper.toModel(userProfile.getWrittenReviews())
-                : Collections.emptyList());
-
-        return model;
+        return new UserProfileModel(
+                userProfile.getId(),
+                userProfile.getEmail(),
+                userProfile.getName(),
+                userProfile.getSurname(),
+                userProfile.getMemberSince(),
+                userProfile.getPortraitImage(),
+                userProfile.getProfileImage(),
+                userProfile.getShortDescription(),
+                userProfile.getLongDescription(),
+                userProfile.getStyles() != null
+                        ? userProfile.getStyles().stream()
+                        .map(Style::getId)
+                        .collect(Collectors.toList())
+                        : Collections.emptyList(),
+                userProfile.getInstruments() != null
+                        ? userProfile.getInstruments().stream()
+                        .map(Instrument::getId)
+                        .collect(Collectors.toList())
+                        : Collections.emptyList(),
+                userProfile.getFollowing() != null
+                        ? userProfile.getFollowing()
+                        : Collections.emptyList(),
+                userProfile.getStatus()
+        );
     }
 
     public static List<UserProfile> toDomain(List<UserProfileModel> models) {
