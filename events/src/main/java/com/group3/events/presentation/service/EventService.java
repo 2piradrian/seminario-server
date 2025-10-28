@@ -7,12 +7,8 @@ import com.group3.error.ErrorType;
 import com.group3.events.config.helpers.SecretKeyHelper;
 import com.group3.events.data.repository.*;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
-import com.group3.events.domain.dto.event.request.CreateEventReq;
-import com.group3.events.domain.dto.event.request.EditEventReq;
-import com.group3.events.domain.dto.event.request.GetEventByIdReq;
-import com.group3.events.domain.dto.event.response.CreateEventRes;
-import com.group3.events.domain.dto.event.response.EditEventRes;
-import com.group3.events.domain.dto.event.response.GetEventByIdRes;
+import com.group3.events.domain.dto.event.request.*;
+import com.group3.events.domain.dto.event.response.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +100,48 @@ public class EventService implements EventServiceI {
         this.eventRepository.update(event);
 
         return EventMapper.getById().toResponse(event);
+    }
+
+    @Override
+    public GetOwnEventPageRes getOwnEvents(GetOwnEventPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Event> events = this.eventRepository.getEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Event event : events.getContent()) {
+            if (event.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullProfile);
+            }
+            if (event.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                event.setPageProfile(fullPage);
+            }
+        }
+
+        return EventMapper.getOwnPage().toResponse(events);
+    }
+
+    @Override
+    public GetOwnEventsAssistedPageRes getOwnAsist(GetOwnEventsAssistedPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Event> events = this.eventRepository.getEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Event event : events.getContent()) {
+            if (event.getAuthor().getId() != null) {
+                UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullProfile);
+            }
+            if (event.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                event.setPageProfile(fullPage);
+            }
+        }
+
+        return EventMapper.getOwnAsist().toResponse(events);
     }
 
     @Override
