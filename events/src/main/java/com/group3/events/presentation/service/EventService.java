@@ -126,7 +126,7 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetOwnEventsAssistedPageRes getOwnAsist(GetOwnEventsAssistedPageReq dto) {
+    public GetOwnEventsAssistedPageRes getOwnAsists(GetOwnEventsAssistedPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 

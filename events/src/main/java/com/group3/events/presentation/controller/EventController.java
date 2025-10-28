@@ -51,7 +51,7 @@ public class EventController {
         @RequestBody Map<String, Object> payload
     ) {
         GetOwnEventsAssistedPageReq dto = EventMapper.getOwnAsist().toRequest(token, payload);
-        return ResponseEntity.ok(this.service.getOwnAsist(dto));
+        return ResponseEntity.ok(this.service.getOwnAsists(dto));
     }
 
     @PutMapping("/toggle-asist")
