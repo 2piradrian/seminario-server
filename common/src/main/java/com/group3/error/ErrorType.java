@@ -14,6 +14,9 @@ public enum ErrorType {
     USER_ALREADY_ACTIVATED("User already activated", 400),
     USER_ALREADY_HAS_NO_ROLE("User already has no assigned role", 400),
     USER_ALREADY_HAS_ROLE("User already has assigned role", 400),
+    USER_ALREADY_IS_AUTHOR("User already is the event author", 400),
+    EVENT_NOT_STARTED("Event is not started", 400),
+    EVENT_ALREADY_ENDED("Event is already ended", 400),
 
     USER_NOT_FOUND("User not found", 404),
     POST_NOT_FOUND("Forum not found", 404),
