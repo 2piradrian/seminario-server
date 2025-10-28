@@ -13,6 +13,8 @@ public interface EventServiceI {
 
     GetOwnEventsAssistedPageRes getOwnAsist(GetOwnEventsAssistedPageReq dto);
 
+    ToggleAsistRes toggleAsist(ToggleAsistReq dto);
+
     EditEventRes edit(EditEventReq dto);
 
 }

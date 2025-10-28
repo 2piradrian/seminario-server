@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -128,7 +130,7 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Event> events = this.eventRepository.getEventsByAssistant(user.getId(), dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
@@ -142,6 +144,50 @@ public class EventService implements EventServiceI {
         }
 
         return EventMapper.getOwnAsist().toResponse(events);
+    }
+
+    @Override
+    public ToggleAsistRes toggleAsist(ToggleAsistReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Event event = this.eventRepository.getById(dto.getEventId());
+        if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
+
+        if (event.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.USER_ALREADY_IS_AUTHOR);
+
+        LocalDateTime actualDateTime = LocalDateTime.now();
+
+        LocalDateTime eventDateInit = event.getDateInit().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime eventDateEnd = event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        if (actualDateTime.isBefore(eventDateInit)) throw new ErrorHandler(ErrorType.EVENT_NOT_STARTED);
+        if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
+
+        String userId = user.getId();
+        List<String> updateAsists = event.getAssist();
+
+        if (updateAsists.contains(userId)) {
+            updateAsists.remove(userId);
+        } else {
+            updateAsists.add(userId);
+        }
+
+        event.setAssist(updateAsists);
+
+        this.eventRepository.update(event);
+
+        if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+            UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullProfile);
+        }
+
+        if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+            event.setPageProfile(fullPage);
+        }
+
+        return EventMapper.toggleAsist().toResponse(event);
     }
 
     @Override
