@@ -28,5 +28,4 @@ public interface UserProfileRepositoryI {
 
     UserProfile update(UserProfile user);
 
-
 }

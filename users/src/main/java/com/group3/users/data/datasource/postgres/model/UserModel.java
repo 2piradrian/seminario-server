@@ -32,4 +32,9 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "id")
+    private UserProfileModel profile;
+
 }
