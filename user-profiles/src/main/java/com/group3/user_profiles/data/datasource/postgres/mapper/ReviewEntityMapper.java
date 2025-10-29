@@ -15,7 +15,7 @@ public class ReviewEntityMapper {
 
         return Review.builder()
                 .id(model.getId())
-                .reviewedUser(model.getReviewedUserId() != null ? UserProfile.builder().id(model.getReviewedUserId()).build() : null)
+                .reviewedId(model.getReviewedId() != null ? model.getReviewedId() : null)
                 .reviewerUser(model.getReviewerUserId() != null ? UserProfile.builder().id(model.getReviewerUserId()).build() : null)
                 .review(model.getReview())
                 .rating(model.getRating())
@@ -28,7 +28,7 @@ public class ReviewEntityMapper {
 
         ReviewModel model = new ReviewModel();
         model.setId(review.getId());
-        model.setReviewedUserId(review.getReviewedUser() != null ? review.getReviewedUser().getId() : null);
+        model.setReviewedId(review.getReviewedId() != null ? review.getReviewedId() : null);
         model.setReviewerUserId(review.getReviewerUser() != null ? review.getReviewerUser().getId() : null);
         model.setReview(review.getReview());
         model.setRating(review.getRating());

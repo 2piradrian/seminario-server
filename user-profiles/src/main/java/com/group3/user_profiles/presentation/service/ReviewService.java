@@ -1,7 +1,6 @@
 package com.group3.user_profiles.presentation.service;
 
-import com.group3.entity.Review;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.user_profiles.data.repository.ReviewRepository;
@@ -9,8 +8,10 @@ import com.group3.user_profiles.data.repository.UserProfileRepository;
 import com.group3.user_profiles.data.repository.UserRepository;
 import com.group3.user_profiles.domain.dto.review.request.CreateReviewReq;
 import com.group3.user_profiles.domain.dto.review.request.DeleteReviewReq;
+import com.group3.user_profiles.domain.dto.review.request.GetReviewsByAuthorReq;
 import com.group3.user_profiles.domain.dto.review.request.UpdateReviewReq;
 import com.group3.user_profiles.domain.dto.review.response.CreateReviewRes;
+import com.group3.user_profiles.domain.dto.review.response.GetReviewsByAuthorRes;
 import com.group3.user_profiles.domain.dto.review.response.UpdateReviewRes;
 import com.group3.user_profiles.domain.dto.review.mapper.ReviewMapper;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class ReviewService implements ReviewServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Review review = new Review();
-        review.setReviewedUser(userProfileRepository.getById(dto.getReviewedUserId()));
+        review.setReviewedId(dto.getReviewedUserId());
         review.setReviewerUser(userProfileRepository.getById(user.getId()));
         review.setReview(dto.getReview());
         review.setRating(dto.getRating());
@@ -84,6 +85,21 @@ public class ReviewService implements ReviewServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         reviewRepository.delete(dto.getId());
+    }
+
+    @Override
+    public GetReviewsByAuthorRes getReviewsByAuthor(GetReviewsByAuthorReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Review> reviews = this.reviewRepository.findByReviewerId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Review review : reviews.getContent()) {
+            UserProfile reviewedUser = this.userProfileRepository.getById(review.getReviewerUser().getId());
+            review.setReviewerUser(reviewedUser);
+        }
+
+        return ReviewMapper.getReviewsByAuthor().toResponse(reviews);
     }
 
 }

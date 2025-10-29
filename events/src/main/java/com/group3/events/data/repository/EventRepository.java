@@ -51,7 +51,7 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public PageContent<Event> getEventsByAuthorId(String authorId, Integer page, Integer size) {
+    public PageContent<Event> getPageEventsByAuthorId(String authorId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByAuthorIdAndStatus(
@@ -70,7 +70,7 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public PageContent<Event> getEventsByAssistant(String userId, Integer page, Integer size) {
+    public PageContent<Event> getPageEventsByAssistant(String userId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByAssistContainsAndStatus(
