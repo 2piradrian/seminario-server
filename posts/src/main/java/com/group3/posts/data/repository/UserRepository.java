@@ -1,6 +1,9 @@
 package com.group3.posts.data.repository;
 
 import com.group3.entity.User;
+import com.group3.entity.UserProfile;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
 import com.group3.posts.data.datasource.users_server.repository.UsersServerRepositoryI;
 import com.group3.posts.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.posts.data.datasource.users_server.responses.GetUserByIdRes;
@@ -27,6 +30,19 @@ public class UserRepository implements UserRepositoryI {
         user.setRole(response.getRole());
         user.setStatus(response.getStatus());
 
+        UserProfile profile = new UserProfile();
+        profile.setName(response.getProfile().getName());
+        profile.setSurname(response.getProfile().getSurname());
+        profile.setMemberSince(response.getProfile().getMemberSince());
+        profile.setPortraitImage(response.getProfile().getPortraitImage());
+        profile.setProfileImage(response.getProfile().getProfileImage());
+        profile.setShortDescription(response.getProfile().getShortDescription());
+        profile.setLongDescription(response.getProfile().getLongDescription());
+        profile.setStyles(response.getProfile().getStyles());
+        profile.setInstruments(response.getProfile().getInstruments());
+
+        user.setProfile(profile);
+
         return user;
     }
 
@@ -34,8 +50,12 @@ public class UserRepository implements UserRepositoryI {
     // ======== Single User Retrieval ========
 
     @Override
-    public User getById(String userId) {
-        GetUserByIdRes response = this.repository.getById(userId);
+    public User getById(String userId, String token) {
+        GetUserByIdRes response = this.repository.getById(token, userId);
+
+        if (response == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
 
         User user = new User();
         user.setId(response.getId());
@@ -43,7 +63,21 @@ public class UserRepository implements UserRepositoryI {
         user.setRole(response.getRole());
         user.setStatus(response.getStatus());
 
+        UserProfile profile = new UserProfile();
+        profile.setName(response.getProfile().getName());
+        profile.setSurname(response.getProfile().getSurname());
+        profile.setMemberSince(response.getProfile().getMemberSince());
+        profile.setPortraitImage(response.getProfile().getPortraitImage());
+        profile.setProfileImage(response.getProfile().getProfileImage());
+        profile.setShortDescription(response.getProfile().getShortDescription());
+        profile.setLongDescription(response.getProfile().getLongDescription());
+        profile.setStyles(response.getProfile().getStyles());
+        profile.setInstruments(response.getProfile().getInstruments());
+
+        user.setProfile(profile);
+
         return user;
     }
+
 
 }
