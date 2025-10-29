@@ -1,4 +1,4 @@
-package com.group3.page_profiles.data.datasource.users_server.responses;
+package com.group3.results.data.datasource.users_server.responses;
 
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetUserProfileByIdRes {
+public class GetUserProfileWithFollowingByIdRes {
 
     private final String id;
 
@@ -20,18 +20,12 @@ public class GetUserProfileByIdRes {
 
     private final String email;
 
-    private LocalDateTime memberSince;
-
-    private final String portraitImage;
-
-    private final String profileImage;
-
-    private final String shortDescription;
-
-    private final String longDescription;
+    private final LocalDateTime memberSince;
 
     private final List<Style> styles;
 
     private final List<Instrument> instruments;
+
+    private final List<String> following;
 
 }

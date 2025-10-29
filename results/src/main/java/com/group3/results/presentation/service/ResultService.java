@@ -24,8 +24,6 @@ public class ResultService implements ResultServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
 
-    private final UserProfileRepository userProfileRepository;
-
     private final PageProfileRepository pageProfileRepository;
 
     private final PostRepository postRepository;
@@ -39,7 +37,7 @@ public class ResultService implements ResultServiceI {
         User user = userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        UserProfile profile = userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
         if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         ContentType contentType = catalogRepository.getContentById(dto.getContentTypeId());
@@ -77,7 +75,7 @@ public class ResultService implements ResultServiceI {
                         ? dto.getInstruments().stream().map(Instrument::getId).toList()
                         : List.of();
 
-                userProfiles = userProfileRepository.getUserFilteredPage(
+                userProfiles = userRepository.getUserFilteredPage(
                         dto.getText(),
                         styleIds,
                         instrumentIds,
@@ -101,8 +99,8 @@ public class ResultService implements ResultServiceI {
 
                 for (Post post : posts) {
                     if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                        UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
-                        post.setAuthor(author);
+                        User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                        post.setAuthor(author.getProfile());
                     }
                     if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
                         PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -120,7 +118,7 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = this.userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        UserProfile profile = this.userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
         if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<String> profiles = new ArrayList<>(List.of());
@@ -137,8 +135,8 @@ public class ResultService implements ResultServiceI {
 
         for (Post post : posts) {
             if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(author);
+                User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(author.getProfile());
             }
             if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
                 PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());

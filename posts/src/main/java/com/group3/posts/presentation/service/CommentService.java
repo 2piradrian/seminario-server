@@ -28,7 +28,6 @@ public class CommentService implements CommentServiceI {
     private final CommentRepository commentRepository;
     private final PostsRepository postsRepository;
     private final UserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
     private final PageProfileRepository pageProfileRepository;
 
 
@@ -36,27 +35,26 @@ public class CommentService implements CommentServiceI {
 
     @Override
     public CreateCommentRes create(CreateCommentReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        User author = this.userRepository.auth(dto.getToken());
+        if (author == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
         if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
 
         Comment comment = new Comment();
-        UserProfile author = this.userProfileRepository.getById(user.getId(), dto.getToken());
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
-            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            if (!author.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             comment.setPageProfile(PageProfile.builder().id(null).build());
-            comment.setAuthor(author);
+            comment.setAuthor(author.getProfile());
         } else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
-            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
+            if (page.getMembers().stream().noneMatch(member -> member.getId().equals(author.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
-            comment.setAuthor(author);
+            comment.setAuthor(author.getProfile());
             comment.setPageProfile(page);
         }
 
@@ -95,8 +93,8 @@ public class CommentService implements CommentServiceI {
         comments.getContent().forEach(
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
-                        UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId(), dto.getToken());
-                        comment.setAuthor(fullProfile);
+                        User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
+                        comment.setAuthor(fullProfile.getProfile());
                     }
                     if (comment.getPageProfile().getId() != null) {
                         PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
@@ -146,8 +144,8 @@ public class CommentService implements CommentServiceI {
         comment.setVotersToNull();
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(comment.getAuthor().getId(), dto.getToken());
-            comment.setAuthor(fullProfile);
+            User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
+            comment.setAuthor(fullProfile.getProfile());
         }
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
