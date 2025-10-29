@@ -37,8 +37,8 @@ public class ResultService implements ResultServiceI {
         User user = userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        User fulluser = userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        if (fulluser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         ContentType contentType = catalogRepository.getContentById(dto.getContentTypeId());
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
@@ -62,7 +62,7 @@ public class ResultService implements ResultServiceI {
                 );
 
                 for (PageProfile page : pageProfiles) {
-                    page.setIsFollowing(profile.getFollowing().contains(page.getId()));
+                    page.setIsFollowing(fulluser.getProfile().getFollowing().contains(page.getId()));
                 }
             }
 
@@ -85,7 +85,7 @@ public class ResultService implements ResultServiceI {
                 );
 
                 for (UserProfile u : userProfiles) {
-                    u.setIsFollowing(profile.getFollowing().contains(u.getId()));
+                    u.setIsFollowing(fulluser.getProfile().getFollowing().contains(u.getId()));
                 }
             }
 
@@ -118,13 +118,13 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = this.userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        UserProfile fulluser = this.userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
+        if (fulluser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<String> profiles = new ArrayList<>(List.of());
 
-        profiles.addAll(profile.getFollowing());
-        profiles.add(profile.getId());
+        profiles.addAll(fulluser.getFollowing());
+        profiles.add(fulluser.getId());
 
         List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getPage(),

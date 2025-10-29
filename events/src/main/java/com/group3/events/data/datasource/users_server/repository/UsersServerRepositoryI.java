@@ -1,6 +1,7 @@
 package com.group3.events.data.datasource.users_server.repository;
 
 import com.group3.events.config.beans.LoadBalancerConfiguration;
+import com.group3.events.data.datasource.users_server.responses.GetUserProfileByIdRes;
 import com.group3.events.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.events.data.datasource.users_server.responses.GetUserByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
@@ -17,6 +18,6 @@ public interface UsersServerRepositoryI {
     AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@PathVariable(value = "userId") String userId);
+    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
 
 }
