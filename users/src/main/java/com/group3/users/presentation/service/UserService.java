@@ -3,8 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.users.data.repository.UserProfileRepository;
-import com.group3.users.data.repository.UserRepository;
+import com.group3.users.data.repository.*;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
@@ -30,12 +29,40 @@ public class UserService implements UserServiceI {
 
     private final UserProfileRepository userProfileRepository;
 
+    private final PageProfileRepository pageProfileRepository;
+
+    private final CatalogRepository catalogRepository;
+
+    private final ImagesRepository imagesRepository;
+
     private final AuthService authService;
 
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
-        User user = this.userRepository.getById(dto.getUserId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userResult = this.userRepository.getById(dto.getUserId());
+        if (userResult == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile profileResult = userResult.getProfile();
+
+        List<Style> styles = this.catalogRepository.getStyleListById(profileResult.getStyles().stream().map(Style::getId).toList());
+        profileResult.setStyles(styles);
+
+        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(profileResult.getInstruments().stream().map(Instrument::getId).toList());
+        profileResult.setInstruments(instruments);
+
+        // TODO: use profileResult.setFollowsCheck()
+
+        //Integer followersCount = this.userProfileRepository.getFollowersCount(profileResult.getId());
+        //profileResult.setFollowersQuantity(followersCount);
+        //
+        //Integer followingCount = this.userProfileRepository.getFollowingCount(profileResult.getId());
+        //profileResult.setFollowingQuantity(followingCount);
+        //
+        //Boolean ownProfile = user.getId().equals(userResult.getProfile().getId());
+        //Boolean isFollowing = userResult.getProfile().getFollowing().contains(user.getId());
 
         return UserMapper.getById().toResponse(user);
     }

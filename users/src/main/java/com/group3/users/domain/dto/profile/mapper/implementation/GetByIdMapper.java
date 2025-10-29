@@ -1,7 +1,7 @@
 package com.group3.users.domain.dto.profile.mapper.implementation;
 
 import com.group3.entity.UserProfile;
-import com.group3.users.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
+import com.group3.users.data.datasource.users.responses.GetUserProfileByIdRes;
 import com.group3.users.domain.dto.profile.request.GetUserProfileByIdReq;
 
 public class GetByIdMapper {

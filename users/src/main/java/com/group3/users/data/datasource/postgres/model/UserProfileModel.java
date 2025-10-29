@@ -46,12 +46,4 @@ public class UserProfileModel {
     @Column(name = "instrument")
     private List<String> instruments;
 
-    @ElementCollection
-    @CollectionTable(name = "user_following", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "following_id")
-    private List<String> following;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
 }

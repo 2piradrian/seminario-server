@@ -33,11 +33,10 @@ public class UserProfileEntityMapper {
                         .map(id -> new Instrument(id, null))
                         .collect(Collectors.toList())
                         : Collections.emptyList(),
-                userProfileModel.getFollowing() != null
-                        ? userProfileModel.getFollowing()
-                        : Collections.emptyList(),
-                userProfileModel.getStatus(),
-                false
+                false,
+                false,
+                0,
+                0
         );
     }
 
@@ -62,11 +61,7 @@ public class UserProfileEntityMapper {
                         ? userProfile.getInstruments().stream()
                         .map(Instrument::getId)
                         .collect(Collectors.toList())
-                        : Collections.emptyList(),
-                userProfile.getFollowing() != null
-                        ? userProfile.getFollowing()
-                        : Collections.emptyList(),
-                userProfile.getStatus()
+                        : Collections.emptyList()
         );
     }
 

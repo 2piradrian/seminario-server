@@ -4,11 +4,8 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.user_profiles.config.helpers.SecretKeyHelper;
-import com.group3.user_profiles.data.repository.*;
-import com.group3.user_profiles.domain.dto.profile.mapper.UserProfileMapper;
-import com.group3.user_profiles.domain.dto.profile.request.*;
-import com.group3.user_profiles.domain.dto.profile.response.*;
+import com.group3.users.config.helpers.SecretKeyHelper;
+import com.group3.users.data.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,31 +31,6 @@ public class UserProfileService implements UserProfileServiceI {
     private final UserRepository userRepository;
 
     private final ImagesRepository imagesRepository;
-
-
-    // ======== Create User Profile ========
-
-    @Override
-    public void create(CreateUserProfileReq dto) {
-        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        UserProfile userProfile = new UserProfile();
-        userProfile.setId(dto.getId());
-        userProfile.setName(dto.getName());
-        userProfile.setSurname(dto.getSurname());
-        userProfile.setEmail(dto.getEmail());
-        userProfile.setMemberSince(LocalDateTime.now());
-        userProfile.setPortraitImage("");
-        userProfile.setProfileImage("");
-        userProfile.setShortDescription("¡New user!");
-        userProfile.setLongDescription("¡New user!");
-        userProfile.setInstruments(List.of());
-        userProfile.setStyles(List.of());
-        userProfile.setStatus(Status.INACTIVE);
-        userProfile.setFollowing(List.of());
-
-        this.userProfileRepository.save(userProfile);
-    }
 
 
     // ======== Get User Profile by ID ========

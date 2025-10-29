@@ -32,8 +32,6 @@ public class AuthService implements AuthServiceI {
 
     private final UserRepository userRepository;
 
-    private final UserProfileRepository userProfileRepository;
-
     private final EmailService emailService;
 
     private final EmailHelper emailHelper;
@@ -108,7 +106,6 @@ public class AuthService implements AuthServiceI {
         user.setStatus(Status.INACTIVE);
 
         User saved = this.userRepository.save(user);
-        this.userProfileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
 
         Token token = this.authHelper.createToken(saved);
 
@@ -202,7 +199,6 @@ public class AuthService implements AuthServiceI {
         }
 
         user.setStatus(Status.ACTIVE);
-        this.userProfileRepository.active(user.getId(), secretKeyHelper.getSecret());
 
         this.userRepository.update(user);
     }
