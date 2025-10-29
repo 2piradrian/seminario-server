@@ -2,6 +2,7 @@ package com.group3.users.domain.dto.profile.mapper;
 
 
 import com.group3.users.domain.dto.profile.mapper.implementation.*;
+import com.group3.users.domain.dto.user.mapper.implementation.GetPageFilteredMapper;
 
 public class UserProfileMapper {
 
@@ -41,16 +42,8 @@ public class UserProfileMapper {
         return new EditMapper();
     }
 
-    public static GetPageFilteredMapper getFiltered(){
-        return new GetPageFilteredMapper();
-    }
-
     public static ActiveMapper active() {
         return new ActiveMapper();
-    }
-
-    public static GetOwnMapper getOwnProfile() {
-        return new GetOwnMapper();
     }
 
 }

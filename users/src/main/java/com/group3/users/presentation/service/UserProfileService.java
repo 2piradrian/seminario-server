@@ -32,6 +32,55 @@ public class UserProfileService implements UserProfileServiceI {
 
     private final ImagesRepository imagesRepository;
 
+    // ======== Update User Profile ========
+
+    @Override
+    public void update(EditUserProfileReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
+        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        // ======== Update Styles and Instruments ========
+        if (!dto.getStyles().isEmpty()) {
+            List<Style> styles = this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList());
+            userProfile.setStyles(styles);
+        }
+
+        if (!dto.getInstruments().isEmpty()) {
+            List<Instrument> instruments = this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList());
+            userProfile.setInstruments(instruments);
+        }
+
+        // ======== Update Profile Image ========
+        if (dto.getProfileImage() != null) {
+            String profileImage = userProfile.getProfileImage();
+            if (profileImage != null && !profileImage.isEmpty()) {
+                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+            }
+            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
+            userProfile.setProfileImage(profileId);
+        }
+
+        // ======== Update Portrait Image ========
+        if (dto.getPortraitImage() != null) {
+            String portraitImage = userProfile.getPortraitImage();
+            if (portraitImage != null && !portraitImage.isEmpty()) {
+                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+            }
+            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            userProfile.setPortraitImage(portraitId);
+        }
+
+        userProfile.setName(dto.getName());
+        userProfile.setSurname(dto.getSurname());
+        userProfile.setShortDescription(dto.getShortDescription());
+        userProfile.setLongDescription(dto.getLongDescription());
+
+        this.userProfileRepository.update(userProfile);
+    }
+
     @Override
     public GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -41,48 +90,6 @@ public class UserProfileService implements UserProfileServiceI {
 
         return UserProfileMapper.getByIdWithFollowing().toResponse(userProfile);
     }
-
-
-    // ======== Get User Profile Page Filtered ========
-
-    @Override
-    public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
-        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
-            dto.getFullname(),
-            dto.getStyles(),
-            dto.getInstruments(),
-            dto.getPage(),
-            dto.getSize()
-        );
-
-        return UserProfileMapper.getFiltered().toResponse(profiles);
-    }
-
-
-    // ======== Get Own Profile ========
-
-    @Override
-    public GetOwnUserProfileRes getOwnProfile(GetOwnUserProfileReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
-        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        Integer followersCount = this.userProfileRepository.getFollowersCount(userProfile.getId());
-        Integer followingCount = this.userProfileRepository.getFollowingCount(userProfile.getId());
-
-        List<Style> styles = this.catalogRepository.getStyleListById(userProfile.getStyles().stream().map(Style::getId).toList());
-        userProfile.setStyles(styles);
-
-        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(userProfile.getInstruments().stream().map(Instrument::getId).toList());
-        userProfile.setInstruments(instruments);
-
-        return UserProfileMapper.getOwnProfile().toResponse(userProfile, followersCount, followingCount);
-    }
-
 
     // ======== Get Followers ========
 
@@ -235,56 +242,6 @@ public class UserProfileService implements UserProfileServiceI {
         }
 
         userProfile.setStatus(Status.ACTIVE);
-
-        this.userProfileRepository.update(userProfile);
-    }
-
-
-    // ======== Update User Profile ========
-
-    @Override
-    public void update(EditUserProfileReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        UserProfile userProfile = this.userProfileRepository.getByEmail(user.getEmail());
-        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        // ======== Update Styles and Instruments ========
-        if (!dto.getStyles().isEmpty()) {
-            List<Style> styles = this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList());
-            userProfile.setStyles(styles);
-        }
-
-        if (!dto.getInstruments().isEmpty()) {
-            List<Instrument> instruments = this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList());
-            userProfile.setInstruments(instruments);
-        }
-
-        // ======== Update Profile Image ========
-        if (dto.getProfileImage() != null) {
-            String profileImage = userProfile.getProfileImage();
-            if (profileImage != null && !profileImage.isEmpty()) {
-                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
-            }
-            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
-            userProfile.setProfileImage(profileId);
-        }
-
-        // ======== Update Portrait Image ========
-        if (dto.getPortraitImage() != null) {
-            String portraitImage = userProfile.getPortraitImage();
-            if (portraitImage != null && !portraitImage.isEmpty()) {
-                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
-            }
-            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
-            userProfile.setPortraitImage(portraitId);
-        }
-
-        userProfile.setName(dto.getName());
-        userProfile.setSurname(dto.getSurname());
-        userProfile.setShortDescription(dto.getShortDescription());
-        userProfile.setLongDescription(dto.getLongDescription());
 
         this.userProfileRepository.update(userProfile);
     }

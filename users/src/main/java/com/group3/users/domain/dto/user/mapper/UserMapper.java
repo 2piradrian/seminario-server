@@ -16,4 +16,8 @@ public class UserMapper {
         return new GetAllStaffMapper();
     }
 
+    public static GetPageFilteredMapper getFiltered(){
+        return new GetPageFilteredMapper();
+    }
+
 }

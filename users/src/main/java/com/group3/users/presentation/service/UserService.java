@@ -3,6 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.*;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
@@ -27,6 +28,8 @@ public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
 
+    private final SecretKeyHelper secretKeyHelper;
+
     private final UserProfileRepository userProfileRepository;
 
     private final PageProfileRepository pageProfileRepository;
@@ -44,6 +47,10 @@ public class UserService implements UserServiceI {
 
         User userResult = this.userRepository.getById(dto.getUserId());
         if (userResult == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        // TODO
+        Integer followersCount = this.userProfileRepository.getFollowersCount(userProfile.getId());
+        Integer followingCount = this.userProfileRepository.getFollowingCount(userProfile.getId());
 
         UserProfile profileResult = userResult.getProfile();
 
@@ -81,11 +88,11 @@ public class UserService implements UserServiceI {
         List<UserProfile> adminUsers = new ArrayList<>();
 
         for (User user : staffUsers){
-            UserProfile userProfile = this.userProfileRepository.getById(dto.getToken(), user.getId());
+            User userProfile = this.userRepository.getById(user.getId());
             if (user.getRole().equals(Role.MODERATOR)){
-                modUsers.add(userProfile);
+                modUsers.add(userProfile.getProfile());
             } else if (user.getRole().equals(Role.ADMIN)){
-                adminUsers.add(userProfile);
+                adminUsers.add(userProfile.getProfile());
             }
         }
 
@@ -106,6 +113,23 @@ public class UserService implements UserServiceI {
         user.setStatus(Status.DELETED);
 
         this.userRepository.save(user);
+    }
+
+    // ======== Get User Profile Page Filtered ========
+
+    @Override
+    public GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<User> profiles = this.userRepository.getFilteredPage(
+            dto.getFullname(),
+            dto.getStyles(),
+            dto.getInstruments(),
+            dto.getPage(),
+            dto.getSize()
+        );
+
+        return UserMapper.getFiltered().toResponse(profiles);
     }
 
 }

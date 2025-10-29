@@ -2,6 +2,7 @@ package com.group3.users.presentation.controller;
 
 import com.group3.users.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.users.domain.dto.profile.request.*;
+import com.group3.users.domain.dto.user.request.GetUserPageFilteredReq;
 import com.group3.users.presentation.service.UserProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,22 +47,7 @@ public class UserProfileController {
         return ResponseEntity.ok(this.userService.getById(dto));
     }
 
-    @PostMapping("/get-user-filtered")
-    public ResponseEntity<?> getFiltered(
-        @RequestBody Map<String, Object> payload
-    ) {
-        GetUserProfilePageFilteredReq dto = UserProfileMapper.getFiltered().toRequest(payload);
-        return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
-    }
 
-    @GetMapping("/get-own-profile")
-    public ResponseEntity<?> getOwnProfile(
-        @RequestHeader(value = "Authorization") String token
-    ) {
-        GetOwnUserProfileReq dto = UserProfileMapper.getOwnProfile().toRequest(token);
-
-        return ResponseEntity.ok(this.userService.getOwnProfile(dto));
-    }
 
     @PutMapping("/edit")
     public ResponseEntity<?> edit(
