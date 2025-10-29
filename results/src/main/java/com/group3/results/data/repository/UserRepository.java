@@ -7,6 +7,7 @@ import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.users_server.repository.UsersServerRepositoryI;
 import com.group3.results.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserByIdRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserPageFilteredRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserProfilePageFilteredRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.results.domain.repository.UserRepositoryI;
@@ -51,7 +52,7 @@ public class UserRepository implements UserRepositoryI {
         return user;
     }
 
-    public List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
+    public List<User> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
 
         Map<String,Object> payload = new HashMap<>();
 
@@ -62,9 +63,9 @@ public class UserRepository implements UserRepositoryI {
         payload.put("size",size);
         payload.put("secret",secret);
 
-        GetUserProfilePageFilteredRes response = this.repository.getUserProfileFilteredPage(payload);
+        GetUserPageFilteredRes response = this.repository.getUserProfileFilteredPage(payload);
 
-        return response.getProfiles();
+        return response.getUsers();
     }
 
     // ======== Single User Retrieval ========
