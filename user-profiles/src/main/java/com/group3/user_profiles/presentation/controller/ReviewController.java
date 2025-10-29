@@ -4,6 +4,7 @@ import com.group3.user_profiles.domain.dto.review.mapper.ReviewMapper;
 import com.group3.user_profiles.domain.dto.review.request.CreateReviewReq;
 import com.group3.user_profiles.domain.dto.review.request.UpdateReviewReq;
 import com.group3.user_profiles.domain.dto.review.request.DeleteReviewReq;
+import com.group3.user_profiles.domain.dto.review.request.GetReviewsByAuthorReq;
 import com.group3.user_profiles.domain.dto.review.response.CreateReviewRes;
 import com.group3.user_profiles.presentation.service.ReviewService;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,15 @@ public class ReviewController {
         DeleteReviewReq dto = ReviewMapper.delete().toRequest(token, payload);
         reviewService.delete(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/get-by-author")
+    public ResponseEntity<?> getReviewsByAuthor(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetReviewsByAuthorReq dto = ReviewMapper.getReviewsByAuthor().toRequest(token, payload);
+        return ResponseEntity.ok(this.reviewService.getReviewsByAuthor(dto));
     }
 
 }
