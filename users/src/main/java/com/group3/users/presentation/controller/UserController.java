@@ -34,6 +34,16 @@ public class UserController {
 
         return ResponseEntity.ok(this.userService.getAllStaff(dto));
     }
+    
+    @PutMapping("/update")
+    public ResponseEntity<?> update(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        EditUserReq dto = UserMapper.update().toRequest(token, payload);
+        userService.update(dto);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/get-user-filtered")
     public ResponseEntity<?> getFiltered(
