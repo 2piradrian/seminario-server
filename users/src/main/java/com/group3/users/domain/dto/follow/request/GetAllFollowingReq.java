@@ -2,7 +2,9 @@ package com.group3.users.domain.dto.follow.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import lombok.Getter;
 
+@Getter
 public class GetAllFollowingReq {
 
     private final String id;
