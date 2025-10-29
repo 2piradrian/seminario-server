@@ -37,40 +37,6 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
     }
 
-    @Override
-    public UserProfile getByEmail(String email) {
-        UserProfileModel userProfileModel = this.repository.findByEmail(email).orElse(null);
-        return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
-    }
-
-    // ======== Followers and Following ========
-
-    @Override
-    public PageContent<String> getFollowers(String userId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<String> followersPage = this.repository.findFollowers(userId, PageRequest.of(pageIndex, size));
-
-        return new PageContent<>(
-                followersPage.getContent(),
-                followersPage.getNumber() + 1,
-                followersPage.hasNext() ? followersPage.getNumber() + 2 : null
-        );
-    }
-
-    @Override
-    public PageContent<String> getFollowing(String userId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<String> followingPage = this.repository.findFollowing(userId, PageRequest.of(pageIndex, size));
-
-        return new PageContent<>(
-                followingPage.getContent(),
-                followingPage.getNumber() + 1,
-                followingPage.hasNext() ? followingPage.getNumber() + 2 : null
-        );
-    }
-
 
     // ======== Batch Retrieval ========
 
@@ -78,19 +44,6 @@ public class UserProfileRepository implements UserProfileRepositoryI {
     public List<UserProfile> getListByIds(List<String> ids) {
         List<UserProfileModel> userProfileModels = this.repository.findAllByIdIn(ids);
         return userProfileModels.isEmpty() ? List.of() : UserProfileEntityMapper.toDomain(userProfileModels);
-    }
-
-
-    // ======== Counts ========
-
-    @Override
-    public Integer getFollowingCount(String id) {
-        return repository.countFollowing(id);
-    }
-
-    @Override
-    public Integer getFollowersCount(String id) {
-        return repository.countFollowers(id);
     }
 
 
