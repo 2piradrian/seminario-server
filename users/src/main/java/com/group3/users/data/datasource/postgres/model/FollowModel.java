@@ -20,7 +20,7 @@ public class FollowModel {
     @Column(name = "followed_id", nullable = false)
     private String followedId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UserProfile profile;
+    @Column(name = "follower_id", nullable = false)
+    private String follower;
 
 }

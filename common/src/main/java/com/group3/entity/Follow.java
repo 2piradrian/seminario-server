@@ -15,6 +15,6 @@ public class Follow {
 
     private String followedId;
 
-    private UserProfile profile;
+    private String followerId;
 
 }

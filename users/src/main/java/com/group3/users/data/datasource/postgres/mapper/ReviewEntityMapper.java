@@ -13,26 +13,25 @@ public class ReviewEntityMapper {
     public static Review toDomain(ReviewModel model) {
         if (model == null) return null;
 
-        return Review.builder()
-                .id(model.getId())
-                .reviewedId(model.getReviewedId() != null ? model.getReviewedId() : null)
-                .reviewerUser(model.getReviewerUserId() != null ? UserProfile.builder().id(model.getReviewerUserId()).build() : null)
-                .review(model.getReview())
-                .rating(model.getRating())
-                .build();
-
+        return new Review(
+                model.getId(),
+                model.getReviewedId(),
+                model.getReviewerUserId() != null ? new UserProfile(model.getReviewerUserId()) : null,
+                model.getReview(),
+                model.getRating()
+        );
     }
 
     public static ReviewModel toModel(Review review) {
         if (review == null) return null;
 
-        ReviewModel model = new ReviewModel();
-        model.setId(review.getId());
-        model.setReviewedId(review.getReviewedId() != null ? review.getReviewedId() : null);
-        model.setReviewerUserId(review.getReviewerUser() != null ? review.getReviewerUser().getId() : null);
-        model.setReview(review.getReview());
-        model.setRating(review.getRating());
-        return model;
+        return new ReviewModel(
+                review.getId(),
+                review.getReviewedId(),
+                review.getReviewerUser() != null ? review.getReviewerUser().getId() : null,
+                review.getReview(),
+                review.getRating()
+        );
     }
 
     public static List<Review> toDomain(List<ReviewModel> models) {
