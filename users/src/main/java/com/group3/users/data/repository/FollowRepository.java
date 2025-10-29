@@ -2,22 +2,23 @@ package com.group3.users.data.repository;
 
 import com.group3.entity.Follow;
 import com.group3.entity.PageContent;
-import com.group3.users.data.datasource.postgres.mapper.FollowerEntityMapper;
+import com.group3.users.data.datasource.postgres.mapper.FollowEntityMapper;
 import com.group3.users.data.datasource.postgres.model.FollowModel;
-import com.group3.users.data.datasource.postgres.repository.PostgresFollowsRepositoryI;
+import com.group3.users.data.datasource.postgres.repository.PostgresFollowRepositoryI;
 import com.group3.users.domain.repository.FollowRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
-public class FollowsRepository implements FollowRepositoryI {
+public class FollowRepository implements FollowRepositoryI {
 
-    private final PostgresFollowsRepositoryI repository;
+    private final PostgresFollowRepositoryI repository;
 
     private int normalizePage(Integer page) {
         return (page != null && page > 0) ? page - 1 : 0;
@@ -25,16 +26,16 @@ public class FollowsRepository implements FollowRepositoryI {
 
     @Override
     public Follow save(Follow follow) {
-        FollowModel followModel = FollowerEntityMapper.toModel(follow);
+        FollowModel followModel = FollowEntityMapper.toModel(follow);
         FollowModel saved = this.repository.save(followModel);
-        return FollowerEntityMapper.toDomain(saved);
+        return FollowEntityMapper.toDomain(saved);
     }
 
     @Override
     public Follow update(Follow follow) {
-        FollowModel followModel = FollowerEntityMapper.toModel(follow);
+        FollowModel followModel = FollowEntityMapper.toModel(follow);
         FollowModel updated = this.repository.save(followModel);
-        return FollowerEntityMapper.toDomain(updated);
+        return FollowEntityMapper.toDomain(updated);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class FollowsRepository implements FollowRepositoryI {
 
         return new PageContent<>(
                 followModels.getContent().stream()
-                        .map(FollowerEntityMapper::toDomain)
+                        .map(FollowEntityMapper::toDomain)
                         .collect(Collectors.toList()),
                 followModels.getNumber() + 1,
                 followModels.hasNext() ? followModels.getNumber() + 2 : null
@@ -71,10 +72,35 @@ public class FollowsRepository implements FollowRepositoryI {
 
         return new PageContent<>(
                 followModels.getContent().stream()
-                        .map(FollowerEntityMapper::toDomain)
+                        .map(FollowEntityMapper::toDomain)
                         .collect(Collectors.toList()),
                 followModels.getNumber() + 1,
                 followModels.hasNext() ? followModels.getNumber() + 2 : null
         );
     }
+
+    @Override
+    public List<Follow> getAllFollowers(String followedId) {
+        return repository.findAllByFollowedId(followedId).stream()
+                .map(FollowEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Follow> getAllFollowing(String followerId) {
+        return repository.findAllByFollowerId(followerId).stream()
+                .map(FollowEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer getFollowersQuantity(String followedId) {
+        return repository.countByFollowedId(followedId);
+    }
+
+    @Override
+    public Integer getFollowingQuantity(String followerId) {
+        return repository.countByFollowerId(followerId);
+    }
+
 }

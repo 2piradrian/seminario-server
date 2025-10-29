@@ -1,8 +1,8 @@
-package com.group3.users.domain.dto.user.mapper.implementation;
+package com.group3.users.domain.dto.follow.mapper.implementation;
 
 
-import com.group3.users.domain.dto.profile.request.GetFollowersByIdReq;
-import com.group3.users.domain.dto.profile.response.GetFollowersByIdRes;
+import com.group3.users.domain.dto.follow.request.GetFollowersByIdReq;
+import com.group3.users.domain.dto.follow.response.GetFollowersByIdRes;
 
 import java.util.Map;
 

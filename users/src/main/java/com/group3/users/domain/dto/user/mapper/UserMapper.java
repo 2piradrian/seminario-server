@@ -8,12 +8,12 @@ public class UserMapper {
         return new GetByIdMapper();
     }
 
-    public static DeleteMapper delete() {
-        return new DeleteMapper();
-    }
-
     public static GetAllStaffMapper getAllStaff() {
         return new GetAllStaffMapper();
+    }
+
+    public static DeleteMapper delete() {
+        return new DeleteMapper();
     }
 
 }

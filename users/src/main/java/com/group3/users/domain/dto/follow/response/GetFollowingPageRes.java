@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.user.response;
+package com.group3.users.domain.dto.follow.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetFollowerPageRes {
+public class GetFollowingPageRes {
 
-    private final List<Object> followers;
+    private final List<Object> following;
 
     private final Integer nextPage;
 

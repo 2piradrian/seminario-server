@@ -1,5 +1,6 @@
 package com.group3.users.presentation.service;
 
+import com.group3.users.domain.dto.follow.request.ToggleFollowReq;
 import com.group3.users.domain.dto.profile.request.*;
 import com.group3.users.domain.dto.profile.response.*;
 

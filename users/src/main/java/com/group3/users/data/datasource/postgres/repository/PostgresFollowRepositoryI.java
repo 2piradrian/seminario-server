@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PostgresFollowsRepositoryI extends JpaRepository<FollowModel, String> {
+import java.util.List;
+
+public interface PostgresFollowRepositoryI extends JpaRepository<FollowModel, String> {
 
     @Query("""
         SELECT f
@@ -30,5 +32,17 @@ public interface PostgresFollowsRepositoryI extends JpaRepository<FollowModel, S
             @Param("followedId") String followedId,
             Pageable pageable
     );
+
+    @Query("SELECT f FROM FollowModel f WHERE f.profile.id = :followerId")
+    List<FollowModel> findAllByFollowerId(@Param("followerId") String followerId);
+
+    @Query("SELECT f FROM FollowModel f WHERE f.followedId = :followedId")
+    List<FollowModel> findAllByFollowedId(@Param("followedId") String followedId);
+
+    @Query("SELECT COUNT(f) FROM FollowModel f WHERE f.profile.id = :followerId")
+    Integer countByFollowerId(@Param("followerId") String followerId);
+
+    @Query("SELECT COUNT(f) FROM FollowModel f WHERE f.followedId = :followedId")
+    Integer countByFollowedId(@Param("followedId") String followedId);
 
 }

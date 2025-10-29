@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FollowerEntityMapper {
+public class FollowEntityMapper {
 
     public static Follow toDomain(FollowModel followModel){
         if (followModel == null) return null;
@@ -15,7 +15,7 @@ public class FollowerEntityMapper {
         return new Follow(
                 followModel.getId(),
                 followModel.getFollowedId(),
-                followModel.getProfile() != null ? UserProfileEntityMapper.toDomain(followModel.getProfile()) : null
+                followModel.getFollowerId()
         );
     }
 
@@ -25,7 +25,7 @@ public class FollowerEntityMapper {
         return new FollowModel(
                 follow.getId(),
                 follow.getFollowedId(),
-                follow.getFollower() != null ? UserProfileEntityMapper.toModel(follow.getFollower()) : null
+                follow.getFollowerId()
         );
     }
 
@@ -33,7 +33,7 @@ public class FollowerEntityMapper {
         if (followModels == null) return Collections.emptyList();
 
         return followModels.stream()
-                .map(FollowerEntityMapper::toDomain)
+                .map(FollowEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +41,7 @@ public class FollowerEntityMapper {
         if (follows == null) return Collections.emptyList();
 
         return follows.stream()
-                .map(FollowerEntityMapper::toModel)
+                .map(FollowEntityMapper::toModel)
                 .collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package com.group3.users.presentation.controller;
 
+import com.group3.users.domain.dto.follow.request.ToggleFollowReq;
 import com.group3.users.domain.dto.profile.mapper.UserProfileMapper;
 import com.group3.users.domain.dto.profile.request.*;
 import com.group3.users.presentation.service.UserProfileService;

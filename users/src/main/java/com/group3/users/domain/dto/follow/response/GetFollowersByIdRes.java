@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.user.response;
+package com.group3.users.domain.dto.follow.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

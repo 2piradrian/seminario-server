@@ -1,8 +1,9 @@
-package com.group3.users.domain.dto.profile.mapper.implementation;
+package com.group3.users.domain.dto.follow.mapper.implementation;
 
+import com.group3.entity.Follow;
 import com.group3.entity.PageContent;
-import com.group3.users.domain.dto.profile.request.GetFollowingPageReq;
-import com.group3.users.domain.dto.profile.response.GetFollowingPageRes;
+import com.group3.users.domain.dto.follow.request.GetFollowingPageReq;
+import com.group3.users.domain.dto.follow.response.GetFollowingPageRes;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class GetFollowingPageMapper {
         );
     }
 
-    public GetFollowingPageRes toResponse(PageContent<String> followingPage, List<Object> following) {
+    public GetFollowingPageRes toResponse(PageContent<Follow> followingPage, List<Object> following) {
         return new GetFollowingPageRes(
                 following,
                 followingPage.getNextPage()

@@ -21,6 +21,6 @@ public class FollowModel {
     private String followedId;
 
     @Column(name = "follower_id", nullable = false)
-    private String follower;
+    private String followerId;
 
 }

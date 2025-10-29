@@ -1,7 +1,6 @@
-package com.group3.users.domain.dto.profile.mapper.implementation;
+package com.group3.users.domain.dto.follow.mapper.implementation;
 
-
-import com.group3.users.domain.dto.profile.request.ToggleFollowReq;
+import com.group3.users.domain.dto.follow.request.ToggleFollowReq;
 
 import java.util.Map;
 
