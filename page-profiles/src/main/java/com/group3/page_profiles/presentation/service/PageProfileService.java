@@ -85,7 +85,7 @@ public class PageProfileService implements PageProfileServiceI {
         for (UserProfile member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-            User completeMember = this.userRepository.getById(member.getId());
+            User completeMember = this.userRepository.getById(member.getId(), dto.getToken());
             if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
             member.setPortraitImage(completeMember.getProfile().getPortraitImage());
@@ -125,7 +125,7 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageByUserIdRes getUserPages(GetPageByUserIdReq dto) {
-        User user = this.userRepository.getById(dto.getUserId());
+        User user = this.userRepository.getById(dto.getUserId(), dto.getToken());
         if(user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<PageProfile> pages = this.pageProfileRepository.getByUserId(dto.getUserId());
@@ -180,7 +180,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(memberId -> userRepository.getById(memberId))
+                .map(memberId -> userRepository.getById(memberId, dto.getToken()))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
@@ -189,7 +189,7 @@ public class PageProfileService implements PageProfileServiceI {
         Set<UserProfile> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            User userProfile = userRepository.getById(id);
+            User userProfile = userRepository.getById(id, dto.getToken());
             if (existingMembers.add(userProfile.getProfile())) {
                 members.add(userProfile.getProfile());
             }

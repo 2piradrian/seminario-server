@@ -7,7 +7,7 @@ public interface UserRepositoryI {
 
     User auth(String token);
 
-    User getById(String userId);
+    User getById(String userId, String token);
 
     Integer getFollowersById(String id, String secret);
 

@@ -46,9 +46,10 @@ public class PageProfileController {
 
     @GetMapping("/get-by-user-id/{userId}")
     public ResponseEntity<?> getOwnProfile(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "userId") String userId
     ) {
-        GetPageByUserIdReq dto = PageMapper.getUserPages().toRequest(userId);
+        GetPageByUserIdReq dto = PageMapper.getUserPages().toRequest(token, userId);
 
         return ResponseEntity.ok(this.pageService.getUserPages(dto));
     }

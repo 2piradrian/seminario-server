@@ -55,8 +55,8 @@ public class UserRepository implements UserRepositoryI {
     // ======== Single User Retrieval ========
 
     @Override
-    public User getById(String userId) {
-        GetUserByIdRes response = this.repository.getById(userId);
+    public User getById(String userId, String token) {
+        GetUserByIdRes response = this.repository.getById(token, userId);
 
         if (response == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

@@ -20,10 +20,7 @@ public interface UsersServerRepositoryI {
     AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@PathVariable(value = "userId") String userId);
-
-    @GetMapping("/api/user-profiles/get-by-id/{userId}")
-    GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("userId") String userId);
+    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
 
     @PostMapping("/api/user-profiles/get-followers-by-id")
     GetFollowersByIdRes getFollowersById(@RequestBody Map<String, Object> payload);
