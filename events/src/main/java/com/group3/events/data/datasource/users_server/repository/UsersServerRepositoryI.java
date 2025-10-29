@@ -1,7 +1,6 @@
 package com.group3.events.data.datasource.users_server.repository;
 
 import com.group3.events.config.beans.LoadBalancerConfiguration;
-import com.group3.events.data.datasource.users_server.responses.GetUserProfileByIdRes;
 import com.group3.events.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.events.data.datasource.users_server.responses.GetUserByIdRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
