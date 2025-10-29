@@ -33,8 +33,7 @@ public class UserModel {
     private Status status;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private UserProfileModel profile;
 
 }
