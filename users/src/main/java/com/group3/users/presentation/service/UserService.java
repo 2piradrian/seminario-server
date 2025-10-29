@@ -83,23 +83,7 @@ public class UserService implements UserServiceI {
 
         List<User> staffUsers = this.userRepository.getAllStaff();
 
-        Map<Role,List<UserProfile>> staff = new HashMap<>();
-        List<UserProfile> modUsers = new ArrayList<>();
-        List<UserProfile> adminUsers = new ArrayList<>();
-
-        for (User user : staffUsers){
-            UserProfile userProfile = this.userProfileRepository.getById(user.getId());
-            if (user.getRole().equals(Role.MODERATOR)){
-                modUsers.add(userProfile);
-            } else if (user.getRole().equals(Role.ADMIN)){
-                adminUsers.add(userProfile);
-            }
-        }
-
-        staff.put(Role.ADMIN,adminUsers);
-        staff.put(Role.MODERATOR,modUsers);
-
-        return UserMapper.getAllStaff().toResponse(staff);
+        return UserMapper.getAllStaff().toResponse(staffUsers);
     }
 
     @Override
