@@ -20,4 +20,8 @@ public class UserMapper {
         return new GetPageFilteredMapper();
     }
 
+    public static EditMapper update() {
+        return new EditMapper();
+    }
+
 }
