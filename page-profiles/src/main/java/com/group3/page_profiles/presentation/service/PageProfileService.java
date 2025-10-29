@@ -32,8 +32,6 @@ public class PageProfileService implements PageProfileServiceI {
 
     private final UserRepository userRepository;
 
-    private final UserProfileRepository userProfileRepository;
-
     private final ImagesRepository imagesRepository;
 
 
@@ -55,10 +53,8 @@ public class PageProfileService implements PageProfileServiceI {
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 
-        UserProfile owner = this.userProfileRepository.getById(user.getId(), dto.getToken());
-        if(owner == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        page.setOwner(owner);
-        page.setMembers(List.of(owner));
+        page.setOwner(user.getProfile());
+        page.setMembers(List.of(user.getProfile()));
 
         page.setName(dto.getName());
         page.setPortraitImage("");
@@ -76,32 +72,32 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageByIdRes getById(GetPageByIdReq dto) {
+        // TODO
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        UserProfile sessionProfile = this.userProfileRepository.getByIdWithFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        User sessionProfile = this.userRepository.getByIdWithFollowers(user.getId(), this.secretKeyHelper.getSecret());
         if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         for (UserProfile member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-            UserProfile completeMember = this.userProfileRepository.getById(member.getId(), dto.getToken());
+            User completeMember = this.userRepository.getById(member.getId());
             if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-            member.setPortraitImage(completeMember.getPortraitImage());
-            member.setProfileImage(completeMember.getProfileImage());
-            member.setName(completeMember.getName());
-            member.setSurname(completeMember.getSurname());
-            member.setStyles(completeMember.getStyles());
-            member.setInstruments(completeMember.getInstruments());
+            member.setPortraitImage(completeMember.getProfile().getPortraitImage());
+            member.setProfileImage(completeMember.getProfile().getProfileImage());
+            member.setName(completeMember.getProfile().getName());
+            member.setSurname(completeMember.getProfile().getSurname());
+            member.setStyles(completeMember.getProfile().getStyles());
+            member.setInstruments(completeMember.getProfile().getInstruments());
         }
 
-        System.out.println(sessionProfile.getFollowing());
-        Boolean isFollowing = sessionProfile.getFollowing().contains(page.getId());
-        Integer followers = this.userProfileRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
+        Boolean isFollowing = sessionProfile.getProfile().getFollowing().contains(page.getId());
+        Integer followers = this.userRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
         return PageMapper.getPage().toResponse(page, followers, isFollowing);
     }
@@ -184,7 +180,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(memberId -> userProfileRepository.getById(memberId, dto.getToken()))
+                .map(memberId -> userRepository.getById(memberId))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
@@ -193,9 +189,9 @@ public class PageProfileService implements PageProfileServiceI {
         Set<UserProfile> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            UserProfile userProfile = userProfileRepository.getById(id, dto.getToken());
-            if (existingMembers.add(userProfile)) {
-                members.add(userProfile);
+            User userProfile = userRepository.getById(id);
+            if (existingMembers.add(userProfile.getProfile())) {
+                members.add(userProfile.getProfile());
             }
         });
         page.setMembers(members);
