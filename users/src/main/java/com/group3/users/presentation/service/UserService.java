@@ -95,8 +95,6 @@ public class UserService implements UserServiceI {
         return UserMapper.getAllStaff().toResponse(staff);
     }
 
-    // TODO: verificar si ya no esta deleted
-
     @Override
     public void delete(DeleteUserReq dto) {
         AuthUserRes auth = this.authService.auth(AuthUserReq.create(dto.getToken()));

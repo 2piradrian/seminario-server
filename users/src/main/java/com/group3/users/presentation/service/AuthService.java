@@ -28,8 +28,6 @@ public class AuthService implements AuthServiceI {
 
     private final AuthHelper authHelper;
 
-    private final SecretKeyHelper secretKeyHelper;
-
     private final UserRepository userRepository;
 
     private final EmailService emailService;
