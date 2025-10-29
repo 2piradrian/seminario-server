@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/get-all-staff")
-    public ResponseEntity<?> getOwnProfile(
+    public ResponseEntity<?> getAllStaff(
         @RequestHeader(value = "Authorization") String token
     ) {
         GetAllStaffReq dto = UserMapper.getAllStaff().toRequest(token);
