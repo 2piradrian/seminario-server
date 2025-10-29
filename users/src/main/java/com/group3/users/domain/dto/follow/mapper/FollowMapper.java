@@ -25,4 +25,12 @@ public class FollowMapper {
         return new ToggleFollowMapper();
     }
 
+    public static GetAllFollowersMapper getAllFollowers() {
+        return new GetAllFollowersMapper();
+    }
+
+    public static GetAllFollowingMapper getAllFollowing() {
+        return new GetAllFollowingMapper();
+    }
+
 }

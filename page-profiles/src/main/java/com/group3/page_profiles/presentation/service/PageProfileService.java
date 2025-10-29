@@ -72,7 +72,6 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageByIdRes getById(GetPageByIdReq dto) {
-        // TODO
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 

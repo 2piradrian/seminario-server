@@ -11,6 +11,4 @@ public interface UserRepositoryI {
 
     Integer getFollowersById(String id, String secret);
 
-    User getByIdWithFollowers(String id, String secret);
-
 }

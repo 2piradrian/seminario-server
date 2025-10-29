@@ -1,11 +1,7 @@
 package com.group3.users.presentation.controller;
 
 import com.group3.users.domain.dto.follow.mapper.FollowMapper;
-import com.group3.users.domain.dto.follow.request.GetFollowerPageReq;
-import com.group3.users.domain.dto.follow.request.GetFollowersByIdReq;
-import com.group3.users.domain.dto.follow.request.GetFollowingByIdReq;
-import com.group3.users.domain.dto.follow.request.GetFollowingPageReq;
-import com.group3.users.domain.dto.follow.request.ToggleFollowReq;
+import com.group3.users.domain.dto.follow.request.*;
 import com.group3.users.presentation.service.FollowService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,4 +60,19 @@ public class FollowController {
         return ResponseEntity.ok(followService.getFollowingById(dto));
     }
 
+    @PostMapping("/get-all-followers")
+    public ResponseEntity<?> getAllFollowers(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetAllFollowersReq dto = FollowMapper.getAllFollowers().toRequest(payload);
+        return ResponseEntity.ok(followService.getAllFollowers(dto));
+    }
+
+    @PostMapping("/get-all-following")
+    public ResponseEntity<?> getAllFollowing(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetAllFollowingReq dto = FollowMapper.getAllFollowing().toRequest(payload);
+        return ResponseEntity.ok(followService.getAllFollowing(dto));
+    }
 }

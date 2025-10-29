@@ -179,4 +179,23 @@ public class FollowService implements FollowServiceI {
         return FollowMapper.getFollowingById().toResponse(following);
     }
 
+    // ======== Get All Followers ========
+
+    @Override
+    public GetAllFollowersRes getAllFollowers(GetAllFollowersReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        List<Follow> followers = this.followRepository.getAllFollowers(dto.getId());
+        return FollowMapper.getAllFollowers().toResponse(followers);
+    }
+
+    // ======== Get All Following ========
+
+    @Override
+    public GetAllFollowingRes getAllFollowing(GetAllFollowingReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        List<Follow> following = this.followRepository.getAllFollowing(dto.getId());
+        return FollowMapper.getAllFollowing().toResponse(following);
+    }
 }

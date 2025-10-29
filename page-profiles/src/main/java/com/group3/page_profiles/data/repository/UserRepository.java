@@ -7,7 +7,6 @@ import com.group3.error.ErrorType;
 import com.group3.page_profiles.data.datasource.users_server.repository.UsersServerRepositoryI;
 import com.group3.page_profiles.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.page_profiles.data.datasource.users_server.responses.GetUserByIdRes;
-import com.group3.page_profiles.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.page_profiles.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -84,41 +83,6 @@ public class UserRepository implements UserRepositoryI {
         payload.put("secret", secret);
 
         return this.repository.getFollowersById(payload).getFollowersCount();
-    }
-
-    // ======== Get Followers By Id ========
-
-    @Override
-    public User getByIdWithFollowers(String id, String secret) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("id", id);
-        payload.put("secret", secret);
-
-        GetUserProfileWithFollowingByIdRes response = this.repository.getByIdWithFollowing(id, payload);
-
-        if (response == null) {
-            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-        }
-
-        UserProfile profile = UserProfile.builder()
-                .name(response.getProfile().getName())
-                .surname(response.getProfile().getSurname())
-                .memberSince(response.getProfile().getMemberSince())
-                .portraitImage(response.getProfile().getPortraitImage())
-                .profileImage(response.getProfile().getProfileImage())
-                .shortDescription(response.getProfile().getShortDescription())
-                .longDescription(response.getProfile().getLongDescription())
-                .styles(response.getProfile().getStyles())
-                .instruments(response.getProfile().getInstruments())
-                .build();
-
-        return User.builder()
-                .id(response.getId())
-                .email(response.getEmail())
-                .role(response.getRole())
-                .status(response.getStatus())
-                .profile(profile)
-                .build();
     }
 
 }

@@ -15,4 +15,8 @@ public interface FollowServiceI {
 
     GetFollowingByIdRes getFollowingById(GetFollowingByIdReq dto);
 
+    GetAllFollowersRes getAllFollowers(GetAllFollowersReq dto);
+
+    GetAllFollowingRes getAllFollowing(GetAllFollowingReq dto);
+
 }
