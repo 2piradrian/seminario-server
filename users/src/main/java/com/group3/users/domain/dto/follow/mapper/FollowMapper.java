@@ -9,16 +9,16 @@ public class FollowMapper {
         return new GetFollowerPageMapper();
     }
 
-    public static GetFollowersByIdMapper getFollowersById(){
-        return new GetFollowersByIdMapper();
+    public static GetFollowersQuantityByIdMapper getFollowersQuantityById(){
+        return new GetFollowersQuantityByIdMapper();
     }
 
     public static GetFollowingPageMapper getFollowingPage() {
         return new GetFollowingPageMapper();
     }
 
-    public static GetFollowingByIdMapper getFollowingById() {
-        return new GetFollowingByIdMapper();
+    public static GetFollowingQuantityByIdMapper getFollowingQuantityById() {
+        return new GetFollowingQuantityByIdMapper();
     }
 
     public static ToggleFollowMapper toggleFollow() {

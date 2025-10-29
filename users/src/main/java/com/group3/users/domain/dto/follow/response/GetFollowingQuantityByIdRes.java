@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GetFollowingByIdRes {
+public class GetFollowingQuantityByIdRes {
 
     private final Integer following;
 

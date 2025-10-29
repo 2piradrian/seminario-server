@@ -7,6 +7,10 @@ import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.*;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
+import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
+import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
+import com.group3.users.domain.dto.follow.request.GetFollowersQuantityByIdReq;
+import com.group3.users.domain.dto.follow.request.GetFollowingQuantityByIdReq;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
@@ -32,13 +36,13 @@ public class UserService implements UserServiceI {
 
     private final UserProfileRepository userProfileRepository;
 
-    private final PageProfileRepository pageProfileRepository;
-
     private final CatalogRepository catalogRepository;
 
     private final ImagesRepository imagesRepository;
 
     private final AuthService authService;
+
+    private final FollowService followService;
 
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
@@ -56,16 +60,16 @@ public class UserService implements UserServiceI {
         List<Instrument> instruments = this.catalogRepository.getInstrumentListById(profileResult.getInstruments().stream().map(Instrument::getId).toList());
         profileResult.setInstruments(instruments);
 
-        // TODO: use profileResult.setFollowsCheck()
+        List<String> following = this.followService.getAllFollowing(
+                GetAllFollowingReq.create(user.getId(), secretKeyHelper.getSecret())
+        ).getFollowing().stream().map(Follow::getFollowedId).toList();
 
-        //Integer followersCount = this.userProfileRepository.getFollowersCount(profileResult.getId());
-        //profileResult.setFollowersQuantity(followersCount);
-        //
-        //Integer followingCount = this.userProfileRepository.getFollowingCount(profileResult.getId());
-        //profileResult.setFollowingQuantity(followingCount);
-        //
-        //Boolean ownProfile = user.getId().equals(userResult.getProfile().getId());
-        //Boolean isFollowing = userResult.getProfile().getFollowing().contains(user.getId());
+        List<String> followers = this.followService.getAllFollowers(
+                GetAllFollowersReq.create(user.getId(), secretKeyHelper.getSecret())
+        ).getFollowers().stream().map(Follow::getFollowerId).toList();
+
+        profileResult.isOwnProfile(user.getId());
+        profileResult.setFollowsChecks(user.getId(), following, followers);
 
         return UserMapper.getById().toResponse(user);
     }

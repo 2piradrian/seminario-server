@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -160,21 +159,21 @@ public class FollowService implements FollowServiceI {
     // ======== Get Followers Count ========
 
     @Override
-    public GetFollowersByIdRes getFollowersById(GetFollowersByIdReq dto) {
+    public GetFollowersQuantityByIdRes getFollowersQuantityById(GetFollowersQuantityByIdReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Integer followers = this.followRepository.getFollowersQuantity(dto.getId());
-        return FollowMapper.getFollowersById().toResponse(followers);
+        return FollowMapper.getFollowersQuantityById().toResponse(followers);
     }
 
     // ======== Get Following Count ========
 
     @Override
-    public GetFollowingByIdRes getFollowingById(GetFollowingByIdReq dto) {
+    public GetFollowingQuantityByIdRes getFollowingQuantityById(GetFollowingQuantityByIdReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Integer following = this.followRepository.getFollowingQuantity(dto.getId());
-        return FollowMapper.getFollowingById().toResponse(following);
+        return FollowMapper.getFollowingQuantityById().toResponse(following);
     }
 
     // ======== Get All Followers ========

@@ -5,18 +5,18 @@ import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetFollowingByIdReq {
+public class GetFollowingQuantityByIdReq {
 
     private final String id;
 
     private final String secret;
 
-    private GetFollowingByIdReq(String id, String secret) {
+    private GetFollowingQuantityByIdReq(String id, String secret) {
         this.id = id;
         this.secret = secret;
     }
 
-    public static GetFollowingByIdReq create(String id, String secret) {
+    public static GetFollowingQuantityByIdReq create(String id, String secret) {
 
         if (secret == null || secret.isEmpty()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -26,7 +26,7 @@ public class GetFollowingByIdReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetFollowingByIdReq(id, secret);
+        return new GetFollowingQuantityByIdReq(id, secret);
     }
 
 }

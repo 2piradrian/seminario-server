@@ -45,19 +45,19 @@ public class FollowController {
     }
 
     @PostMapping("/get-followers-by-id")
-    public ResponseEntity<?> getFollowersById(
+    public ResponseEntity<?> getFollowersQuantityById(
             @RequestBody Map<String, Object> payload
     ) {
-        GetFollowersByIdReq dto = FollowMapper.getFollowersById().toRequest(payload);
-        return ResponseEntity.ok(followService.getFollowersById(dto));
+        GetFollowersQuantityByIdReq dto = FollowMapper.getFollowersQuantityById().toRequest(payload);
+        return ResponseEntity.ok(followService.getFollowersQuantityById(dto));
     }
 
     @PostMapping("/get-following-by-id")
-    public ResponseEntity<?> getFollowingById(
+    public ResponseEntity<?> getFollowingQuantityById(
             @RequestBody Map<String, Object> payload
     ) {
-        GetFollowingByIdReq dto = FollowMapper.getFollowingById().toRequest(payload);
-        return ResponseEntity.ok(followService.getFollowingById(dto));
+        GetFollowingQuantityByIdReq dto = FollowMapper.getFollowingQuantityById().toRequest(payload);
+        return ResponseEntity.ok(followService.getFollowingQuantityById(dto));
     }
 
     @PostMapping("/get-all-followers")
@@ -75,4 +75,5 @@ public class FollowController {
         GetAllFollowingReq dto = FollowMapper.getAllFollowing().toRequest(payload);
         return ResponseEntity.ok(followService.getAllFollowing(dto));
     }
+
 }

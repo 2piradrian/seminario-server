@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GetFollowersByIdRes {
+public class GetFollowersQuantityByIdRes {
 
     private final Integer followers;
 
