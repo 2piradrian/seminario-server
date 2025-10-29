@@ -66,6 +66,31 @@ public class AuthService implements AuthServiceI {
         return AuthMapper.auth().toResponse(user);
     }
 
+    public User auth(String reqToken) {
+        String token = this.authHelper.validateToken(reqToken);
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String subject = this.authHelper.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        if (user.getStatus() == Status.INACTIVE) {
+            throw new ErrorHandler(ErrorType.USER_NOT_ACTIVATED);
+        }
+
+        if (user.getStatus() == Status.DELETED){
+            throw new ErrorHandler(ErrorType.USER_DELETED);
+        }
+
+        return user;
+    }
+
     // ======== Register User ========
 
     @Override

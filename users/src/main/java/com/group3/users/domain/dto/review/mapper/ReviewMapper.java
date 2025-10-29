@@ -3,6 +3,7 @@ package com.group3.users.domain.dto.review.mapper;
 
 import com.group3.users.domain.dto.review.mapper.implementation.CreateMapper;
 import com.group3.users.domain.dto.review.mapper.implementation.DeleteMapper;
+import com.group3.users.domain.dto.review.mapper.implementation.GetReviewsByAuthorMapper;
 import com.group3.users.domain.dto.review.mapper.implementation.UpdateMapper;
 
 public class ReviewMapper {
@@ -17,6 +18,10 @@ public class ReviewMapper {
 
     public static DeleteMapper delete() {
         return new DeleteMapper();
+    }
+
+    public static GetReviewsByAuthorMapper getReviewsByAuthor() {
+        return new GetReviewsByAuthorMapper();
     }
 
 }
