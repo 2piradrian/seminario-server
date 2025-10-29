@@ -1,5 +1,6 @@
 package com.group3.user_profiles.domain.repository;
 
+import com.group3.entity.PageContent;
 import com.group3.entity.Review;
 
 public interface ReviewRepositoryI {
@@ -11,5 +12,7 @@ public interface ReviewRepositoryI {
     Review update(Review review);
 
     void delete(String reviewId);
+
+    PageContent<Review> findByReviewerId(String reviewerId, Integer page, Integer size);
 
 }

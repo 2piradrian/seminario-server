@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,7 +108,7 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Event> events = this.eventRepository.getPageEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
@@ -130,7 +129,7 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getEventsByAssistant(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Event> events = this.eventRepository.getPageEventsByAssistant(user.getId(), dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {

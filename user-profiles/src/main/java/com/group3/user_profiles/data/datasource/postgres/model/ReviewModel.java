@@ -16,8 +16,8 @@ public class ReviewModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "reviewed_user_id", nullable = false)
-    private String reviewedUserId;
+    @Column(name = "reviewed_id", nullable = false)
+    private String reviewedId;
 
     @Column(name = "reviewer_user_id", nullable = false)
     private String reviewerUserId;
