@@ -16,4 +16,8 @@ public class UserMapper {
         return new DeleteMapper();
     }
 
+    public static GetPageFilteredMapper getFiltered(){
+        return new GetPageFilteredMapper();
+    }
+
 }

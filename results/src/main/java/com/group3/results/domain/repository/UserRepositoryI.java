@@ -9,7 +9,7 @@ public interface UserRepositoryI {
 
     User auth(String token);
 
-    List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret);
+    List<User> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret);
 
     User getById(String userId, String token);
 

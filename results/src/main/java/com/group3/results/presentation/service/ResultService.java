@@ -44,7 +44,7 @@ public class ResultService implements ResultServiceI {
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
         String secret = secretKeyHelper.getSecret();
-        List<UserProfile> userProfiles = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         List<PageProfile> pageProfiles = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class ResultService implements ResultServiceI {
                         ? dto.getInstruments().stream().map(Instrument::getId).toList()
                         : List.of();
 
-                userProfiles = userRepository.getUserFilteredPage(
+                users = userRepository.getUserFilteredPage(
                         dto.getText(),
                         styleIds,
                         instrumentIds,
@@ -84,8 +84,8 @@ public class ResultService implements ResultServiceI {
                         secret
                 );
 
-                for (UserProfile u : userProfiles) {
-                    u.setIsFollowing(fulluser.getProfile().getFollowing().contains(u.getId()));
+                for (User u : users) {
+                    u.getProfile().setIsFollowing(fulluser.getProfile().getFollowing().contains(u.getId()));
                 }
             }
 
@@ -110,7 +110,7 @@ public class ResultService implements ResultServiceI {
             }
         }
 
-        return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
+        return ResultsMapper.getSearchResult().toResponse(users, pageProfiles, posts);
     }
 
     @Override
