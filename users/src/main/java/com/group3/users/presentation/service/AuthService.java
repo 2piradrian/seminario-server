@@ -6,7 +6,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.config.helpers.EmailHelper;
-import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
@@ -30,6 +29,8 @@ public class AuthService implements AuthServiceI {
     private final AuthHelper authHelper;
 
     private final UserRepository userRepository;
+
+    private final UserProfileRepository userProfileRepository;
 
     private final EmailService emailService;
 
@@ -109,6 +110,8 @@ public class AuthService implements AuthServiceI {
                 .instruments(List.of())
                 .styles(List.of())
                 .build();
+
+        this.userProfileRepository.save(userProfile);
 
         User user = User.builder()
                 .id(userId)
