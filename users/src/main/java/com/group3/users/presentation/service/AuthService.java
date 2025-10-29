@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -94,14 +95,29 @@ public class AuthService implements AuthServiceI {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
-        User user = new User();
         String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
 
-        user.setId(userId);
-        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
-        user.setEmail(dto.getEmail());
-        user.setRole(Role.USER);
-        user.setStatus(Status.INACTIVE);
+        UserProfile userProfile = UserProfile.builder()
+                .id(userId)
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .memberSince(LocalDateTime.now())
+                .portraitImage("")
+                .profileImage("")
+                .shortDescription("¡New user!")
+                .longDescription("¡New user!")
+                .instruments(List.of())
+                .styles(List.of())
+                .build();
+
+        User user = User.builder()
+                .id(userId)
+                .password(this.authHelper.hashPassword(dto.getPassword()))
+                .email(dto.getEmail())
+                .role(Role.USER)
+                .status(Status.INACTIVE)
+                .profile(userProfile)
+                .build();
 
         User saved = this.userRepository.save(user);
 

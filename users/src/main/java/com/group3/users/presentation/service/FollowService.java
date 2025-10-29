@@ -35,8 +35,6 @@ public class FollowService implements FollowServiceI {
 
     private final AuthService authService;
 
-    private final UserRepository userRepository;
-
     private final FollowRepository followRepository;
 
     private final UserProfileRepository userProfileRepository;
