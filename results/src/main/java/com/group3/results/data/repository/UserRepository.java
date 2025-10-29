@@ -1,11 +1,21 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.User;
+import com.group3.entity.UserProfile;
+import com.group3.error.ErrorHandler;
+import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.users_server.repository.UsersServerRepositoryI;
 import com.group3.results.data.datasource.users_server.responses.AuthUserRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserProfileByIdRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserProfilePageFilteredRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.results.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 @AllArgsConstructor
@@ -24,6 +34,93 @@ public class UserRepository implements UserRepositoryI {
         user.setEmail(response.getEmail());
         user.setRole(response.getRole());
         user.setStatus(response.getStatus());
+
+        UserProfile profile = new UserProfile();
+        profile.setName(response.getProfile().getName());
+        profile.setSurname(response.getProfile().getSurname());
+        profile.setMemberSince(response.getProfile().getMemberSince());
+        profile.setPortraitImage(response.getProfile().getPortraitImage());
+        profile.setProfileImage(response.getProfile().getProfileImage());
+        profile.setShortDescription(response.getProfile().getShortDescription());
+        profile.setLongDescription(response.getProfile().getLongDescription());
+        profile.setStyles(response.getProfile().getStyles());
+        profile.setInstruments(response.getProfile().getInstruments());
+
+        user.setProfile(profile);
+
+        return user;
+    }
+
+    public List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
+
+        Map<String,Object> payload = new HashMap<>();
+
+        payload.put("fullname",fullname);
+        payload.put("styles", styles);
+        payload.put("instruments", instruments);
+        payload.put("page",page);
+        payload.put("size",size);
+        payload.put("secret",secret);
+
+        GetUserProfilePageFilteredRes response = this.repository.getUserProfileFilteredPage(payload);
+
+        return response.getProfiles();
+    }
+
+    // ======== Single User Retrieval ========
+
+    @Override
+    public User getById(String userId, String token) {
+        GetUserByIdRes response = this.repository.getById(token, userId);
+
+        if (response == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        User user = new User();
+        user.setId(response.getId());
+        user.setEmail(response.getEmail());
+        user.setRole(response.getRole());
+        user.setStatus(response.getStatus());
+
+        UserProfile profile = new UserProfile();
+        profile.setName(response.getProfile().getName());
+        profile.setSurname(response.getProfile().getSurname());
+        profile.setMemberSince(response.getProfile().getMemberSince());
+        profile.setPortraitImage(response.getProfile().getPortraitImage());
+        profile.setProfileImage(response.getProfile().getProfileImage());
+        profile.setShortDescription(response.getProfile().getShortDescription());
+        profile.setLongDescription(response.getProfile().getLongDescription());
+        profile.setStyles(response.getProfile().getStyles());
+        profile.setInstruments(response.getProfile().getInstruments());
+
+        user.setProfile(profile);
+
+        return user;
+    }
+
+    @Override
+    public UserProfile getByIdWithFollowing(String userId, String secret) {
+
+        Map<String,Object> payload = new HashMap<>();
+        payload.put("secret",secret);
+
+        GetUserProfileWithFollowingByIdRes response = this.repository.getByIdWithFollowing(userId, payload);
+
+        if (response == null){
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        UserProfile user = new UserProfile();
+
+        user.setId(response.getId());
+        user.setEmail(response.getEmail());
+        user.setName(response.getName());
+        user.setSurname(response.getSurname());
+        user.setMemberSince(response.getMemberSince());
+        user.setStyles(response.getStyles());
+        user.setInstruments(response.getInstruments());
+        user.setFollowing(response.getFollowing());
 
         return user;
     }

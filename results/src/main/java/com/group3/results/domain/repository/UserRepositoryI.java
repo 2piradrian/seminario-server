@@ -1,9 +1,18 @@
 package com.group3.results.domain.repository;
 
 import com.group3.entity.User;
+import com.group3.entity.UserProfile;
+
+import java.util.List;
 
 public interface UserRepositoryI {
 
     User auth(String token);
+
+    List<UserProfile> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret);
+
+    User getById(String userId, String token);
+
+    UserProfile getByIdWithFollowing(String userId, String secret);
 
 }
