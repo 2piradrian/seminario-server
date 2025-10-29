@@ -128,4 +128,52 @@ public class UserService implements UserServiceI {
         return UserMapper.getFiltered().toResponse(profiles);
     }
 
+    // ======== Update User Profile ========
+
+    @Override
+    public void update(EditUserReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile userProfile = user.getProfile();
+
+        // ======== Update Styles and Instruments ========
+        if (!dto.getStyles().isEmpty()) {
+            List<Style> styles = this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList());
+            userProfile.setStyles(styles);
+        }
+
+        if (!dto.getInstruments().isEmpty()) {
+            List<Instrument> instruments = this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList());
+            userProfile.setInstruments(instruments);
+        }
+
+        // ======== Update Profile Image ========
+        if (dto.getProfileImage() != null) {
+            String profileImage = userProfile.getProfileImage();
+            if (profileImage != null && !profileImage.isEmpty()) {
+                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+            }
+            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
+            userProfile.setProfileImage(profileId);
+        }
+
+        // ======== Update Portrait Image ========
+        if (dto.getPortraitImage() != null) {
+            String portraitImage = userProfile.getPortraitImage();
+            if (portraitImage != null && !portraitImage.isEmpty()) {
+                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+            }
+            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            userProfile.setPortraitImage(portraitId);
+        }
+
+        userProfile.setName(dto.getName());
+        userProfile.setSurname(dto.getSurname());
+        userProfile.setShortDescription(dto.getShortDescription());
+        userProfile.setLongDescription(dto.getLongDescription());
+
+        this.userProfileRepository.update(userProfile);
+    }
+
 }
