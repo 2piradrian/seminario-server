@@ -99,7 +99,6 @@ public class AuthService implements AuthServiceI {
         String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
 
         UserProfile userProfile = UserProfile.builder()
-                .id(userId)
                 .name(dto.getName())
                 .surname(dto.getSurname())
                 .memberSince(LocalDateTime.now())
@@ -110,8 +109,6 @@ public class AuthService implements AuthServiceI {
                 .instruments(List.of())
                 .styles(List.of())
                 .build();
-
-        this.userProfileRepository.save(userProfile);
 
         User user = User.builder()
                 .id(userId)
