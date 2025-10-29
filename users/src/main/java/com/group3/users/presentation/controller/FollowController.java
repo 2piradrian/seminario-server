@@ -63,4 +63,5 @@ public class FollowController {
         GetFollowingByIdReq dto = FollowMapper.getFollowingById().toRequest(payload);
         return ResponseEntity.ok(followService.getFollowingById(dto));
     }
+
 }
