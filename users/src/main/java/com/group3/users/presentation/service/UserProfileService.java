@@ -32,35 +32,6 @@ public class UserProfileService implements UserProfileServiceI {
 
     private final ImagesRepository imagesRepository;
 
-    @Override
-    public GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto) {
-        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        UserProfile userProfile = this.userProfileRepository.getById(dto.getUserId());
-        if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        return UserProfileMapper.getByIdWithFollowing().toResponse(userProfile);
-    }
-
-
-    // ======== Get User Profile Page Filtered ========
-
-    @Override
-    public GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto) {
-        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageContent<UserProfile> profiles = this.userProfileRepository.getFilteredPage(
-            dto.getFullname(),
-            dto.getStyles(),
-            dto.getInstruments(),
-            dto.getPage(),
-            dto.getSize()
-        );
-
-        return UserProfileMapper.getFiltered().toResponse(profiles);
-    }
-
-
     // ======== Update User Profile ========
 
     @Override

@@ -21,16 +21,8 @@ public class UserProfileMapper {
         return new EditMapper();
     }
 
-    public static GetPageFilteredMapper getFiltered(){
-        return new GetPageFilteredMapper();
-    }
-
     public static ActiveMapper active() {
         return new ActiveMapper();
-    }
-
-    public static GetOwnMapper getOwnProfile() {
-        return new GetOwnMapper();
     }
 
 }

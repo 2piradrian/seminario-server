@@ -3,6 +3,7 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.*;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
@@ -26,6 +27,8 @@ import java.util.Map;
 public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
+
+    private final SecretKeyHelper secretKeyHelper;
 
     private final UserProfileRepository userProfileRepository;
 
@@ -81,7 +84,7 @@ public class UserService implements UserServiceI {
         List<UserProfile> adminUsers = new ArrayList<>();
 
         for (User user : staffUsers){
-            UserProfile userProfile = this.userProfileRepository.getById(dto.getToken(), user.getId());
+            UserProfile userProfile = this.userProfileRepository.getById(user.getId());
             if (user.getRole().equals(Role.MODERATOR)){
                 modUsers.add(userProfile);
             } else if (user.getRole().equals(Role.ADMIN)){
@@ -106,6 +109,23 @@ public class UserService implements UserServiceI {
         user.setStatus(Status.DELETED);
 
         this.userRepository.save(user);
+    }
+
+    // ======== Get User Profile Page Filtered ========
+
+    @Override
+    public GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<User> profiles = this.userRepository.getFilteredPage(
+            dto.getFullname(),
+            dto.getStyles(),
+            dto.getInstruments(),
+            dto.getPage(),
+            dto.getSize()
+        );
+
+        return UserMapper.getFiltered().toResponse(profiles);
     }
 
 }

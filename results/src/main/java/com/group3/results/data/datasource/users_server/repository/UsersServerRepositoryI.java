@@ -2,7 +2,7 @@ package com.group3.results.data.datasource.users_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
 import com.group3.results.data.datasource.users_server.responses.GetUserByIdRes;
-import com.group3.results.data.datasource.users_server.responses.GetUserProfilePageFilteredRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserPageFilteredRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.results.data.datasource.users_server.responses.AuthUserRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
@@ -25,6 +25,6 @@ public interface UsersServerRepositoryI {
     GetUserProfileWithFollowingByIdRes getByIdWithFollowing(@PathVariable("userId") String userId, @RequestBody Map<String, Object> payload);
 
     @PostMapping("/api/user-profiles/get-user-filtered")
-    GetUserProfilePageFilteredRes getUserProfileFilteredPage(@RequestBody Map<String, Object> payload);
+    GetUserPageFilteredRes getUserProfileFilteredPage(@RequestBody Map<String, Object> payload);
 
 }

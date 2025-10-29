@@ -1,4 +1,4 @@
-package com.group3.users.domain.dto.profile.request;
+package com.group3.users.domain.dto.user.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class GetUserProfilePageFilteredReq {
+public class GetUserPageFilteredReq {
 
     private final String secret;
 
@@ -21,7 +21,7 @@ public class GetUserProfilePageFilteredReq {
 
     private final List<String> instruments;
 
-    private GetUserProfilePageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+    private GetUserPageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -30,7 +30,7 @@ public class GetUserProfilePageFilteredReq {
         this.instruments = instruments;
     }
 
-    public static GetUserProfilePageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+    public static GetUserPageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -52,7 +52,7 @@ public class GetUserProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetUserProfilePageFilteredReq(secret, page, size, fullname, styles, instruments);
+        return new GetUserPageFilteredReq(secret, page, size, fullname, styles, instruments);
     }
 
 }

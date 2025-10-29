@@ -12,10 +12,6 @@ public interface UserProfileServiceI {
 
     GetUserProfileWithFollowingByIdRes getById(GetUserProfileWithFollowingByIdReq dto);
 
-    GetUserProfilePageFilteredRes getProfileFiltered(GetUserProfilePageFilteredReq dto);
-
-    GetOwnUserProfileRes getOwnProfile (GetOwnUserProfileReq dto);
-
     GetFollowerPageRes getFollowers(GetFollowerPageReq dto);
 
     GetFollowingPageRes getFollowing(GetFollowingPageReq dto);

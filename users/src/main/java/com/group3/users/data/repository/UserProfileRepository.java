@@ -43,31 +43,6 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
     }
 
-
-    // ======== Search filtered with Pagination ========
-
-    @Override
-    public PageContent<UserProfile> getFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<UserProfileModel> profilesModels = repository.findByFilteredPage(
-                fullname,
-                Status.ACTIVE,
-                styles,
-                instruments,
-                PageRequest.of(pageIndex, size)
-        );
-
-        return new PageContent<>(
-                profilesModels.getContent().stream()
-                        .map(UserProfileEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                profilesModels.getNumber() + 1,
-                profilesModels.hasNext() ? profilesModels.getNumber() + 2 : null
-        );
-    }
-
-
     // ======== Followers and Following ========
 
     @Override
