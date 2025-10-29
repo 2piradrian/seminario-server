@@ -1,7 +1,7 @@
 package com.group3.results.data.datasource.users_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
-import com.group3.results.data.datasource.users_server.responses.GetUserProfileByIdRes;
+import com.group3.results.data.datasource.users_server.responses.GetUserByIdRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserProfilePageFilteredRes;
 import com.group3.results.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.results.data.datasource.users_server.responses.AuthUserRes;
@@ -18,8 +18,8 @@ public interface UsersServerRepositoryI {
     @GetMapping("/api/auth/")
     AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
 
-    @GetMapping("/api/user-profiles/get-by-id/{userId}")
-    GetUserProfileByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("userId") String userId);
+    @GetMapping("/api/users/get-by-id/{userId}")
+    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
 
     @GetMapping("/api/user-profiles/get-by-id-with-following/{userId}")
     GetUserProfileWithFollowingByIdRes getByIdWithFollowing(@PathVariable("userId") String userId, @RequestBody Map<String, Object> payload);

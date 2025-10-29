@@ -13,6 +13,6 @@ public interface UserRepositoryI {
 
     User getById(String userId, String token);
 
-    UserProfile getByIdWithFollowing(String userId, String secret);
+    User getByIdWithFollowing(String userId, String secret);
 
 }
