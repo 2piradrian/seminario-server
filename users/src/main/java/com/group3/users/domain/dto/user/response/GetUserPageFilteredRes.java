@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetUserPageFilteredRes {
 
-    private final List<User> profiles;
+    private final List<User> users;
 
     private final Integer nextPage;
 
