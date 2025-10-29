@@ -18,9 +18,10 @@ public class UserController {
 
     @GetMapping("/get-by-id/{userId}")
     public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "userId") String userId
     ) {
-        GetUserByIdReq dto = UserMapper.getById().toRequest(userId);
+        GetUserByIdReq dto = UserMapper.getById().toRequest(token, userId);
 
         return ResponseEntity.ok(this.userService.getById(dto));
     }
