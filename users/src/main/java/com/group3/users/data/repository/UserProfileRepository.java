@@ -1,17 +1,12 @@
 package com.group3.users.data.repository;
 
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
 import com.group3.entity.UserProfile;
 import com.group3.users.data.datasource.user_profiles_server.repository.UserProfileServerRepositoryI;
 import com.group3.users.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
-import com.group3.users.domain.repository.ProfileRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Repository

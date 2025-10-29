@@ -21,6 +21,8 @@ public class User {
 
     private Role role;
 
+    private UserProfile profile;
+
     private boolean isPageMember(PageProfile pageProfile) {
         return pageProfile != null
                 && pageProfile.getMembers() != null
