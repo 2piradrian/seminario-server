@@ -7,7 +7,6 @@ import com.group3.error.ErrorType;
 import com.group3.page_profiles.data.datasource.users_server.repository.UsersServerRepositoryI;
 import com.group3.page_profiles.data.datasource.users_server.responses.AuthUserRes;
 import com.group3.page_profiles.data.datasource.users_server.responses.GetUserByIdRes;
-import com.group3.page_profiles.data.datasource.users_server.responses.GetUserProfileByIdRes;
 import com.group3.page_profiles.data.datasource.users_server.responses.GetUserProfileWithFollowingByIdRes;
 import com.group3.page_profiles.domain.repository.UserRepositoryI;
 import lombok.AllArgsConstructor;
