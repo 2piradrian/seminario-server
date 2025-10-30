@@ -48,7 +48,7 @@ public class FollowService implements FollowServiceI {
         if (user.getId().equals(dto.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         // Check if already exists
-        List<Follow> existing = followRepository.getAllFollowing(user.getId())
+        List<Follow> existing = this.followRepository.getAllFollowing(user.getId())
                 .stream()
                 .filter(f -> f.getFollowedId().equals(dto.getId()))
                 .toList();
@@ -85,7 +85,7 @@ public class FollowService implements FollowServiceI {
         UserProfile user = this.userProfileRepository.getById(dto.getUserId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        PageContent<Follow> followersPage = followRepository.findByFollowedId(dto.getUserId(), dto.getPage(), dto.getSize());
+        PageContent<Follow> followersPage = this.followRepository.findByFollowedId(dto.getUserId(), dto.getPage(), dto.getSize());
 
         List<String> followerIds = followersPage.getContent().stream()
                 .map(Follow::getFollowerId)
