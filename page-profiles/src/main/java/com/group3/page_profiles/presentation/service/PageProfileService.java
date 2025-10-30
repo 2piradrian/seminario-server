@@ -78,8 +78,8 @@ public class PageProfileService implements PageProfileServiceI {
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        User sessionProfile = this.userRepository.getByIdWithFollowers(user.getId(), this.secretKeyHelper.getSecret());
-        if (sessionProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        List<Follow> follows = this.userRepository.getAllFollowers(dto.getPageId(), this.secretKeyHelper.getSecret());
+        if (follows == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
         for (UserProfile member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -95,7 +95,7 @@ public class PageProfileService implements PageProfileServiceI {
             member.setInstruments(completeMember.getProfile().getInstruments());
         }
 
-        Boolean isFollowing = sessionProfile.getProfile().getFollowing().contains(page.getId());
+        Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
         Integer followers = this.userRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
         return PageMapper.getPage().toResponse(page, followers, isFollowing);

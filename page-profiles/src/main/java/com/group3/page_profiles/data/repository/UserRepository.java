@@ -1,5 +1,6 @@
 package com.group3.page_profiles.data.repository;
 
+import com.group3.entity.Follow;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -85,4 +87,12 @@ public class UserRepository implements UserRepositoryI {
         return this.repository.getFollowersById(payload).getFollowersCount();
     }
 
+    @Override
+    public List<Follow> getAllFollowers(String id, String secret){
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("id", id);
+        payload.put("secret", secret);
+
+        return this.repository.getAllFollowers(payload).getFollowers();
+    }
 }
