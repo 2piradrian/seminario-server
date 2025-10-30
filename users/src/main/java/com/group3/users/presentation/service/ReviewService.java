@@ -8,7 +8,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.data.repository.ReviewRepository;
 import com.group3.users.data.repository.UserProfileRepository;
-import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.review.mapper.ReviewMapper;
 import com.group3.users.domain.dto.review.request.*;
 import com.group3.users.domain.dto.review.response.*;
@@ -98,6 +97,21 @@ public class ReviewService implements ReviewServiceI {
         }
 
         return ReviewMapper.getReviewsByAuthor().toResponse(reviews);
+    }
+
+    @Override
+    public GetPageReviewsByReviewedIdRes getReviewsByReviewedId(GetPageReviewsByReviewedIdReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Review> reviews = this.reviewRepository.findByReviewedUserId(user.getId(), dto.getPage(), dto.getSize());
+
+        for (Review review : reviews.getContent()) {
+            UserProfile reviewerUser = this.userProfileRepository.getById(review.getReviewerUser().getId());
+            review.setReviewerUser(reviewerUser);
+        }
+
+        return new GetPageReviewsByReviewedIdRes(reviews.getContent(), reviews.getNextPage());
     }
 
 }

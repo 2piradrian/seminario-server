@@ -1,10 +1,6 @@
 package com.group3.users.domain.dto.review.mapper;
 
-
-import com.group3.users.domain.dto.review.mapper.implementation.CreateMapper;
-import com.group3.users.domain.dto.review.mapper.implementation.DeleteMapper;
-import com.group3.users.domain.dto.review.mapper.implementation.GetReviewsByAuthorMapper;
-import com.group3.users.domain.dto.review.mapper.implementation.UpdateMapper;
+import com.group3.users.domain.dto.review.mapper.implementation.*;
 
 public class ReviewMapper {
 
@@ -22,6 +18,10 @@ public class ReviewMapper {
 
     public static GetReviewsByAuthorMapper getReviewsByAuthor() {
         return new GetReviewsByAuthorMapper();
+    }
+
+    public static GetPageByReviewedMapper getReviewsByReviewed() {
+        return new GetPageByReviewedMapper();
     }
 
 }

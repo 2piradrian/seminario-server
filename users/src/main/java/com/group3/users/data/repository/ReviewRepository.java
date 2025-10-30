@@ -74,4 +74,22 @@ public class ReviewRepository implements ReviewRepositoryI {
         );
     }
 
+    @Override
+    public PageContent<Review> findByReviewedUserId(String reviewedUserId, Integer page, Integer size) {
+        int pageIndex = this.normalizePage(page);
+
+        Page<ReviewModel> reviewModels = repository.findByReviewedUserId(
+                reviewedUserId,
+                PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                reviewModels.getContent().stream()
+                        .map(ReviewEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                reviewModels.getNumber() + 1,
+                reviewModels.hasNext() ? reviewModels.getNumber() + 2 : null
+        );
+    }
+
 }

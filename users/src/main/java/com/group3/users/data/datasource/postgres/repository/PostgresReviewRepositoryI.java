@@ -20,4 +20,15 @@ public interface PostgresReviewRepositoryI extends JpaRepository<ReviewModel, St
             Pageable pageable
     );
 
+    @Query("""
+        SELECT r
+        FROM ReviewModel r
+        WHERE r.reviewedId = :reviewedUserId
+        ORDER BY r.id DESC
+    """)
+    Page<ReviewModel> findByReviewedUserId(
+            @Param("reviewedUserId") String reviewedUserId,
+            Pageable pageable
+    );
+
 }

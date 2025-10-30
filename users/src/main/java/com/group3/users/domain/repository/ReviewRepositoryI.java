@@ -15,4 +15,6 @@ public interface ReviewRepositoryI {
 
     PageContent<Review> findByReviewerId(String reviewerId, Integer page, Integer size);
 
+    PageContent<Review> findByReviewedUserId(String reviewedUserId, Integer page, Integer size);
+
 }
