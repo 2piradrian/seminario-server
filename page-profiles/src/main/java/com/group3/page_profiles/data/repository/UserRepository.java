@@ -48,7 +48,7 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public User getById(String userId, String token) {
+    public User getById(String token, String userId) {
         GetUserByIdRes response = this.repository.getById(token, userId);
 
         if (response == null) {

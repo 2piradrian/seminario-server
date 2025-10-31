@@ -11,12 +11,12 @@ public class GetUserByIdReq {
 
     private final String token;
 
-    private GetUserByIdReq(String userId, String token){
+    private GetUserByIdReq(String token, String userId){
         this.userId = userId;
         this.token = token;
     }
 
-    public static GetUserByIdReq create(String userId, String token){
+    public static GetUserByIdReq create(String token, String userId){
 
         if (token == null || token.isEmpty()){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -26,7 +26,7 @@ public class GetUserByIdReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetUserByIdReq(userId, token);
+        return new GetUserByIdReq(token, userId);
     }
 
 }

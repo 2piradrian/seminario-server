@@ -53,8 +53,8 @@ public class PageProfileService implements PageProfileServiceI {
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 
-        page.setOwner(user.getProfile());
-        page.setMembers(List.of(user.getProfile()));
+        page.setOwner(user);
+        page.setMembers(List.of(user));
 
         page.setName(dto.getName());
         page.setPortraitImage("");
@@ -124,10 +124,11 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageByUserIdRes getUserPages(GetPageByUserIdReq dto) {
-        User user = this.userRepository.getById(dto.getUserId(), dto.getToken());
+        User user = this.userRepository.getById(dto.getToken(), dto.getUserId());
         if(user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         List<PageProfile> pages = this.pageProfileRepository.getByUserId(dto.getUserId());
+
         return PageMapper.getUserPages().toResponse(pages);
     }
 

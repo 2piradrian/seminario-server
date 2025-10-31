@@ -8,8 +8,8 @@ public class GetByIdMapper {
 
     public GetUserByIdReq toRequest(String token, String userId) {
         return GetUserByIdReq.create(
-            userId,
-            token
+            token,
+            userId
         );
     }
 
