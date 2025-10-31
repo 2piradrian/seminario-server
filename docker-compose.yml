@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: 'develop'
       POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./catalog-db:/var/lib/postgresql/data
+      - ./dabatase/catalog-db:/var/lib/postgresql/data
     ports:
       - 5433:5432
 
@@ -22,7 +22,7 @@ services:
       POSTGRES_PASSWORD: 'develop'
       POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./events-db:/var/lib/postgresql/data
+      - ./dabatase/events-db:/var/lib/postgresql/data
     ports:
       - 5437:5432
 
@@ -35,7 +35,7 @@ services:
       POSTGRES_PASSWORD: 'develop'
       POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./page-profiles-db:/var/lib/postgresql/data
+      - ./dabatase/page-profiles-db:/var/lib/postgresql/data
     ports:
       - 5436:5432
 
@@ -48,7 +48,7 @@ services:
       POSTGRES_PASSWORD: 'develop'
       POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./posts-db:/var/lib/postgresql/data
+      - ./dabatase/posts-db:/var/lib/postgresql/data
     ports:
       - 5435:5432
 
@@ -61,6 +61,6 @@ services:
       POSTGRES_PASSWORD: 'develop'
       POSTGRES_HOST_AUTH_METHOD: md5
     volumes:
-      - ./users-db:/var/lib/postgresql/data
+      - ./dabatase/users-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
