@@ -86,7 +86,7 @@ public class PageProfileService implements PageProfileServiceI {
         for (User member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-            User completeMember = this.userRepository.getById(member.getId(), dto.getToken());
+            User completeMember = this.userRepository.getById(dto.getToken(), member.getId());
             if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
             members.add(completeMember);
