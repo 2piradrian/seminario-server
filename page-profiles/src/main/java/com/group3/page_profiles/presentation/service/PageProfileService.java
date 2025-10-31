@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,19 +82,16 @@ public class PageProfileService implements PageProfileServiceI {
         List<Follow> follows = this.userRepository.getAllFollowers(dto.getPageId(), this.secretKeyHelper.getSecret());
         if (follows == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
 
-        for (UserProfile member : page.getMembers()){
+        List<User> members = new ArrayList<>(List.of());
+        for (User member : page.getMembers()){
             if (member == null || member.getId() == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
             User completeMember = this.userRepository.getById(member.getId(), dto.getToken());
             if (completeMember == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-            member.setPortraitImage(completeMember.getProfile().getPortraitImage());
-            member.setProfileImage(completeMember.getProfile().getProfileImage());
-            member.setName(completeMember.getProfile().getName());
-            member.setSurname(completeMember.getProfile().getSurname());
-            member.setStyles(completeMember.getProfile().getStyles());
-            member.setInstruments(completeMember.getProfile().getInstruments());
+            members.add(completeMember);
         }
+        page.setMembers(members);
 
         Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
         Integer followers = this.userRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
@@ -180,18 +178,18 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(memberId -> userRepository.getById(memberId, dto.getToken()))
+                .map(memberId -> this.userRepository.getById(memberId, dto.getToken()))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
 
-        List<UserProfile> members = page.getMembers();
-        Set<UserProfile> existingMembers = new HashSet<>(members);
+        List<User> members = page.getMembers();
+        Set<User> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            User userProfile = userRepository.getById(id, dto.getToken());
-            if (existingMembers.add(userProfile.getProfile())) {
-                members.add(userProfile.getProfile());
+            User member = this.userRepository.getById(id, dto.getToken());
+            if (existingMembers.add(member)) {
+                members.add(member);
             }
         });
         page.setMembers(members);

@@ -1,6 +1,7 @@
 package com.group3.users.data.datasource.page_profiles_server.responses;
 
 import com.group3.entity.PageType;
+import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,9 +24,9 @@ public class GetPageByIdRes {
 
     private final String longDescription;
 
-    private final UserProfile owner;
+    private final User owner;
 
-    private final List<UserProfile> members;
+    private final List<User> members;
 
     private PageType pageType;
     
