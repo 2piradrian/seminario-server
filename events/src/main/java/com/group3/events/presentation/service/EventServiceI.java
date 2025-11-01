@@ -9,9 +9,9 @@ public interface EventServiceI {
 
     GetEventByIdRes getById(GetEventByIdReq dto);
 
-    GetEventAndAsistsPageRes getEventsAndAsistsById(GetEventAndAsistsPageReq dto);
+    GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto);
 
-    ToggleAsistRes toggleAsist(ToggleAsistReq dto);
+    ToggleAssistRes toggleAssist(ToggleAssistReq dto);
 
     EditEventRes edit(EditEventReq dto);
 

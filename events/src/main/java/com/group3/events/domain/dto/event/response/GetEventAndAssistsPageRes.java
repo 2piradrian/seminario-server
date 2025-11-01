@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetEventAndAsistsPageRes {
+public class GetEventAndAssistsPageRes {
 
     private final List<Event> events;
 

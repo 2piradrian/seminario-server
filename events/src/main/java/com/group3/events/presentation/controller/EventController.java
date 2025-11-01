@@ -36,23 +36,23 @@ public class EventController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-events-and-asists-by-id")
-    public ResponseEntity<?> getOwnEvents(
+    @PostMapping("/get-events-and-assists-by-id")
+    public ResponseEntity<?> getEventsAndAssists(
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        GetEventAndAsistsPageReq dto = EventMapper.getEventAndAsistsMapper().toRequest(token, payload);
-        return ResponseEntity.ok(this.service.getEventsAndAsistsById(dto));
+        GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, payload);
+        return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
     }
 
-    @PutMapping("/toggle-asist")
-    public ResponseEntity<?> toggleAsist(
+    @PutMapping("/toggle-assist")
+    public ResponseEntity<?> toggleAssist(
         @RequestHeader(value = "Authorization") String token,
         @RequestBody Map<String, Object> payload
     ) {
-        ToggleAsistReq dto = EventMapper.toggleAsist().toRequest(token, payload);
+        ToggleAssistReq dto = EventMapper.toggleAssist().toRequest(token, payload);
 
-        return ResponseEntity.ok(this.service.toggleAsist(dto));
+        return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
     @PutMapping("/edit")

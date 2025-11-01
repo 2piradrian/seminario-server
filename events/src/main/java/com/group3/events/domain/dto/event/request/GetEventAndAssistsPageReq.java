@@ -5,7 +5,7 @@ import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetEventAndAsistsPageReq {
+public class GetEventAndAssistsPageReq {
 
     private final String token;
 
@@ -15,14 +15,14 @@ public class GetEventAndAsistsPageReq {
 
     private final Integer size;
 
-    private GetEventAndAsistsPageReq(String token, String userId, Integer page, Integer size) {
+    private GetEventAndAssistsPageReq(String token, String userId, Integer page, Integer size) {
         this.page = page;
         this.size = size;
         this.token = token;
         this.userId = userId;
     }
 
-    public static GetEventAndAsistsPageReq create(String token, String userId,  Integer page, Integer size) {
+    public static GetEventAndAssistsPageReq create(String token, String userId, Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -48,7 +48,7 @@ public class GetEventAndAsistsPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetEventAndAsistsPageReq(token,userId, page, size);
+        return new GetEventAndAssistsPageReq(token,userId, page, size);
     }
 
 }

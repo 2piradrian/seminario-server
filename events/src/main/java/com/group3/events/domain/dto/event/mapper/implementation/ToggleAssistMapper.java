@@ -1,23 +1,22 @@
 package com.group3.events.domain.dto.event.mapper.implementation;
 
 import com.group3.entity.Event;
-import com.group3.entity.Post;
-import com.group3.events.domain.dto.event.request.ToggleAsistReq;
-import com.group3.events.domain.dto.event.response.ToggleAsistRes;
+import com.group3.events.domain.dto.event.request.ToggleAssistReq;
+import com.group3.events.domain.dto.event.response.ToggleAssistRes;
 
 import java.util.Map;
 
-public class ToggleAsistMapper {
+public class ToggleAssistMapper {
 
-    public ToggleAsistReq toRequest(String token, Map<String, Object> payload) {
-        return ToggleAsistReq.create(
+    public ToggleAssistReq toRequest(String token, Map<String, Object> payload) {
+        return ToggleAssistReq.create(
                 token,
                 (String) payload.get("eventId")
         );
     }
 
-    public ToggleAsistRes toResponse(Event event) {
-        return new ToggleAsistRes(
+    public ToggleAssistRes toResponse(Event event) {
+        return new ToggleAssistRes(
             event.getAuthor(),
             event.getId(),
             event.getPageProfile(),

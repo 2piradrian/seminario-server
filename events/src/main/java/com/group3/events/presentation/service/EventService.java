@@ -16,11 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -107,7 +104,7 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetEventAndAsistsPageRes getEventsAndAsistsById(GetEventAndAsistsPageReq dto) {
+    public GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -124,11 +121,11 @@ public class EventService implements EventServiceI {
             }
         }
 
-        return EventMapper.getEventAndAsistsMapper().toResponse(events);
+        return EventMapper.getEventAndAssistsMapper().toResponse(events);
     }
 
     @Override
-    public ToggleAsistRes toggleAsist(ToggleAsistReq dto) {
+    public ToggleAssistRes toggleAssist(ToggleAssistReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -146,15 +143,15 @@ public class EventService implements EventServiceI {
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
-        List<String> updateAsists = event.getAssist();
+        List<String> updateAssists = event.getAssist();
 
-        if (updateAsists.contains(userId)) {
-            updateAsists.remove(userId);
+        if (updateAssists.contains(userId)) {
+            updateAssists.remove(userId);
         } else {
-            updateAsists.add(userId);
+            updateAssists.add(userId);
         }
 
-        event.setAssist(updateAsists);
+        event.setAssist(updateAssists);
 
         this.eventRepository.update(event);
 
@@ -168,7 +165,7 @@ public class EventService implements EventServiceI {
             event.setPageProfile(fullPage);
         }
 
-        return EventMapper.toggleAsist().toResponse(event);
+        return EventMapper.toggleAssist().toResponse(event);
     }
 
     @Override
