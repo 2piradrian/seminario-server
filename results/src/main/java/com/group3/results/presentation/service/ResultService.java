@@ -34,16 +34,16 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
-        User user = userRepository.auth(dto.getToken());
+        User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        User fulluser = userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (fulluser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        List<Follow> follows = this.userRepository.getAllFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        if (follows == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        ContentType contentType = catalogRepository.getContentById(dto.getContentTypeId());
+        ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
-        String secret = secretKeyHelper.getSecret();
+        String secret = this.secretKeyHelper.getSecret();
         List<User> users = new ArrayList<>();
         List<PageProfile> pageProfiles = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
@@ -62,7 +62,8 @@ public class ResultService implements ResultServiceI {
                 );
 
                 for (PageProfile page : pageProfiles) {
-                    page.setIsFollowing(fulluser.getProfile().getFollowing().contains(page.getId()));
+                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+                    page.setIsFollowing(isFollowing);
                 }
             }
 
@@ -85,7 +86,8 @@ public class ResultService implements ResultServiceI {
                 );
 
                 for (User u : users) {
-                    u.getProfile().setIsFollowing(fulluser.getProfile().getFollowing().contains(u.getId()));
+                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+                    u.getProfile().setIsFollowing(isFollowing);
                 }
             }
 
@@ -118,14 +120,6 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile fulluser = this.userRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (fulluser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        List<String> profiles = new ArrayList<>(List.of());
-
-        profiles.addAll(fulluser.getFollowing());
-        profiles.add(fulluser.getId());
-
         List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getPage(),
             dto.getSize(),
@@ -135,7 +129,7 @@ public class ResultService implements ResultServiceI {
 
         for (Post post : posts) {
             if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
                 post.setAuthor(author.getProfile());
             }
             if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {

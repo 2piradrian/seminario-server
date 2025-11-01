@@ -1,5 +1,6 @@
 package com.group3.results.domain.repository;
 
+import com.group3.entity.Follow;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 
@@ -12,7 +13,6 @@ public interface UserRepositoryI {
     List<User> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret);
 
     User getById(String userId, String token);
-
-    User getByIdWithFollowing(String userId, String secret);
-
+    
+    List<Follow> getAllFollowers(String id, String secret);
 }
