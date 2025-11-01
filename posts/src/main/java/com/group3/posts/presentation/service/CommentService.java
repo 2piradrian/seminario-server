@@ -26,8 +26,11 @@ import java.util.UUID;
 public class CommentService implements CommentServiceI {
 
     private final CommentRepository commentRepository;
+
     private final PostsRepository postsRepository;
+
     private final UserRepository userRepository;
+
     private final PageProfileRepository pageProfileRepository;
 
 
@@ -46,18 +49,19 @@ public class CommentService implements CommentServiceI {
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
-            if (!author.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            if (!author.getId().equals(dto.getProfileId())) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            };
             comment.setPageProfile(PageProfile.builder().id(null).build());
-            comment.setAuthor(author.getProfile());
         } else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(author.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
-            comment.setAuthor(author.getProfile());
             comment.setPageProfile(page);
         }
 
+        comment.setAuthor(author);
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
         comment.setUpvoters(List.of());
@@ -94,7 +98,7 @@ public class CommentService implements CommentServiceI {
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
                         User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
-                        comment.setAuthor(fullProfile.getProfile());
+                        comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
                         PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
@@ -145,7 +149,7 @@ public class CommentService implements CommentServiceI {
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
             User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
-            comment.setAuthor(fullProfile.getProfile());
+            comment.setAuthor(fullProfile);
         }
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
