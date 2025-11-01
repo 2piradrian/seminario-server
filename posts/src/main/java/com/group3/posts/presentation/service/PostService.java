@@ -219,7 +219,8 @@ public class PostService implements PostServiceI {
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
                 upvoters.remove(userId);
-            } else {
+            }
+            else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
             }
@@ -227,7 +228,8 @@ public class PostService implements PostServiceI {
         if (Vote.DOWNVOTE == dto.getVoteType()) {
             if (downvoters.contains(userId)) {
                 downvoters.remove(userId);
-            } else {
+            }
+            else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
             }
@@ -248,6 +250,7 @@ public class PostService implements PostServiceI {
             post.setPageProfile(fullPage);
         }
 
+        post.calculateVotersQuantity();
         post.setVotersToNull();
 
         return PostMapper.toggleVotes().toResponse(post);
