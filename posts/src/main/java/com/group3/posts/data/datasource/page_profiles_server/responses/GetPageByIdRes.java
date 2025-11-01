@@ -2,7 +2,6 @@ package com.group3.posts.data.datasource.page_profiles_server.responses;
 
 import com.group3.entity.PageType;
 import com.group3.entity.User;
-import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

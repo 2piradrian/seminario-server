@@ -1,18 +1,17 @@
 package com.group3.posts.domain.dto.post.response;
 
 import com.group3.entity.PageProfile;
-import com.group3.entity.UserProfile;
+import com.group3.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
 public class TogglePostVotesRes {
 
-    private final UserProfile author;
+    private final User author;
 
     private final String postId;
 

@@ -2,7 +2,7 @@ package com.group3.posts.data.datasource.postgres.mapper;
 
 import com.group3.entity.Comment;
 import com.group3.entity.PageProfile;
-import com.group3.entity.UserProfile;
+import com.group3.entity.User;
 import com.group3.posts.data.datasource.postgres.model.CommentModel;
 
 public class CommentEntityMapper {
@@ -10,7 +10,7 @@ public class CommentEntityMapper {
     public static Comment toDomain(CommentModel commentModel) {
         return new Comment(
                 commentModel.getId(),
-                UserProfile.builder().id(commentModel.getAuthorId()).build(),
+                User.builder().id(commentModel.getAuthorId()).build(),
                 commentModel.getPostId(),
                 commentModel.getReplyTo() != null ? toDomain(commentModel.getReplyTo()) : null,
                 commentModel.getContent(),
