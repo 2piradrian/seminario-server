@@ -11,8 +11,5 @@ public interface EventRepositoryI {
 
     Event update(Event event);
 
-    PageContent<Event> getPageEventsByAuthorId(String userId, Integer page, Integer size);
-
-    PageContent<Event> getPageEventsByAssistant(String userId, Integer page, Integer size);
-
+    PageContent<Event> getByAuthorOrAssistant(String authorId, Integer page, Integer size);
 }
