@@ -13,7 +13,7 @@ public class Review {
 
     private String id;
 
-    private UserProfile reviewedUser;
+    private String reviewedId;
 
     private UserProfile reviewerUser;
 

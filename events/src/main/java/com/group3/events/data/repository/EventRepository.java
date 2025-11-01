@@ -51,30 +51,11 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public PageContent<Event> getEventsByAuthorId(String authorId, Integer page, Integer size) {
+    public PageContent<Event> getByAuthorOrAssistant(String authorId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<EventModel> eventModels = repository.findByAuthorIdAndStatus(
+        Page<EventModel> eventModels = repository.findByAuthorOrAssistant(
                 authorId,
-                Status.ACTIVE,
-                PageRequest.of(pageIndex, size)
-        );
-
-        return new PageContent<>(
-                eventModels.getContent().stream()
-                        .map(EventEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                eventModels.getNumber() + 1,
-                eventModels.hasNext() ? eventModels.getNumber() + 2 : null
-        );
-    }
-
-    @Override
-    public PageContent<Event> getEventsByAssistant(String userId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<EventModel> eventModels = repository.findByAssistContainsAndStatus(
-                userId,
                 Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );

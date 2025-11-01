@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class ToggleAsistRes {
+public class ToggleAssistRes {
 
     private final UserProfile author;
 

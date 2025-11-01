@@ -10,31 +10,15 @@ import org.springframework.data.repository.query.Param;
 
 public interface PostgresEventRepositoryI extends JpaRepository<EventModel, String> {
 
-    // ======== Get Events by Author ========
-
+    // ======== Get Events by Author or Assistant ========
     @Query("""
-        SELECT e
+        SELECT DISTINCT e
         FROM EventModel e
-        WHERE e.authorId = :authorId
+        WHERE (e.authorId = :userId OR :userId MEMBER OF e.assist)
         AND e.status = :status
         ORDER BY e.createdAt DESC
     """)
-    Page<EventModel> findByAuthorIdAndStatus(
-            @Param("authorId") String authorId,
-            @Param("status") Status status,
-            Pageable pageable
-    );
-
-    // ======== Get Events by Assistant and Status ========
-
-    @Query("""
-        SELECT e
-        FROM EventModel e
-        WHERE :userId MEMBER OF e.assist
-        AND e.status = :status
-        ORDER BY e.createdAt DESC
-    """)
-    Page<EventModel> findByAssistContainsAndStatus(
+    Page<EventModel> findByAuthorOrAssistant(
             @Param("userId") String userId,
             @Param("status") Status status,
             Pageable pageable

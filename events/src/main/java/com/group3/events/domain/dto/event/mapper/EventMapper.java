@@ -12,20 +12,16 @@ public class EventMapper {
         return new GetByIdMapper();
     }
 
-    public static GetOwnEventMapper getOwnPage(){
-        return new GetOwnEventMapper();
-    }
-
-    public static GetOwnAssistsMapper getOwnAsist() {
-        return new GetOwnAssistsMapper();
+    public static GetEventAndAssistsMapper getEventAndAssistsMapper(){
+        return new GetEventAndAssistsMapper();
     }
 
     public static EditMapper edit() {
         return new EditMapper();
     }
 
-    public static ToggleAsistMapper toggleAsist(){
-        return new ToggleAsistMapper();
+    public static ToggleAssistMapper toggleAssist(){
+        return new ToggleAssistMapper();
     }
 
 }

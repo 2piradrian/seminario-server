@@ -1,11 +1,11 @@
-package com.group3.events.domain.dto.event.request;
+package com.group3.user_profiles.domain.dto.review.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetOwnEventPageReq {
+public class GetReviewsByAuthorReq {
 
     private final String token;
 
@@ -13,13 +13,13 @@ public class GetOwnEventPageReq {
 
     private final Integer size;
 
-    private GetOwnEventPageReq(String token, Integer page, Integer size) {
+    private GetReviewsByAuthorReq(String token, Integer page, Integer size) {
         this.page = page;
         this.size = size;
         this.token = token;
     }
 
-    public static GetOwnEventPageReq create(String token, Integer page, Integer size) {
+    public static GetReviewsByAuthorReq create(String token, Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -41,7 +41,7 @@ public class GetOwnEventPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetOwnEventPageReq(token, page, size);
+        return new GetReviewsByAuthorReq(token, page, size);
     }
 
 }
