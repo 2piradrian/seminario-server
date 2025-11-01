@@ -16,8 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -104,11 +107,11 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetOwnEventPageRes getOwnEvents(GetOwnEventPageReq dto) {
+    public GetEventAndAsistsPageRes getEventsAndAsistsById(GetEventAndAsistsPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getPageEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Event> events = this.eventRepository.getByAuthorOrAssistant(dto.getUserId(), dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
@@ -121,28 +124,7 @@ public class EventService implements EventServiceI {
             }
         }
 
-        return EventMapper.getOwnPage().toResponse(events);
-    }
-
-    @Override
-    public GetOwnEventsAssistedPageRes getOwnAsists(GetOwnEventsAssistedPageReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageContent<Event> events = this.eventRepository.getPageEventsByAssistant(user.getId(), dto.getPage(), dto.getSize());
-
-        for (Event event : events.getContent()) {
-            if (event.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
-                event.setAuthor(fullProfile);
-            }
-            if (event.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
-                event.setPageProfile(fullPage);
-            }
-        }
-
-        return EventMapper.getOwnAsist().toResponse(events);
+        return EventMapper.getEventAndAsistsMapper().toResponse(events);
     }
 
     @Override

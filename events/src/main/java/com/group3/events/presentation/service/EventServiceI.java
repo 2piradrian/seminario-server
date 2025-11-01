@@ -9,9 +9,7 @@ public interface EventServiceI {
 
     GetEventByIdRes getById(GetEventByIdReq dto);
 
-    GetOwnEventPageRes getOwnEvents(GetOwnEventPageReq dto);
-
-    GetOwnEventsAssistedPageRes getOwnAsists(GetOwnEventsAssistedPageReq dto);
+    GetEventAndAsistsPageRes getEventsAndAsistsById(GetEventAndAsistsPageReq dto);
 
     ToggleAsistRes toggleAsist(ToggleAsistReq dto);
 
