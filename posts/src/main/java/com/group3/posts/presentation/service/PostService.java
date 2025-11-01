@@ -42,21 +42,19 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile author = UserProfile.builder().id(user.getId()).build();
         Post post = new Post();
-
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
-            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            if (!user.getId().equals(dto.getProfileId())) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            }
             post.setPageProfile(PageProfile.builder().id(null).build());
-            post.setAuthor(author);
         }
         else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
-            post.setAuthor(author);
             post.setPageProfile(page);
         }
 
@@ -65,7 +63,7 @@ public class PostService implements PostServiceI {
             post.setImageId(imageId);
         }
 
-        post.setAuthor(author);
+        post.setAuthor(user);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setStatus(Status.ACTIVE);
@@ -93,7 +91,7 @@ public class PostService implements PostServiceI {
         // Enrich author and page profile
         if (post.getAuthor().getId() != null) {
             User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-            post.setAuthor(fullProfile.getProfile());
+            post.setAuthor(fullProfile);
         }
         if (post.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -121,7 +119,7 @@ public class PostService implements PostServiceI {
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
                 User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(fullProfile.getProfile());
+                post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -166,7 +164,7 @@ public class PostService implements PostServiceI {
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
                 User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(fullProfile.getProfile());
+                post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -191,7 +189,7 @@ public class PostService implements PostServiceI {
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
                 User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(fullProfile.getProfile());
+                post.setAuthor(fullProfile);
             }
             if (post.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -242,7 +240,7 @@ public class PostService implements PostServiceI {
 
         if (post.getAuthor() != null && post.getAuthor().getId() != null) {
             User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-            post.setAuthor(fullProfile.getProfile());
+            post.setAuthor(fullProfile);
         }
 
         if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {

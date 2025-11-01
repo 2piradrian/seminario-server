@@ -8,6 +8,7 @@ import com.group3.posts.data.datasource.postgres.model.PostModel;
 import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
 import com.group3.posts.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;

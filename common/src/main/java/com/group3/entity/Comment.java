@@ -16,7 +16,7 @@ public class Comment {
 
     private String id;
 
-    private UserProfile author;
+    private User author;
 
     private String postId;
 

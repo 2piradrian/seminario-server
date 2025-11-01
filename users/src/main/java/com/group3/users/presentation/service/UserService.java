@@ -71,6 +71,8 @@ public class UserService implements UserServiceI {
         profileResult.isOwnProfile(user.getId());
         profileResult.setFollowsChecks(user.getId(), following, followers);
 
+        user.setProfile(profileResult);
+
         return UserMapper.getById().toResponse(user);
     }
 

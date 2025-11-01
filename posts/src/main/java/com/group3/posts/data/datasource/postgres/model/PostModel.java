@@ -27,10 +27,13 @@ public class PostModel {
 
     private Integer views;
 
+    @Column(name = "author_id")
     private String authorId;
 
+    @Column(name = "page_id")
     private String pageId;
 
+    @Column(name = "image_id")
     private String imageId;
 
     @ElementCollection
@@ -43,8 +46,10 @@ public class PostModel {
     @Column(name = "user_id")
     private List<String> downvoters;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
