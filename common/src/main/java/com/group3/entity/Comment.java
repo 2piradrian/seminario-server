@@ -47,4 +47,9 @@ public class Comment {
         this.downvoters = null;
     }
 
+    public void calculateVotersQuantity(){
+        this.upvotersQuantity = this.upvoters.size();
+        this.downvotersQuantity = this.downvoters.size();
+    }
+
 }

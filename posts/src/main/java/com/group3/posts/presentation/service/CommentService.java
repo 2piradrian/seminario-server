@@ -145,7 +145,6 @@ public class CommentService implements CommentServiceI {
         comment.setDownvoters(downvoters);
         this.commentRepository.update(comment);
 
-        comment.setVotersToNull();
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
             User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
@@ -155,6 +154,9 @@ public class CommentService implements CommentServiceI {
             PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
             comment.setPageProfile(fullPage);
         }
+
+        comment.calculateVotersQuantity();
+        comment.setVotersToNull();
 
         return CommentMapper.toggleVotes().toResponse(comment);
     }
