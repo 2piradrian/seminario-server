@@ -12,12 +12,8 @@ public class EventMapper {
         return new GetByIdMapper();
     }
 
-    public static GetOwnEventMapper getOwnPage(){
-        return new GetOwnEventMapper();
-    }
-
-    public static GetOwnAssistsMapper getOwnAsist() {
-        return new GetOwnAssistsMapper();
+    public static GetEventAndAsistsMapper getEventAndAsistsMapper(){
+        return new GetEventAndAsistsMapper();
     }
 
     public static EditMapper edit() {

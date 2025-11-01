@@ -5,24 +5,31 @@ import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetOwnEventPageReq {
+public class GetEventAndAsistsPageReq {
 
     private final String token;
+
+    private final String userId;
 
     private final Integer page;
 
     private final Integer size;
 
-    private GetOwnEventPageReq(String token, Integer page, Integer size) {
+    private GetEventAndAsistsPageReq(String token, String userId, Integer page, Integer size) {
         this.page = page;
         this.size = size;
         this.token = token;
+        this.userId = userId;
     }
 
-    public static GetOwnEventPageReq create(String token, Integer page, Integer size) {
+    public static GetEventAndAsistsPageReq create(String token, String userId,  Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (userId == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
         if (page == null) {
@@ -41,7 +48,7 @@ public class GetOwnEventPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetOwnEventPageReq(token, page, size);
+        return new GetEventAndAsistsPageReq(token,userId, page, size);
     }
 
 }
