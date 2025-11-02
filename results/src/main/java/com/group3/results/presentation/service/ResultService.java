@@ -102,7 +102,7 @@ public class ResultService implements ResultServiceI {
                 for (Post post : posts) {
                     if (post.getAuthor() != null && post.getAuthor().getId() != null) {
                         User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                        post.setAuthor(author.getProfile());
+                        post.setAuthor(author);
                     }
                     if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
                         PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
@@ -130,7 +130,7 @@ public class ResultService implements ResultServiceI {
         for (Post post : posts) {
             if (post.getAuthor() != null && post.getAuthor().getId() != null) {
                 User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(author.getProfile());
+                post.setAuthor(author);
             }
             if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
                 PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
