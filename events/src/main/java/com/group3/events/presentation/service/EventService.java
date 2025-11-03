@@ -102,11 +102,11 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetOwnEventPageRes getOwnEvents(GetOwnEventPageReq dto) {
+    public GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getPageEventsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Event> events = this.eventRepository.getByAuthorOrAssistant(dto.getUserId(), dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
@@ -119,32 +119,11 @@ public class EventService implements EventServiceI {
             }
         }
 
-        return EventMapper.getOwnPage().toResponse(events);
+        return EventMapper.getEventAndAssistsMapper().toResponse(events);
     }
 
     @Override
-    public GetOwnEventsAssistedPageRes getOwnAsists(GetOwnEventsAssistedPageReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        PageContent<Event> events = this.eventRepository.getPageEventsByAssistant(user.getId(), dto.getPage(), dto.getSize());
-
-        for (Event event : events.getContent()) {
-            if (event.getAuthor().getId() != null) {
-                User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
-                event.setAuthor(fullProfile.getProfile());
-            }
-            if (event.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
-                event.setPageProfile(fullPage);
-            }
-        }
-
-        return EventMapper.getOwnAsist().toResponse(events);
-    }
-
-    @Override
-    public ToggleAsistRes toggleAsist(ToggleAsistReq dto) {
+    public ToggleAssistRes toggleAssist(ToggleAssistReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
@@ -162,15 +141,15 @@ public class EventService implements EventServiceI {
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
-        List<String> updateAsists = event.getAssist();
+        List<String> updateAssists = event.getAssist();
 
-        if (updateAsists.contains(userId)) {
-            updateAsists.remove(userId);
+        if (updateAssists.contains(userId)) {
+            updateAssists.remove(userId);
         } else {
-            updateAsists.add(userId);
+            updateAssists.add(userId);
         }
 
-        event.setAssist(updateAsists);
+        event.setAssist(updateAssists);
 
         this.eventRepository.update(event);
 
@@ -184,7 +163,7 @@ public class EventService implements EventServiceI {
             event.setPageProfile(fullPage);
         }
 
-        return EventMapper.toggleAsist().toResponse(event);
+        return EventMapper.toggleAssist().toResponse(event);
     }
 
     @Override
