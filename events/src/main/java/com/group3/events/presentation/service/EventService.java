@@ -194,4 +194,22 @@ public class EventService implements EventServiceI {
         Event edited = this.eventRepository.update(event);
         return EventMapper.edit().toResponse(edited);
     }
+
+    @Override
+    public void delete(DeleteEventReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Event event = this.eventRepository.getById(dto.getEventId());
+        if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
+
+        if (event.getAuthor() == null || !event.getAuthor().getId().equals(user.getId())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        event.setUpdatedAt(LocalDateTime.now());
+        event.setStatus(Status.DELETED);
+
+        this.eventRepository.update(event);
+    }
 }

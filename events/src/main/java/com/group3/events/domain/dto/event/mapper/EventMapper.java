@@ -24,4 +24,8 @@ public class EventMapper {
         return new ToggleAssistMapper();
     }
 
+    public static DeleteMapper delete() {
+        return new DeleteMapper();
+    }
+
 }

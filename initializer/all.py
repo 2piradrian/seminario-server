@@ -11,7 +11,6 @@ services = {
     "config": os.path.abspath(os.path.join(BASE_DIR, "..", "config")),
     "gateway": os.path.abspath(os.path.join(BASE_DIR, "..", "gateway")),
     "posts": os.path.abspath(os.path.join(BASE_DIR, "..", "posts")),
-    "user-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "user-profiles")),
     "results": os.path.abspath(os.path.join(BASE_DIR, "..", "results")),
     "users": os.path.abspath(os.path.join(BASE_DIR, "..", "users")),
     "catalog": os.path.abspath(os.path.join(BASE_DIR, "..", "catalog")),
@@ -42,7 +41,7 @@ def open_terminal_and_run(name, path):
 
 def main():
     run_maven_install()
-    for svc in ["registry", "config", "gateway", "posts", "user-profiles", "results", "users", "catalog", "images", "page-profiles"]:
+    for svc in ["registry", "config", "gateway", "posts", "results", "users", "catalog", "images", "page-profiles"]:
         open_terminal_and_run(svc, services[svc])
 
         if svc == "registry" or svc == "config":
