@@ -16,8 +16,6 @@ public class UserProfile {
 
     private String id;
 
-    private String email;
-
     private String name;
 
     private String surname;
@@ -36,10 +34,20 @@ public class UserProfile {
 
     private List<Instrument> instruments;
 
-    private List<String> following;
-
-    private Status status;
-
-    // Domain variable
+    // Domain variables
     private Boolean isFollowing;
+    private Boolean isOwnProfile;
+    private Integer followingQuantity;
+    private Integer followersQuantity;
+
+    public void isOwnProfile(String profileId){
+        this.isOwnProfile = this.id.equals(profileId);
+    }
+
+    public void setFollowsChecks(String profileId, List<String> followingList, List<String> followersList){
+        this.followingQuantity = followingList.size();
+        this.followersQuantity = followersList.size();
+        this.isFollowing = followingList.contains(profileId);
+    }
+
 }

@@ -35,8 +35,6 @@ public class EventService implements EventServiceI {
 
     private final PageProfileRepository pageProfileRepository;
 
-    private final UserProfileRepository userProfileRepository;
-
     @Override
     public CreateEventRes create(CreateEventReq dto) {
         User user = this.userRepository.auth(dto.getToken());
@@ -88,8 +86,8 @@ public class EventService implements EventServiceI {
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
         if (event.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
-            event.setAuthor(fullProfile);
+            User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullProfile.getProfile());
         }
         if (event.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -112,8 +110,8 @@ public class EventService implements EventServiceI {
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
-                UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
-                event.setAuthor(fullProfile);
+                User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullProfile.getProfile());
             }
             if (event.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -156,8 +154,8 @@ public class EventService implements EventServiceI {
         this.eventRepository.update(event);
 
         if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-            UserProfile fullProfile = this.userProfileRepository.getById(event.getAuthor().getId(), dto.getToken());
-            event.setAuthor(fullProfile);
+            User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullProfile.getProfile());
         }
 
         if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {

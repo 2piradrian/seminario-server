@@ -17,6 +17,6 @@ public interface UsersServerRepositoryI {
     AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@PathVariable(value = "userId") String userId);
+    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
 
 }

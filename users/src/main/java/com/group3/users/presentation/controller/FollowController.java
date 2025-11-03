@@ -1,0 +1,79 @@
+package com.group3.users.presentation.controller;
+
+import com.group3.users.domain.dto.follow.mapper.FollowMapper;
+import com.group3.users.domain.dto.follow.request.*;
+import com.group3.users.presentation.service.FollowService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/api/follows")
+public class FollowController {
+
+    private final FollowService followService;
+
+    @PostMapping("/toggle-follow")
+    public ResponseEntity<?> toggleFollow(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        ToggleFollowReq dto = FollowMapper.toggleFollow().toRequest(token, payload);
+        followService.toggleFollow(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/get-followers")
+    public ResponseEntity<?> getFollowers(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowerPageReq dto = FollowMapper.getFollowerPage().toRequest(token, payload);
+        return ResponseEntity.ok(followService.getFollowers(dto));
+    }
+
+    @PostMapping("/get-following")
+    public ResponseEntity<?> getFollowing(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowingPageReq dto = FollowMapper.getFollowingPage().toRequest(token, payload);
+        return ResponseEntity.ok(followService.getFollowing(dto));
+    }
+
+    @PostMapping("/get-followers-by-id")
+    public ResponseEntity<?> getFollowersQuantityById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowersQuantityByIdReq dto = FollowMapper.getFollowersQuantityById().toRequest(payload);
+        return ResponseEntity.ok(followService.getFollowersQuantityById(dto));
+    }
+
+    @PostMapping("/get-following-by-id")
+    public ResponseEntity<?> getFollowingQuantityById(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetFollowingQuantityByIdReq dto = FollowMapper.getFollowingQuantityById().toRequest(payload);
+        return ResponseEntity.ok(followService.getFollowingQuantityById(dto));
+    }
+
+    @PostMapping("/get-all-followers")
+    public ResponseEntity<?> getAllFollowers(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetAllFollowersReq dto = FollowMapper.getAllFollowers().toRequest(payload);
+        return ResponseEntity.ok(followService.getAllFollowers(dto));
+    }
+
+    @PostMapping("/get-all-following")
+    public ResponseEntity<?> getAllFollowing(
+            @RequestBody Map<String, Object> payload
+    ) {
+        GetAllFollowingReq dto = FollowMapper.getAllFollowing().toRequest(payload);
+        return ResponseEntity.ok(followService.getAllFollowing(dto));
+    }
+
+}

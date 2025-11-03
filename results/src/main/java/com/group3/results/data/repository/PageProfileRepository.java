@@ -1,14 +1,11 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.PageProfile;
-import com.group3.entity.User;
-import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.pages_server.repository.PageProfilesServerRepositoryI;
 import com.group3.results.data.datasource.pages_server.responses.GetPageByIdRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
-import com.group3.results.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
 import com.group3.results.domain.repository.PageRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

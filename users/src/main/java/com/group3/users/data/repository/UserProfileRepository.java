@@ -1,66 +1,68 @@
 package com.group3.users.data.repository;
 
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
+import com.group3.entity.PageContent;
+import com.group3.entity.Status;
 import com.group3.entity.UserProfile;
-import com.group3.users.data.datasource.user_profiles_server.repository.UserProfileServerRepositoryI;
-import com.group3.users.data.datasource.user_profiles_server.responses.GetUserProfileByIdRes;
-import com.group3.users.domain.repository.ProfileRepositoryI;
+import com.group3.users.data.datasource.postgres.mapper.UserProfileEntityMapper;
+import com.group3.users.data.datasource.postgres.model.UserProfileModel;
+import com.group3.users.data.datasource.postgres.repository.PostgresUserProfileRepositoryI;
+import com.group3.users.domain.repository.UserProfileRepositoryI;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
-public class UserProfileRepository implements ProfileRepositoryI {
+public class UserProfileRepository implements UserProfileRepositoryI {
 
-    private final UserProfileServerRepositoryI repository;
+    private final PostgresUserProfileRepositoryI repository;
+
+
+    // ======== Pagination Helper ========
+
+    private int normalizePage(Integer page) {
+        return (page != null && page > 0) ? page - 1 : 0;
+    }
+
+
+    // ======== Single User Retrieval ========
 
     @Override
-    public void create(String id, String email, String name, String surname, String secret) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("id", id);
-        payload.put("email", email);
-        payload.put("name", name);
-        payload.put("surname", surname);
-        payload.put("secret", secret);
+    public UserProfile getById(String userId) {
+        UserProfileModel userProfileModel = this.repository.findById(userId).orElse(null);
+        return userProfileModel != null ? UserProfileEntityMapper.toDomain(userProfileModel) : null;
+    }
 
-        this.repository.create(payload);
+
+    // ======== Batch Retrieval ========
+
+    @Override
+    public List<UserProfile> getListByIds(List<String> ids) {
+        List<UserProfileModel> userProfileModels = this.repository.findAllByIdIn(ids);
+        return userProfileModels.isEmpty() ? List.of() : UserProfileEntityMapper.toDomain(userProfileModels);
+    }
+
+
+    // ======== Save and Update ========
+
+    @Override
+    public UserProfile save(UserProfile userProfile) {
+        UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
+        UserProfileModel saved = this.repository.save(userProfileModel);
+
+        return UserProfileEntityMapper.toDomain(saved);
     }
 
     @Override
-    public void active(String userId, String secret) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("userId", userId);
-        payload.put("secret", secret);
+    public UserProfile update(UserProfile userProfile) {
+        UserProfileModel userProfileModel = UserProfileEntityMapper.toModel(userProfile);
+        UserProfileModel updated = this.repository.save(userProfileModel);
 
-        this.repository.active(payload);
-    }
-
-    @Override
-    public UserProfile getById(String token, String userId) {
-        GetUserProfileByIdRes response = this.repository.getById(token, userId);
-
-        UserProfile userProfile = new UserProfile();
-
-        userProfile.setId(response.getId());
-        userProfile.setName(response.getName());
-        userProfile.setSurname(response.getSurname());
-        userProfile.setEmail(response.getEmail());
-        userProfile.setMemberSince(response.getMemberSince());
-        userProfile.setPortraitImage(response.getPortraitImage());
-        userProfile.setProfileImage(response.getProfileImage());
-        userProfile.setShortDescription(response.getShortDescription());
-        userProfile.setLongDescription(response.getLongDescription());
-        userProfile.setStyles(response.getStyles());
-        userProfile.setInstruments(response.getInstruments());
-        userProfile.setIsFollowing(response.getIsFollowing());
-
-        return  userProfile;
+        return UserProfileEntityMapper.toDomain(updated);
     }
 
 }

@@ -24,8 +24,6 @@ public class ResultService implements ResultServiceI {
 
     private final SecretKeyHelper secretKeyHelper;
 
-    private final UserProfileRepository userProfileRepository;
-
     private final PageProfileRepository pageProfileRepository;
 
     private final PostRepository postRepository;
@@ -36,17 +34,17 @@ public class ResultService implements ResultServiceI {
 
     @Override
     public GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto) {
-        User user = userRepository.auth(dto.getToken());
+        User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile profile = userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        List<Follow> follows = this.userRepository.getAllFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        if (follows == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        ContentType contentType = catalogRepository.getContentById(dto.getContentTypeId());
+        ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
         if (contentType == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
-        String secret = secretKeyHelper.getSecret();
-        List<UserProfile> userProfiles = new ArrayList<>();
+        String secret = this.secretKeyHelper.getSecret();
+        List<User> users = new ArrayList<>();
         List<PageProfile> pageProfiles = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
 
@@ -64,7 +62,8 @@ public class ResultService implements ResultServiceI {
                 );
 
                 for (PageProfile page : pageProfiles) {
-                    page.setIsFollowing(profile.getFollowing().contains(page.getId()));
+                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+                    page.setIsFollowing(isFollowing);
                 }
             }
 
@@ -77,7 +76,7 @@ public class ResultService implements ResultServiceI {
                         ? dto.getInstruments().stream().map(Instrument::getId).toList()
                         : List.of();
 
-                userProfiles = userProfileRepository.getUserFilteredPage(
+                users = userRepository.getUserFilteredPage(
                         dto.getText(),
                         styleIds,
                         instrumentIds,
@@ -86,8 +85,9 @@ public class ResultService implements ResultServiceI {
                         secret
                 );
 
-                for (UserProfile u : userProfiles) {
-                    u.setIsFollowing(profile.getFollowing().contains(u.getId()));
+                for (User u : users) {
+                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+                    u.getProfile().setIsFollowing(isFollowing);
                 }
             }
 
@@ -101,7 +101,7 @@ public class ResultService implements ResultServiceI {
 
                 for (Post post : posts) {
                     if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                        UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                        User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
                         post.setAuthor(author);
                     }
                     if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
@@ -112,21 +112,13 @@ public class ResultService implements ResultServiceI {
             }
         }
 
-        return ResultsMapper.getSearchResult().toResponse(userProfiles, pageProfiles, posts);
+        return ResultsMapper.getSearchResult().toResponse(users, pageProfiles, posts);
     }
 
     @Override
     public GetFeedPageRes getFeedPage(GetFeedPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        UserProfile profile = this.userProfileRepository.getByIdWithFollowing(user.getId(), secretKeyHelper.getSecret());
-        if (profile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-
-        List<String> profiles = new ArrayList<>(List.of());
-
-        profiles.addAll(profile.getFollowing());
-        profiles.add(profile.getId());
 
         List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getPage(),
@@ -137,7 +129,7 @@ public class ResultService implements ResultServiceI {
 
         for (Post post : posts) {
             if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                UserProfile author = userProfileRepository.getById(post.getAuthor().getId(), dto.getToken());
+                User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
                 post.setAuthor(author);
             }
             if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {

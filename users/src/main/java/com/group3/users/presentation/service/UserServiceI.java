@@ -11,4 +11,8 @@ public interface UserServiceI {
 
     GetAllStaffRes getAllStaff(GetAllStaffReq dto);
 
+    GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto);
+
+    void update(EditUserReq dto);
+
 }

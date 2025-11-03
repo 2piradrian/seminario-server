@@ -8,8 +8,9 @@ import java.util.List;
 
 public class GetByUserIdMapper {
 
-    public GetPageByUserIdReq toRequest(String userId) {
+    public GetPageByUserIdReq toRequest(String token, String userId) {
         return GetPageByUserIdReq.create(
+            token,
             userId
         );
     }

@@ -26,9 +26,9 @@ public class GetSearchResultMapper {
         );
     }
 
-    public GetSearchResultFilteredRes toResponse(List<UserProfile> userProfiles, List<PageProfile> pageProfiles, List<Post> posts) {
+    public GetSearchResultFilteredRes toResponse(List<User> user, List<PageProfile> pageProfiles, List<Post> posts) {
         return new GetSearchResultFilteredRes(
-            userProfiles,
+            user,
             pageProfiles,
             posts
         );

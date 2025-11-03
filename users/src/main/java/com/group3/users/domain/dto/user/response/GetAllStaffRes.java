@@ -1,6 +1,7 @@
 package com.group3.users.domain.dto.user.response;
 
 import com.group3.entity.Role;
+import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetAllStaffRes {
 
-    private final Map<Role, List<UserProfile>> staff;
+    private final List<User> staff;
 
 }

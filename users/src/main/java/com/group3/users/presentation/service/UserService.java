@@ -3,10 +3,14 @@ package com.group3.users.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.users.data.repository.UserProfileRepository;
-import com.group3.users.data.repository.UserRepository;
+import com.group3.users.config.helpers.SecretKeyHelper;
+import com.group3.users.data.repository.*;
 import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
+import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
+import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
+import com.group3.users.domain.dto.follow.request.GetFollowersQuantityByIdReq;
+import com.group3.users.domain.dto.follow.request.GetFollowingQuantityByIdReq;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
@@ -28,14 +32,46 @@ public class UserService implements UserServiceI {
 
     private final UserRepository userRepository;
 
+    private final SecretKeyHelper secretKeyHelper;
+
     private final UserProfileRepository userProfileRepository;
+
+    private final CatalogRepository catalogRepository;
+
+    private final ImagesRepository imagesRepository;
 
     private final AuthService authService;
 
+    private final FollowService followService;
+
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
-        User user = this.userRepository.getById(dto.getUserId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userResult = this.userRepository.getById(dto.getUserId());
+        if (userResult == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile profileResult = userResult.getProfile();
+
+        List<Style> styles = this.catalogRepository.getStyleListById(profileResult.getStyles().stream().map(Style::getId).toList());
+        profileResult.setStyles(styles);
+
+        List<Instrument> instruments = this.catalogRepository.getInstrumentListById(profileResult.getInstruments().stream().map(Instrument::getId).toList());
+        profileResult.setInstruments(instruments);
+
+        List<String> following = this.followService.getAllFollowing(
+                GetAllFollowingReq.create(user.getId(), secretKeyHelper.getSecret())
+        ).getFollowing().stream().map(Follow::getFollowedId).toList();
+
+        List<String> followers = this.followService.getAllFollowers(
+                GetAllFollowersReq.create(user.getId(), secretKeyHelper.getSecret())
+        ).getFollowers().stream().map(Follow::getFollowerId).toList();
+
+        profileResult.isOwnProfile(user.getId());
+        profileResult.setFollowsChecks(user.getId(), following, followers);
+
+        user.setProfile(profileResult);
 
         return UserMapper.getById().toResponse(user);
     }
@@ -49,26 +85,8 @@ public class UserService implements UserServiceI {
 
         List<User> staffUsers = this.userRepository.getAllStaff();
 
-        Map<Role,List<UserProfile>> staff = new HashMap<>();
-        List<UserProfile> modUsers = new ArrayList<>();
-        List<UserProfile> adminUsers = new ArrayList<>();
-
-        for (User user : staffUsers){
-            UserProfile userProfile = this.userProfileRepository.getById(dto.getToken(), user.getId());
-            if (user.getRole().equals(Role.MODERATOR)){
-                modUsers.add(userProfile);
-            } else if (user.getRole().equals(Role.ADMIN)){
-                adminUsers.add(userProfile);
-            }
-        }
-
-        staff.put(Role.ADMIN,adminUsers);
-        staff.put(Role.MODERATOR,modUsers);
-
-        return UserMapper.getAllStaff().toResponse(staff);
+        return UserMapper.getAllStaff().toResponse(staffUsers);
     }
-
-    // TODO: verificar si ya no esta deleted
 
     @Override
     public void delete(DeleteUserReq dto) {
@@ -81,6 +99,71 @@ public class UserService implements UserServiceI {
         user.setStatus(Status.DELETED);
 
         this.userRepository.save(user);
+    }
+
+    // ======== Get User Profile Page Filtered ========
+
+    @Override
+    public GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<User> profiles = this.userRepository.getFilteredPage(
+            dto.getFullname(),
+            dto.getStyles(),
+            dto.getInstruments(),
+            dto.getPage(),
+            dto.getSize()
+        );
+
+        return UserMapper.getFiltered().toResponse(profiles);
+    }
+
+    // ======== Update User Profile ========
+
+    @Override
+    public void update(EditUserReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        UserProfile userProfile = user.getProfile();
+
+        // ======== Update Styles and Instruments ========
+        if (!dto.getStyles().isEmpty()) {
+            List<Style> styles = this.catalogRepository.getStyleListById(dto.getStyles().stream().map(Style::getId).toList());
+            userProfile.setStyles(styles);
+        }
+
+        if (!dto.getInstruments().isEmpty()) {
+            List<Instrument> instruments = this.catalogRepository.getInstrumentListById(dto.getInstruments().stream().map(Instrument::getId).toList());
+            userProfile.setInstruments(instruments);
+        }
+
+        // ======== Update Profile Image ========
+        if (dto.getProfileImage() != null) {
+            String profileImage = userProfile.getProfileImage();
+            if (profileImage != null && !profileImage.isEmpty()) {
+                this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+            }
+            String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
+            userProfile.setProfileImage(profileId);
+        }
+
+        // ======== Update Portrait Image ========
+        if (dto.getPortraitImage() != null) {
+            String portraitImage = userProfile.getPortraitImage();
+            if (portraitImage != null && !portraitImage.isEmpty()) {
+                this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+            }
+            String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
+            userProfile.setPortraitImage(portraitId);
+        }
+
+        userProfile.setName(dto.getName());
+        userProfile.setSurname(dto.getSurname());
+        userProfile.setShortDescription(dto.getShortDescription());
+        userProfile.setLongDescription(dto.getLongDescription());
+
+        this.userProfileRepository.update(userProfile);
     }
 
 }

@@ -8,6 +8,7 @@ import com.group3.page_profiles.data.datasource.postgres.model.PageProfileModel;
 import com.group3.page_profiles.data.datasource.postgres.repository.PostgresPageProfileRepositoryI;
 import com.group3.page_profiles.domain.repository.PageRepositoryI;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Repository
 @AllArgsConstructor
 public class PageProfileRepository implements PageRepositoryI {

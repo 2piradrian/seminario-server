@@ -19,7 +19,7 @@ public class GetAllStaffMapper {
         );
     }
 
-    public GetAllStaffRes toResponse(Map<Role, List<UserProfile>> staff) {
+    public GetAllStaffRes toResponse(List<User> staff) {
         return new GetAllStaffRes(staff);
     }
 }
