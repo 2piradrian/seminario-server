@@ -1,9 +1,12 @@
 package com.group3.users.data.datasource.postgres.model;
 
+import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -27,5 +30,14 @@ public class ReviewModel {
 
     @Column(nullable = false)
     private Float rating;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }

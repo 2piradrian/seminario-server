@@ -19,7 +19,10 @@ public class ReviewEntityMapper {
                 model.getReviewedId(),
                 model.getReviewerUserId() != null ? UserProfile.builder().id(model.getReviewerUserId()).build() : null,
                 model.getReview(),
-                model.getRating()
+                model.getRating(),
+                model.getCreatedAt(),
+                model.getUpdatedAt(),
+                model.getStatus()
         );
     }
 
@@ -31,7 +34,10 @@ public class ReviewEntityMapper {
                 review.getReviewedId(),
                 review.getReviewerUser() != null ? review.getReviewerUser().getId() : null,
                 review.getReview(),
-                review.getRating()
+                review.getRating(),
+                review.getCreatedAt(),
+                review.getUpdatedAt(),
+                review.getStatus()
         );
     }
 
