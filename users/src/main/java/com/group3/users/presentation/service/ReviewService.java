@@ -104,14 +104,14 @@ public class ReviewService implements ReviewServiceI {
         User user = this.authService.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Review> reviews = this.reviewRepository.findByReviewedUserId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Review> reviews = this.reviewRepository.findByReviewedUserId(dto.getUserId(), dto.getPage(), dto.getSize());
 
         for (Review review : reviews.getContent()) {
             UserProfile reviewerUser = this.userProfileRepository.getById(review.getReviewerUser().getId());
             review.setReviewerUser(reviewerUser);
         }
 
-        return new GetPageReviewsByReviewedIdRes(reviews.getContent(), reviews.getNextPage());
+        return ReviewMapper.getReviewsByReviewed().toResponse(reviews);
     }
 
 }
