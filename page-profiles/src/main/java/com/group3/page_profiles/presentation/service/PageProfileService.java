@@ -9,6 +9,7 @@ import com.group3.page_profiles.data.repository.*;
 import com.group3.page_profiles.domain.dto.mapper.PageMapper;
 import com.group3.page_profiles.domain.dto.request.*;
 import com.group3.page_profiles.domain.dto.response.*;
+import com.group3.utils.Verse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +58,13 @@ public class PageProfileService implements PageProfileServiceI {
         page.setOwner(user);
         page.setMembers(List.of(user));
 
+        Verse verse = new Verse();
+
         page.setName(dto.getName());
         page.setPortraitImage("");
         page.setProfileImage("");
-        page.setShortDescription("¡New page!");
-        page.setLongDescription("¡New page!");
+        page.setShortDescription(verse.getRandomVerse());
+        page.setLongDescription(verse.getRandomVerse());
         page.setStatus(Status.ACTIVE);
 
         PageProfile newPage = this.pageProfileRepository.save(page);
