@@ -1,9 +1,6 @@
 package com.group3.users.presentation.service;
 
-import com.group3.entity.PageContent;
-import com.group3.entity.Review;
-import com.group3.entity.User;
-import com.group3.entity.UserProfile;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.data.repository.ReviewRepository;
@@ -15,6 +12,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -41,6 +41,9 @@ public class ReviewService implements ReviewServiceI {
         review.setReviewerUser(userProfileRepository.getById(user.getId()));
         review.setReview(dto.getReview());
         review.setRating(dto.getRating());
+        review.setCreatedAt(LocalDateTime.now());
+        review.setUpdatedAt(LocalDateTime.now());
+        review.setStatus(Status.ACTIVE);
 
         Review saved = reviewRepository.save(review);
         return ReviewMapper.create().toResponse(saved);
@@ -63,6 +66,8 @@ public class ReviewService implements ReviewServiceI {
         if (dto.getReview() != null) review.setReview(dto.getReview());
         if (dto.getRating() != null) review.setRating(dto.getRating());
 
+        review.setUpdatedAt(LocalDateTime.now());
+
         Review updated = reviewRepository.update(review);
         return ReviewMapper.update().toResponse(updated);
     }
@@ -81,7 +86,10 @@ public class ReviewService implements ReviewServiceI {
         if (!review.getReviewerUser().getId().equals(user.getId()))
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        reviewRepository.delete(dto.getId());
+        review.setUpdatedAt(LocalDateTime.now());
+        review.setStatus(Status.DELETED);
+
+        this.reviewRepository.update(review);
     }
 
     @Override
