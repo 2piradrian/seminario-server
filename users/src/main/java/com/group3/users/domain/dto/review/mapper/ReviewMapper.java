@@ -16,6 +16,10 @@ public class ReviewMapper {
         return new DeleteMapper();
     }
 
+    public static GetByIdMapper getById() {
+        return new GetByIdMapper();
+    }
+
     public static GetReviewsByAuthorMapper getReviewsByAuthor() {
         return new GetReviewsByAuthorMapper();
     }

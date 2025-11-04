@@ -5,9 +5,14 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.data.repository.ReviewRepository;
 import com.group3.users.data.repository.UserProfileRepository;
+import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
+import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
 import com.group3.users.domain.dto.review.mapper.ReviewMapper;
 import com.group3.users.domain.dto.review.request.*;
 import com.group3.users.domain.dto.review.response.*;
+import com.group3.users.domain.dto.user.mapper.UserMapper;
+import com.group3.users.domain.dto.user.request.GetUserByIdReq;
+import com.group3.users.domain.dto.user.response.GetUserByIdRes;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +33,21 @@ public class ReviewService implements ReviewServiceI {
 
     private final UserProfileRepository userProfileRepository;
 
+    @Override
+    public GetUserByIdRes getById(GetReviewByIdReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Review reviewRepository = this.reviewRepository.getById(dto.getReviewId());
+        if (reviewRepository == null) throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
+
+        UserProfile reviewerUser = this.userProfileRepository.getById(reviewRepository.getReviewerUser().getId());
+        if (reviewerUser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        reviewRepository.setReviewerUser(reviewerUser);
+
+        return UserMapper.getById().toResponse(user);
+    }
 
     // ======== Create Review ========
 
