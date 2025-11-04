@@ -14,7 +14,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     @Query("""
         SELECT DISTINCT e
         FROM EventModel e
-        WHERE (e.authorId = :userId OR :userId MEMBER OF e.assist)
+        WHERE (e.authorId = :userId OR :userId MEMBER OF e.assists)
         AND e.status = :status
         ORDER BY e.createdAt DESC
     """)

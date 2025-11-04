@@ -22,6 +22,7 @@ public class GetByIdMapper {
             event.getTitle(),
             event.getContent(),
             event.getViews(),
+            event.getAssistsQuantity(),
             event.getDateInit(),
             event.getDateEnd(),
             event.getCreatedAt()

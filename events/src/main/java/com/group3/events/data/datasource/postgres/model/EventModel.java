@@ -47,7 +47,7 @@ public class EventModel {
     @ElementCollection
     @CollectionTable(name = "event_assist", joinColumns = @JoinColumn(name = "event_id"))
     @Column(name = "profile_id")
-    private List<String> assist;
+    private List<String> assists;
 
     @Enumerated(EnumType.STRING)
     private Status status;

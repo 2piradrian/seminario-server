@@ -12,6 +12,7 @@ import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.*;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
+import com.group3.utils.Verse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +98,7 @@ public class AuthService implements AuthServiceI {
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
         String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
+        Verse verse = new Verse();
 
         UserProfile userProfile = UserProfile.builder()
                 .id(userId)
@@ -105,8 +107,8 @@ public class AuthService implements AuthServiceI {
                 .memberSince(LocalDateTime.now())
                 .portraitImage("")
                 .profileImage("")
-                .shortDescription("¡New user!")
-                .longDescription("¡New user!")
+                .shortDescription(verse.getRandomVerse())
+                .longDescription(verse.getRandomVerse())
                 .instruments(List.of())
                 .styles(List.of())
                 .build();
