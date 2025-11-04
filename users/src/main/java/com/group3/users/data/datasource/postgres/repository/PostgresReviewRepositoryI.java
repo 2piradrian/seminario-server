@@ -13,7 +13,7 @@ public interface PostgresReviewRepositoryI extends JpaRepository<ReviewModel, St
         SELECT r
         FROM ReviewModel r
         WHERE r.reviewerUserId = :reviewerId
-        ORDER BY r.id DESC
+        ORDER BY r.createdAt DESC
     """)
     Page<ReviewModel> findByReviewerId(
             @Param("reviewerId") String reviewerId,
@@ -24,7 +24,7 @@ public interface PostgresReviewRepositoryI extends JpaRepository<ReviewModel, St
         SELECT r
         FROM ReviewModel r
         WHERE r.reviewedId = :reviewedUserId
-        ORDER BY r.id DESC
+        ORDER BY r.createdAt DESC
     """)
     Page<ReviewModel> findByReviewedUserId(
             @Param("reviewedUserId") String reviewedUserId,
