@@ -1,12 +1,10 @@
 package com.group3.users.presentation.controller;
 
-import com.group3.users.domain.dto.review.request.GetPageReviewsByReviewedIdReq;
+import com.group3.users.domain.dto.review.request.*;
 import com.group3.users.domain.dto.review.mapper.ReviewMapper;
-import com.group3.users.domain.dto.review.request.CreateReviewReq;
-import com.group3.users.domain.dto.review.request.DeleteReviewReq;
-import com.group3.users.domain.dto.review.request.GetReviewsByAuthorReq;
-import com.group3.users.domain.dto.review.request.UpdateReviewReq;
 import com.group3.users.domain.dto.review.response.CreateReviewRes;
+import com.group3.users.domain.dto.user.mapper.UserMapper;
+import com.group3.users.domain.dto.user.request.GetUserByIdReq;
 import com.group3.users.presentation.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +18,24 @@ import java.util.Map;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    @GetMapping("/get-by-id/{reviewId}")
+    public ResponseEntity<?> getById(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "reviewId") String reviewId
+    ) {
+        GetReviewByIdReq dto = ReviewMapper.getById().toRequest(token, reviewId);
+
+        return ResponseEntity.ok(this.reviewService.getById(dto));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<CreateReviewRes> create(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
         CreateReviewReq dto = ReviewMapper.create().toRequest(token, payload);
-        return ResponseEntity.ok(reviewService.create(dto));
+        return ResponseEntity.ok(this.reviewService.create(dto));
     }
 
     @PutMapping("/update")

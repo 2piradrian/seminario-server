@@ -4,6 +4,7 @@ import com.group3.users.domain.dto.review.request.*;
 import com.group3.users.domain.dto.review.response.*;
 import com.group3.users.domain.dto.review.request.GetPageReviewsByReviewedIdReq;
 import com.group3.users.domain.dto.review.response.GetPageReviewsByReviewedIdRes;
+import com.group3.users.domain.dto.user.response.GetUserByIdRes;
 
 public interface ReviewServiceI {
 
@@ -16,5 +17,7 @@ public interface ReviewServiceI {
     GetReviewsByAuthorRes getReviewsByAuthor(GetReviewsByAuthorReq dto);
 
     GetPageReviewsByReviewedIdRes getReviewsByReviewedId(GetPageReviewsByReviewedIdReq dto);
+
+    GetUserByIdRes getById(GetReviewByIdReq dto);
 
 }
