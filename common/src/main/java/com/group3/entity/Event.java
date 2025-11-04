@@ -18,7 +18,7 @@ public class Event {
 
     private String id;
 
-    private UserProfile author;
+    private User author;
 
     private PageProfile pageProfile;
 
@@ -38,8 +38,15 @@ public class Event {
 
     private LocalDateTime updatedAt;
 
-    private List<String> assist;
+    private List<String> assists;
+
+    // Domain Variable
+    private Integer assistsQuantity;
 
     private Status status;
+
+    public void calculateAssistsQuantity(){
+        this.assistsQuantity = this.assists.size();
+    }
 
 }

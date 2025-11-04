@@ -40,20 +40,20 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile author = UserProfile.builder().id(user.getId()).build();
         Event event = new Event();
 
         PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
         if (type == PrefixedUUID.EntityType.USER) {
-            if (!user.getId().equals(dto.getProfileId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            if (!user.getId().equals(dto.getProfileId())) {
+                throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+            }
             event.setPageProfile(PageProfile.builder().id(null).build());
-            event.setAuthor(author);
-        } else if (type == PrefixedUUID.EntityType.PAGE) {
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             }
-            event.setAuthor(author);
             event.setPageProfile(page);
         }
 
@@ -62,14 +62,14 @@ public class EventService implements EventServiceI {
             event.setImageId(imageId);
         }
 
-        event.setAuthor(author);
+        event.setAuthor(user);
         event.setTitle(dto.getTitle());
         event.setContent(dto.getContent());
         event.setDateInit(dto.getDateInit());
         event.setDateEnd(dto.getDateEnd());
         event.setStatus(Status.ACTIVE);
         event.setViews(0);
-        event.setAssist(List.of());
+        event.setAssists(List.of());
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
@@ -86,8 +86,7 @@ public class EventService implements EventServiceI {
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
         if (event.getAuthor().getId() != null) {
-            User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
-            event.setAuthor(fullProfile.getProfile());
+            event.setAuthor(user);
         }
         if (event.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -96,7 +95,10 @@ public class EventService implements EventServiceI {
 
         Integer views = event.getViews();
         event.setViews(views + 1);
+
         this.eventRepository.update(event);
+
+        event.calculateAssistsQuantity();
 
         return EventMapper.getById().toResponse(event);
     }
@@ -110,8 +112,7 @@ public class EventService implements EventServiceI {
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
-                User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
-                event.setAuthor(fullProfile.getProfile());
+                event.setAuthor(user);
             }
             if (event.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -141,7 +142,7 @@ public class EventService implements EventServiceI {
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
-        List<String> updateAssists = event.getAssist();
+        List<String> updateAssists = event.getAssists();
 
         if (updateAssists.contains(userId)) {
             updateAssists.remove(userId);
@@ -149,13 +150,12 @@ public class EventService implements EventServiceI {
             updateAssists.add(userId);
         }
 
-        event.setAssist(updateAssists);
+        event.setAssists(updateAssists);
 
         this.eventRepository.update(event);
 
         if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-            User fullProfile = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
-            event.setAuthor(fullProfile.getProfile());
+            event.setAuthor(user);
         }
 
         if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {

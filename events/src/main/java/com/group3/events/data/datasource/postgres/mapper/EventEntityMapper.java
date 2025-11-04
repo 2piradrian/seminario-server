@@ -2,6 +2,7 @@ package com.group3.events.data.datasource.postgres.mapper;
 
 import com.group3.entity.Event;
 import com.group3.entity.PageProfile;
+import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.events.data.datasource.postgres.model.EventModel;
 
@@ -10,7 +11,7 @@ public class EventEntityMapper {
     public static Event toDomain(EventModel eventModel) {
         return new Event(
                 eventModel.getId(),
-                UserProfile.builder().id(eventModel.getAuthorId()).build(),
+                User.builder().id(eventModel.getAuthorId()).build(),
                 PageProfile.builder().id(eventModel.getPageId()).build(),
                 eventModel.getTitle(),
                 eventModel.getContent(),
@@ -20,7 +21,8 @@ public class EventEntityMapper {
                 eventModel.getViews(),
                 eventModel.getCreatedAt(),
                 eventModel.getUpdatedAt(),
-                eventModel.getAssist(),
+                eventModel.getAssists(),
+                0,
                 eventModel.getStatus()
         );
     }
@@ -38,7 +40,7 @@ public class EventEntityMapper {
                 event.getCreatedAt(),
                 event.getUpdatedAt(),
                 event.getViews(),
-                event.getAssist(),
+                event.getAssists(),
                 event.getStatus()
         );
     }
