@@ -15,4 +15,6 @@ public interface EventServiceI {
 
     EditEventRes edit(EditEventReq dto);
 
+    void delete(DeleteEventReq dto);
+
 }
