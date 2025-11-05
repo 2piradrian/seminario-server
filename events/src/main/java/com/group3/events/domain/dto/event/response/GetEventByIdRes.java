@@ -35,4 +35,6 @@ public class GetEventByIdRes {
 
     private final LocalDateTime createdAt;
 
+    private final Boolean isAssisting;
+
 }

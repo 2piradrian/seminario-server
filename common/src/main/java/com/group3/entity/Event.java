@@ -43,10 +43,17 @@ public class Event {
     // Domain Variable
     private Integer assistsQuantity;
 
+    // Domain Variable
+    private Boolean isAssisting;
+
     private Status status;
 
     public void calculateAssistsQuantity(){
         this.assistsQuantity = this.assists.size();
+    }
+
+    public void setIsAssisting(String userId){
+        this.isAssisting = this.assists.contains(userId);
     }
 
 }
