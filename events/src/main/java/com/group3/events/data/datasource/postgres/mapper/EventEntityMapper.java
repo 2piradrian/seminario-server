@@ -23,6 +23,7 @@ public class EventEntityMapper {
                 eventModel.getUpdatedAt(),
                 eventModel.getAssists(),
                 0,
+                false,
                 eventModel.getStatus()
         );
     }

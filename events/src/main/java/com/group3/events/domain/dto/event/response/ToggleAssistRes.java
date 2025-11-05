@@ -28,4 +28,6 @@ public class ToggleAssistRes {
 
     private final LocalDateTime createdAt;
 
+    private final Boolean isAssisting;
+
 }

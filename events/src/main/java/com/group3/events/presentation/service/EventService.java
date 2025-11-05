@@ -99,6 +99,7 @@ public class EventService implements EventServiceI {
         this.eventRepository.update(event);
 
         event.calculateAssistsQuantity();
+        event.setIsAssisting(user.getId());
 
         return EventMapper.getById().toResponse(event);
     }
@@ -118,6 +119,8 @@ public class EventService implements EventServiceI {
                 PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
                 event.setPageProfile(fullPage);
             }
+            event.calculateAssistsQuantity();
+            event.setIsAssisting(user.getId());
         }
 
         return EventMapper.getEventAndAssistsMapper().toResponse(events);
@@ -146,11 +149,13 @@ public class EventService implements EventServiceI {
 
         if (updateAssists.contains(userId)) {
             updateAssists.remove(userId);
-        } else {
+        }
+        else {
             updateAssists.add(userId);
         }
 
         event.setAssists(updateAssists);
+        event.setIsAssisting(userId);
 
         this.eventRepository.update(event);
 
@@ -192,6 +197,7 @@ public class EventService implements EventServiceI {
         event.setUpdatedAt(LocalDateTime.now());
 
         Event edited = this.eventRepository.update(event);
+
         return EventMapper.edit().toResponse(edited);
     }
 

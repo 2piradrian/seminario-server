@@ -24,7 +24,8 @@ public class ToggleAssistMapper {
             event.getTitle(),
             event.getContent(),
             event.getViews(),
-            event.getCreatedAt()
+            event.getCreatedAt(),
+            event.getIsAssisting()
         );
     }
 }

@@ -25,7 +25,8 @@ public class GetByIdMapper {
             event.getAssistsQuantity(),
             event.getDateInit(),
             event.getDateEnd(),
-            event.getCreatedAt()
+            event.getCreatedAt(),
+            event.getIsAssisting()
         );
     }
 
