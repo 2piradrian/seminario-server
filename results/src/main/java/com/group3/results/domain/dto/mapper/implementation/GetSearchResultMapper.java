@@ -6,6 +6,7 @@ import com.group3.entity.*;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,15 +23,23 @@ public class GetSearchResultMapper {
             objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
             objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
             (String) payload.get("contentTypeId"),
-            (String) payload.get("pageTypeId")
+            (String) payload.get("pageTypeId"),
+            objectMapper.convertValue(payload.get("dateInit"), Date.class),
+            objectMapper.convertValue(payload.get("dateEnd"), Date.class)
         );
     }
 
-    public GetSearchResultFilteredRes toResponse(List<User> user, List<PageProfile> pageProfiles, List<Post> posts) {
+    public GetSearchResultFilteredRes toResponse(
+        List<User> user,
+        List<PageProfile> pageProfiles,
+        List<Post> posts,
+        List<Event> events
+    ) {
         return new GetSearchResultFilteredRes(
             user,
             pageProfiles,
-            posts
+            posts,
+            events
         );
     }
 
