@@ -61,19 +61,19 @@ public class UserService implements UserServiceI {
         profileResult.setInstruments(instruments);
 
         List<String> following = this.followService.getAllFollowing(
-                GetAllFollowingReq.create(user.getId(), secretKeyHelper.getSecret())
+                GetAllFollowingReq.create(userResult.getId(), secretKeyHelper.getSecret())
         ).getFollowing().stream().map(Follow::getFollowedId).toList();
 
         List<String> followers = this.followService.getAllFollowers(
-                GetAllFollowersReq.create(user.getId(), secretKeyHelper.getSecret())
+                GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
         ).getFollowers().stream().map(Follow::getFollowerId).toList();
 
-        profileResult.isOwnProfile(user.getId());
-        profileResult.setFollowsChecks(user.getId(), following, followers);
+        profileResult.isOwnProfile(userResult.getId());
+        profileResult.setFollowsChecks(userResult.getId(), following, followers);
 
-        user.setProfile(profileResult);
+        userResult.setProfile(profileResult);
 
-        return UserMapper.getById().toResponse(user);
+        return UserMapper.getById().toResponse(userResult);
     }
 
     @Override
