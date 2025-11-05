@@ -19,7 +19,7 @@ public class EventRepository implements EventRepositoryI {
     private final EventServerRepositoryI repository;
 
     @Override
-    public List<Event> getFilteredEvents(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+    public List<Event> getFilteredEventsPage(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("page", page);

@@ -95,7 +95,7 @@ public class ResultService implements ResultServiceI {
             }
 
             case POST -> {
-                posts = postRepository.getFilteredPosts(
+                posts = postRepository.getFilteredPostsPage(
                         dto.getPage(),
                         dto.getSize(),
                         dto.getText(),
@@ -115,7 +115,7 @@ public class ResultService implements ResultServiceI {
             }
 
             case EVENT -> {
-                events = eventRepository.getFilteredPEvents(
+                events = eventRepository.getFilteredEventsPage(
                     dto.getPage(),
                     dto.getSize(),
                     dto.getText(),
@@ -145,7 +145,7 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<Post> posts = this.postRepository.getFilteredPosts(
+        List<Post> posts = this.postRepository.getFilteredPostsPage(
             dto.getPage(),
             dto.getSize(),
             "",

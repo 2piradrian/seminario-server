@@ -26,7 +26,7 @@ public class PostRepository implements PostRepositoryI {
     private final PostServerRepositoryI repository;
 
     @Override
-    public List<Post> getFilteredPosts(Integer page, Integer size, String text, String secret) {
+    public List<Post> getFilteredPostsPage(Integer page, Integer size, String text, String secret) {
         Map<String,Object> payload = new HashMap<>();
 
         payload.put("page", page);
