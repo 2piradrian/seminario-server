@@ -1,12 +1,12 @@
 package com.group3.results.domain.dto.request;
 
-import com.group3.entity.ContentType;
 import com.group3.entity.Instrument;
 import com.group3.entity.Style;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -28,7 +28,22 @@ public class GetSerchResultFilteredReq {
 
     private final String contentTypeId;
 
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    private final Date dateInit;
+
+    private final Date dateEnd;
+
+    public GetSerchResultFilteredReq(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<Style> styles,
+        List<Instrument> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        Date dateInit,
+        Date dateEnd
+    ) {
         this.token = token;
         this.page = page;
         this.size = size;
@@ -37,9 +52,22 @@ public class GetSerchResultFilteredReq {
         this.instruments = instruments;
         this.contentTypeId = contentTypeId;
         this.pageTypeId = pageTypeId;
+        this.dateInit = dateInit;
+        this.dateEnd = dateEnd;
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    public static GetSerchResultFilteredReq create(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<Style> styles,
+        List<Instrument> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        Date dateInit,
+        Date dateEnd
+    ) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -65,7 +93,26 @@ public class GetSerchResultFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetSerchResultFilteredReq(token, page, size, text, styles, instruments, contentTypeId, pageTypeId);
+        if (dateInit == null || dateEnd == null){
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (dateInit.after(dateEnd)) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        return new GetSerchResultFilteredReq(
+            token,
+            page,
+            size,
+            text,
+            styles,
+            instruments,
+            contentTypeId,
+            pageTypeId,
+            dateInit,
+            dateEnd
+        );
     }
 
 }

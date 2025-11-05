@@ -36,6 +36,15 @@ public class EventController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
+    @PostMapping("/get-filtered-events")
+    public ResponseEntity<?> getFilteredEvents(
+        @RequestBody Map<String, Object> payload
+    ) {
+        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(payload);
+
+        return ResponseEntity.ok(this.service.getFilteredEvents(dto));
+    }
+
     @PostMapping("/get-events-and-assists-by-id")
     public ResponseEntity<?> getEventsAndAssists(
         @RequestHeader(value = "Authorization") String token,
