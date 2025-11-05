@@ -103,6 +103,23 @@ public class EventService implements EventServiceI {
         return EventMapper.getById().toResponse(event);
     }
 
+    // ======== Get Filtered Events ========
+
+    @Override
+    public GetFilteredEventPageRes getFilteredEvents(GetFilteredEventPageReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Event> events = this.eventRepository.getFilteredEvents(
+            dto.getPage(),
+            dto.getSize(),
+            dto.getText(),
+            dto.getDateInit(),
+            dto.getDateEnd()
+        );
+
+        return EventMapper.getFilteredPage().toResponse(events);
+    }
+
     @Override
     public GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
