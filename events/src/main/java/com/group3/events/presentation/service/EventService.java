@@ -86,7 +86,8 @@ public class EventService implements EventServiceI {
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
         if (event.getAuthor().getId() != null) {
-            event.setAuthor(user);
+            User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullAuthor);
         }
         if (event.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -130,7 +131,8 @@ public class EventService implements EventServiceI {
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
-                event.setAuthor(user);
+                User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullAuthor);
             }
             if (event.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -177,7 +179,8 @@ public class EventService implements EventServiceI {
         this.eventRepository.update(event);
 
         if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-            event.setAuthor(user);
+            User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullAuthor);
         }
 
         if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
