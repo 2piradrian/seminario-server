@@ -2,7 +2,7 @@ package com.group3.posts.data.datasource.postgres.mapper;
 
 import com.group3.entity.PageProfile;
 import com.group3.entity.Post;
-import com.group3.entity.UserProfile;
+import com.group3.entity.User;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 
 public class PostsEntityMapper {
@@ -13,7 +13,7 @@ public class PostsEntityMapper {
             postModel.getTitle(),
             postModel.getContent(),
             postModel.getViews(),
-            UserProfile.builder().id(postModel.getAuthorId()).build(),
+            User.builder().id(postModel.getAuthorId()).build(),
             PageProfile.builder().id(postModel.getPageId()).build(),
             postModel.getImageId(),
             postModel.getUpvoters(),

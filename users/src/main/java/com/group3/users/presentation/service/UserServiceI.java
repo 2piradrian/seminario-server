@@ -9,4 +9,10 @@ public interface UserServiceI {
 
     void delete(DeleteUserReq dto);
 
+    GetAllStaffRes getAllStaff(GetAllStaffReq dto);
+
+    GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto);
+
+    void update(EditUserReq dto);
+
 }

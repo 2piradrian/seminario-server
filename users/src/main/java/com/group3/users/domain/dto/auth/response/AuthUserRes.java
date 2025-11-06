@@ -2,6 +2,7 @@ package com.group3.users.domain.dto.auth.response;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;
+import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +18,8 @@ public class AuthUserRes {
 
     private Status status;
 
-    private List<Role> roles;
+    private Role role;
+
+    private final UserProfile profile;
 
 }

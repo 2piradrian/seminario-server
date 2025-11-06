@@ -9,18 +9,24 @@ public class GetUserByIdReq {
 
     private final String userId;
 
-    private GetUserByIdReq(String userId){
+    private final String token;
+
+    private GetUserByIdReq(String token, String userId){
         this.userId = userId;
+        this.token = token;
     }
 
-    public static GetUserByIdReq create(String userId){
+    public static GetUserByIdReq create(String token, String userId){
+
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (userId == null){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new GetUserByIdReq(userId);
-
+        return new GetUserByIdReq(token, userId);
     }
 
 }

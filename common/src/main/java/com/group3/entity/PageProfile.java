@@ -25,9 +25,9 @@ public class PageProfile {
 
     private String longDescription;
 
-    private UserProfile owner;
+    private User owner;
 
-    private List<UserProfile> members;
+    private List<User> members;
 
     private Status status;
 

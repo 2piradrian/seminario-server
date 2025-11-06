@@ -1,0 +1,51 @@
+package com.group3.events.data.datasource.postgres.repository;
+
+import com.group3.entity.Status;
+import com.group3.events.data.datasource.postgres.model.EventModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+
+public interface PostgresEventRepositoryI extends JpaRepository<EventModel, String> {
+
+    // ======== Get Events by Author or Assistant ========
+    @Query("""
+        SELECT DISTINCT e
+        FROM EventModel e
+        WHERE (e.authorId = :userId OR :userId MEMBER OF e.assists)
+        AND e.status = :status
+        ORDER BY e.createdAt DESC
+    """)
+    Page<EventModel> findByAuthorOrAssistant(
+            @Param("userId") String userId,
+            @Param("status") Status status,
+            Pageable pageable
+    );
+
+    // ======== Get Events by Filtered Page ========
+
+    @Query("""
+        SELECT e FROM EventModel e WHERE
+        e.status = :status
+        AND
+        (
+            (:#{#text == null or #text.isEmpty()} = true) OR
+            (LOWER(e.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
+             LOWER(e.content) LIKE LOWER(CONCAT('%', :text, '%')))
+        )
+        AND (:#{#dateInit == null} = true OR e.dateInit >= :dateInit)
+        AND (:#{#dateEnd == null} = true OR e.dateEnd <= :dateEnd)
+        ORDER BY e.createdAt DESC
+    """)
+    Page<EventModel> findByFilteredPage(
+        @Param("status") Status status,
+        @Param("text") String text,
+        @Param("dateInit") Date dateInit,
+        @Param("dateEnd") Date dateEnd,
+        Pageable pageable
+    );
+}

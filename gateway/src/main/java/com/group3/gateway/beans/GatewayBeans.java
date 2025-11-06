@@ -22,6 +22,16 @@ public class GatewayBeans {
                     .uri("lb://users-server")
             )
             .route(r -> r
+                    .path("/api/follows/**")
+                    .filters(f -> f.rewritePath("/api/follows/(?<segment>.*)", "/users-server/api/follows/${segment}"))
+                    .uri("lb://users-server")
+            )
+            .route(r -> r
+                    .path("/api/reviews/**")
+                    .filters(f -> f.rewritePath("/api/reviews/(?<segment>.*)", "/users-server/api/reviews/${segment}"))
+                    .uri("lb://users-server")
+            )
+            .route(r -> r
                     .path("/api/catalog/styles/**")
                     .filters(f -> f.rewritePath("/api/catalog/(?<segment>.*)", "/catalog-server/api/${segment}"))
                     .uri("lb://catalog-server")
@@ -47,11 +57,6 @@ public class GatewayBeans {
                     .uri("lb://catalog-server")
             )
             .route(r -> r
-                    .path("/api/user-profiles/**")
-                    .filters(f -> f.rewritePath("/api/user-profiles/(?<segment>.*)", "/user-profiles-server/api/user-profiles/${segment}"))
-                    .uri("lb://user-profiles-server")
-            )
-            .route(r -> r
                     .path("/api/images/**")
                     .filters(f -> f.rewritePath("/api/images/(?<segment>.*)", "/images-server/api/images/${segment}"))
                     .uri("lb://images-server")
@@ -75,6 +80,11 @@ public class GatewayBeans {
                 .path("/api/results/**")
                 .filters(f -> f.rewritePath("/api/results/(?<segment>.*)", "/results-server/api/results/${segment}"))
                 .uri("lb://results-server")
+            )
+            .route(r -> r
+                    .path("/api/events/**")
+                    .filters(f -> f.rewritePath("/api/events/(?<segment>.*)", "/events-server/api/events/${segment}"))
+                    .uri("lb://events-server")
             )
             .build();
     }

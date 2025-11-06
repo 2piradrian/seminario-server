@@ -6,18 +6,19 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.config.helpers.EmailHelper;
-import com.group3.users.config.helpers.SecretKeyHelper;
 import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.*;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
+import com.group3.utils.Verse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -28,8 +29,6 @@ public class AuthService implements AuthServiceI {
 
     private final AuthHelper authHelper;
 
-    private final SecretKeyHelper secretKeyHelper;
-
     private final UserRepository userRepository;
 
     private final UserProfileRepository userProfileRepository;
@@ -37,6 +36,8 @@ public class AuthService implements AuthServiceI {
     private final EmailService emailService;
 
     private final EmailHelper emailHelper;
+
+    // ======== Authenticate User ========
 
     @Override
     public AuthUserRes auth(AuthUserReq dto) {
@@ -64,27 +65,110 @@ public class AuthService implements AuthServiceI {
         return AuthMapper.auth().toResponse(user);
     }
 
+    public User auth(String reqToken) {
+        String token = this.authHelper.validateToken(reqToken);
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String subject = this.authHelper.getSubject(token);
+        User user = this.userRepository.getByEmail(subject);
+
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        }
+
+        if (user.getStatus() == Status.INACTIVE) {
+            throw new ErrorHandler(ErrorType.USER_NOT_ACTIVATED);
+        }
+
+        if (user.getStatus() == Status.DELETED){
+            throw new ErrorHandler(ErrorType.USER_DELETED);
+        }
+
+        return user;
+    }
+
+    // ======== Register User ========
+
     @Override
     public void register(RegisterUserReq dto) {
         var emailCheck = this.userRepository.getByEmail(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
-        User user = new User();
         String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
+        Verse verse = new Verse();
 
-        user.setId(userId);
-        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
-        user.setEmail(dto.getEmail());
-        user.setRoles(List.of(Role.USER));
-        user.setStatus(Status.INACTIVE);
+        UserProfile userProfile = UserProfile.builder()
+                .id(userId)
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .memberSince(LocalDateTime.now())
+                .portraitImage("")
+                .profileImage("")
+                .shortDescription(verse.getRandomVerse())
+                .longDescription(verse.getRandomVerse())
+                .instruments(List.of())
+                .styles(List.of())
+                .build();
+
+        User user = User.builder()
+                .id(userId)
+                .password(this.authHelper.hashPassword(dto.getPassword()))
+                .email(dto.getEmail())
+                .role(Role.USER)
+                .status(Status.INACTIVE)
+                .profile(userProfile)
+                .build();
 
         User saved = this.userRepository.save(user);
-        this.userProfileRepository.create(saved.getId(), dto.getEmail(), dto.getName(), dto.getSurname(), secretKeyHelper.getSecret());
 
         Token token = this.authHelper.createToken(saved);
 
         this.emailService.sendEmail(saved.getEmail(),"Email Validation", this.emailHelper.verifyEmailHTML(token.getAccessToken()));
     }
+
+    // ======== Grant roles to user ========
+
+    @Override
+    public void grantRole(GrantRoleUserReq dto){
+        AuthUserRes adminAuth = this.auth(AuthUserReq.create(dto.getToken()));
+        if (adminAuth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!adminAuth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userUpdated = this.userRepository.getByEmail(dto.getEmail());
+        if (userUpdated == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        Role newRole = Role.fromString(dto.getRoleId());
+        if (newRole == null) throw new ErrorHandler(ErrorType.ROLE_NOT_FOUND);
+
+        if(userUpdated.getRole().equals(newRole)) throw new ErrorHandler(ErrorType.USER_ALREADY_HAS_ROLE);
+
+        userUpdated.setRole(newRole);
+        this.userRepository.update(userUpdated);
+    }
+
+    // ======== Revoke roles to user ========
+
+    @Override
+    public void revokeRole(RevokeRoleUserReq dto){
+        AuthUserRes adminAuth = this.auth(AuthUserReq.create(dto.getToken()));
+        if (adminAuth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!adminAuth.getRole().canAsignRole()) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        User userUpdated = this.userRepository.getByEmail(dto.getEmail());
+        if (userUpdated == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if(!userUpdated.getRole().canDelete()) throw new ErrorHandler(ErrorType.USER_ALREADY_HAS_NO_ROLE);
+
+        userUpdated.setRole(Role.USER);
+        this.userRepository.update(userUpdated);
+    }
+
+    // ======== Login User ========
 
     @Override
     public LoginUserRes login(LoginUserReq dto) {
@@ -109,6 +193,8 @@ public class AuthService implements AuthServiceI {
         return AuthMapper.login().toResponse(token);
     }
 
+    // ======== Verify Email ========
+
     @Override
     public void verifyEmail(VerifyEmailReq dto){
 
@@ -130,10 +216,11 @@ public class AuthService implements AuthServiceI {
         }
 
         user.setStatus(Status.ACTIVE);
-        this.userProfileRepository.active(user.getId(), secretKeyHelper.getSecret());
 
         this.userRepository.update(user);
     }
+
+    // ======== Resend Verify Email ========
 
     @Override
     public void resendVerifyEmail (ResendEmailReq dto){

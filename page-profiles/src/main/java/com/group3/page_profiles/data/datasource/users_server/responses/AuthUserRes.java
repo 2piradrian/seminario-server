@@ -2,10 +2,9 @@ package com.group3.page_profiles.data.datasource.users_server.responses;
 
 import com.group3.entity.Role;
 import com.group3.entity.Status;
+import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -15,8 +14,10 @@ public class AuthUserRes {
 
     private final String email;
 
-    private Status status;
+    private final Status status;
 
-    private List<Role> roles;
+    private final Role role;
+
+    private final UserProfile profile;
 
 }

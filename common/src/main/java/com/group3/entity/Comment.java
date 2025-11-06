@@ -16,7 +16,7 @@ public class Comment {
 
     private String id;
 
-    private UserProfile author;
+    private User author;
 
     private String postId;
 
@@ -42,14 +42,14 @@ public class Comment {
     // Domain variable
     private Integer downvotersQuantity;
 
-    public void setVotersQuantities(){
-        this.upvotersQuantity = this.upvoters.size();
-        this.downvotersQuantity = this.downvoters.size();
-    }
-
     public void setVotersToNull(){
         this.upvoters = null;
         this.downvoters = null;
+    }
+
+    public void calculateVotersQuantity(){
+        this.upvotersQuantity = this.upvoters.size();
+        this.downvotersQuantity = this.downvoters.size();
     }
 
 }

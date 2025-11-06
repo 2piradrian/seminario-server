@@ -20,11 +20,13 @@ public class CommentModel {
     @GeneratedValue(strategy =  GenerationType.UUID)
     private String Id;
 
-    private  String authorId;
+    @Column(name = "author_id", nullable = false)
+    private String authorId;
 
     @Column(name = "post_id", nullable = false)
     private String postId;
 
+    @Column(name = "page_id")
     private String pageId;
 
     @ManyToOne
@@ -43,8 +45,10 @@ public class CommentModel {
     @Column(name = "user_id")
     private List<String> downvoters;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     private  LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)

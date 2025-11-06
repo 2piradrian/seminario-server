@@ -44,6 +44,28 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/grant-role")
+    public ResponseEntity<?> grantRole(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        GrantRoleUserReq dto = AuthMapper.grantRole().toRequest(token, payload);
+        this.authService.grantRole(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/revoke-role")
+    public ResponseEntity<?> revokeRole(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        RevokeRoleUserReq dto = AuthMapper.revokeRole().toRequest(token, payload);
+        this.authService.revokeRole(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/verify-email/{token}")
     public ResponseEntity<?> verifyEmail(
             @PathVariable(value = "token") String token

@@ -17,7 +17,8 @@ public class AuthUserMapper {
             user.getId(),
             user.getEmail(),
             user.getStatus(),
-            user.getRoles()
+            user.getRole(),
+            user.getProfile()
         );
     }
 

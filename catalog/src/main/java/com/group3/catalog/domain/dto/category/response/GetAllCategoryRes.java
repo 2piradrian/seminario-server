@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetAllCategoryRes {
 
-    List<Category> categories;
+    private final List<Category> categories;
 
 }

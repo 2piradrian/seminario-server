@@ -27,9 +27,13 @@ public class UserModel {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private List<Role> roles;
+    private Role role;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private UserProfileModel profile;
 
 }
