@@ -36,6 +36,8 @@ public class Comment {
 
     private Status status;
 
+    private List<Comment> replies;
+
     // Domain variable
     private Integer upvotersQuantity;
 
