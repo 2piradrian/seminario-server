@@ -19,7 +19,7 @@ public class Notification {
 
     private String sourceId;
 
-    private String content;
+    private NotificationContent content;
 
     private LocalDateTime createdAt;
 

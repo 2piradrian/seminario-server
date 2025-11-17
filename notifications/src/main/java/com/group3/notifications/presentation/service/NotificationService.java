@@ -44,7 +44,7 @@ public class NotificationService implements NotificationServiceI {
         notification.setCreatedAt(LocalDateTime.now());
         notification.setUpdatedAt(LocalDateTime.now());
 
-        Notification saved = this.notificationRepository.save(notification);
+        Notification saved = notificationRepository.save(notification);
         return NotificationMapper.create().toResponse(saved);
     }
 
