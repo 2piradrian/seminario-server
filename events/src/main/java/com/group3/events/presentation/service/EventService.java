@@ -157,10 +157,8 @@ public class EventService implements EventServiceI {
 
         LocalDateTime actualDateTime = LocalDateTime.now();
 
-        LocalDateTime eventDateInit = event.getDateInit().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime eventDateEnd = event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        if (actualDateTime.isBefore(eventDateInit)) throw new ErrorHandler(ErrorType.EVENT_NOT_STARTED);
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
