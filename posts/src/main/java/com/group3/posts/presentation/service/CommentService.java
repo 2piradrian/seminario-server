@@ -105,6 +105,7 @@ public class CommentService implements CommentServiceI {
                         comment.setPageProfile(fullPage);
                     }
                     comment.setVotersToNull();
+                    comment.setReplies(this.commentRepository.getRepliesComment(comment.getId()));
                 }
         );
 
