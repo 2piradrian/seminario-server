@@ -9,13 +9,14 @@ import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.users.data.repository.NotificationsRepository;
-import com.group3.users.data.repository.NotificationsRepositoryI;
+import com.group3.users.config.helpers.SecretKeyHelper;
+import com.group3.users.data.repository.FollowRepository;
 import com.group3.users.data.repository.PageProfileRepository;
 import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.domain.dto.follow.mapper.FollowMapper;
 import com.group3.users.domain.dto.follow.request.*;
 import com.group3.users.domain.dto.follow.response.*;
+import com.group3.users.domain.repository.NotificationsRepositoryI;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,11 +77,11 @@ public class FollowService implements FollowServiceI {
         follow.setFollowedId(dto.getId());
         followRepository.save(follow);
 
-        // Send notification
-        notificationsRepository.create(
+
+        this.notificationsRepository.create(
                 secretKeyHelper.getSecret(),
-                dto.getId(), // targetId: the user/page being followed
-                user.getId(), // sourceId: the user who is following
+                dto.getId(), // targetId
+                user.getId(), // sourceId
                 NotificationContent.FOLLOW.name()
         );
     }
