@@ -3,6 +3,7 @@ package com.group3.posts.presentation.controller;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
 import com.group3.posts.domain.dto.comment.request.DeleteCommentReq;
+import com.group3.posts.domain.dto.comment.request.GetCommentByIdReq;
 import com.group3.posts.domain.dto.comment.request.GetCommentPageReq;
 import com.group3.posts.domain.dto.comment.request.ToggleCommentVotesReq;
 import com.group3.posts.presentation.service.CommentService;
@@ -27,6 +28,16 @@ public class CommentController {
         CreateCommentReq dto = CommentMapper.create().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @GetMapping("/get-by-id/{commentId}")
+    public ResponseEntity<?> getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "commentId") String commentId
+    ) {
+        GetCommentByIdReq dto = CommentMapper.getById().toRequest(commentId, token);
+
+        return ResponseEntity.ok(this.service.getById(dto));
     }
 
     @PostMapping("/get-comments")

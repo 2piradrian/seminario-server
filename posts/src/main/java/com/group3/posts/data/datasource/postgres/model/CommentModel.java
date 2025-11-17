@@ -17,7 +17,6 @@ import java.util.List;
 public class CommentModel {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.UUID)
     private String Id;
 
     @Column(name = "author_id", nullable = false)

@@ -9,8 +9,7 @@ public class LoadBalancerConfiguration {
     @Bean
     public ServiceInstanceListSupplier serviceInstanceListSupplier(ConfigurableApplicationContext context) {
         return ServiceInstanceListSupplier.builder()
-            .withBlockingDiscoveryClient()
-            .build(context);
+                .withBlockingDiscoveryClient()
+                .build(context);
     }
-
 }

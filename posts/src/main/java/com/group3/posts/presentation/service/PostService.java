@@ -63,6 +63,7 @@ public class PostService implements PostServiceI {
             post.setImageId(imageId);
         }
 
+        post.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.POST).toString());
         post.setAuthor(user);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());

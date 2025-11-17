@@ -11,13 +11,9 @@ import lombok.Getter;
 public class AuthUserRes {
 
     private final String id;
-
     private final String email;
-
     private final Status status;
-
     private final Role role;
-
     private final UserProfile profile;
 
 }

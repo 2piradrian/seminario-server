@@ -6,8 +6,13 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
-import com.group3.posts.domain.dto.comment.request.*;
+import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
+import com.group3.posts.domain.dto.comment.request.DeleteCommentReq;
+import com.group3.posts.domain.dto.comment.request.GetCommentByIdReq;
+import com.group3.posts.domain.dto.comment.request.GetCommentPageReq;
+import com.group3.posts.domain.dto.comment.request.ToggleCommentVotesReq;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
+import com.group3.posts.domain.dto.comment.response.GetCommentByIdRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
 import com.group3.posts.domain.dto.comment.response.ToggleCommentVotesRes;
 import jakarta.transaction.Transactional;
@@ -53,7 +58,8 @@ public class CommentService implements CommentServiceI {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
             };
             comment.setPageProfile(PageProfile.builder().id(null).build());
-        } else if (type == PrefixedUUID.EntityType.PAGE) {
+        }
+        else if (type == PrefixedUUID.EntityType.PAGE) {
             PageProfile page = this.pageProfileRepository.getById(dto.getProfileId(), dto.getToken());
             if (page.getMembers().stream().noneMatch(member -> member.getId().equals(author.getId()))) {
                 throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -61,6 +67,7 @@ public class CommentService implements CommentServiceI {
             comment.setPageProfile(page);
         }
 
+        comment.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.COMMENT).toString());
         comment.setAuthor(author);
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
@@ -81,6 +88,30 @@ public class CommentService implements CommentServiceI {
         comment.setId(saved.getId());
 
         return CommentMapper.create().toResponse(comment);
+    }
+
+
+    // ======== Get Comment by ID ========
+
+    @Override
+    public GetCommentByIdRes getById(GetCommentByIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Comment comment = this.commentRepository.getById(dto.getCommentId());
+        if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
+
+        if (comment.getAuthor().getId() != null) {
+            User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
+            comment.setAuthor(fullProfile);
+        }
+        if (comment.getPageProfile().getId() != null) {
+            PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
+            comment.setPageProfile(fullPage);
+        }
+        comment.setVotersToNull();
+
+        return CommentMapper.getById().toResponse(comment);
     }
 
 
