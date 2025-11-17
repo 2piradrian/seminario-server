@@ -1,4 +1,4 @@
-package com.group3.page-profiles.data.datasource.notifications_server.request;
+package com.group3.page_profiles.data.datasource.notifications_server.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

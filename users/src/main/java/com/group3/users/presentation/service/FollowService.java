@@ -2,14 +2,15 @@ package com.group3.users.presentation.service;
 
 import com.group3.config.PrefixedUUID;
 import com.group3.entity.Follow;
+import com.group3.entity.NotificationContent;
 import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
-import com.group3.users.config.helpers.SecretKeyHelper;
-import com.group3.users.data.repository.FollowRepository;
+import com.group3.users.data.repository.NotificationsRepository;
+import com.group3.users.data.repository.NotificationsRepositoryI;
 import com.group3.users.data.repository.PageProfileRepository;
 import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.domain.dto.follow.mapper.FollowMapper;
@@ -37,6 +38,8 @@ public class FollowService implements FollowServiceI {
     private final UserProfileRepository userProfileRepository;
 
     private final PageProfileRepository pageProfileRepository;
+
+    private final NotificationsRepositoryI notificationsRepository;
 
 
     // ======== Toggle Follow ========
@@ -72,6 +75,14 @@ public class FollowService implements FollowServiceI {
         follow.setFollowerId(user.getId());
         follow.setFollowedId(dto.getId());
         followRepository.save(follow);
+
+        // Send notification
+        notificationsRepository.create(
+                secretKeyHelper.getSecret(),
+                dto.getId(), // targetId: the user/page being followed
+                user.getId(), // sourceId: the user who is following
+                NotificationContent.FOLLOW.name()
+        );
     }
 
 
