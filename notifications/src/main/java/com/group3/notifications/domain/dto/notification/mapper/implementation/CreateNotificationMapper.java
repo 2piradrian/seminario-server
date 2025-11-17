@@ -16,10 +16,4 @@ public class CreateNotificationMapper {
                 (String) payload.get("content")
         );
     }
-
-    public CreateNotificationRes toResponse(Notification notification) {
-        return new CreateNotificationRes(
-                notification.getId()
-        );
-    }
 }

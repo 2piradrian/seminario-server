@@ -7,7 +7,7 @@ import com.group3.notifications.domain.dto.notification.response.GetNotification
 
 public interface NotificationServiceI {
 
-    CreateNotificationRes create(CreateNotificationReq dto);
+    void create(CreateNotificationReq dto);
 
     GetNotificationPageRes getNotificationsByTarget(GetNotificationPageReq dto);
 

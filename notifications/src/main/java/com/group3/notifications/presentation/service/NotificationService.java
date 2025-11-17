@@ -9,7 +9,6 @@ import com.group3.notifications.config.helpers.SecretKeyHelper;
 import com.group3.notifications.domain.dto.notification.mapper.NotificationMapper;
 import com.group3.notifications.domain.dto.notification.request.CreateNotificationReq;
 import com.group3.notifications.domain.dto.notification.request.GetNotificationPageReq;
-import com.group3.notifications.domain.dto.notification.response.CreateNotificationRes;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
 import com.group3.notifications.domain.repository.NotificationRepositoryI;
 import com.group3.notifications.domain.repository.UserRepositoryI;
@@ -32,7 +31,7 @@ public class NotificationService implements NotificationServiceI {
     private final UserRepositoryI userRepository;
 
     @Override
-    public CreateNotificationRes create(CreateNotificationReq dto) {
+    public void create(CreateNotificationReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
@@ -45,7 +44,6 @@ public class NotificationService implements NotificationServiceI {
         notification.setUpdatedAt(LocalDateTime.now());
 
         Notification saved = notificationRepository.save(notification);
-        return NotificationMapper.create().toResponse(saved);
     }
 
     @Override
