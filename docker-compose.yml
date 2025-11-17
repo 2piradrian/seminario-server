@@ -64,3 +64,16 @@ services:
       - ./dabatase/users-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  notifications-db:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_DB: 'notifications-db'
+      POSTGRES_USER: 'develop'
+      POSTGRES_PASSWORD: 'develop'
+      POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - ./dabatase/notifications-db:/var/lib/postgresql/data
+    ports:
+      - 5438:5432
