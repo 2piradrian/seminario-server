@@ -22,7 +22,7 @@ public class NotificationController {
             @RequestBody Map<String, Object> payload
     ) {
         CreateNotificationReq dto = NotificationMapper.create().toRequest(payload);
-        return ResponseEntity.ok(this.service.create(dto));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/get-by-target")
