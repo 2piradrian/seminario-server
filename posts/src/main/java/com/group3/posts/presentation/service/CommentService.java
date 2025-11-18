@@ -4,6 +4,7 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
 import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
@@ -37,6 +38,10 @@ public class CommentService implements CommentServiceI {
     private final UserRepository userRepository;
 
     private final PageProfileRepository pageProfileRepository;
+
+    private final NotificationsRepository notificationsRepository;
+
+    private final SecretKeyHelper secretKeyHelper;
 
 
     // ======== Create Comment ========
@@ -157,11 +162,15 @@ public class CommentService implements CommentServiceI {
         List<String> upvoters = comment.getUpvoters();
         List<String> downvoters = comment.getDownvoters();
 
+        boolean isNewUpvote = false;
+        boolean isNewDownvote = false;
+
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) upvoters.remove(userId);
             else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
+                isNewUpvote = true;
             }
         }
         if (Vote.DOWNVOTE == dto.getVoteType()) {
@@ -169,12 +178,29 @@ public class CommentService implements CommentServiceI {
             else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
+                isNewDownvote = true;
             }
         }
 
         comment.setUpvoters(upvoters);
         comment.setDownvoters(downvoters);
         this.commentRepository.update(comment);
+
+        if (isNewUpvote) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    comment.getAuthor().getId(), // targetId
+                    user.getId(), // sourceId
+                    NotificationContent.UPVOTE.name()
+            );
+        } else if (isNewDownvote) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    comment.getAuthor().getId(), // targetId
+                    user.getId(), // sourceId
+                    NotificationContent.DOWNVOTE.name()
+            );
+        }
 
 
         if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {

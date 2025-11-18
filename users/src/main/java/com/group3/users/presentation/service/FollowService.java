@@ -79,7 +79,7 @@ public class FollowService implements FollowServiceI {
 
 
         this.notificationsRepository.create(
-                secretKeyHelper.getSecret(),
+                this.secretKeyHelper.getSecret(),
                 dto.getId(), // targetId
                 user.getId(), // sourceId
                 NotificationContent.FOLLOW.name()
