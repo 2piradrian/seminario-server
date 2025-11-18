@@ -1,17 +1,14 @@
 spring:
-
     application:
-        name: notifications-server
-
+        name: notification-server
     profiles:
         active: dev
-
     config:
         import: "optional:configserver:http://localhost:7777"
 
 server:
     servlet:
-        context-path: /notifications-server
+        context-path: /notification-server
     port: 0
 
 logging:

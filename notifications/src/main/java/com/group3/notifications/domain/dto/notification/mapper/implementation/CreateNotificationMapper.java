@@ -1,8 +1,6 @@
 package com.group3.notifications.domain.dto.notification.mapper.implementation;
 
-import com.group3.entity.Notification;
 import com.group3.notifications.domain.dto.notification.request.CreateNotificationReq;
-import com.group3.notifications.domain.dto.notification.response.CreateNotificationRes;
 
 import java.util.Map;
 

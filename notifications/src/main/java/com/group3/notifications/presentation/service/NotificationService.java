@@ -48,12 +48,15 @@ public class NotificationService implements NotificationServiceI {
 
     @Override
     public GetNotificationPageRes getNotificationsByTarget(GetNotificationPageReq dto) {
+
         User user = userRepository.auth(dto.getToken());
+
         if (user == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
         PageContent<Notification> notifications = this.notificationRepository.getByTargetId(dto.getTargetId(), dto.getPage(), dto.getSize());
+
         return NotificationMapper.getPage().toResponse(notifications);
     }
 
