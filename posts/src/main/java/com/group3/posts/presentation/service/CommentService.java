@@ -92,6 +92,21 @@ public class CommentService implements CommentServiceI {
         comment.setVotersToNull();
         comment.setId(saved.getId());
 
+        String targetId;
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            targetId = post.getPageProfile().getId();
+        }
+        else {
+            targetId = post.getAuthor().getId();
+        }
+
+        this.notificationsRepository.create(
+                secretKeyHelper.getSecret(),
+                targetId,
+                post.getId(),
+                NotificationContent.COMMENT.name()
+        );
+
         return CommentMapper.create().toResponse(comment);
     }
 
@@ -186,18 +201,30 @@ public class CommentService implements CommentServiceI {
         comment.setDownvoters(downvoters);
         this.commentRepository.update(comment);
 
+        Post post = this.postsRepository.getById(comment.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND); // Should not happen if comment exists
+
+        String targetId;
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            targetId = post.getPageProfile().getId();
+        }
+        else {
+            targetId = post.getAuthor().getId();
+        }
+
         if (isNewUpvote) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
-                    comment.getAuthor().getId(), // targetId
-                    user.getId(), // sourceId
+                    targetId,
+                    post.getId(),
                     NotificationContent.UPVOTE.name()
             );
-        } else if (isNewDownvote) {
+        }
+        else if (isNewDownvote) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
-                    comment.getAuthor().getId(), // targetId
-                    user.getId(), // sourceId
+                    targetId,
+                    post.getId(),
                     NotificationContent.DOWNVOTE.name()
             );
         }

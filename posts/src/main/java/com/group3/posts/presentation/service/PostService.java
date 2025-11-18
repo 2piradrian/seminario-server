@@ -248,19 +248,27 @@ public class PostService implements PostServiceI {
 
         this.postsRepository.update(post);
 
+        String targetId;
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            targetId = post.getPageProfile().getId();
+        }
+        else {
+            targetId = post.getAuthor().getId();
+        }
+
         if (isNewUpvote) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
-                    post.getAuthor().getId(), // targetId
-                    user.getId(), // sourceId
+                    targetId,
+                    post.getId(),
                     NotificationContent.UPVOTE.name()
             );
         }
         else if (isNewDownvote) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
-                    post.getAuthor().getId(), // targetId
-                    user.getId(), // sourceId
+                    targetId,
+                    post.getId(),
                     NotificationContent.DOWNVOTE.name()
             );
         }
