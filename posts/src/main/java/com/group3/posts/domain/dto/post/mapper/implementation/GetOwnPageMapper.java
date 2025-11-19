@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class GetOwnPageMapper {
 
-    public GetOwnPostPageReq toRequest(String token, Map<String, Object> payload) {
+    public GetOwnPostPageReq toRequest(String token, Integer page, Integer size) {
         return GetOwnPostPageReq.create(
             token,
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size")
+            page,
+            size
         );
     }
 

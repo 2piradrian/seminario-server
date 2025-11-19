@@ -16,12 +16,12 @@ public class GetFilteredPageMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetFilteredPostPageReq toRequest(Map<String, Object> payload) {
+    public GetFilteredPostPageReq toRequest(Integer page, Integer size, String text, String secret) {
         return GetFilteredPostPageReq.create(
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("text"),
-            (String) payload.get("secret")
+            page,
+            size,
+            text,
+            secret
         );
     }
 

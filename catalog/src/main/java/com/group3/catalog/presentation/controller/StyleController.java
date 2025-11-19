@@ -7,8 +7,12 @@ import com.group3.catalog.presentation.service.StyleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -31,11 +35,11 @@ public class StyleController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-list-by-id")
+    @GetMapping("/get-list-by-id")
     public ResponseEntity<?> getListById(
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "ids") List<String> ids
     ) {
-        GetStyleListByIdReq dto = StyleMapper.getListById().toRequest(payload);
+        GetStyleListByIdReq dto = GetStyleListByIdReq.create(ids);
         
         return ResponseEntity.ok(this.service.getListById(dto));
     }

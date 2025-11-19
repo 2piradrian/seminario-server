@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class UpdateMapper {
 
-    public UpdateReviewReq toRequest(String token, Map<String, Object> payload) {
+    public UpdateReviewReq toRequest(String token, String id, Map<String, Object> payload) {
         return UpdateReviewReq.create(
-            (String) payload.get("id"),
+            id,
             (String) payload.get("review"),
             payload.get("rating") != null ? ((Number) payload.get("rating")).floatValue() : null,
             token

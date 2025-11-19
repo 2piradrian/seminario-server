@@ -14,8 +14,20 @@ public class CommentMapper {
         return new DeleteMapper();
     }
 
-    public static ToggleVotesMapper toggleVotes() {
-        return new ToggleVotesMapper();
+        public static ToggleVotesMapper toggleVotes() {
+
+            return new ToggleVotesMapper();
+
+        }
+
+    
+
+        public static GetByIdMapper getById() {
+
+            return new GetByIdMapper();
+
+        }
+
     }
 
-}
+    

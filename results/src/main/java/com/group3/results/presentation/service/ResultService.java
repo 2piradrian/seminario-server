@@ -72,11 +72,11 @@ public class ResultService implements ResultServiceI {
 
             case USERPROFILE -> {
                 List<String> styleIds = dto.getStyles() != null
-                        ? dto.getStyles().stream().map(Style::getId).toList()
+                        ? dto.getStyles()
                         : List.of();
 
                 List<String> instrumentIds = dto.getInstruments() != null
-                        ? dto.getInstruments().stream().map(Instrument::getId).toList()
+                        ? dto.getInstruments()
                         : List.of();
 
                 users = userRepository.getUserFilteredPage(

@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class GetFeedMapper {
 
-    public GetFeedPageReq toRequest(String token, Map<String, Object> payload){
+    public GetFeedPageReq toRequest(Integer page, Integer size, String token){
         return GetFeedPageReq.create(
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
+            page,
+            size,
             token
         );
     }

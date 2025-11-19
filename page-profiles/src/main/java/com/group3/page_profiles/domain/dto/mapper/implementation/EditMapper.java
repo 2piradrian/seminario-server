@@ -12,11 +12,11 @@ public class EditMapper {
     
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public EditPageReq toRequest(String token, Map<String, Object> payload){
+    public EditPageReq toRequest(String token, String pageId, Map<String, Object> payload){
         return EditPageReq.create(
             token,
+            pageId,
             (String) payload.get("name"),
-            (String) payload.get("pageId"),
             (String) payload.get("portraitImage"),
             (String) payload.get("profileImage"),
             (String) payload.get("shortDescription"),

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,7 +17,7 @@ public class PageProfileController {
     
     private final PageProfileService pageService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -36,11 +37,15 @@ public class PageProfileController {
         return ResponseEntity.ok(this.pageService.getById(dto));
     }
 
-    @PostMapping("/get-page-filtered")
+    @GetMapping("/get-page-filtered")
     public ResponseEntity<?> getFiltered(
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
+        @RequestParam(value = "name", required = false) String name,
+        @RequestParam(value = "pageTypeId", required = false) String pageTypeId
     ) {
-        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(payload);
+        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(secret, page, size, name, pageTypeId);
         return ResponseEntity.ok(this.pageService.getProfileFiltered(dto));
     }
 
@@ -54,31 +59,33 @@ public class PageProfileController {
         return ResponseEntity.ok(this.pageService.getUserPages(dto));
     }
 
-    @PostMapping("/get-list-by-id")
+    @GetMapping("/get-list-by-id")
     public ResponseEntity<?> getListById(
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "pageIds") List<String> pageIds,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetPageListByIdsReq dto = PageMapper.getListByIds().toRequest(payload);
+        GetPageListByIdsReq dto = PageMapper.getListByIds().toRequest(pageIds, secret);
         return ResponseEntity.ok(this.pageService.getListByIds(dto));
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{pageId}")
     public ResponseEntity<?> edit(
         @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "pageId") String pageId,
         @RequestBody Map<String, Object> payload
     ) {
-        EditPageReq dto = PageMapper.edit().toRequest(token, payload);
+        EditPageReq dto = PageMapper.edit().toRequest(token, pageId, payload);
         this.pageService.edit(dto);
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{pageId}")
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token,
-        @RequestBody Map<String, Object> payload
+        @PathVariable(value = "pageId") String pageId
     ) {
-        DeletePageReq dto = PageMapper.delete().toRequest(token, payload);
+        DeletePageReq dto = PageMapper.delete().toRequest(token, pageId);
         this.pageService.delete(dto);
 
         return ResponseEntity.ok().build();

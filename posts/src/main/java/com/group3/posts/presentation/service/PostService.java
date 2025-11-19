@@ -34,6 +34,8 @@ public class PostService implements PostServiceI {
 
     private final PageProfileRepository pageProfileRepository;
 
+    private final NotificationsRepository notificationsRepository;
+
 
     // ======== Create Post ========
 
@@ -63,6 +65,7 @@ public class PostService implements PostServiceI {
             post.setImageId(imageId);
         }
 
+        post.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.POST).toString());
         post.setAuthor(user);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -216,6 +219,9 @@ public class PostService implements PostServiceI {
         List<String> upvoters = post.getUpvoters();
         List<String> downvoters = post.getDownvoters();
 
+        boolean isNewUpvote = false;
+        boolean isNewDownvote = false;
+
         if (Vote.UPVOTE == dto.getVoteType()) {
             if (upvoters.contains(userId)) {
                 upvoters.remove(userId);
@@ -223,6 +229,7 @@ public class PostService implements PostServiceI {
             else {
                 upvoters.add(userId);
                 downvoters.remove(userId);
+                isNewUpvote = true;
             }
         }
         if (Vote.DOWNVOTE == dto.getVoteType()) {
@@ -232,6 +239,7 @@ public class PostService implements PostServiceI {
             else {
                 downvoters.add(userId);
                 upvoters.remove(userId);
+                isNewDownvote = true;
             }
         }
 
@@ -239,6 +247,31 @@ public class PostService implements PostServiceI {
         post.setDownvoters(downvoters);
 
         this.postsRepository.update(post);
+
+        String targetId;
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            targetId = post.getPageProfile().getId();
+        }
+        else {
+            targetId = post.getAuthor().getId();
+        }
+
+        if (isNewUpvote) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    targetId,
+                    post.getId(),
+                    NotificationContent.UPVOTE.name()
+            );
+        }
+        else if (isNewDownvote) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    targetId,
+                    post.getId(),
+                    NotificationContent.DOWNVOTE.name()
+            );
+        }
 
         if (post.getAuthor() != null && post.getAuthor().getId() != null) {
             User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());

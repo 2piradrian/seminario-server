@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class DeleteMapper {
 
-    public DeleteCommentReq toRequest(String  token, Map<String, Object> payload) {
+    public DeleteCommentReq toRequest(String  token, String commentId) {
         return DeleteCommentReq.create(
                 token,
-                (String) payload.get("commentId")
+                commentId
         );
     }
 

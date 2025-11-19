@@ -62,6 +62,7 @@ public class EventService implements EventServiceI {
             event.setImageId(imageId);
         }
 
+        event.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.EVENT).toString());
         event.setAuthor(user);
         event.setTitle(dto.getTitle());
         event.setContent(dto.getContent());
