@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class GetNotificationPageMapper {
 
-    public GetNotificationPageReq toRequest(String token, Map<String, Object> payload) {
+    public GetNotificationPageReq toRequest(String token, Integer page, Integer size, String targetId) {
         return GetNotificationPageReq.create(
-                (Integer) payload.get("page"),
-                (Integer) payload.get("size"),
+                page,
+                size,
                 token,
-                (String) payload.get("targetId")
+                targetId
         );
     }
 
