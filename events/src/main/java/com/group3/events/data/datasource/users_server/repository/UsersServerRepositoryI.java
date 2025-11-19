@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @LoadBalancerClient(name = "users-server", configuration = LoadBalancerConfiguration.class)
 public interface UsersServerRepositoryI {
 
-    @GetMapping("/api/auth/")
-    AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
+    @GetMapping("/api/auth")
+    AuthUserRes auth(
+            @RequestHeader(value = "Authorization") String token
+    );
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
+    GetUserByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "userId") String userId
+    );
 
 }

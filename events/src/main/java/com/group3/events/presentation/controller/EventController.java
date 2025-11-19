@@ -3,10 +3,12 @@ package com.group3.events.presentation.controller;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.presentation.service.EventService;
+import jakarta.ws.rs.GET;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -36,21 +38,29 @@ public class EventController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-filtered-events")
+    @GetMapping("/get-filtered-events")
     public ResponseEntity<?> getFilteredEvents(
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
+        @RequestParam(value = "text") String text,
+        @RequestParam(value = "dateInit") String dateInit,
+        @RequestParam(value = "dateInit") String dateEnd
     ) {
-        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(payload);
+        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(page, size, text,secret, dateInit, dateEnd);
 
         return ResponseEntity.ok(this.service.getFilteredEvents(dto));
     }
 
-    @PostMapping("/get-events-and-assists-by-id")
+    @GetMapping("/get-events-and-assists-by-id")
     public ResponseEntity<?> getEventsAndAssists(
         @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "userId") String userId,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
         @RequestBody Map<String, Object> payload
     ) {
-        GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, payload);
+        GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, userId, page, size);
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
     }
 
@@ -67,19 +77,26 @@ public class EventController {
     @PutMapping("/edit")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "eventId") String eventId,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "base64Image") String base64Image,
+            @RequestParam(value = "dateInit") String dateInit,
+            @RequestParam(value = "dateInit") String dateEnd
     ) {
-        EditEventReq dto = EventMapper.edit().toRequest(token, payload);
+        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, title, content, base64Image, dateInit, dateEnd);
 
         return ResponseEntity.ok(this.service.edit(dto));
     }
 
+
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "eventId") String eventId
     ) {
-        DeleteEventReq dto = EventMapper.delete().toRequest(token, payload);
+        DeleteEventReq dto = EventMapper.delete().toRequest(token, eventId);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();

@@ -14,7 +14,10 @@ import java.util.List;
 public interface PageProfilesServerRepositoryI {
 
     @GetMapping("/api/page-profiles/get-by-id/{pageId}")
-    GetPageByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("pageId") String pageId);
+    GetPageByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable("pageId") String pageId
+    );
 
     @GetMapping("/api/page-profiles/get-list-by-id")
     GetPageListByIdsRes getListByIds(

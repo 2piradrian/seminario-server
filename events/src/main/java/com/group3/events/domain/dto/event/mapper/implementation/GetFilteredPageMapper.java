@@ -14,14 +14,14 @@ public class GetFilteredPageMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetFilteredEventPageReq toRequest(Map<String, Object> payload) {
+    public GetFilteredEventPageReq toRequest(Integer page, Integer size, String text, String secret, String dateInit, String dateEnd) {
         return GetFilteredEventPageReq.create(
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("text"),
-            (String) payload.get("secret"),
-            objectMapper.convertValue(payload.get("dateInit"), Date.class),
-            objectMapper.convertValue(payload.get("dateEnd"), Date.class)
+            page,
+            size,
+            secret,
+            text,
+            objectMapper.convertValue(dateInit, Date.class),
+            objectMapper.convertValue(dateEnd, Date.class)
         );
     }
 

@@ -4,11 +4,13 @@ import com.group3.posts.domain.dto.post.mapper.PostMapper;
 import com.group3.posts.domain.dto.post.request.*;
 import com.group3.posts.presentation.service.PostService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/posts")
@@ -16,7 +18,7 @@ public class PostController {
 
     private final PostService service;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
