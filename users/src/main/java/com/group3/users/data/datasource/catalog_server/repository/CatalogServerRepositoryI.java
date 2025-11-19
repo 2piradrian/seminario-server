@@ -22,18 +22,26 @@ public interface CatalogServerRepositoryI {
     GetAllStyleRes getAllStyle();
 
     @GetMapping("/api/styles/get-by-id/{styleId}")
-    GetStyleByIdRes getStyleById(@PathVariable("styleId") String styleId);
+    GetStyleByIdRes getStyleById(
+            @PathVariable("styleId") String styleId
+    );
 
     @GetMapping("/api/styles/get-list-by-id")
-    GetStyleListByIdRes getStyleListById(@RequestParam(value = "ids") List<String> ids);
+    GetStyleListByIdRes getStyleListById(
+            @RequestParam(value = "ids") List<String> ids
+    );
 
     @GetMapping("/api/instruments/get-all")
     GetAllInstrumentRes getAllInstrument();
 
     @GetMapping("/api/instruments/get-by-id/{instrumentId}")
-    GetInstrumentByIdRes getInstrumentById(@PathVariable("instrumentId") String instrumentId);
+    GetInstrumentByIdRes getInstrumentById(
+            @PathVariable("instrumentId") String instrumentId
+    );
 
     @GetMapping("/api/instruments/get-list-by-id")
-    GetInstrumentListByIdRes getInstrumentListById(@RequestParam(value = "ids") List<String> ids);
+    GetInstrumentListByIdRes getInstrumentListById(
+            @RequestParam(value = "ids") List<String> ids
+    );
 
 }

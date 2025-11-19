@@ -23,7 +23,6 @@ public class PostController {
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
-        log.debug(payload.toString());
         CreatePostReq dto = PostMapper.create().toRequest(token, payload);
 
         return ResponseEntity.ok(this.service.create(dto));

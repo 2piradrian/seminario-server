@@ -12,7 +12,7 @@ import java.util.Map;
 @LoadBalancerClient(name = "notifications-server", configuration = LoadBalancerConfiguration.class)
 public interface NotificationsServerRepositoryI {
 
-    @PostMapping("/api/notifications/create")
+    @PostMapping("/api/notifications")
     void create(@RequestBody Map<String, Object> payload);
 
 }
