@@ -33,9 +33,7 @@ public class CatalogRepository implements CatalogRepositoryI {
 
     @Override
     public List<Style> getStyleListById(List<String> styles) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", styles);
-        return this.repository.getStyleListById(payload).getStyles();
+        return this.repository.getStyleListById(styles).getStyles();
     }
 
 
@@ -54,9 +52,7 @@ public class CatalogRepository implements CatalogRepositoryI {
 
     @Override
     public List<Instrument> getInstrumentListById(List<String> instruments) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", instruments);
-        return this.repository.getInstrumentListById(payload).getInstruments();
+        return this.repository.getInstrumentListById(instruments).getInstruments();
     }
 
 }

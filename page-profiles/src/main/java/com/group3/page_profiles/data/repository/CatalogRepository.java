@@ -38,8 +38,6 @@ public class CatalogRepository implements CatalogRepositoryI {
 
     @Override
     public List<PageType> getListById(List<String> pageTypes) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", pageTypes);
-        return this.repository.getListById(payload).getPageTypes();
+        return this.repository.getListById(pageTypes).getPageTypes();
     }
 }
