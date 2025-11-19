@@ -80,19 +80,11 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public Integer getFollowersById(String id, String secret) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("id", id);
-        payload.put("secret", secret);
-
-        return this.repository.getFollowersById(payload).getFollowersCount();
+        return this.repository.getFollowersById(id, secret).getFollowersCount();
     }
 
     @Override
     public List<Follow> getAllFollowers(String id, String secret){
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("id", id);
-        payload.put("secret", secret);
-
-        return this.repository.getAllFollowers(payload).getFollowers();
+        return this.repository.getAllFollowers(id, secret).getFollowers();
     }
 }

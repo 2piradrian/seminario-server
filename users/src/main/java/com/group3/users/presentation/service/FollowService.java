@@ -2,6 +2,7 @@ package com.group3.users.presentation.service;
 
 import com.group3.config.PrefixedUUID;
 import com.group3.entity.Follow;
+import com.group3.entity.NotificationContent;
 import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
 import com.group3.entity.User;
@@ -15,6 +16,7 @@ import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.domain.dto.follow.mapper.FollowMapper;
 import com.group3.users.domain.dto.follow.request.*;
 import com.group3.users.domain.dto.follow.response.*;
+import com.group3.users.domain.repository.NotificationsRepositoryI;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ public class FollowService implements FollowServiceI {
     private final UserProfileRepository userProfileRepository;
 
     private final PageProfileRepository pageProfileRepository;
+
+    private final NotificationsRepositoryI notificationsRepository;
 
 
     // ======== Toggle Follow ========
@@ -72,6 +76,14 @@ public class FollowService implements FollowServiceI {
         follow.setFollowerId(user.getId());
         follow.setFollowedId(dto.getId());
         followRepository.save(follow);
+
+
+        this.notificationsRepository.create(
+                this.secretKeyHelper.getSecret(),
+                dto.getId(), // targetId
+                user.getId(), // sourceId
+                NotificationContent.FOLLOW.name()
+        );
     }
 
 

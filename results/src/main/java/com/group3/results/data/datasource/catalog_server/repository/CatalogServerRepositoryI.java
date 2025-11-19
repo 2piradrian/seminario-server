@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CatalogServerRepositoryI {
 
     @GetMapping("/api/content-types/get-by-id/{contentTypeId}")
-    GetContentTypeByIdRes getContentTypeById(@PathVariable("contentTypeId") String contentTypeId);
+    GetContentTypeByIdRes getContentTypeById(
+            @PathVariable("contentTypeId") String contentTypeId
+    );
 
 }
 

@@ -23,7 +23,7 @@ public class ImageController {
 
     private final ImageService service;
 
-    @PostMapping("/upload")
+    @PostMapping
     public ResponseEntity<?> upload(
             @RequestBody Map<String, Object> payload
     ) {

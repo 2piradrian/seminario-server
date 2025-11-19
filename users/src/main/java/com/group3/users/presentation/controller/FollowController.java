@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @AllArgsConstructor
@@ -26,53 +28,61 @@ public class FollowController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/get-followers")
+    @GetMapping("/get-followers")
     public ResponseEntity<?> getFollowers(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetFollowerPageReq dto = FollowMapper.getFollowerPage().toRequest(token, payload);
+        GetFollowerPageReq dto = FollowMapper.getFollowerPage().toRequest(token, userId, page, size);
         return ResponseEntity.ok(followService.getFollowers(dto));
     }
 
-    @PostMapping("/get-following")
+    @GetMapping("/get-following")
     public ResponseEntity<?> getFollowing(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetFollowingPageReq dto = FollowMapper.getFollowingPage().toRequest(token, payload);
+        GetFollowingPageReq dto = FollowMapper.getFollowingPage().toRequest(token, userId, page, size);
         return ResponseEntity.ok(followService.getFollowing(dto));
     }
 
-    @PostMapping("/get-followers-by-id")
+    @GetMapping("/get-followers-by-id/{id}")
     public ResponseEntity<?> getFollowersQuantityById(
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "id") String id,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetFollowersQuantityByIdReq dto = FollowMapper.getFollowersQuantityById().toRequest(payload);
+        GetFollowersQuantityByIdReq dto = FollowMapper.getFollowersQuantityById().toRequest(id, secret);
         return ResponseEntity.ok(followService.getFollowersQuantityById(dto));
     }
 
-    @PostMapping("/get-following-by-id")
+    @GetMapping("/get-following-by-id/{id}")
     public ResponseEntity<?> getFollowingQuantityById(
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "id") String id,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetFollowingQuantityByIdReq dto = FollowMapper.getFollowingQuantityById().toRequest(payload);
+        GetFollowingQuantityByIdReq dto = FollowMapper.getFollowingQuantityById().toRequest(id, secret);
         return ResponseEntity.ok(followService.getFollowingQuantityById(dto));
     }
 
-    @PostMapping("/get-all-followers")
+    @GetMapping("/get-all-followers/{id}")
     public ResponseEntity<?> getAllFollowers(
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "id") String id,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetAllFollowersReq dto = FollowMapper.getAllFollowers().toRequest(payload);
+        GetAllFollowersReq dto = FollowMapper.getAllFollowers().toRequest(id, secret);
         return ResponseEntity.ok(followService.getAllFollowers(dto));
     }
 
-    @PostMapping("/get-all-following")
+    @GetMapping("/get-all-following/{id}")
     public ResponseEntity<?> getAllFollowing(
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "id") String id,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetAllFollowingReq dto = FollowMapper.getAllFollowing().toRequest(payload);
+        GetAllFollowingReq dto = FollowMapper.getAllFollowing().toRequest(id, secret);
         return ResponseEntity.ok(followService.getAllFollowing(dto));
     }
 

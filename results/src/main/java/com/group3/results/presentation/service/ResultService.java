@@ -72,11 +72,11 @@ public class ResultService implements ResultServiceI {
 
             case USERPROFILE -> {
                 List<String> styleIds = dto.getStyles() != null
-                        ? dto.getStyles().stream().map(Style::getId).toList()
+                        ? dto.getStyles()
                         : List.of();
 
                 List<String> instrumentIds = dto.getInstruments() != null
-                        ? dto.getInstruments().stream().map(Instrument::getId).toList()
+                        ? dto.getInstruments()
                         : List.of();
 
                 users = userRepository.getUserFilteredPage(
@@ -95,7 +95,7 @@ public class ResultService implements ResultServiceI {
             }
 
             case POST -> {
-                posts = postRepository.getFilteredPostsPage(
+                posts = postRepository.getFilteredPosts(
                         dto.getPage(),
                         dto.getSize(),
                         dto.getText(),
@@ -145,7 +145,7 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<Post> posts = this.postRepository.getFilteredPostsPage(
+        List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getPage(),
             dto.getSize(),
             "",

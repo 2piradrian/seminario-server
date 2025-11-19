@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class GetAllFollowingMapper {
 
-    public GetAllFollowingReq toRequest(Map<String, Object> payload) {
+    public GetAllFollowingReq toRequest(String id, String secret) {
         return GetAllFollowingReq.create(
-                (String) payload.get("id"),
-                (String) payload.get("secret")
+                id,
+                secret
         );
     }
 

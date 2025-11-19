@@ -43,11 +43,7 @@ public class PageProfileRepository implements PageProfileRepositoryI {
 
     @Override
     public List<PageProfile> getListByIds(List<String> pageIds, String secret) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("pageIds", pageIds);
-        payload.put("secret", secret);
-
-        return this.repository.getListByIds(payload).getPages();
+        return this.repository.getListByIds(pageIds,secret).getPages();
     }
 
 }

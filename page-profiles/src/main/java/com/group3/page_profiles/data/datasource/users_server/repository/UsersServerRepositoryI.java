@@ -16,16 +16,27 @@ import java.util.Map;
 @LoadBalancerClient(name = "users-server", configuration = LoadBalancerConfiguration.class)
 public interface UsersServerRepositoryI {
 
-    @GetMapping("/api/auth/")
-    AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
+    @GetMapping("/api/auth")
+    AuthUserRes auth(
+            @RequestHeader(value = "Authorization") String token
+    );
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
+    GetUserByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "userId") String userId
+    );
 
-    @PostMapping("/api/follows/get-followers-by-id")
-    GetFollowersByIdRes getFollowersById(@RequestBody Map<String, Object> payload);
+    @GetMapping("/api/follows/get-followers-by-id/{id}")
+    GetFollowersByIdRes getFollowersById(
+        @PathVariable(value = "id") String id,
+        @RequestParam(value = "secret") String secret
+    );
 
-    @PostMapping("/api/follows/get-all-followers")
-    GetAllFollowersRes getAllFollowers(@RequestBody Map<String, Object> payload);
+    @PostMapping("/api/follows//get-all-followers/{id}")
+    GetAllFollowersRes getAllFollowers(
+        @PathVariable(value = "id") String id,
+        @RequestParam(value = "secret") String secret
+    );
 
 }

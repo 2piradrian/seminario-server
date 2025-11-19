@@ -14,6 +14,8 @@ import java.util.Map;
 public interface EventServerRepositoryI {
 
     @PostMapping("/api/events/get-filtered-events")
-    GetFilteredEventPageRes getFilteredEvents(@RequestBody Map<String, Object> payload);
+    GetFilteredEventPageRes getFilteredEvents(
+            @RequestBody Map<String, Object> payload
+    );
 
 }

@@ -30,16 +30,8 @@ public class ToggleCommentVotesReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        Vote voteEnum = null;
-        boolean isValidVote = false;
-        for (Vote c : Vote.values()) {
-            if (c.name().equals(voteType)) {
-                isValidVote = true;
-                voteEnum = c;
-                break;
-            }
-        }
-        if (!isValidVote) {
+        Vote voteEnum = Vote.fromString(voteType);
+        if (voteEnum == null) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 

@@ -12,10 +12,10 @@ public class EditMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public EditEventReq toRequest(String token, Map<String, Object> payload) {
+    public EditEventReq toRequest(String token, String eventId, Map<String, Object> payload) {
         return EditEventReq.create(
                 token,
-                (String) payload.get("eventId"),
+                eventId,
                 (String) payload.get("title"),
                 (String) payload.get("content"),
                 (String) payload.get("base64Image"),

@@ -1,6 +1,5 @@
 package com.group3.results.domain.dto.mapper.implementation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group3.entity.*;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
@@ -8,24 +7,23 @@ import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class GetSearchResultMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetSerchResultFilteredReq toRequest(String token, Map<String, Object> payload) {
+    public GetSerchResultFilteredReq toRequest(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String dateInit, String dateEnd) {
         return GetSerchResultFilteredReq.create(
             token,
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("text"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
-            (String) payload.get("contentTypeId"),
-            (String) payload.get("pageTypeId"),
-            objectMapper.convertValue(payload.get("dateInit"), Date.class),
-            objectMapper.convertValue(payload.get("dateEnd"), Date.class)
+            page,
+            size,
+            text,
+            styles,
+            instruments,
+            contentTypeId,
+            pageTypeId,
+            objectMapper.convertValue(dateInit, Date.class),
+            objectMapper.convertValue(dateEnd, Date.class)
         );
     }
 

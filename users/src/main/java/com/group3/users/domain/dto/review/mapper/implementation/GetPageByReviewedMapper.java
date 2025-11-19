@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class GetPageByReviewedMapper {
 
-    public GetPageReviewsByReviewedIdReq toRequest(String token, Map<String, Object> payload) {
+    public GetPageReviewsByReviewedIdReq toRequest(String token, String userId, Integer page, Integer size) {
         return GetPageReviewsByReviewedIdReq.create(
             token,
-            (String) payload.get("userId"),
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size")
+            userId,
+            page,
+            size
         );
     }
 

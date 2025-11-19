@@ -16,7 +16,8 @@ public enum Role {
     public static Role fromString(String roleId) {
         try {
             return Role.valueOf(roleId.toUpperCase());
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return null;
         }
     }

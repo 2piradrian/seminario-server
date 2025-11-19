@@ -15,10 +15,10 @@ public class GetListByIdsMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetPageListByIdsReq toRequest(Map<String, Object> payload) {
+    public GetPageListByIdsReq toRequest(List<String> pageIds, String secret) {
         return GetPageListByIdsReq.create(
-                objectMapper.convertValue(payload.get("pageIds"), new TypeReference<List<String>>() {}),
-                (String) payload.get("secret")
+                pageIds,
+                secret
         );
     }
 
