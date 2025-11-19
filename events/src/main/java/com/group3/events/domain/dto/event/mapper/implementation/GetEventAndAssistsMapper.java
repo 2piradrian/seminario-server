@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class GetEventAndAssistsMapper {
 
-    public GetEventAndAssistsPageReq toRequest(String token, Map<String, Object> payload) {
+    public GetEventAndAssistsPageReq toRequest(String token, String userId, Integer page, Integer size) {
         return GetEventAndAssistsPageReq.create(
             token,
-            (String) payload.get("userId"),
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size")
+            userId,
+            page,
+            size
         );
     }
 

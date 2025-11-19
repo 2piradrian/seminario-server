@@ -16,7 +16,7 @@ public class EventController {
 
     private final EventService service;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -36,12 +36,14 @@ public class EventController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-events-and-assists-by-id")
+    @GetMapping("/get-events-and-assists-by-id")
     public ResponseEntity<?> getEventsAndAssists(
         @RequestHeader(value = "Authorization") String token,
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "userId") String userId,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size
     ) {
-        GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, payload);
+        GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, userId, page, size);
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
     }
 
@@ -55,22 +57,23 @@ public class EventController {
         return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{eventId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "eventId") String eventId,
             @RequestBody Map<String, Object> payload
     ) {
-        EditEventReq dto = EventMapper.edit().toRequest(token, payload);
+        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "eventId") String eventId
     ) {
-        DeleteEventReq dto = EventMapper.delete().toRequest(token, payload);
+        DeleteEventReq dto = EventMapper.delete().toRequest(token, eventId);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();
