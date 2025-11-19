@@ -14,9 +14,14 @@ import java.util.Map;
 @LoadBalancerClient(name = "images-server", configuration = LoadBalancerConfiguration.class)
 public interface ImagesServerRepositoryI {
 
-    @PostMapping("/api/images/upload")
-    UploadImageRes upload(@RequestBody Map<String, Object> payload);
+    @PostMapping("/api/images")
+    UploadImageRes upload(
+            @RequestBody Map<String, Object> payload
+    );
 
-    @DeleteMapping("/api/images/delete")
-    void delete(@RequestBody Map<String, Object> payload);
+    @DeleteMapping("/api/images")
+    void delete(
+            @RequestBody Map<String, Object> payload
+    );
+
 }

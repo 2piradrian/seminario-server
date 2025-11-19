@@ -19,9 +19,13 @@ public interface CatalogServerRepositoryI {
     GetAllPageTypeRes getAll();
 
     @GetMapping("/api/page-types/get-by-id/{pageTypeId}")
-    GetPageTypeByIdRes getById(@PathVariable("pageTypeId") String pageTypeId);
+    GetPageTypeByIdRes getById(
+            @PathVariable("pageTypeId") String pageTypeId
+    );
 
     @GetMapping("/api/page-types/get-list-by-id")
-    GetPageTypeListByIdRes getListById(@RequestParam(value = "ids") List<String> ids);
+    GetPageTypeListByIdRes getListById(
+            @RequestParam(value = "ids") List<String> ids
+    );
 
 }

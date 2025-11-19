@@ -21,8 +21,12 @@ public interface PageProfilesServerRepositoryI {
         @RequestParam(value = "size") Integer size,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "pageTypeId", required = false) String pageTypeId
-        );
+    );
 
     @GetMapping("/api/page-profiles/get-by-id/{pageId}")
-    GetPageByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "pageId") String pageId);
+    GetPageByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "pageId") String pageId
+    );
+
 }

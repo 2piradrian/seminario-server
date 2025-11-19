@@ -13,6 +13,8 @@ import java.util.Map;
 public interface NotificationsServerRepositoryI {
 
     @PostMapping("/api/notifications")
-    void create(@RequestBody Map<String, Object> payload);
+    void create(
+            @RequestBody Map<String, Object> payload
+    );
 
 }

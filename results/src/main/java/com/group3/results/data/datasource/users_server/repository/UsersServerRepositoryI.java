@@ -14,11 +14,16 @@ import java.util.Map;
 @LoadBalancerClient(name = "users-server", configuration = LoadBalancerConfiguration.class)
 public interface UsersServerRepositoryI {
 
-    @GetMapping("/api/auth/")
-    AuthUserRes auth(@RequestHeader(value = "Authorization") String token);
+    @GetMapping("/api/auth")
+    AuthUserRes auth(
+            @RequestHeader(value = "Authorization") String token
+    );
 
     @GetMapping("/api/users/get-by-id/{userId}")
-    GetUserByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "userId") String userId);
+    GetUserByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "userId") String userId
+    );
 
     @GetMapping("/api/users/get-user-filtered")
     GetUserPageFilteredRes getUserFiltered(
@@ -30,9 +35,10 @@ public interface UsersServerRepositoryI {
         @RequestParam(value = "instruments", required = false) List<String> instruments
     );
 
-
     @GetMapping("/api/user-profiles/get-by-id-with-following/{userId}")
-    GetUserProfileWithFollowingByIdRes getByIdWithFollowing(@PathVariable("userId") String userId, @RequestBody Map<String, Object> payload);
+    GetUserProfileWithFollowingByIdRes getByIdWithFollowing(
+            @PathVariable("userId") String userId, @RequestBody Map<String, Object> payload
+    );
 
     @GetMapping("/api/follows/get-all-followers/{id}")
     GetAllFollowersRes getAllFollowers(
