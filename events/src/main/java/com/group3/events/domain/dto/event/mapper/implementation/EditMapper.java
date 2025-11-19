@@ -12,21 +12,29 @@ public class EditMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public EditEventReq toRequest(String token, String eventId, Map<String, Object> payload) {
+    public EditEventReq toRequest(
+        String token,
+        String eventId,
+        String title,
+        String content,
+        String base64Image,
+        String dateInit,
+        String dateEnd
+    ) {
         return EditEventReq.create(
-                token,
-                eventId,
-                (String) payload.get("title"),
-                (String) payload.get("content"),
-                (String) payload.get("base64Image"),
-                objectMapper.convertValue(payload.get("dateInit"), Date.class),
-                objectMapper.convertValue(payload.get("dateEnd"), Date.class)
+            token,
+            eventId,
+            title,
+            content,
+            base64Image,
+            objectMapper.convertValue(dateInit, Date.class),
+            objectMapper.convertValue(dateEnd, Date.class)
         );
     }
 
     public EditEventRes toResponse(Event event) {
         return new EditEventRes(
-                event.getId()
+            event.getId()
         );
     }
 }
