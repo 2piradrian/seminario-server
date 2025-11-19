@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
-@FeignClient(name = "notifications-server", path = "/notifications-server")
+@FeignClient(name = "notification-server", path = "/notification-server")
 @LoadBalancerClient(name = "notifications-server", configuration = LoadBalancerConfiguration.class)
 public interface NotificationsServerRepositoryI {
 
