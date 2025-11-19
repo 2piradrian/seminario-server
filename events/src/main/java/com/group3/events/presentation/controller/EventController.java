@@ -57,8 +57,7 @@ public class EventController {
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "userId") String userId,
         @RequestParam(value = "page") Integer page,
-        @RequestParam(value = "size") Integer size,
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "size") Integer size
     ) {
         GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, userId, page, size);
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
