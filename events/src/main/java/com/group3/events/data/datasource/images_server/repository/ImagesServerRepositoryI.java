@@ -15,9 +15,13 @@ import java.util.Map;
 public interface ImagesServerRepositoryI {
 
     @PostMapping("/api/images")
-    UploadImageRes upload(@RequestBody Map<String, Object> payload);
+    UploadImageRes upload(
+            @RequestBody Map<String, Object> payload
+    );
 
     @DeleteMapping("/api/images")
-    void delete(@RequestBody Map<String, Object> payload);
+    void delete(
+            @RequestBody Map<String, Object> payload
+    );
 
 }
