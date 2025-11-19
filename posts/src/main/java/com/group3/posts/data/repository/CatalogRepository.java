@@ -35,9 +35,7 @@ public class CatalogRepository implements CatalogRepositoryI {
     // ======== Get List of Categories by IDs ========
     @Override
     public List<Category> getCategoryListById(List<String> categoryIds) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", categoryIds);
-        return this.repository.getCategoryListById(payload).getCategories();
+        return this.repository.getCategoryListById(categoryIds).getCategories();
     }
 
 }
