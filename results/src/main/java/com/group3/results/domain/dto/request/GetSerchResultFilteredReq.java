@@ -1,8 +1,5 @@
 package com.group3.results.domain.dto.request;
 
-import com.group3.entity.ContentType;
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
@@ -20,15 +17,15 @@ public class GetSerchResultFilteredReq {
 
     private final String text;
 
-    private final List<Style> styles;
+    private final List<String> styles;
 
-    private final List<Instrument> instruments;
+    private final List<String> instruments;
 
     private final String pageTypeId;
 
     private final String contentTypeId;
 
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId) {
         this.token = token;
         this.page = page;
         this.size = size;
@@ -39,7 +36,7 @@ public class GetSerchResultFilteredReq {
         this.pageTypeId = pageTypeId;
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<Style> styles, List<Instrument> instruments, String contentTypeId, String pageTypeId) {
+    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
