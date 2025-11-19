@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class GetFollowersQuantityByIdMapper {
 
-    public GetFollowersQuantityByIdReq toRequest(Map<String, Object> payload){
+    public GetFollowersQuantityByIdReq toRequest(String id, String secret){
         return GetFollowersQuantityByIdReq.create(
-                (String) payload.get("id"),
-                (String) payload.get("secret")
+                id,
+                secret
         );
     }
 

@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class GetReviewsByAuthorMapper {
 
-    public GetReviewsByAuthorReq toRequest(String token, Map<String, Object> payload) {
+    public GetReviewsByAuthorReq toRequest(String token, Integer page, Integer size) {
         return GetReviewsByAuthorReq.create(
             token,
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size")
+            page,
+            size
         );
     }
 

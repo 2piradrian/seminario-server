@@ -6,6 +6,8 @@ import com.group3.users.presentation.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.List;
 
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getAllStaff(dto));
     }
     
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<?> update(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -45,15 +47,20 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/get-user-filtered")
+    @GetMapping("/get-user-filtered")
     public ResponseEntity<?> getFiltered(
-        @RequestBody Map<String, Object> payload
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
+        @RequestParam(value = "fullname", required = false) String fullname,
+        @RequestParam(value = "styles", required = false) List<String> styles,
+        @RequestParam(value = "instruments", required = false) List<String> instruments
     ) {
-        GetUserPageFilteredReq dto = UserMapper.getFiltered().toRequest(payload);
+        GetUserPageFilteredReq dto = UserMapper.getFiltered().toRequest(secret, page, size, fullname, styles, instruments);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping()
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token
     ) {

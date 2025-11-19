@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class GetFollowerPageMapper {
 
-    public GetFollowerPageReq toRequest(String token, Map<String, Object> payload) {
+    public GetFollowerPageReq toRequest(String token, String userId, Integer page, Integer size) {
         return GetFollowerPageReq.create(
-                (String) payload.get("userId"),
-                (Integer) payload.get("page"),
-                (Integer) payload.get("size"),
+                userId,
+                page,
+                size,
                 token
         );
     }
