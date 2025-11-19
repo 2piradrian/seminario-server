@@ -27,9 +27,11 @@ public class ResultController {
         @RequestParam(value = "styles", required = false) List<String> styles,
         @RequestParam(value = "instruments", required = false) List<String> instruments,
         @RequestParam(value = "contentTypeId") String contentTypeId,
-        @RequestParam(value = "pageTypeId", required = false) String pageTypeId
+        @RequestParam(value = "pageTypeId", required = false) String pageTypeId,
+        @RequestParam(value = "dateInit", required = false) String dateInit,
+        @RequestParam(value = "dateENd", required = false) String dateEnd
     ) {
-        GetSerchResultFilteredReq dto = ResultsMapper.getSearchResult().toRequest(token, page, size, text, styles, instruments, contentTypeId, pageTypeId);
+        GetSerchResultFilteredReq dto = ResultsMapper.getSearchResult().toRequest(token, page, size, text, styles, instruments, contentTypeId, pageTypeId, dateInit, dateEnd);
         return ResponseEntity.ok(this.resultService.getSearchResult(dto));
     }
 

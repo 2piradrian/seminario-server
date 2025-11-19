@@ -87,7 +87,8 @@ public class EventService implements EventServiceI {
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
         if (event.getAuthor().getId() != null) {
-            event.setAuthor(user);
+            User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullAuthor);
         }
         if (event.getPageProfile().getId() != null) {
             PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -105,6 +106,23 @@ public class EventService implements EventServiceI {
         return EventMapper.getById().toResponse(event);
     }
 
+    // ======== Get Filtered Events ========
+
+    @Override
+    public GetFilteredEventPageRes getFilteredEvents(GetFilteredEventPageReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Event> events = this.eventRepository.getFilteredEvents(
+            dto.getPage(),
+            dto.getSize(),
+            dto.getText(),
+            dto.getDateInit(),
+            dto.getDateEnd()
+        );
+
+        return EventMapper.getFilteredPage().toResponse(events);
+    }
+
     @Override
     public GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
@@ -114,7 +132,8 @@ public class EventService implements EventServiceI {
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
-                event.setAuthor(user);
+                User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullAuthor);
             }
             if (event.getPageProfile().getId() != null) {
                 PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
@@ -139,10 +158,8 @@ public class EventService implements EventServiceI {
 
         LocalDateTime actualDateTime = LocalDateTime.now();
 
-        LocalDateTime eventDateInit = event.getDateInit().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime eventDateEnd = event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        if (actualDateTime.isBefore(eventDateInit)) throw new ErrorHandler(ErrorType.EVENT_NOT_STARTED);
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
@@ -161,7 +178,8 @@ public class EventService implements EventServiceI {
         this.eventRepository.update(event);
 
         if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-            event.setAuthor(user);
+            User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+            event.setAuthor(fullAuthor);
         }
 
         if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {

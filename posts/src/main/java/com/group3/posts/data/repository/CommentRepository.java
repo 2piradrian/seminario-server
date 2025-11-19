@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -62,6 +63,17 @@ public class CommentRepository implements CommentRepositoryI {
                 commentModels.getNumber() + 1,
                 commentModels.hasNext() ? commentModels.getNumber() + 2 : null
         );
+    }
+
+    @Override
+    public List<Comment> getRepliesComment(String commentId) {
+
+        List<CommentModel> commentModels = this.repository.findRepliesByParentId(
+            commentId,
+            Status.ACTIVE
+        );
+
+        return CommentEntityMapper.toDomain(commentModels);
     }
 
 

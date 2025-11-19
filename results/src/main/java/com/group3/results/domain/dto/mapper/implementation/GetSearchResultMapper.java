@@ -5,13 +5,14 @@ import com.group3.entity.*;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
+import java.util.Date;
 import java.util.List;
 
 public class GetSearchResultMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetSerchResultFilteredReq toRequest(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId) {
+    public GetSerchResultFilteredReq toRequest(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String dateInit, String dateEnd) {
         return GetSerchResultFilteredReq.create(
             token,
             page,
@@ -20,15 +21,23 @@ public class GetSearchResultMapper {
             styles,
             instruments,
             contentTypeId,
-            pageTypeId
+            pageTypeId,
+            objectMapper.convertValue(dateInit, Date.class),
+            objectMapper.convertValue(dateEnd, Date.class)
         );
     }
 
-    public GetSearchResultFilteredRes toResponse(List<User> user, List<PageProfile> pageProfiles, List<Post> posts) {
+    public GetSearchResultFilteredRes toResponse(
+        List<User> user,
+        List<PageProfile> pageProfiles,
+        List<Post> posts,
+        List<Event> events
+    ) {
         return new GetSearchResultFilteredRes(
             user,
             pageProfiles,
-            posts
+            posts,
+            events
         );
     }
 

@@ -30,6 +30,8 @@ public class ResultService implements ResultServiceI {
 
     private final UserRepository userRepository;
 
+    private final EventRepository eventRepository;
+
     private final CatalogRepository catalogRepository;
 
     @Override
@@ -47,6 +49,7 @@ public class ResultService implements ResultServiceI {
         List<User> users = new ArrayList<>();
         List<PageProfile> pageProfiles = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
 
         ContentTypeEnum type = ContentTypeEnum.fromName(contentType.getId());
 
@@ -110,9 +113,31 @@ public class ResultService implements ResultServiceI {
                     }
                 }
             }
+
+            case EVENT -> {
+                events = eventRepository.getFilteredEventsPage(
+                    dto.getPage(),
+                    dto.getSize(),
+                    dto.getText(),
+                    secret,
+                    dto.getDateInit(),
+                    dto.getDateEnd()
+                );
+
+                for (Event event : events) {
+                    if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+                        User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                        event.setAuthor(author);
+                    }
+                    if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+                        PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                        event.setPageProfile(page);
+                    }
+                }
+            }
         }
 
-        return ResultsMapper.getSearchResult().toResponse(users, pageProfiles, posts);
+        return ResultsMapper.getSearchResult().toResponse(users, pageProfiles, posts, events);
     }
 
     @Override

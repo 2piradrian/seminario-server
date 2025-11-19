@@ -28,4 +28,8 @@ public class EventMapper {
         return new DeleteMapper();
     }
 
+    public static GetFilteredPageMapper getFilteredPage() {
+        return new GetFilteredPageMapper();
+    }
+
 }

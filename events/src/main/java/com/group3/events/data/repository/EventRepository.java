@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Repository
@@ -66,6 +67,29 @@ public class EventRepository implements EventRepositoryI {
                         .collect(Collectors.toList()),
                 eventModels.getNumber() + 1,
                 eventModels.hasNext() ? eventModels.getNumber() + 2 : null
+        );
+    }
+
+    // ======== Get Events by Filtered Page with Pagination ========
+
+    @Override
+    public PageContent<Event> getFilteredEvents(Integer page, Integer size, String text, Date dateInit, Date dateEnd) {
+        int pageIndex = normalizePage(page);
+
+        Page<EventModel> eventModels = repository.findByFilteredPage(
+            Status.ACTIVE,
+            text,
+            dateInit,
+            dateEnd,
+            PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+            eventModels.getContent().stream()
+                .map(EventEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            eventModels.getNumber() + 1,
+            eventModels.hasNext() ? eventModels.getNumber() + 2 : null
         );
     }
 }

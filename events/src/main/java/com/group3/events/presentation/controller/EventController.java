@@ -3,10 +3,12 @@ package com.group3.events.presentation.controller;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.presentation.service.EventService;
+import jakarta.ws.rs.GET;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -34,6 +36,20 @@ public class EventController {
         GetEventByIdReq dto = EventMapper.getById().toRequest(eventId, token);
 
         return ResponseEntity.ok(this.service.getById(dto));
+    }
+
+    @GetMapping("/get-filtered-events")
+    public ResponseEntity<?> getFilteredEvents(
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
+        @RequestParam(value = "text") String text,
+        @RequestParam(value = "dateInit") String dateInit,
+        @RequestParam(value = "dateInit") String dateEnd
+    ) {
+        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(page, size, text,secret, dateInit, dateEnd);
+
+        return ResponseEntity.ok(this.service.getFilteredEvents(dto));
     }
 
     @GetMapping("/get-events-and-assists-by-id")
