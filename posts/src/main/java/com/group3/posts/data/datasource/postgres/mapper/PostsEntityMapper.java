@@ -1,8 +1,6 @@
 package com.group3.posts.data.datasource.postgres.mapper;
 
-import com.group3.entity.PageProfile;
-import com.group3.entity.Post;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 
 public class PostsEntityMapper {
@@ -21,9 +19,10 @@ public class PostsEntityMapper {
             postModel.getCreatedAt(),
             postModel.getUpdatedAt(),
             postModel.getStatus(),
+            new PostType(postModel.getPostTypeId(), null),
             postModel.getUpvoters().size(),
             postModel.getDownvoters().size()
-        );
+            );
     }
 
     public static PostModel toModel(Post post) {
@@ -39,7 +38,8 @@ public class PostsEntityMapper {
             post.getDownvoters(),
             post.getCreatedAt(),
             post.getUpdatedAt(),
-            post.getStatus()
+            post.getStatus(),
+            post.getPostType().getId()
         );
     }
 

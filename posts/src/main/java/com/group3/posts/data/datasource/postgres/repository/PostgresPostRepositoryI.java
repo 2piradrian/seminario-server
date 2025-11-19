@@ -24,7 +24,6 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             Pageable pageable
     );
 
-
     // ======== Get Posts by Author ========
     @Query("""
         SELECT p
@@ -61,15 +60,21 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         p.status = :status
         AND
         (
+            (:#{#postTypeId == null or #postTypeId.isEmpty()} = true) OR
+            (p.postTypeId = :postTypeId)
+        )
+        AND
+        (
             (:#{#text == null or #text.isEmpty()} = true) OR
             (LOWER(p.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
-             LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
+            LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
         )
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByFilteredPage(
         @Param("status") Status status,
         @Param("text") String text,
+        @Param("postTypeId") String postTypeId,
         Pageable pageable
     );
 

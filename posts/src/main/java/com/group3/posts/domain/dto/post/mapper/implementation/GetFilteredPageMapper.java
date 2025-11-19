@@ -14,13 +14,12 @@ import java.util.Map;
 
 public class GetFilteredPageMapper {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public GetFilteredPostPageReq toRequest(Integer page, Integer size, String text, String secret) {
+    public GetFilteredPostPageReq toRequest(Integer page, Integer size, String text, String postTypeId, String secret) {
         return GetFilteredPostPageReq.create(
             page,
             size,
             text,
+            postTypeId,
             secret
         );
     }

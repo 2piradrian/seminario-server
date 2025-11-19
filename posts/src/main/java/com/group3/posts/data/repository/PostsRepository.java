@@ -8,12 +8,10 @@ import com.group3.posts.data.datasource.postgres.model.PostModel;
 import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
 import com.group3.posts.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -111,12 +109,13 @@ public class PostsRepository implements PostRepositoryI {
     // ======== Get Posts by Filtered Page or Author with Pagination ========
 
     @Override
-    public PageContent<Post> getFilteredPosts(Integer page, Integer size, String text) {
+    public PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByFilteredPage(
                 Status.ACTIVE,
                 text,
+                postTypeId,
                 PageRequest.of(pageIndex, size)
         );
 
