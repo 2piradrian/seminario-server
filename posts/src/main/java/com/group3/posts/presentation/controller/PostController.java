@@ -16,7 +16,7 @@ public class PostController {
 
     private final PostService service;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -36,40 +36,47 @@ public class PostController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-posts")
+    @GetMapping("/get-posts")
     public ResponseEntity<?> getPosts(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetPostPageReq dto = PostMapper.getPage().toRequest(token, payload);
+        GetPostPageReq dto = PostMapper.getPage().toRequest(page, size, token);
 
         return ResponseEntity.ok(this.service.getPosts(dto));
     }
 
-    @PostMapping("/get-filtered-posts")
+    @GetMapping("/get-filtered-posts")
     public ResponseEntity<?> getFilteredPosts(
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "text", required = false) String text,
+            @RequestParam(value = "secret") String secret
     ) {
-        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(payload);
+        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(page, size, text, secret);
 
         return ResponseEntity.ok(this.service.getFilteredPosts(dto));
     }
 
-    @PostMapping("/get-by-profile")
+    @GetMapping("/get-by-profile")
     public ResponseEntity<?> getPostsByProfile(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "profileId") String profileId
     ) {
-        GetPostPageByProfileReq dto = PostMapper.getPageByProfile().toRequest(token, payload);
+        GetPostPageByProfileReq dto = PostMapper.getPageByProfile().toRequest(token, page, size, profileId);
         return ResponseEntity.ok(this.service.getPostsByProfile(dto));
     }
 
-    @PostMapping("/get-own-posts")
+    @GetMapping("/get-own-posts")
     public ResponseEntity<?> getOwnPosts(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetOwnPostPageReq dto = PostMapper.getOwnPage().toRequest(token, payload);
+        GetOwnPostPageReq dto = PostMapper.getOwnPage().toRequest(token, page, size);
         return ResponseEntity.ok(this.service.getOwnPosts(dto));
     }
 
@@ -83,22 +90,23 @@ public class PostController {
         return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
-    @PatchMapping("/edit")
+    @PatchMapping("/{postId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "postId") String postId,
             @RequestBody Map<String, Object> payload
     ) {
-        EditPostReq dto = PostMapper.edit().toRequest(token, payload);
+        EditPostReq dto = PostMapper.edit().toRequest(token, postId, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "postId") String postId
     ) {
-        DeletePostReq dto = PostMapper.delete().toRequest(token, payload);
+        DeletePostReq dto = PostMapper.delete().toRequest(token, postId);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();

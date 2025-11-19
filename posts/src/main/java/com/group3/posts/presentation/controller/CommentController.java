@@ -20,7 +20,7 @@ public class CommentController {
 
     private final CommentService service;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -40,12 +40,14 @@ public class CommentController {
         return ResponseEntity.ok(this.service.getById(dto));
     }
 
-    @PostMapping("/get-comments")
+    @GetMapping("/get-comments")
     public ResponseEntity<?> getById(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "postId") String postId,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetCommentPageReq dto = CommentMapper.getPage().toRequest(token, payload);
+        GetCommentPageReq dto = CommentMapper.getPage().toRequest(token, postId, page, size);
 
         return ResponseEntity.ok(this.service.getComments(dto));
     }
@@ -60,12 +62,12 @@ public class CommentController {
         return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @PathVariable(value = "commentId") String commentId
     ) {
-        DeleteCommentReq dto = CommentMapper.delete().toRequest(token, payload);
+        DeleteCommentReq dto = CommentMapper.delete().toRequest(token, commentId);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();
