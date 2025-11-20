@@ -54,4 +54,6 @@ public class PostModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String postTypeId;
+
 }

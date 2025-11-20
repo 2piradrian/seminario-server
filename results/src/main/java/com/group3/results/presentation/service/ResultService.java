@@ -99,6 +99,7 @@ public class ResultService implements ResultServiceI {
                         dto.getPage(),
                         dto.getSize(),
                         dto.getText(),
+                        dto.getPostTypeId(),
                         secret
                 );
 
@@ -148,6 +149,7 @@ public class ResultService implements ResultServiceI {
         List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getPage(),
             dto.getSize(),
+            "",
             "",
             secretKeyHelper.getSecret()
         );

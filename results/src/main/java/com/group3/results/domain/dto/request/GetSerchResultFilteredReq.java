@@ -24,14 +24,15 @@ public class GetSerchResultFilteredReq {
 
     private final String pageTypeId;
 
+    private final String postTypeId;
+
     private final String contentTypeId;
 
     private final Date dateInit;
 
     private final Date dateEnd;
 
-
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, Date dateInit, Date dateEnd) {{
+    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String postTypeId, Date dateInit, Date dateEnd) {
             this.token = token;
             this.page = page;
             this.size = size;
@@ -40,12 +41,12 @@ public class GetSerchResultFilteredReq {
             this.instruments = instruments;
             this.contentTypeId = contentTypeId;
             this.pageTypeId = pageTypeId;
+            this.postTypeId = postTypeId;
             this.dateInit = dateInit;
             this.dateEnd = dateEnd;
-        }
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, Date dateInit, Date dateEnd) {
+    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String postTypeId, Date dateInit, Date dateEnd) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -88,6 +89,7 @@ public class GetSerchResultFilteredReq {
             instruments,
             contentTypeId,
             pageTypeId,
+            postTypeId,
             dateInit,
             dateEnd
         );
