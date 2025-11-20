@@ -82,8 +82,8 @@ public class GatewayBeans {
 
                 // NOTIFICATION SERVER
                 .route(r -> r
-                        .path("/api/notification/**")
-                        .filters(f -> f.rewritePath("/api/notification(?<segment>/.*)?", "/notification-server/api/notifications${segment}"))
+                        .path("/api/notifications/**")
+                        .filters(f -> f.rewritePath("/api/notifications(?<segment>/.*)?", "/notification-server/api/{segment}"))
                         .uri("lb://notification-server")
                 )
 

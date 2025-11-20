@@ -18,7 +18,7 @@ public class NotificationController {
 
     private final NotificationServiceI service;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> create(
             @RequestBody Map<String, Object> payload
     ) {
