@@ -72,11 +72,7 @@ public class GetSerchResultFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (dateInit == null || dateEnd == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (dateInit.after(dateEnd)) {
+        if (dateInit != null && dateEnd != null && dateInit.after(dateEnd)) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
