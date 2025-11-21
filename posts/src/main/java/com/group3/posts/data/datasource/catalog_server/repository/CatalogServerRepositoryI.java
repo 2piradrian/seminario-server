@@ -22,4 +22,8 @@ public interface CatalogServerRepositoryI {
     @GetMapping("/api/categories/get-list-by-id")
     GetCategoryListByIdRes getCategoryListById(@RequestParam(value = "ids") List<String> ids);
 
+    @GetMapping("/api/post-types/get-by-id/{postTypeId}")
+    GetPostTypeByIdRes getByPostTypeId(
+        @PathVariable("postTypeId") String postTypeId
+    );
 }
