@@ -36,6 +36,8 @@ public class PostService implements PostServiceI {
 
     private final NotificationsRepository notificationsRepository;
 
+    private final CatalogRepository catalogRepository;
+
 
     // ======== Create Post ========
 
@@ -64,6 +66,10 @@ public class PostService implements PostServiceI {
             String imageId = this.imagesRepository.upload(dto.getImage(), secretKeyHelper.getSecret());
             post.setImageId(imageId);
         }
+
+        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostType().getId());
+        if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+        post.setPostType(postType);
 
         post.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.POST).toString());
         post.setAuthor(user);
