@@ -16,6 +16,8 @@ services = {
     "catalog": os.path.abspath(os.path.join(BASE_DIR, "..", "catalog")),
     "images": os.path.abspath(os.path.join(BASE_DIR, "..", "images")),
     "page-profiles": os.path.abspath(os.path.join(BASE_DIR, "..", "page-profiles")),
+    "events": os.path.abspath(os.path.join(BASE_DIR, "..", "events")),
+    "notifications": os.path.abspath(os.path.join(BASE_DIR, "..", "notifications"))
 }
 
 delay_seconds = 15
@@ -41,7 +43,7 @@ def open_terminal_and_run(name, path):
 
 def main():
     run_maven_install()
-    for svc in ["registry", "config", "gateway", "posts", "results", "users", "catalog", "images", "page-profiles"]:
+    for svc in ["registry", "config", "gateway", "posts", "results", "users", "catalog", "images", "page-profiles", "events", "notifications"]:
         open_terminal_and_run(svc, services[svc])
 
         if svc == "registry" or svc == "config":
