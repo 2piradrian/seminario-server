@@ -17,7 +17,7 @@ public class PageProfileController {
     
     private final PageProfileService pageService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
