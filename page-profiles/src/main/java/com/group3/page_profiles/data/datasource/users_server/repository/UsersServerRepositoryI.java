@@ -33,7 +33,7 @@ public interface UsersServerRepositoryI {
         @RequestParam(value = "secret") String secret
     );
 
-    @PostMapping("/api/follows//get-all-followers/{id}")
+    @GetMapping("/api/follows/get-all-followers/{id}")
     GetAllFollowersRes getAllFollowers(
         @PathVariable(value = "id") String id,
         @RequestParam(value = "secret") String secret
