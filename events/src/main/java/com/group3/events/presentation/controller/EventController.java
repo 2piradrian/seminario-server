@@ -73,22 +73,16 @@ public class EventController {
         return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
-    @PutMapping
+    @PutMapping("/{eventId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
-            @RequestParam(value = "eventId") String eventId,
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "content") String content,
-            @RequestParam(value = "base64Image") String base64Image,
-            @RequestParam(value = "dateInit") String dateInit,
-            @RequestParam(value = "dateInit") String dateEnd
+            @PathVariable(value = "eventId") String eventId,
+            @RequestBody Map<String, Object> payload
     ) {
-        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, title, content, base64Image, dateInit, dateEnd);
+        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
     }
-
-
 
     @DeleteMapping
     public ResponseEntity<?> delete(

@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getAllStaff(dto));
     }
     
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<?> update(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
