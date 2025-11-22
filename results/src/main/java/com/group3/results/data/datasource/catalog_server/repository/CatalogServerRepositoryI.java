@@ -14,7 +14,6 @@ public interface CatalogServerRepositoryI {
 
     @GetMapping("/api/content-types/get-by-id/{contentTypeId}")
     GetContentTypeByIdRes getContentTypeById(
-            @RequestHeader(value = "Authorization") String token,
             @PathVariable("contentTypeId") String contentTypeId
     );
 

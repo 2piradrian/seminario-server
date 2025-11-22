@@ -19,9 +19,9 @@ public class EventRepository implements EventRepositoryI {
     private final EventServerRepositoryI repository;
 
     @Override
-    public List<Event> getFilteredEventsPage(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+    public List<Event> getFilteredEventsPage(String token, Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
         GetFilteredEventPageRes response = this.repository.getFilteredEvents(
-             secret, page, size, text, dateInit, dateEnd
+             token, secret, page, size, text, dateInit, dateEnd
         );
 
         return response.getEvents();

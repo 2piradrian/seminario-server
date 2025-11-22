@@ -39,7 +39,7 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<Follow> follows = this.userRepository.getAllFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        List<Follow> follows = this.userRepository.getAllFollowers(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
         if (follows == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
@@ -57,6 +57,7 @@ public class ResultService implements ResultServiceI {
 
             case PAGEPROFILE -> {
                 pageProfiles = pageProfileRepository.getPageFilteredPage(
+                        dto.getToken(),
                         dto.getText(),
                         dto.getPageTypeId(),
                         dto.getPage(),
@@ -80,6 +81,7 @@ public class ResultService implements ResultServiceI {
                         : List.of();
 
                 users = userRepository.getUserFilteredPage(
+                        dto.getToken(),
                         dto.getText(),
                         styleIds,
                         instrumentIds,
@@ -96,6 +98,7 @@ public class ResultService implements ResultServiceI {
 
             case POST -> {
                 posts = postRepository.getFilteredPosts(
+                        dto.getToken(),
                         dto.getPage(),
                         dto.getSize(),
                         dto.getText(),
@@ -117,6 +120,7 @@ public class ResultService implements ResultServiceI {
 
             case EVENT -> {
                 events = eventRepository.getFilteredEventsPage(
+                    dto.getToken(),
                     dto.getPage(),
                     dto.getSize(),
                     dto.getText(),
@@ -147,6 +151,7 @@ public class ResultService implements ResultServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         List<Post> posts = this.postRepository.getFilteredPosts(
+            dto.getToken(),
             dto.getPage(),
             dto.getSize(),
             "",

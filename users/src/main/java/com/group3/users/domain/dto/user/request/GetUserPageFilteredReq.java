@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 public class GetUserPageFilteredReq {
 
+    private final String token;
+
     private final String secret;
 
     private final Integer page;
@@ -21,7 +23,8 @@ public class GetUserPageFilteredReq {
 
     private final List<String> instruments;
 
-    private GetUserPageFilteredReq(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+    private GetUserPageFilteredReq(String token, String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+        this.token = token;
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -30,7 +33,11 @@ public class GetUserPageFilteredReq {
         this.instruments = instruments;
     }
 
-    public static GetUserPageFilteredReq create(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+    public static GetUserPageFilteredReq create(String token, String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+
+        if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -52,7 +59,7 @@ public class GetUserPageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetUserPageFilteredReq(secret, page, size, fullname, styles, instruments);
+        return new GetUserPageFilteredReq(token, secret, page, size, fullname, styles, instruments);
     }
 
 }

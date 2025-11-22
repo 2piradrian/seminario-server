@@ -14,8 +14,9 @@ public class GetPageFilteredMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetUserPageFilteredReq toRequest(String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
+    public GetUserPageFilteredReq toRequest(String token, String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
         return GetUserPageFilteredReq.create(
+            token,
             secret,
             page,
             size,
