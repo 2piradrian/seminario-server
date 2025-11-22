@@ -6,6 +6,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(name = "catalog-server", path = "/catalog-server")
 @LoadBalancerClient(name = "catalog-server", configuration = LoadBalancerConfiguration.class)
@@ -13,6 +14,7 @@ public interface CatalogServerRepositoryI {
 
     @GetMapping("/api/content-types/get-by-id/{contentTypeId}")
     GetContentTypeByIdRes getContentTypeById(
+            @RequestHeader(value = "Authorization") String token,
             @PathVariable("contentTypeId") String contentTypeId
     );
 

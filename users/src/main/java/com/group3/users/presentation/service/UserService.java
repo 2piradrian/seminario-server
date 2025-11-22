@@ -68,8 +68,8 @@ public class UserService implements UserServiceI {
                 GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
         ).getFollowers().stream().map(Follow::getFollowerId).toList();
 
-        profileResult.isOwnProfile(userResult.getId());
-        profileResult.setFollowsChecks(userResult.getId(), following, followers);
+        profileResult.isOwnProfile(user.getId());
+        profileResult.setFollowsChecks(user.getId(), following, followers);
 
         userResult.setProfile(profileResult);
 
@@ -114,6 +114,23 @@ public class UserService implements UserServiceI {
             dto.getPage(),
             dto.getSize()
         );
+
+        for (User userResult : profiles.getContent()) {
+            UserProfile profileResult = userResult.getProfile();
+
+            List<String> following = this.followService.getAllFollowing(
+                    GetAllFollowingReq.create(userResult.getId(), secretKeyHelper.getSecret())
+            ).getFollowing().stream().map(Follow::getFollowedId).toList();
+
+            List<String> followers = this.followService.getAllFollowers(
+                    GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
+            ).getFollowers().stream().map(Follow::getFollowerId).toList();
+
+            profileResult.isOwnProfile(userResult.getId());
+            profileResult.setFollowsChecks(userResult.getId(), following, followers);
+
+            userResult.setProfile(profileResult);
+        }
 
         return UserMapper.getFiltered().toResponse(profiles);
     }
