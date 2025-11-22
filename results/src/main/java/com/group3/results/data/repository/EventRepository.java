@@ -20,16 +20,9 @@ public class EventRepository implements EventRepositoryI {
 
     @Override
     public List<Event> getFilteredEventsPage(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
-        Map<String,Object> payload = new HashMap<>();
-
-        payload.put("page", page);
-        payload.put("size", size);
-        payload.put("text", text);
-        payload.put("dateInit", dateInit);
-        payload.put("dateEnd", dateEnd);
-        payload.put("secret", secret);
-
-        GetFilteredEventPageRes response = this.repository.getFilteredEvents(payload);
+        GetFilteredEventPageRes response = this.repository.getFilteredEvents(
+             secret, page, size, text, dateInit, dateEnd
+        );
 
         return response.getEvents();
     }
