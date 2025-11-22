@@ -43,7 +43,7 @@ public class EventController {
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
-        @RequestParam(value = "text") String text,
+        @RequestParam(value = "text", required = false) String text,
         @RequestParam(value = "dateInit", required = false) Date dateInit,
         @RequestParam(value = "dateEnd", required = false) Date dateEnd
     ) {
