@@ -51,7 +51,7 @@ public class PageProfileService implements PageProfileServiceI {
         PageProfile page = new PageProfile();
         page.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.PAGE).toString());
 
-        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 
