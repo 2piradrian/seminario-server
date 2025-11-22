@@ -27,6 +27,7 @@ public interface UsersServerRepositoryI {
 
     @GetMapping("/api/users/get-user-filtered")
     GetUserPageFilteredRes getUserFiltered(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
@@ -37,11 +38,13 @@ public interface UsersServerRepositoryI {
 
     @GetMapping("/api/user-profiles/get-by-id-with-following/{userId}")
     GetUserProfileWithFollowingByIdRes getByIdWithFollowing(
+            @RequestHeader(value = "Authorization") String token,
             @PathVariable("userId") String userId, @RequestBody Map<String, Object> payload
     );
 
     @GetMapping("/api/follows/get-all-followers/{id}")
     GetAllFollowersRes getAllFollowers(
+        @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "id") String id,
         @RequestParam(value = "secret") String secret
     );

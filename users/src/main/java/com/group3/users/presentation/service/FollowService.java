@@ -77,7 +77,6 @@ public class FollowService implements FollowServiceI {
         follow.setFollowedId(dto.getId());
         followRepository.save(follow);
 
-
         this.notificationsRepository.create(
                 this.secretKeyHelper.getSecret(),
                 dto.getId(), // targetId
