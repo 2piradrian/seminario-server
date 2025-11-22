@@ -67,7 +67,7 @@ public class PostService implements PostServiceI {
             post.setImageId(imageId);
         }
 
-        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostType().getId());
+        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
         if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
         post.setPostType(postType);
 
