@@ -97,9 +97,8 @@ public class PageProfileService implements PageProfileServiceI {
         page.setMembers(members);
 
         Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-        Integer followers = this.userRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
-        return PageMapper.getPage().toResponse(page, followers, isFollowing);
+        return PageMapper.getPage().toResponse(page, follows.size(), isFollowing);
     }
 
 
