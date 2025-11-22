@@ -110,6 +110,7 @@ public class EventService implements EventServiceI {
 
     @Override
     public GetFilteredEventPageRes getFilteredEvents(GetFilteredEventPageReq dto) {
+        log.debug(dto.getSecret());
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         PageContent<Event> events = this.eventRepository.getFilteredEvents(

@@ -13,8 +13,8 @@ public class GetFilteredPageMapper {
         return GetFilteredEventPageReq.create(
             page,
             size,
-            secret,
             text,
+            secret,
             dateInit,
             dateEnd
         );

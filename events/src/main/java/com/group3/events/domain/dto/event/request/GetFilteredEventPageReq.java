@@ -52,15 +52,7 @@ public class GetFilteredEventPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (dateInit == null || dateEnd == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (dateInit.after(dateEnd)) {
-            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
-        }
-
-        return new GetFilteredEventPageReq(page, size,text, secret, dateInit, dateEnd);
+        return new GetFilteredEventPageReq(page, size, text, secret, dateInit, dateEnd);
     }
 
 }
