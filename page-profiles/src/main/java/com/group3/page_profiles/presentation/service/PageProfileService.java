@@ -107,6 +107,9 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageProfilePageFilteredRes getProfileFiltered(GetPageProfilePageFilteredReq dto) {
+        User user = userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
