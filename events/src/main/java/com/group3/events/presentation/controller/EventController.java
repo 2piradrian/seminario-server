@@ -40,6 +40,7 @@ public class EventController {
 
     @GetMapping("/get-filtered-events")
     public ResponseEntity<?> getFilteredEvents(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
@@ -47,7 +48,7 @@ public class EventController {
         @RequestParam(value = "dateInit", required = false) Date dateInit,
         @RequestParam(value = "dateEnd", required = false) Date dateEnd
     ) {
-        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(page, size, text, secret, dateInit, dateEnd);
+        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(token, page, size, text, secret, dateInit, dateEnd);
 
         return ResponseEntity.ok(this.service.getFilteredEvents(dto));
     }

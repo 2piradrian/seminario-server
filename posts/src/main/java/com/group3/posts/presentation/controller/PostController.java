@@ -51,13 +51,14 @@ public class PostController {
 
     @GetMapping("/get-filtered-posts")
     public ResponseEntity<?> getFilteredPosts(
+            @RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "text", required = false) String text,
             @RequestParam(value = "postTypeId", required = false) String postTypeId,
             @RequestParam(value = "secret") String secret
     ) {
-        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(page, size, text, postTypeId, secret);
+        GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(token, page, size, text, postTypeId, secret);
 
         return ResponseEntity.ok(this.service.getFilteredPosts(dto));
     }

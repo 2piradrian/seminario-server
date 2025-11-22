@@ -9,8 +9,9 @@ import java.util.Date;
 
 public class GetFilteredPageMapper {
 
-    public GetFilteredEventPageReq toRequest(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+    public GetFilteredEventPageReq toRequest(String token, Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
         return GetFilteredEventPageReq.create(
+            token,
             page,
             size,
             text,

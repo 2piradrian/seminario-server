@@ -39,13 +39,14 @@ public class PageProfileController {
 
     @GetMapping("/get-page-filtered")
     public ResponseEntity<?> getFiltered(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "pageTypeId", required = false) String pageTypeId
     ) {
-        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(secret, page, size, name, pageTypeId);
+        GetPageProfilePageFilteredReq dto = PageMapper.getFiltered().toRequest(token, secret, page, size, name, pageTypeId);
         return ResponseEntity.ok(this.pageService.getProfileFiltered(dto));
     }
 
