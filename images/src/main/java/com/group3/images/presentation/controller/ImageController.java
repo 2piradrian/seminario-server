@@ -32,7 +32,7 @@ public class ImageController {
         return ResponseEntity.ok(this.service.uploadImage(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> delete(
             @RequestBody Map<String, Object> payload
     ) {

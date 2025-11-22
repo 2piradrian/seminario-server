@@ -181,7 +181,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(memberId -> this.userRepository.getById(memberId, dto.getToken()))
+                .map(memberId -> this.userRepository.getById(dto.getToken(), memberId))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
@@ -190,7 +190,7 @@ public class PageProfileService implements PageProfileServiceI {
         Set<User> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            User member = this.userRepository.getById(id, dto.getToken());
+            User member = this.userRepository.getById(dto.getToken(), id);
             if (existingMembers.add(member)) {
                 members.add(member);
             }
@@ -198,7 +198,7 @@ public class PageProfileService implements PageProfileServiceI {
         page.setMembers(members);
 
         // ======== Update Page Type and Metadata ========
-        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 

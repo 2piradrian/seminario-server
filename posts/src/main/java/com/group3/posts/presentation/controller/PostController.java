@@ -93,7 +93,7 @@ public class PostController {
         return ResponseEntity.ok(this.service.toggleVotes(dto));
     }
 
-    @PatchMapping("/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
             @PathVariable(value = "postId") String postId,
