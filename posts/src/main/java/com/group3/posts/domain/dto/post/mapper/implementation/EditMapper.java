@@ -15,8 +15,8 @@ public class EditMapper {
             postId,
             (String) payload.get("title"),
             (String) payload.get("content"),
-            (Category) payload.get("category"),
-            (String) payload.get("base64Image")
+            (String) payload.get("base64Image"),
+            (String) payload.get("postTypeId")
         );
     }
 
@@ -25,4 +25,5 @@ public class EditMapper {
                 post.getId()
         );
     }
+
 }

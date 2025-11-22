@@ -27,7 +27,7 @@ public class EditPageReq {
 
     private final List<String> members;
 
-    private final PageType pageType;
+    private final String pageTypeId;
 
     private EditPageReq(
         String token,
@@ -38,7 +38,7 @@ public class EditPageReq {
         String shortDescription,
         String longDescription,
         List<String> members,
-        PageType pageType
+        String pageTypeId
     ) {
         this.token = token;
         this.pageId = pageId;
@@ -48,7 +48,7 @@ public class EditPageReq {
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
         this.members = members;
-        this.pageType = pageType;
+        this.pageTypeId = pageTypeId;
     }
 
     public static EditPageReq create(
@@ -61,7 +61,7 @@ public class EditPageReq {
         String longDescription,
         String ownerId,
         List<String> members,
-        PageType pageType
+        String pageTypeId
     ) {
 
         if (token == null) {
@@ -123,7 +123,7 @@ public class EditPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (pageType == null) {
+        if (pageTypeId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -136,7 +136,7 @@ public class EditPageReq {
             shortDescription,
             longDescription,
             members,
-            pageType
+            pageTypeId
         );
     }
     
