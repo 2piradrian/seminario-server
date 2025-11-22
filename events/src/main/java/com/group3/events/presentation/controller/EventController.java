@@ -18,7 +18,7 @@ public class EventController {
 
     private final EventService service;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -44,8 +44,8 @@ public class EventController {
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
         @RequestParam(value = "text") String text,
-        @RequestParam(value = "dateInit") String dateInit,
-        @RequestParam(value = "dateInit") String dateEnd
+        @RequestParam(value = "dateInit") Date dateInit,
+        @RequestParam(value = "dateInit") Date dateEnd
     ) {
         GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(page, size, text,secret, dateInit, dateEnd);
 
@@ -73,7 +73,7 @@ public class EventController {
         return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "eventId") String eventId,
@@ -90,7 +90,7 @@ public class EventController {
 
 
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
             @RequestParam(value = "eventId") String eventId
