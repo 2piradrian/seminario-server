@@ -59,6 +59,10 @@ public class GetFilteredEventPageReq {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        if (dateInit != null && dateEnd != null && dateInit.after(dateEnd)) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
         return new GetFilteredEventPageReq(token, page, size, text, secret, dateInit, dateEnd);
     }
 
