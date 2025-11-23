@@ -64,11 +64,7 @@ public class ResultService implements ResultServiceI {
                         dto.getSize(),
                         secret
                 );
-
-                //for (PageProfile page : pageProfiles) {
-                //    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-                //    page.setIsFollowing(isFollowing);
-                //}
+                
             }
 
             case USERPROFILE -> {

@@ -120,6 +120,17 @@ public class PageProfileService implements PageProfileServiceI {
             dto.getSize()
         );
 
+        for (PageProfile pageResult : pages.getContent()) {
+
+            List<Follow> follows = this.userRepository.getAllFollowers(pageResult.getId(), this.secretKeyHelper.getSecret());
+            if (follows == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+
+            Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+
+            pageResult.setIsFollowing(isFollowing);
+            
+        }
+
         return PageMapper.getFiltered().toResponse(pages);
     }
 
