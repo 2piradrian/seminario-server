@@ -31,22 +31,22 @@ public class FollowController {
     @GetMapping("/get-followers")
     public ResponseEntity<?> getFollowers(
             @RequestHeader("Authorization") String token,
-            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "subjectId") String subjectId,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size
     ) {
-        GetFollowerPageReq dto = FollowMapper.getFollowerPage().toRequest(token, userId, page, size);
+        GetFollowerPageReq dto = FollowMapper.getFollowerPage().toRequest(token, subjectId, page, size);
         return ResponseEntity.ok(followService.getFollowers(dto));
     }
 
     @GetMapping("/get-following")
     public ResponseEntity<?> getFollowing(
             @RequestHeader("Authorization") String token,
-            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "subjectId") String subjectId,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size
     ) {
-        GetFollowingPageReq dto = FollowMapper.getFollowingPage().toRequest(token, userId, page, size);
+        GetFollowingPageReq dto = FollowMapper.getFollowingPage().toRequest(token, subjectId, page, size);
         return ResponseEntity.ok(followService.getFollowing(dto));
     }
 
