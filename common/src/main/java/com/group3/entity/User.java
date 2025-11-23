@@ -46,4 +46,10 @@ public class User {
                 this.isPageMember(comment.getPageProfile());
     }
 
+    public boolean canDelete(Review review){
+        return this.role.canDelete() ||
+            (review.getReviewerUser() != null && review.getReviewerUser().getId().equals(this.getId())) ||
+            (review.getReviewedId().equals(this.getId()));
+    }
+
 }
