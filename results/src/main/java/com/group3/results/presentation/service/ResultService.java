@@ -64,7 +64,7 @@ public class ResultService implements ResultServiceI {
                         dto.getSize(),
                         secret
                 );
-                
+
             }
 
             case USERPROFILE -> {
