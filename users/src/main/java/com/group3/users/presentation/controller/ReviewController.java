@@ -31,7 +31,7 @@ public class ReviewController {
         return ResponseEntity.ok(this.reviewService.getById(dto));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CreateReviewRes> create(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload

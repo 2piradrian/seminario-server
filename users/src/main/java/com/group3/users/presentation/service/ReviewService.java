@@ -103,7 +103,13 @@ public class ReviewService implements ReviewServiceI {
         Review review = reviewRepository.getById(dto.getId());
         if (review == null) throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
 
-        if (!review.getReviewerUser().getId().equals(user.getId()))
+        if (review.getStatus() == Status.DELETED)
+            throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
+
+        boolean isReviewer = review.getReviewerUser().getId().equals(user.getId());
+        boolean isReviewed = review.getReviewedId().equals(user.getId());
+
+        if (!isReviewer && ! isReviewed)
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         review.setUpdatedAt(LocalDateTime.now());
