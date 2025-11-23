@@ -46,19 +46,4 @@ public class User {
                 this.isPageMember(comment.getPageProfile());
     }
 
-    /*public boolean canDelete(Event event){
-
-        if(this.role.canDelete()){
-            return true;
-        }
-
-        if(event.getAuthor() != null && event.getAuthor().getId().equals(this.getId())){
-            return true;
-        }
-
-        PageProfile pageProfile = event.getPageProfile();
-
-        return this.isPageMember(pageProfile);
-    }*/
-
 }

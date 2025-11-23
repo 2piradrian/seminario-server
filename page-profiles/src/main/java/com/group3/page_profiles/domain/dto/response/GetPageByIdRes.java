@@ -30,7 +30,7 @@ public class GetPageByIdRes {
 
     private final PageType pageType;
 
-    private final Integer followersCount;
+    private final Integer followersQuantity;
 
     private final Boolean isFollowing;
     
