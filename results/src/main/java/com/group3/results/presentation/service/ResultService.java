@@ -65,10 +65,10 @@ public class ResultService implements ResultServiceI {
                         secret
                 );
 
-                for (PageProfile page : pageProfiles) {
-                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-                    page.setIsFollowing(isFollowing);
-                }
+                //for (PageProfile page : pageProfiles) {
+                //    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+                //    page.setIsFollowing(isFollowing);
+                //}
             }
 
             case USERPROFILE -> {
@@ -89,11 +89,6 @@ public class ResultService implements ResultServiceI {
                         dto.getSize(),
                         secret
                 );
-
-                for (User u : users) {
-                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-                    u.getProfile().setIsFollowing(isFollowing);
-                }
             }
 
             case POST -> {
