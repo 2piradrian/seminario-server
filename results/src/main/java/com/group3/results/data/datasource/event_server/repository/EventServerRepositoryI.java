@@ -20,8 +20,8 @@ public interface EventServerRepositoryI {
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "text", required = false) String text,
-            @RequestParam(value = "dateInit", required = false) Date dateInit,
-            @RequestParam(value = "dateEnd", required = false) Date dateEnd
+            @RequestParam(value = "dateInit", required = false) String dateInit,
+            @RequestParam(value = "dateEnd", required = false) String dateEnd
     );
 
 }
