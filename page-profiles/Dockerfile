@@ -1,16 +1,18 @@
-FROM group3/common-builder:latest AS builder
+FROM maven:3.9.6-eclipse-temurin-21 AS app_builder
+WORKDIR /build
 
-WORKDIR /app
+COPY common ./common
+RUN cd common && mvn clean install -DskipTests
 
-WORKDIR /app/page-profiles
-COPY page-profiles/pom.xml .
+COPY page-profiles/pom.xml ./pom.xml
 RUN mvn dependency:go-offline
-
 COPY page-profiles/src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean install -DskipTests
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=builder /app/page-profiles/target/page-profiles.jar app.jar
+COPY --from=app_builder /build/target/page-profiles.jar app.jar
+
+ENV SPRING_PROFILES_ACTIVE=docker
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

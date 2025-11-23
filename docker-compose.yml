@@ -1,24 +1,17 @@
 services:
 
-    # --- BUILDER BASE ---
-    common-base:
-        build:
-            context: ./common
-        image: group3/common-builder:latest
-        command: ["echo", "Base image ready"]
-
     # --- INFRAESTRUCTURA ---
 
-    eureka-server:
+    registry-server:
         build: ./registry
-        container_name: eureka-server
+        container_name: registry-server
         restart: always
         ports:
             - "8761:8761"
         networks:
             - microservices-net
         healthcheck:
-            test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8761/actuator/health"]
+            test: ["CMD", "wget", "-q", "-O", "-", "http://registry-server:8761/actuator/health"]
             interval: 10s
             timeout: 5s
             retries: 5
@@ -31,17 +24,18 @@ services:
         ports:
             - "7777:7777"
         environment:
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
+            SPRING_PROFILES_ACTIVE: docker,dev,native
         networks:
             - microservices-net
         healthcheck:
-            test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:7777/actuator/health"]
+            test: ["CMD", "wget", "-q", "-O", "-", "http://config-server:7777/actuator/health"]
             interval: 10s
             timeout: 5s
             retries: 10
             start_period: 30s
         depends_on:
-            eureka-server:
+            registry-server:
                 condition: service_healthy
 
     gateway:
@@ -53,11 +47,11 @@ services:
         ports:
             - "4040:4040"
         environment:
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
         networks:
             - microservices-net
         depends_on:
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             config-server:
                 condition: service_healthy
@@ -89,14 +83,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8081
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             users-db:
                 condition: service_started
@@ -110,14 +104,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8082
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             catalog-db:
                 condition: service_started
@@ -131,14 +125,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8083
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             posts-db:
                 condition: service_started
@@ -152,14 +146,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8084
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             page-profiles-db:
                 condition: service_started
@@ -173,7 +167,7 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8085
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         volumes:
             - ./images_data:/app/images
@@ -182,7 +176,7 @@ services:
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
 
     events-server:
@@ -194,14 +188,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8086
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             events-db:
                 condition: service_started
@@ -215,14 +209,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8087
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
 
     notification-server:
@@ -234,14 +228,14 @@ services:
         environment:
             SPRING_PROFILES_ACTIVE: docker
             SERVER_PORT: 8088
-            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
             SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
             config-server:
                 condition: service_healthy
-            eureka-server:
+            registry-server:
                 condition: service_healthy
             notifications-db:
                 condition: service_started
