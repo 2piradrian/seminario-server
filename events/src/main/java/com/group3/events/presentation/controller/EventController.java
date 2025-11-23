@@ -85,10 +85,10 @@ public class EventController {
         return ResponseEntity.ok(this.service.edit(dto));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestParam(value = "eventId") String eventId
+            @PathVariable(value = "eventId") String eventId
     ) {
         DeleteEventReq dto = EventMapper.delete().toRequest(token, eventId);
         this.service.delete(dto);

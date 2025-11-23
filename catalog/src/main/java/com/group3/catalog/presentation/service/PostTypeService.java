@@ -37,7 +37,7 @@ public class PostTypeService implements PostTypeServiceI {
         PostType postType = this.repository.getById(dto.getId());
 
         if (postType == null) {
-            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
+            throw new ErrorHandler(ErrorType.POST_TYPE_NOT_FOUND);
         }
 
         return PostTypeMapper.getById().toResponse(postType);
