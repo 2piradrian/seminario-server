@@ -2,6 +2,7 @@ package com.group3.users.presentation.service;
 
 import com.group3.config.PrefixedUUID;
 import com.group3.entity.Follow;
+import com.group3.entity.NotificationContent;
 import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
 import com.group3.entity.User;
@@ -15,6 +16,7 @@ import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.domain.dto.follow.mapper.FollowMapper;
 import com.group3.users.domain.dto.follow.request.*;
 import com.group3.users.domain.dto.follow.response.*;
+import com.group3.users.domain.repository.NotificationsRepositoryI;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ public class FollowService implements FollowServiceI {
     private final UserProfileRepository userProfileRepository;
 
     private final PageProfileRepository pageProfileRepository;
+
+    private final NotificationsRepositoryI notificationsRepository;
 
 
     // ======== Toggle Follow ========
@@ -72,6 +76,13 @@ public class FollowService implements FollowServiceI {
         follow.setFollowerId(user.getId());
         follow.setFollowedId(dto.getId());
         followRepository.save(follow);
+
+        this.notificationsRepository.create(
+                this.secretKeyHelper.getSecret(),
+                dto.getId(), // targetId
+                user.getId(), // sourceId
+                NotificationContent.FOLLOW.name()
+        );
     }
 
 
@@ -82,10 +93,18 @@ public class FollowService implements FollowServiceI {
         User authUser = this.authService.auth(dto.getToken());
         if (authUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile user = this.userProfileRepository.getById(dto.getUserId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        String subjectId = dto.getSubjectId();
+        PrefixedUUID.EntityType subjectType = PrefixedUUID.resolveType(UUID.fromString(subjectId));
 
-        PageContent<Follow> followersPage = this.followRepository.findByFollowedId(dto.getUserId(), dto.getPage(), dto.getSize());
+        if (subjectType == PrefixedUUID.EntityType.USER) {
+            UserProfile user = this.userProfileRepository.getById(subjectId);
+            if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        } else if (subjectType == PrefixedUUID.EntityType.PAGE) {
+            PageProfile page = this.pageProfileRepository.getById(subjectId, dto.getToken());
+            if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+        }
+
+        PageContent<Follow> followersPage = this.followRepository.findByFollowedId(subjectId, dto.getPage(), dto.getSize());
 
         List<String> followerIds = followersPage.getContent().stream()
                 .map(Follow::getFollowerId)
@@ -124,10 +143,18 @@ public class FollowService implements FollowServiceI {
         User authUser = this.authService.auth(dto.getToken());
         if (authUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        UserProfile user = this.userProfileRepository.getById(dto.getUserId());
-        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        String subjectId = dto.getSubjectId();
+        PrefixedUUID.EntityType subjectType = PrefixedUUID.resolveType(UUID.fromString(subjectId));
 
-        PageContent<Follow> followingPage = followRepository.findByFollowerId(dto.getUserId(), dto.getPage(), dto.getSize());
+        if (subjectType == PrefixedUUID.EntityType.USER) {
+            UserProfile user = this.userProfileRepository.getById(subjectId);
+            if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        } else if (subjectType == PrefixedUUID.EntityType.PAGE) {
+            PageProfile page = this.pageProfileRepository.getById(subjectId, dto.getToken());
+            if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+        }
+
+        PageContent<Follow> followingPage = followRepository.findByFollowerId(subjectId, dto.getPage(), dto.getSize());
 
         List<String> followingIds = followingPage.getContent().stream()
                 .map(Follow::getFollowedId)
@@ -145,8 +172,11 @@ public class FollowService implements FollowServiceI {
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
 
-        for (UserProfile profile : userProfiles) profile.setIsFollowing(true);
-        for (PageProfile page : pageProfiles) page.setIsFollowing(true);
+        List<String> authUserFollowingIds = followRepository.getAllFollowing(authUser.getId()).stream().map(Follow::getFollowedId).toList();
+        Set<String> authUserFollowingSet = new HashSet<>(authUserFollowingIds);
+
+        for (UserProfile profile : userProfiles) profile.setIsFollowing(authUserFollowingSet.contains(profile.getId()));
+        for (PageProfile page : pageProfiles) page.setIsFollowing(authUserFollowingSet.contains(page.getId()));
 
         List<Object> following = new ArrayList<>();
         following.addAll(userProfiles);

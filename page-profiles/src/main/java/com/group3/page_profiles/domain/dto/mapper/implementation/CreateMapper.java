@@ -17,7 +17,7 @@ public class CreateMapper {
         return CreatePageReq.create(
             token,
             (String) payload.get("name"),
-            objectMapper.convertValue(payload.get("pageType"), new TypeReference<PageType>() {})
+            (String) payload.get("pageTypeId")
         );
     }
 

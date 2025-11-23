@@ -143,3 +143,8 @@ INSERT INTO content_types (id, name) VALUES ('post', 'Posts');
 INSERT INTO content_types (id, name) VALUES ('userprofile', 'Usuarios');
 INSERT INTO content_types (id, name) VALUES ('pageprofile', 'Páginas');
 INSERT INTO content_types (id, name) VALUES ('event', 'Eventos');
+
+-- Inserts para Tipos de post
+INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'Market');
+INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'Job');
+INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'General');

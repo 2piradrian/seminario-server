@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class GetPageByProfileMapper {
 
-    public GetPostPageByProfileReq toRequest(String token, Map<String, Object> payload) {
+    public GetPostPageByProfileReq toRequest(String token, Integer page, Integer size, String profileId) {
         return GetPostPageByProfileReq.create(
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("profileId"),
+            page,
+            size,
+            profileId,
             token
         );
     }

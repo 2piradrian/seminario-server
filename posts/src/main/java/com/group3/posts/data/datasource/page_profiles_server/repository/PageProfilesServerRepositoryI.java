@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface PageProfilesServerRepositoryI {
 
     @GetMapping("/api/page-profiles/get-by-id/{pageId}")
-    GetPageByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable("pageId") String pageId);
+    GetPageByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable("pageId") String pageId
+    );
 
 }

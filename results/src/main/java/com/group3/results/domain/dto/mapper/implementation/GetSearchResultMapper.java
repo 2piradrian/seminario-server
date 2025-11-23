@@ -14,18 +14,31 @@ public class GetSearchResultMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetSerchResultFilteredReq toRequest(String token, Map<String, Object> payload) {
+    public GetSerchResultFilteredReq toRequest(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<String> styles,
+        List<String> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        String postTypeId,
+        String dateInit,
+        String dateEnd
+    ) {
         return GetSerchResultFilteredReq.create(
             token,
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("text"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<Style>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<Instrument>>() {}),
-            (String) payload.get("contentTypeId"),
-            (String) payload.get("pageTypeId"),
-            objectMapper.convertValue(payload.get("dateInit"), Date.class),
-            objectMapper.convertValue(payload.get("dateEnd"), Date.class)
+            page,
+            size,
+            text,
+            styles,
+            instruments,
+            contentTypeId,
+            pageTypeId,
+            postTypeId,
+            dateInit,
+            dateEnd
         );
     }
 

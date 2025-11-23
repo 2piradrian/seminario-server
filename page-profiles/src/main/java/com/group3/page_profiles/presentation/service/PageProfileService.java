@@ -51,7 +51,7 @@ public class PageProfileService implements PageProfileServiceI {
         PageProfile page = new PageProfile();
         page.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.PAGE).toString());
 
-        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 
@@ -97,9 +97,8 @@ public class PageProfileService implements PageProfileServiceI {
         page.setMembers(members);
 
         Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-        Integer followers = this.userRepository.getFollowersById(dto.getPageId(), secretKeyHelper.getSecret());
 
-        return PageMapper.getPage().toResponse(page, followers, isFollowing);
+        return PageMapper.getPage().toResponse(page, follows.size(), isFollowing);
     }
 
 
@@ -107,6 +106,9 @@ public class PageProfileService implements PageProfileServiceI {
 
     @Override
     public GetPageProfilePageFilteredRes getProfileFiltered(GetPageProfilePageFilteredReq dto) {
+        User user = userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
@@ -117,6 +119,17 @@ public class PageProfileService implements PageProfileServiceI {
             dto.getPage(),
             dto.getSize()
         );
+
+        for (PageProfile pageResult : pages.getContent()) {
+
+            List<Follow> follows = this.userRepository.getAllFollowers(pageResult.getId(), this.secretKeyHelper.getSecret());
+            if (follows == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+
+            Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
+
+            pageResult.setIsFollowing(isFollowing);
+            
+        }
 
         return PageMapper.getFiltered().toResponse(pages);
     }
@@ -181,7 +194,7 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
         dto.getMembers().stream()
-                .map(memberId -> this.userRepository.getById(memberId, dto.getToken()))
+                .map(memberId -> this.userRepository.getById(dto.getToken(), memberId))
                 .forEach(userProfile -> {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
@@ -190,7 +203,7 @@ public class PageProfileService implements PageProfileServiceI {
         Set<User> existingMembers = new HashSet<>(members);
 
         dto.getMembers().forEach(id -> {
-            User member = this.userRepository.getById(id, dto.getToken());
+            User member = this.userRepository.getById(dto.getToken(), id);
             if (existingMembers.add(member)) {
                 members.add(member);
             }
@@ -198,7 +211,7 @@ public class PageProfileService implements PageProfileServiceI {
         page.setMembers(members);
 
         // ======== Update Page Type and Metadata ========
-        PageType pageType = this.catalogRepository.getById(dto.getPageType().getId());
+        PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
 

@@ -1,6 +1,8 @@
 package com.group3.posts.data.repository;
 
 import com.group3.entity.Category;
+import com.group3.entity.PageType;
+import com.group3.entity.PostType;
 import com.group3.posts.data.datasource.catalog_server.repository.CatalogServerRepositoryI;
 import com.group3.posts.domain.repository.CatalogRepositoryI;
 import lombok.AllArgsConstructor;
@@ -35,9 +37,12 @@ public class CatalogRepository implements CatalogRepositoryI {
     // ======== Get List of Categories by IDs ========
     @Override
     public List<Category> getCategoryListById(List<String> categoryIds) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", categoryIds);
-        return this.repository.getCategoryListById(payload).getCategories();
+        return this.repository.getCategoryListById(categoryIds).getCategories();
+    }
+
+    @Override
+    public PostType getByPostTypeId(String pageTypeId) {
+        return this.repository.getByPostTypeId(pageTypeId).getPostType();
     }
 
 }

@@ -1,7 +1,5 @@
 package com.group3.results.domain.dto.request;
 
-import com.group3.entity.Instrument;
-import com.group3.entity.Style;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
@@ -20,40 +18,44 @@ public class GetSerchResultFilteredReq {
 
     private final String text;
 
-    private final List<Style> styles;
+    private final List<String> styles;
 
-    private final List<Instrument> instruments;
+    private final List<String> instruments;
 
     private final String pageTypeId;
 
+    private final String postTypeId;
+
     private final String contentTypeId;
 
-    private final Date dateInit;
+    private final String dateInit;
 
-    private final Date dateEnd;
+    private final String dateEnd;
 
     public GetSerchResultFilteredReq(
         String token,
         Integer page,
         Integer size,
         String text,
-        List<Style> styles,
-        List<Instrument> instruments,
+        List<String> styles,
+        List<String> instruments,
         String contentTypeId,
         String pageTypeId,
-        Date dateInit,
-        Date dateEnd
+        String postTypeId,
+        String dateInit,
+        String dateEnd
     ) {
-        this.token = token;
-        this.page = page;
-        this.size = size;
-        this.text = text;
-        this.styles = styles;
-        this.instruments = instruments;
-        this.contentTypeId = contentTypeId;
-        this.pageTypeId = pageTypeId;
-        this.dateInit = dateInit;
-        this.dateEnd = dateEnd;
+            this.token = token;
+            this.page = page;
+            this.size = size;
+            this.text = text;
+            this.styles = styles;
+            this.instruments = instruments;
+            this.contentTypeId = contentTypeId;
+            this.pageTypeId = pageTypeId;
+            this.postTypeId = postTypeId;
+            this.dateInit = dateInit;
+            this.dateEnd = dateEnd;
     }
 
     public static GetSerchResultFilteredReq create(
@@ -61,12 +63,13 @@ public class GetSerchResultFilteredReq {
         Integer page,
         Integer size,
         String text,
-        List<Style> styles,
-        List<Instrument> instruments,
+        List<String> styles,
+        List<String> instruments,
         String contentTypeId,
         String pageTypeId,
-        Date dateInit,
-        Date dateEnd
+        String postTypeId,
+        String dateInit,
+        String dateEnd
     ) {
 
         if (token == null || token.isBlank()) {
@@ -93,14 +96,6 @@ public class GetSerchResultFilteredReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (dateInit == null || dateEnd == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (dateInit.after(dateEnd)) {
-            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
-        }
-
         return new GetSerchResultFilteredReq(
             token,
             page,
@@ -110,6 +105,7 @@ public class GetSerchResultFilteredReq {
             instruments,
             contentTypeId,
             pageTypeId,
+            postTypeId,
             dateInit,
             dateEnd
         );

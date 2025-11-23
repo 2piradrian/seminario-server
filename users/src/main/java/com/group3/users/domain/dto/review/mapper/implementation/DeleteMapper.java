@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class DeleteMapper {
 
-    public DeleteReviewReq toRequest(String token, Map<String, Object> payload) {
+    public DeleteReviewReq toRequest(String token, String id) {
         return DeleteReviewReq.create(
-            (String) payload.get("id"),
+            id,
             token
         );
     }

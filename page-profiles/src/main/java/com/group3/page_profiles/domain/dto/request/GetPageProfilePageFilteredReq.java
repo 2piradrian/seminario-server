@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 public class GetPageProfilePageFilteredReq {
 
+    private final String token;
+
     private final String secret;
 
     private final Integer page;
@@ -20,7 +22,8 @@ public class GetPageProfilePageFilteredReq {
     private final String pageTypeId;
 
 
-    private GetPageProfilePageFilteredReq(String secret, Integer page, Integer size, String name, String pageTypeId) {
+    private GetPageProfilePageFilteredReq(String token, String secret, Integer page, Integer size, String name, String pageTypeId) {
+        this.token = token;
         this.secret = secret;
         this.page = page;
         this.size = size;
@@ -28,7 +31,7 @@ public class GetPageProfilePageFilteredReq {
         this.pageTypeId = pageTypeId;
     }
 
-    public static GetPageProfilePageFilteredReq create(String secret, Integer page, Integer size, String name, String pageTypeId) {
+    public static GetPageProfilePageFilteredReq create(String token, String secret, Integer page, Integer size, String name, String pageTypeId) {
 
         if (secret == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -42,7 +45,11 @@ public class GetPageProfilePageFilteredReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetPageProfilePageFilteredReq(secret, page, size, name, pageTypeId);
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        return new GetPageProfilePageFilteredReq(token, secret, page, size, name, pageTypeId);
     }
 
 }

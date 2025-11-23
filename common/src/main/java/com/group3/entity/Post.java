@@ -38,6 +38,8 @@ public class Post {
 
     private Status status;
 
+    private PostType postType;
+
     // Domain variable
     private Integer upvotersQuantity;
 

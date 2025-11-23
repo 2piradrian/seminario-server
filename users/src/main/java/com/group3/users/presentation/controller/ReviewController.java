@@ -9,6 +9,8 @@ import com.group3.users.presentation.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class ReviewController {
         return ResponseEntity.ok(this.reviewService.getById(dto));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CreateReviewRes> create(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -38,40 +40,44 @@ public class ReviewController {
         return ResponseEntity.ok(this.reviewService.create(dto));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{reviewId}")
     public ResponseEntity<?> update(
             @RequestHeader("Authorization") String token,
+            @PathVariable("reviewId") String reviewId,
             @RequestBody Map<String, Object> payload
     ) {
-        UpdateReviewReq dto = ReviewMapper.update().toRequest(token, payload);
+        UpdateReviewReq dto = ReviewMapper.update().toRequest(token, reviewId, payload);
         return ResponseEntity.ok(reviewService.update(dto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> delete(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @PathVariable("reviewId") String reviewId
     ) {
-        DeleteReviewReq dto = ReviewMapper.delete().toRequest(token, payload);
+        DeleteReviewReq dto = ReviewMapper.delete().toRequest(token, reviewId);
         reviewService.delete(dto);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/get-by-author")
+    @GetMapping("/get-by-author")
     public ResponseEntity<?> getReviewsByAuthor(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetReviewsByAuthorReq dto = ReviewMapper.getReviewsByAuthor().toRequest(token, payload);
+        GetReviewsByAuthorReq dto = ReviewMapper.getReviewsByAuthor().toRequest(token, page, size);
         return ResponseEntity.ok(this.reviewService.getReviewsByAuthor(dto));
     }
 
-    @PostMapping("/get-by-reviewed")
+    @GetMapping("/get-by-reviewed")
     public ResponseEntity<?> getReviewsByReviewedId(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Object> payload
+            @RequestParam("userId") String userId,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
     ) {
-        GetPageReviewsByReviewedIdReq dto = ReviewMapper.getReviewsByReviewed().toRequest(token, payload);
+        GetPageReviewsByReviewedIdReq dto = ReviewMapper.getReviewsByReviewed().toRequest(token, userId, page, size);
         return ResponseEntity.ok(this.reviewService.getReviewsByReviewedId(dto));
     }
 

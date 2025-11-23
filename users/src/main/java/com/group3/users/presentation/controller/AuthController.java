@@ -16,7 +16,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> auth(
             @RequestHeader(value = "Authorization") String token
     ) {

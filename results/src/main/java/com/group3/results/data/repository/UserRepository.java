@@ -51,18 +51,9 @@ public class UserRepository implements UserRepositoryI {
         return user;
     }
 
-    public List<User> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
+    public List<User> getUserFilteredPage(String token, String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
 
-        Map<String,Object> payload = new HashMap<>();
-
-        payload.put("fullname",fullname);
-        payload.put("styles", styles);
-        payload.put("instruments", instruments);
-        payload.put("page",page);
-        payload.put("size",size);
-        payload.put("secret",secret);
-
-        GetUserPageFilteredRes response = this.repository.getUserFiltered(payload);
+        GetUserPageFilteredRes response = this.repository.getUserFiltered(token, secret , page, size, fullname, styles, instruments);
 
         return response.getUsers();
     }
@@ -100,12 +91,8 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public List<Follow> getAllFollowers(String id, String secret){
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("id", id);
-        payload.put("secret", secret);
-
-        return this.repository.getAllFollowers(payload).getFollowers();
+    public List<Follow> getAllFollowers(String token, String id, String secret){
+        return this.repository.getAllFollowers(token, id, secret).getFollowers();
     }
 
 }

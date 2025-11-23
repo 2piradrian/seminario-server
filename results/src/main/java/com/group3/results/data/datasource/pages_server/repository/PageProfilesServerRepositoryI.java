@@ -14,9 +14,20 @@ import java.util.Map;
 @LoadBalancerClient(name = "page-profiles-server", configuration = LoadBalancerConfiguration.class)
 public interface PageProfilesServerRepositoryI {
 
-    @PostMapping("/api/page-profiles/get-page-filtered")
-    GetPageProfilePageFilteredRes getPageProfileFilteredPage(@RequestBody Map<String, Object> payload);
+    @GetMapping("/api/page-profiles/get-page-filtered")
+    GetPageProfilePageFilteredRes getPageProfileFilteredPage(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size,
+        @RequestParam(value = "name", required = false) String name,
+        @RequestParam(value = "pageTypeId", required = false) String pageTypeId
+    );
 
     @GetMapping("/api/page-profiles/get-by-id/{pageId}")
-    GetPageByIdRes getById(@RequestHeader(value = "Authorization") String token, @PathVariable(value = "pageId") String pageId);
+    GetPageByIdRes getById(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "pageId") String pageId
+    );
+
 }

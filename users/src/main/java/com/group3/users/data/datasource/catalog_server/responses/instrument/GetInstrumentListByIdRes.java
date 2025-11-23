@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetInstrumentListByIdRes {
 
-    List<Instrument> instruments;
+    private final List<Instrument> instruments;
 
 }

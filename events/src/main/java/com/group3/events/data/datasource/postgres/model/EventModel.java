@@ -20,7 +20,6 @@ import java.util.List;
 public class EventModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String authorId;

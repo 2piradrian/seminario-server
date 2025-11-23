@@ -19,17 +19,10 @@ public class EventRepository implements EventRepositoryI {
     private final EventServerRepositoryI repository;
 
     @Override
-    public List<Event> getFilteredEventsPage(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
-        Map<String,Object> payload = new HashMap<>();
-
-        payload.put("page", page);
-        payload.put("size", size);
-        payload.put("text", text);
-        payload.put("dateInit", dateInit);
-        payload.put("dateEnd", dateEnd);
-        payload.put("secret", secret);
-
-        GetFilteredEventPageRes response = this.repository.getFilteredEvents(payload);
+    public List<Event> getFilteredEventsPage(String token, Integer page, Integer size, String text, String secret, String dateInit, String dateEnd) {
+        GetFilteredEventPageRes response = this.repository.getFilteredEvents(
+             token, secret, page, size, text, dateInit, dateEnd
+        );
 
         return response.getEvents();
     }

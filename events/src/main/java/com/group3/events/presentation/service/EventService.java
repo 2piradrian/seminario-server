@@ -62,6 +62,7 @@ public class EventService implements EventServiceI {
             event.setImageId(imageId);
         }
 
+        event.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.EVENT).toString());
         event.setAuthor(user);
         event.setTitle(dto.getTitle());
         event.setContent(dto.getContent());
@@ -109,6 +110,9 @@ public class EventService implements EventServiceI {
 
     @Override
     public GetFilteredEventPageRes getFilteredEvents(GetFilteredEventPageReq dto) {
+        User user = userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         PageContent<Event> events = this.eventRepository.getFilteredEvents(
@@ -157,10 +161,8 @@ public class EventService implements EventServiceI {
 
         LocalDateTime actualDateTime = LocalDateTime.now();
 
-        LocalDateTime eventDateInit = event.getDateInit().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime eventDateEnd = event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        if (actualDateTime.isBefore(eventDateInit)) throw new ErrorHandler(ErrorType.EVENT_NOT_STARTED);
         if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();

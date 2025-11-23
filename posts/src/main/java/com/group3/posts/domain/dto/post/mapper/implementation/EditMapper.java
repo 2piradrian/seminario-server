@@ -9,14 +9,14 @@ import java.util.Map;
 
 public class EditMapper {
 
-    public EditPostReq toRequest(String token, Map<String, Object> payload) {
+    public EditPostReq toRequest(String token, String postId, Map<String, Object> payload) {
         return EditPostReq.create(
             token,
-            (String) payload.get("postId"),
+            postId,
             (String) payload.get("title"),
             (String) payload.get("content"),
-            (Category) payload.get("category"),
-            (String) payload.get("base64Image")
+            (String) payload.get("base64Image"),
+            (String) payload.get("postTypeId")
         );
     }
 
@@ -25,4 +25,5 @@ public class EditMapper {
                 post.getId()
         );
     }
+
 }

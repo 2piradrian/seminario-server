@@ -17,7 +17,6 @@ import java.util.List;
 public class PostModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String title;
@@ -54,5 +53,7 @@ public class PostModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private String postTypeId;
 
 }

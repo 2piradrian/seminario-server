@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.List;
 public class CommentModel {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.UUID)
     private String Id;
 
     @Column(name = "author_id", nullable = false)
@@ -49,7 +49,7 @@ public class CommentModel {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private  LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
     private Status status;

@@ -15,7 +15,7 @@ public interface PostRepositoryI {
 
     PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size);
 
-    PageContent<Post> getFilteredPosts(Integer page, Integer size, String text);
+    PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId);
 
     Post save(Post post);
 

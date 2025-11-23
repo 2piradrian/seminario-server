@@ -14,14 +14,15 @@ public class GetPageFilteredMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetUserPageFilteredReq toRequest(Map<String, Object> payload) {
+    public GetUserPageFilteredReq toRequest(String token, String secret, Integer page, Integer size, String fullname, List<String> styles, List<String> instruments) {
         return GetUserPageFilteredReq.create(
-            (String) payload.get("secret"),
-            (Integer) payload.get("page"),
-            (Integer) payload.get("size"),
-            (String) payload.get("fullname"),
-            objectMapper.convertValue(payload.get("styles"), new TypeReference<List<String>>() {}),
-            objectMapper.convertValue(payload.get("instruments"), new TypeReference<List<String>>() {})
+            token,
+            secret,
+            page,
+            size,
+            fullname,
+            styles,
+            instruments
         );
     }
 

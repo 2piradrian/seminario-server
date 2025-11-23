@@ -39,7 +39,7 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<Follow> follows = this.userRepository.getAllFollowers(user.getId(), this.secretKeyHelper.getSecret());
+        List<Follow> follows = this.userRepository.getAllFollowers(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
         if (follows == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         ContentType contentType = this.catalogRepository.getContentById(dto.getContentTypeId());
@@ -57,29 +57,27 @@ public class ResultService implements ResultServiceI {
 
             case PAGEPROFILE -> {
                 pageProfiles = pageProfileRepository.getPageFilteredPage(
+                        dto.getToken(),
                         dto.getText(),
                         dto.getPageTypeId(),
                         dto.getPage(),
                         dto.getSize(),
                         secret
                 );
-
-                for (PageProfile page : pageProfiles) {
-                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-                    page.setIsFollowing(isFollowing);
-                }
+                
             }
 
             case USERPROFILE -> {
                 List<String> styleIds = dto.getStyles() != null
-                        ? dto.getStyles().stream().map(Style::getId).toList()
+                        ? dto.getStyles()
                         : List.of();
 
                 List<String> instrumentIds = dto.getInstruments() != null
-                        ? dto.getInstruments().stream().map(Instrument::getId).toList()
+                        ? dto.getInstruments()
                         : List.of();
 
                 users = userRepository.getUserFilteredPage(
+                        dto.getToken(),
                         dto.getText(),
                         styleIds,
                         instrumentIds,
@@ -87,18 +85,15 @@ public class ResultService implements ResultServiceI {
                         dto.getSize(),
                         secret
                 );
-
-                for (User u : users) {
-                    Boolean isFollowing = follows.stream().anyMatch(follow -> follow.getFollowerId().equals(user.getId()));
-                    u.getProfile().setIsFollowing(isFollowing);
-                }
             }
 
             case POST -> {
-                posts = postRepository.getFilteredPostsPage(
+                posts = postRepository.getFilteredPosts(
+                        dto.getToken(),
                         dto.getPage(),
                         dto.getSize(),
                         dto.getText(),
+                        dto.getPostTypeId(),
                         secret
                 );
 
@@ -116,6 +111,7 @@ public class ResultService implements ResultServiceI {
 
             case EVENT -> {
                 events = eventRepository.getFilteredEventsPage(
+                    dto.getToken(),
                     dto.getPage(),
                     dto.getSize(),
                     dto.getText(),
@@ -145,9 +141,11 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<Post> posts = this.postRepository.getFilteredPostsPage(
+        List<Post> posts = this.postRepository.getFilteredPosts(
+            dto.getToken(),
             dto.getPage(),
             dto.getSize(),
+            "",
             "",
             secretKeyHelper.getSecret()
         );

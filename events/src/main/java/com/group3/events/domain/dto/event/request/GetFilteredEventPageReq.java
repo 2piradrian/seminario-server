@@ -9,6 +9,8 @@ import java.util.Date;
 @Getter
 public class GetFilteredEventPageReq {
 
+    private final String token;
+
     private final Integer page;
 
     private final Integer size;
@@ -21,7 +23,8 @@ public class GetFilteredEventPageReq {
 
     private final String secret;
 
-    private GetFilteredEventPageReq(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+    private GetFilteredEventPageReq(String token, Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+        this.token = token;
         this.page = page;
         this.size = size;
         this.text = text;
@@ -30,7 +33,7 @@ public class GetFilteredEventPageReq {
         this.dateEnd = dateEnd;
     }
 
-    public static GetFilteredEventPageReq create(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
+    public static GetFilteredEventPageReq create(String token, Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd) {
 
         if (secret == null || secret.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -52,15 +55,15 @@ public class GetFilteredEventPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (dateInit == null || dateEnd == null){
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (dateInit.after(dateEnd)) {
+        if (dateInit != null && dateEnd != null && dateInit.after(dateEnd)) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFilteredEventPageReq(page, size,text, secret, dateInit, dateEnd);
+        return new GetFilteredEventPageReq(token, page, size, text, secret, dateInit, dateEnd);
     }
 
 }
