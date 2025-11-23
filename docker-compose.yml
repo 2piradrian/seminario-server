@@ -54,7 +54,6 @@ services:
             - "4040:4040"
         environment:
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
-            SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
         networks:
             - microservices-net
         depends_on:
