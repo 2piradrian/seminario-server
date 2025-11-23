@@ -28,11 +28,23 @@ public class GetSerchResultFilteredReq {
 
     private final String contentTypeId;
 
-    private final Date dateInit;
+    private final String dateInit;
 
-    private final Date dateEnd;
+    private final String dateEnd;
 
-    public GetSerchResultFilteredReq(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String postTypeId, Date dateInit, Date dateEnd) {
+    public GetSerchResultFilteredReq(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<String> styles,
+        List<String> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        String postTypeId,
+        String dateInit,
+        String dateEnd
+    ) {
             this.token = token;
             this.page = page;
             this.size = size;
@@ -46,7 +58,19 @@ public class GetSerchResultFilteredReq {
             this.dateEnd = dateEnd;
     }
 
-    public static GetSerchResultFilteredReq create(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String postTypeId, Date dateInit, Date dateEnd) {
+    public static GetSerchResultFilteredReq create(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<String> styles,
+        List<String> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        String postTypeId,
+        String dateInit,
+        String dateEnd
+    ) {
 
         if (token == null || token.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -70,10 +94,6 @@ public class GetSerchResultFilteredReq {
 
         if (contentTypeId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
-        }
-
-        if (dateInit != null && dateEnd != null && dateInit.after(dateEnd)) {
-            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
         return new GetSerchResultFilteredReq(
