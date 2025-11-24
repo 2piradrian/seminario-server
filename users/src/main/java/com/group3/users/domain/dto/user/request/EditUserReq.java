@@ -101,7 +101,7 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if ( styles == null || instruments == null) {
+        if (styles == null || instruments == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
