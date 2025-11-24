@@ -247,10 +247,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'catalog-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: catalog-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/catalog-db:/var/lib/postgresql/data
         ports:
@@ -262,10 +262,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'events-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: events-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/events-db:/var/lib/postgresql/data
         ports:
@@ -277,10 +277,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'page-profiles-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: page-profiles-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/page-profiles-db:/var/lib/postgresql/data
         ports:
@@ -292,10 +292,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'posts-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: posts-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/posts-db:/var/lib/postgresql/data
         ports:
@@ -307,10 +307,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'users-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: users-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/users-db:/var/lib/postgresql/data
         ports:
@@ -322,10 +322,10 @@ services:
         image: postgres:15.3
         restart: always
         environment:
-            POSTGRES_DB: 'notifications-db'
-            POSTGRES_USER: 'develop'
-            POSTGRES_PASSWORD: 'develop'
-            POSTGRES_HOST_AUTH_METHOD: md5
+            POSTGRES_DB: notifications-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
             - ./dabatase/notifications-db:/var/lib/postgresql/data
         ports:
