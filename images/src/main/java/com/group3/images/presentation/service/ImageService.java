@@ -43,7 +43,7 @@ public class ImageService implements ImageServiceI {
         String imageId = PrefixedUUID.generate(PrefixedUUID.EntityType.IMAGE).toString();
         String fileName = imageId + ".webp";
 
-        byte[] processedImage = CompressorHelper.compressUntilUnderSize(imageBytes, 1);
+        byte[] processedImage = CompressorHelper.compressUntilUnderSize(imageBytes, 5);
 
         Path savedPath = imageRepository.save(processedImage, fileName);
 
