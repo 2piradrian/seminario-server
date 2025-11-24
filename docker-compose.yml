@@ -47,6 +47,7 @@ services:
         ports:
             - "4040:4040"
         environment:
+            SPRING_PROFILES_ACTIVE: docker
             EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
         networks:
             - microservices-net

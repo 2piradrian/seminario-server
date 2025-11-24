@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: gateway
+
+  profiles:
+    active: docker
+
+server:
+  port: 4040
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://registry-server:8761/eureka/
+    fetch-registry: true

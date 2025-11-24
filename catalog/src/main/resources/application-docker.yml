@@ -1,0 +1,23 @@
+spring:
+
+  application:
+    name: catalog-server
+
+  profiles:
+    active: docker
+
+  config:
+    import: "optional:configserver:http://config-server:7777"
+
+server:
+  servlet:
+    context-path: /catalog-server
+  port: 0
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: http://registry-server:8761/eureka/
