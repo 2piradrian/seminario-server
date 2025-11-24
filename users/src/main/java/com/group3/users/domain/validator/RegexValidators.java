@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum RegexValidators {
 
-    EMAIL("^[\\^\\s@]+@[^\\s@]+\\.[^\\s@]+$"),
+    EMAIL("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"),
     NAME("^[\\p{L}]{2,20}(?:[ '-][\\p{L}]{2,20})*$"),
     SURNAME("^[\\p{L}]{2,20}(?:[ '-][\\p{L}]{2,20})*$"),
     PASSWORD("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)\\S{8,}$"),
