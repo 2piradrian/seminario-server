@@ -55,11 +55,13 @@ public class UserProfileEntityMapper {
                 userProfile.getStyles() != null
                         ? userProfile.getStyles().stream()
                         .map(Style::getId)
+                        .distinct()
                         .collect(Collectors.toList())
                         : Collections.emptyList(),
                 userProfile.getInstruments() != null
                         ? userProfile.getInstruments().stream()
                         .map(Instrument::getId)
+                        .distinct()
                         .collect(Collectors.toList())
                         : Collections.emptyList()
         );
@@ -69,6 +71,7 @@ public class UserProfileEntityMapper {
         if (models == null) return Collections.emptyList();
         return models.stream()
                 .map(UserProfileEntityMapper::toDomain)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -76,6 +79,7 @@ public class UserProfileEntityMapper {
         if (users == null) return Collections.emptyList();
         return users.stream()
                 .map(UserProfileEntityMapper::toModel)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
