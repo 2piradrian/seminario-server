@@ -16,6 +16,7 @@ public interface PageProfilesServerRepositoryI {
 
     @GetMapping("/api/page-profiles/get-page-filtered")
     GetPageProfilePageFilteredRes getPageProfileFilteredPage(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,

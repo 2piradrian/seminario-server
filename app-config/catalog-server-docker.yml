@@ -2,7 +2,7 @@ spring:
   datasource:
     username: develop
     password: develop
-    url: jdbc:postgresql://catalog-db:5433/catalog-db
+    url: jdbc:postgresql://catalog-db:5432/catalog-db
     hikari:
       maximum-pool-size: 5
       connection-timeout: 20000

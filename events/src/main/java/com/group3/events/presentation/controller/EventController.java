@@ -18,7 +18,7 @@ public class EventController {
 
     private final EventService service;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(
             @RequestHeader(value = "Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -40,14 +40,15 @@ public class EventController {
 
     @GetMapping("/get-filtered-events")
     public ResponseEntity<?> getFilteredEvents(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
-        @RequestParam(value = "text") String text,
-        @RequestParam(value = "dateInit") String dateInit,
-        @RequestParam(value = "dateInit") String dateEnd
+        @RequestParam(value = "text", required = false) String text,
+        @RequestParam(value = "dateInit", required = false) String dateInit,
+        @RequestParam(value = "dateEnd", required = false) String dateEnd
     ) {
-        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(page, size, text,secret, dateInit, dateEnd);
+        GetFilteredEventPageReq dto = EventMapper.getFilteredPage().toRequest(token, page, size, text, secret, dateInit, dateEnd);
 
         return ResponseEntity.ok(this.service.getFilteredEvents(dto));
     }
@@ -73,27 +74,21 @@ public class EventController {
         return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/{eventId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
-            @RequestParam(value = "eventId") String eventId,
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "content") String content,
-            @RequestParam(value = "base64Image") String base64Image,
-            @RequestParam(value = "dateInit") String dateInit,
-            @RequestParam(value = "dateInit") String dateEnd
+            @PathVariable(value = "eventId") String eventId,
+            @RequestBody Map<String, Object> payload
     ) {
-        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, title, content, base64Image, dateInit, dateEnd);
+        EditEventReq dto = EventMapper.edit().toRequest(token, eventId, payload);
 
         return ResponseEntity.ok(this.service.edit(dto));
     }
 
-
-
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @RequestParam(value = "eventId") String eventId
+            @PathVariable(value = "eventId") String eventId
     ) {
         DeleteEventReq dto = EventMapper.delete().toRequest(token, eventId);
         this.service.delete(dto);

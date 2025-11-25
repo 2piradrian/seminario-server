@@ -68,8 +68,8 @@ public class UserService implements UserServiceI {
                 GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
         ).getFollowers().stream().map(Follow::getFollowerId).toList();
 
-        profileResult.isOwnProfile(userResult.getId());
-        profileResult.setFollowsChecks(userResult.getId(), following, followers);
+        profileResult.isOwnProfile(user.getId());
+        profileResult.setFollowsChecks(user.getId(), following, followers);
 
         userResult.setProfile(profileResult);
 
@@ -105,6 +105,9 @@ public class UserService implements UserServiceI {
 
     @Override
     public GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         PageContent<User> profiles = this.userRepository.getFilteredPage(
@@ -114,6 +117,23 @@ public class UserService implements UserServiceI {
             dto.getPage(),
             dto.getSize()
         );
+
+        for (User userResult : profiles.getContent()) {
+            UserProfile profileResult = userResult.getProfile();
+
+            List<String> following = this.followService.getAllFollowing(
+                    GetAllFollowingReq.create(userResult.getId(), secretKeyHelper.getSecret())
+            ).getFollowing().stream().map(Follow::getFollowedId).toList();
+
+            List<String> followers = this.followService.getAllFollowers(
+                    GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
+            ).getFollowers().stream().map(Follow::getFollowerId).toList();
+
+            profileResult.isOwnProfile(user.getId());
+            profileResult.setFollowsChecks(user.getId(), following, followers);
+
+            userResult.setProfile(profileResult);
+        }
 
         return UserMapper.getFiltered().toResponse(profiles);
     }

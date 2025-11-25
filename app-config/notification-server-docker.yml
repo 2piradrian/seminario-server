@@ -2,7 +2,7 @@ spring:
   datasource:
     username: develop
     password: develop
-    url: jdbc:postgresql://notifications-db:5438/notifications-db
+    url: jdbc:postgresql://notifications-db:5432/notifications-db
     hikari:
       maximum-pool-size: 5
       connection-timeout: 20000
@@ -31,4 +31,4 @@ application:
   internal:
     secret: "I'll see you on the dark side of the moon"
   host:
-      url: http://localhost:4040
+      url: https://vps-5486356-x.dattaweb.com

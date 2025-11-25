@@ -12,15 +12,15 @@ public class CreatePageReq {
 
     private final String name;
 
-    private final PageType pageType;
+    private final String pageTypeId;
 
-    private CreatePageReq(String token, String name, PageType pageType) {
+    private CreatePageReq(String token, String name, String pageTypeId) {
         this.token = token;
         this.name = name;
-        this.pageType = pageType;
+        this.pageTypeId = pageTypeId;
     }
 
-    public static CreatePageReq create(String token, String name, PageType pageType) {
+    public static CreatePageReq create(String token, String name, String pageTypeId) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -34,11 +34,11 @@ public class CreatePageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        if (pageType == null) {
+        if (pageTypeId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new CreatePageReq(token, name, pageType);
+        return new CreatePageReq(token, name, pageTypeId);
     }
     
 }

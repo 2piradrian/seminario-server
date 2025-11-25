@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface EventRepositoryI {
 
-    List<Event> getFilteredEventsPage(Integer page, Integer size, String text, String secret, Date dateInit, Date dateEnd);
+    List<Event> getFilteredEventsPage(String token, Integer page, Integer size, String text, String secret, String dateInit, String dateEnd);
 
 }

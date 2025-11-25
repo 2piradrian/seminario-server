@@ -51,9 +51,9 @@ public class UserRepository implements UserRepositoryI {
         return user;
     }
 
-    public List<User> getUserFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
+    public List<User> getUserFilteredPage(String token, String fullname, List<String> styles, List<String> instruments, Integer page, Integer size, String secret){
 
-        GetUserPageFilteredRes response = this.repository.getUserFiltered(secret , page, size, fullname, styles, instruments);
+        GetUserPageFilteredRes response = this.repository.getUserFiltered(token, secret , page, size, fullname, styles, instruments);
 
         return response.getUsers();
     }
@@ -91,8 +91,8 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public List<Follow> getAllFollowers(String id, String secret){
-        return this.repository.getAllFollowers(id, secret).getFollowers();
+    public List<Follow> getAllFollowers(String token, String id, String secret){
+        return this.repository.getAllFollowers(token, id, secret).getFollowers();
     }
 
 }

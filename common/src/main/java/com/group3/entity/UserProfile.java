@@ -47,7 +47,7 @@ public class UserProfile {
     public void setFollowsChecks(String profileId, List<String> followingList, List<String> followersList){
         this.followingQuantity = followingList.size();
         this.followersQuantity = followersList.size();
-        this.isFollowing = followingList.contains(profileId);
+        this.isFollowing = followersList.contains(profileId);
     }
 
 }

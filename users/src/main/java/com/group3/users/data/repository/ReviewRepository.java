@@ -2,6 +2,7 @@ package com.group3.users.data.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Review;
+import com.group3.entity.Status;
 import com.group3.users.data.datasource.postgres.mapper.ReviewEntityMapper;
 import com.group3.users.data.datasource.postgres.model.ReviewModel;
 import com.group3.users.data.datasource.postgres.repository.PostgresReviewRepositoryI;
@@ -62,6 +63,7 @@ public class ReviewRepository implements ReviewRepositoryI {
 
         Page<ReviewModel> reviewModels = repository.findByReviewerId(
                 reviewerId,
+                Status.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -80,6 +82,7 @@ public class ReviewRepository implements ReviewRepositoryI {
 
         Page<ReviewModel> reviewModels = repository.findByReviewedUserId(
                 reviewedUserId,
+                Status.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 

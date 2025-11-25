@@ -1,5 +1,6 @@
 package com.group3.posts.domain.dto.post.request;
 
+import com.group3.entity.PostType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
@@ -17,15 +18,18 @@ public class CreatePostReq {
 
     private final String image;
 
-    private CreatePostReq(String token, String title, String content, String profileId, String image) {
+    private final String postTypeId;
+
+    private CreatePostReq(String token, String title, String content, String profileId, String image, String postTypeId) {
         this.token = token;
         this.title = title;
         this.content = content;
         this.profileId = profileId;
         this.image = image;
+        this.postTypeId = postTypeId;
     }
 
-    public static CreatePostReq create(String token, String title, String content, String profileId, String image) {
+    public static CreatePostReq create(String token, String title, String content, String profileId, String image, String postTypeId) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -53,7 +57,11 @@ public class CreatePostReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new CreatePostReq(token, title, content, profileId, image);
+        if (postTypeId == null || postTypeId.isEmpty()) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        return new CreatePostReq(token, title, content, profileId, image, postTypeId);
     }
 
 }

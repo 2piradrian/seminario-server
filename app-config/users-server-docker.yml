@@ -31,4 +31,4 @@ application:
   internal:
     secret: "I'll see you on the dark side of the moon"
   host:
-      url: http://localhost:4040
+      url: https://vps-5486356-x.dattaweb.com

@@ -36,6 +36,8 @@ public class PostService implements PostServiceI {
 
     private final NotificationsRepository notificationsRepository;
 
+    private final CatalogRepository catalogRepository;
+
 
     // ======== Create Post ========
 
@@ -64,6 +66,10 @@ public class PostService implements PostServiceI {
             String imageId = this.imagesRepository.upload(dto.getImage(), secretKeyHelper.getSecret());
             post.setImageId(imageId);
         }
+
+        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
+        if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+        post.setPostType(postType);
 
         post.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.POST).toString());
         post.setAuthor(user);
@@ -138,6 +144,9 @@ public class PostService implements PostServiceI {
 
     @Override
     public GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto) {
+        User user = userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText(), dto.getPostTypeId());
 
@@ -309,6 +318,10 @@ public class PostService implements PostServiceI {
             String imageId = this.imagesRepository.upload(dto.getBase64Image(), secretKeyHelper.getSecret());
             post.setImageId(imageId);
         }
+
+        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
+        if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+        post.setPostType(postType);
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());

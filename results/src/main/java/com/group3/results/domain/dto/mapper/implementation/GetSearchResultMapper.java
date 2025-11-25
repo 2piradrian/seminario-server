@@ -14,7 +14,19 @@ public class GetSearchResultMapper {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GetSerchResultFilteredReq toRequest(String token, Integer page, Integer size, String text, List<String> styles, List<String> instruments, String contentTypeId, String pageTypeId, String postTypeId, String dateInit, String dateEnd) {
+    public GetSerchResultFilteredReq toRequest(
+        String token,
+        Integer page,
+        Integer size,
+        String text,
+        List<String> styles,
+        List<String> instruments,
+        String contentTypeId,
+        String pageTypeId,
+        String postTypeId,
+        String dateInit,
+        String dateEnd
+    ) {
         return GetSerchResultFilteredReq.create(
             token,
             page,
@@ -25,8 +37,8 @@ public class GetSearchResultMapper {
             contentTypeId,
             pageTypeId,
             postTypeId,
-            objectMapper.convertValue(dateInit, Date.class),
-            objectMapper.convertValue(dateEnd, Date.class)
+            dateInit,
+            dateEnd
         );
     }
 

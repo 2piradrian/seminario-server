@@ -46,19 +46,10 @@ public class User {
                 this.isPageMember(comment.getPageProfile());
     }
 
-    /*public boolean canDelete(Event event){
-
-        if(this.role.canDelete()){
-            return true;
-        }
-
-        if(event.getAuthor() != null && event.getAuthor().getId().equals(this.getId())){
-            return true;
-        }
-
-        PageProfile pageProfile = event.getPageProfile();
-
-        return this.isPageMember(pageProfile);
-    }*/
+    public boolean canDelete(Review review){
+        return this.role.canDelete() ||
+            (review.getReviewerUser() != null && review.getReviewerUser().getId().equals(this.getId())) ||
+            (review.getReviewedId().equals(this.getId()));
+    }
 
 }

@@ -16,9 +16,9 @@ public class PostRepository implements PostRepositoryI {
     private final PostServerRepositoryI repository;
 
     @Override
-    public List<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId, String secret) {
+    public List<Post> getFilteredPosts(String token, Integer page, Integer size, String text, String postTypeId, String secret) {
 
-        GetFilteredPostPageRes response = this.repository.getFilteredPosts(page, size, text, postTypeId, secret);
+        GetFilteredPostPageRes response = this.repository.getFilteredPosts(token, page, size, text, postTypeId, secret);
 
         return response.getPosts();
     }

@@ -30,7 +30,7 @@ public class ResultController {
         @RequestParam(value = "pageTypeId", required = false) String pageTypeId,
         @RequestParam(value = "postTypeId", required = false) String postTypeId,
         @RequestParam(value = "dateInit", required = false) String dateInit,
-        @RequestParam(value = "dateENd", required = false) String dateEnd
+        @RequestParam(value = "dateEnd", required = false) String dateEnd
     ) {
         GetSerchResultFilteredReq dto = ResultsMapper.getSearchResult().toRequest(token, page, size, text, styles, instruments, contentTypeId, pageTypeId, postTypeId, dateInit, dateEnd);
         return ResponseEntity.ok(this.resultService.getSearchResult(dto));

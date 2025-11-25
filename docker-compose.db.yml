@@ -1,0 +1,94 @@
+services:
+    catalog-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: catalog-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/catalog-db:/var/lib/postgresql/data
+        ports:
+            - 5433:5432
+        networks:
+            - microservices-net
+
+    events-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: events-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/events-db:/var/lib/postgresql/data
+        ports:
+            - 5437:5432
+        networks:
+            - microservices-net
+
+    page-profiles-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: page-profiles-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/page-profiles-db:/var/lib/postgresql/data
+        ports:
+            - 5436:5432
+        networks:
+            - microservices-net
+
+    posts-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: posts-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/posts-db:/var/lib/postgresql/data
+        ports:
+            - 5435:5432
+        networks:
+            - microservices-net
+
+    users-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: users-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/users-db:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        networks:
+            - microservices-net
+
+    notifications-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: notifications-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/notifications-db:/var/lib/postgresql/data
+        ports:
+            - 5438:5432
+        networks:
+            - microservices-net
+
+networks:
+    microservices-net:
+        driver: bridge

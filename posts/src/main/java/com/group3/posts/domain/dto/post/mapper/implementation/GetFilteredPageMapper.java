@@ -14,8 +14,9 @@ import java.util.Map;
 
 public class GetFilteredPageMapper {
 
-    public GetFilteredPostPageReq toRequest(Integer page, Integer size, String text, String postTypeId, String secret) {
+    public GetFilteredPostPageReq toRequest(String token, Integer page, Integer size, String text, String postTypeId, String secret) {
         return GetFilteredPostPageReq.create(
+            token,
             page,
             size,
             text,

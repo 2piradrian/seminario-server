@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getAllStaff(dto));
     }
     
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<?> update(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
@@ -49,6 +49,7 @@ public class UserController {
 
     @GetMapping("/get-user-filtered")
     public ResponseEntity<?> getFiltered(
+        @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size,
@@ -56,7 +57,7 @@ public class UserController {
         @RequestParam(value = "styles", required = false) List<String> styles,
         @RequestParam(value = "instruments", required = false) List<String> instruments
     ) {
-        GetUserPageFilteredReq dto = UserMapper.getFiltered().toRequest(secret, page, size, fullname, styles, instruments);
+        GetUserPageFilteredReq dto = UserMapper.getFiltered().toRequest(token, secret, page, size, fullname, styles, instruments);
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
     }
 

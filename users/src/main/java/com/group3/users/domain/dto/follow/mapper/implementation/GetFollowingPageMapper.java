@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class GetFollowingPageMapper {
 
-    public GetFollowingPageReq toRequest(String token, String userId, Integer page, Integer size) {
+    public GetFollowingPageReq toRequest(String token, String subjectId, Integer page, Integer size) {
         return GetFollowingPageReq.create(
-                userId,
+                subjectId,
                 page,
                 size,
                 token

@@ -23,7 +23,7 @@ public class EditMapper {
             (String) payload.get("longDescription"),
             (String) payload.get("ownerId"),
             objectMapper.convertValue(payload.get("members"), new TypeReference<List<String>>() {}),
-            objectMapper.convertValue(payload.get("pageType"), new TypeReference<PageType>() {})
+            (String) payload.get("pageTypeId")
         );
     }
     

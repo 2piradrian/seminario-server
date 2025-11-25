@@ -57,6 +57,10 @@ public class ReviewService implements ReviewServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Review review = new Review();
+
+        if(dto.getReviewedUserId().equals(user.getId()))
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        
         review.setReviewedId(dto.getReviewedUserId());
         review.setReviewerUser(userProfileRepository.getById(user.getId()));
         review.setReview(dto.getReview());
@@ -103,7 +107,10 @@ public class ReviewService implements ReviewServiceI {
         Review review = reviewRepository.getById(dto.getId());
         if (review == null) throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
 
-        if (!review.getReviewerUser().getId().equals(user.getId()))
+        if (review.getStatus() == Status.DELETED)
+            throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
+
+        if (!user.canDelete(review))
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         review.setUpdatedAt(LocalDateTime.now());

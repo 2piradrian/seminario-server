@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class GetFollowingPageReq {
 
-    private final String userId;
+    private final String subjectId;
 
     private final Integer page;
 
@@ -15,20 +15,20 @@ public class GetFollowingPageReq {
 
     private final String token;
 
-    private GetFollowingPageReq(String userId, Integer page, Integer size, String token) {
-        this.userId = userId;
+    private GetFollowingPageReq(String subjectId, Integer page, Integer size, String token) {
+        this.subjectId = subjectId;
         this.page = page;
         this.size = size;
         this.token = token;
     }
 
-    public static GetFollowingPageReq create(String userId, Integer page, Integer size, String token) {
+    public static GetFollowingPageReq create(String subjectId, Integer page, Integer size, String token) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (userId == null) {
+        if (subjectId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -48,7 +48,7 @@ public class GetFollowingPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFollowingPageReq(userId, page, size, token);
+        return new GetFollowingPageReq(subjectId, page, size, token);
     }
 
 }
