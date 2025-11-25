@@ -70,7 +70,7 @@ public class EventService implements EventServiceI {
         event.setDateEnd(dto.getDateEnd());
         event.setStatus(Status.ACTIVE);
         event.setViews(0);
-        event.setAssists(List.of());
+        event.setAssists(List.of(user.getId()));
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
