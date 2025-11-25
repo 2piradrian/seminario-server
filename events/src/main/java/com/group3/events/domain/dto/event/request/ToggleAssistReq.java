@@ -26,11 +26,4 @@ public class ToggleAssistReq {
         return new ToggleAssistReq(token, eventId);
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public String getEventId() {
-        return eventId;
-    }
 }
