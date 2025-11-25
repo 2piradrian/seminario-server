@@ -123,6 +123,11 @@ public class EventService implements EventServiceI {
             dto.getDateEnd()
         );
 
+        for (Event eventResult : events.getContent()) {
+            eventResult.calculateAssistsQuantity();
+            eventResult.setIsAssisting(user.getId());
+        }
+
         return EventMapper.getFilteredPage().toResponse(events);
     }
 
