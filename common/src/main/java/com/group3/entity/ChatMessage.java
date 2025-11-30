@@ -15,14 +15,12 @@ public class ChatMessage {
 
     private String id;
 
-    private String targetId;
+    private String senderId;
 
-    private String sourceId;
+    private String receiverId;
 
-    private NotificationContent content;
+    private String content;
 
     private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
 }
