@@ -43,4 +43,9 @@ public class ChatService implements ChatServiceI {
 
         return new GetConversationPageMapper().toResponse(messages);
     }
+
+    @Override
+    public ChatMessage save(ChatMessage chatMessage) {
+        return chatMessageRepository.save(chatMessage);
+    }
 }
