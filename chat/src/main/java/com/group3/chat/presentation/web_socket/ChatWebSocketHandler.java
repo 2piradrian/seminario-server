@@ -91,7 +91,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             return null;
         }
         String token = query.substring(6);
-        return this.userRepository.auth(token);
+        String bearerToken = "Bearer " + token;
+        return this.userRepository.auth(bearerToken);
     }
 
 }
