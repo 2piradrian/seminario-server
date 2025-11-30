@@ -12,13 +12,13 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
     @Query("""
         SELECT m
         FROM ChatMessageModel m
-        WHERE (m.senderId = :senderId AND m.receiverId = :receiverId)
-           OR (m.senderId = :receiverId AND m.receiverId = :senderId)
+        WHERE (m.senderId = :user1Id AND m.receiverId = :user2Id)
+           OR (m.senderId = :user2Id AND m.receiverId = :user1Id)
         ORDER BY m.createdAt ASC
     """)
     Page<ChatMessageModel> findConversation(
-            @Param("senderId") String senderId,
-            @Param("receiverId") String receiverId,
+            @Param("user1Id") String user1Id,
+            @Param("user2Id") String user2Id,
             Pageable pageable
     );
 

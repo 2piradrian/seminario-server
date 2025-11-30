@@ -48,5 +48,4 @@ public class ChatMessageRepository implements ChatMessageRepositoryI {
         ChatMessageModel saved = this.repository.save(chatMessageModel);
         return ChatMessageEntityMapper.toDomain(saved);
     }
-
 }
