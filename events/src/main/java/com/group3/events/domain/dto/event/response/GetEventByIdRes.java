@@ -28,7 +28,7 @@ public class GetEventByIdRes {
 
     private final Integer views;
 
-    private final Integer assists;
+    private final Integer assistsQuantity;
 
     private final Date dateInit;
 

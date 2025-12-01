@@ -32,7 +32,7 @@ public class EventBatchProcessorHandler {
             event.setUpdatedAt(now);
         });
 
-        this.eventRepository.updateAll(events.getContent());
+        this.eventRepository.updateBatch(events.getContent());
 
         return events.getContent().size() == batchSize;
     }
@@ -52,7 +52,7 @@ public class EventBatchProcessorHandler {
             event.setUpdatedAt(now);
         });
 
-        this.eventRepository.updateAll(events.getContent());
+        this.eventRepository.updateBatch(events.getContent());
 
         return events.getContent().size() == batchSize;
     }

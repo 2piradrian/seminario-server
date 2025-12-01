@@ -21,7 +21,7 @@ public interface EventRepositoryI {
 
     PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size);
 
-    void updateAll(List<Event> events);
+    void updateBatch(List<Event> events);
 
     PageContent<Event> getInactiveEventsToActivate(LocalDateTime now, Integer size);
 

@@ -56,7 +56,7 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public void updateAll(List<Event> events) {
+    public void updateBatch(List<Event> events) {
         List<EventModel> models = events.stream()
             .map(EventEntityMapper::toModel)
             .collect(Collectors.toList());
