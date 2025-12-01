@@ -2,7 +2,7 @@ spring:
   datasource:
     username: develop
     password: develop
-    url: jdbc:postgresql://chat-db:5439/chat-db
+    url: jdbc:postgresql://chat-db:5432/chat-db
     hikari:
       maximum-pool-size: 5
       connection-timeout: 20000

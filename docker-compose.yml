@@ -80,6 +80,8 @@ services:
                 condition: service_started
             notification-server:
                 condition: service_started
+            chat-server:
+                condition: service_started
         logging:
             driver: json-file
             options:
@@ -279,6 +281,31 @@ services:
             registry-server:
                 condition: service_healthy
             notifications-db:
+                condition: service_started
+        logging:
+            driver: json-file
+            options:
+                max-size: "5m"
+
+    chat-server:
+        build:
+            context: .
+            dockerfile: chat/Dockerfile
+        container_name: chat-server
+        restart: always
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            SERVER_PORT: 8089
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
+            SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
+        networks:
+            - microservices-net
+        depends_on:
+            config-server:
+                condition: service_healthy
+            registry-server:
+                condition: service_healthy
+            chat-db:
                 condition: service_started
         logging:
             driver: json-file
