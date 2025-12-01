@@ -10,9 +10,13 @@ import com.group3.events.domain.repository.EventRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,7 +34,7 @@ public class EventRepository implements EventRepositoryI {
         EventModel eventModel = this.repository.findById(eventId).orElse(null);
 
         if (eventModel == null) return null;
-        if (!eventModel.getStatus().equals(Status.ACTIVE)) return null;
+        if (eventModel.getStatus().equals(Status.DELETED)) return null;
 
         return EventEntityMapper.toDomain(eventModel);
     }
@@ -52,12 +56,21 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
+    public void updateAll(List<Event> events) {
+        List<EventModel> models = events.stream()
+            .map(EventEntityMapper::toModel)
+            .collect(Collectors.toList());
+
+        this.repository.saveAll(models);
+    }
+
+    @Override
     public PageContent<Event> getByAuthorOrAssistant(String authorId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByAuthorOrAssistant(
                 authorId,
-                Status.ACTIVE,
+                Status.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -77,7 +90,7 @@ public class EventRepository implements EventRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByFilteredPage(
-            Status.ACTIVE,
+            Status.DELETED,
             text,
             dateInit,
             dateEnd,
@@ -92,4 +105,45 @@ public class EventRepository implements EventRepositoryI {
             eventModels.hasNext() ? eventModels.getNumber() + 2 : null
         );
     }
+
+    @Override
+    public PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size) {
+
+        Date dateNow = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+
+        Slice<EventModel> eventModels = repository.findExpiredEvents(
+            Status.ACTIVE,
+            dateNow,
+            PageRequest.of(0, size)
+        );
+
+        return new PageContent<>(
+            eventModels.getContent().stream()
+                .map(EventEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            eventModels.getNumber() + 1,
+            eventModels.hasNext() ? eventModels.getNumber() + 2 : null
+        );
+    }
+
+    @Override
+    public PageContent<Event> getInactiveEventsToActivate(LocalDateTime now, Integer size) {
+
+        Date dateNow = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+
+        Slice<EventModel> eventModels = repository.findReadyToStartEvents(
+            Status.INACTIVE,
+            dateNow,
+            PageRequest.of(0, size)
+        );
+
+        return new PageContent<>(
+            eventModels.getContent().stream()
+                .map(EventEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            eventModels.getNumber() + 1,
+            eventModels.hasNext() ? eventModels.getNumber() + 2 : null
+        );
+    }
+
 }
