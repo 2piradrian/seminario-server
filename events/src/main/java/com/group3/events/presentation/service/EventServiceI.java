@@ -19,4 +19,6 @@ public interface EventServiceI {
 
     void delete(DeleteEventReq dto);
 
+    void updateEventsLifeCycle();
+
 }
