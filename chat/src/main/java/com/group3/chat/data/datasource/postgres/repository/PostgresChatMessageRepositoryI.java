@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessageModel, String> {
 
     @Query("""
@@ -22,5 +24,14 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
             Pageable pageable
     );
 
+    @Query("""
+        SELECT DISTINCT CASE
+            WHEN m.senderId = :userId THEN m.receiverId
+            ELSE m.senderId
+        END
+        FROM ChatMessageModel m
+        WHERE m.senderId = :userId OR m.receiverId = :userId
+    """)
+    List<String> findActiveChats(@Param("userId") String userId);
 
 }
