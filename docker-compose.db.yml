@@ -89,6 +89,21 @@ services:
         networks:
             - microservices-net
 
+    chat-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: chat-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/chat-db:/var/lib/postgresql/data
+        ports:
+            - 5439:5432
+        networks:
+            - microservices-net
+
 networks:
     microservices-net:
         driver: bridge

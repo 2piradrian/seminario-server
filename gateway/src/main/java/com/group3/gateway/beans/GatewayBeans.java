@@ -87,6 +87,13 @@ public class GatewayBeans {
                         .uri("lb://notification-server")
                 )
 
+                // CHAT SERVER
+                .route(r -> r
+                        .path("/api/chat/**")
+                        .filters(f -> f.rewritePath("/api/chat(?<segment>/.*)?", "/chat-server/api/chat${segment}"))
+                        .uri("lb://chat-server")
+                )
+
                 .build();
     }
 

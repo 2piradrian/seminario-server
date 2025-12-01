@@ -80,6 +80,8 @@ services:
                 condition: service_started
             notification-server:
                 condition: service_started
+            chat-server:
+                condition: service_started
         logging:
             driver: json-file
             options:
@@ -285,6 +287,31 @@ services:
             options:
                 max-size: "5m"
 
+    chat-server:
+        build:
+            context: .
+            dockerfile: chat/Dockerfile
+        container_name: chat-server
+        restart: always
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            SERVER_PORT: 8089
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://registry-server:8761/eureka/
+            SPRING_CONFIG_IMPORT: "configserver:http://config-server:7777"
+        networks:
+            - microservices-net
+        depends_on:
+            config-server:
+                condition: service_healthy
+            registry-server:
+                condition: service_healthy
+            chat-db:
+                condition: service_started
+        logging:
+            driver: json-file
+            options:
+                max-size: "5m"
+
     # --- BASES DE DATOS ---
 
     catalog-db:
@@ -394,6 +421,25 @@ services:
             - ./dabatase/notifications-db:/var/lib/postgresql/data
         ports:
             - 5438:5432
+        networks:
+            - microservices-net
+        logging:
+            driver: json-file
+            options:
+                max-size: "5m"
+
+    chat-db:
+        image: postgres:15.3
+        restart: always
+        environment:
+            POSTGRES_DB: chat-db
+            POSTGRES_USER: develop
+            POSTGRES_PASSWORD: develop
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - ./dabatase/chat-db:/var/lib/postgresql/data
+        ports:
+            - 5439:5432
         networks:
             - microservices-net
         logging:
