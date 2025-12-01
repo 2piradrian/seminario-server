@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -50,5 +52,14 @@ public class ChatService implements ChatServiceI {
         String uuid = PrefixedUUID.generate(PrefixedUUID.EntityType.CHAT_MESSAGE).toString();
         chatMessage.setId(uuid);
         return chatMessageRepository.save(chatMessage);
+    }
+
+    @Override
+    public List<String> getActiveChats(String token) {
+        User user = userRepository.auth(token);
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+        return chatMessageRepository.findActiveChats(user.getId());
     }
 }

@@ -26,4 +26,9 @@ public class ChatController {
         return ResponseEntity.ok(this.service.getConversation(dto));
     }
 
+    @GetMapping("/active-chats")
+    public ResponseEntity<?> getActiveChats(@RequestHeader(value = "Authorization") String token) {
+        return ResponseEntity.ok(this.service.getActiveChats(token));
+    }
+
 }
