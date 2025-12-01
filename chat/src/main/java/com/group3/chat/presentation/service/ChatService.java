@@ -5,6 +5,7 @@ import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
 import com.group3.chat.domain.dto.message.response.GetConversationPageRes;
 import com.group3.chat.domain.repository.ChatMessageRepositoryI;
 import com.group3.chat.domain.repository.UserRepositoryI;
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
 import com.group3.entity.User;
@@ -46,6 +47,8 @@ public class ChatService implements ChatServiceI {
 
     @Override
     public ChatMessage save(ChatMessage chatMessage) {
+        String uuid = PrefixedUUID.generate(PrefixedUUID.EntityType.CHAT_MESSAGE).toString();
+        chatMessage.setId(uuid);
         return chatMessageRepository.save(chatMessage);
     }
 }
