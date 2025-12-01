@@ -252,8 +252,8 @@ public class EventService implements EventServiceI {
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    @Scheduled(initialDelay = 60000, fixedDelay = Long.MAX_VALUE)
-    // @Scheduled(cron = "0 0 0 * * *")
+    // @Scheduled(initialDelay = 60000, fixedDelay = Long.MAX_VALUE)
+    @Scheduled(cron = "0 0 0 * * *")
     public void updateEventsLifeCycle() {
         log.info("Cron: Iniciando ciclo de vida de eventos...");
 
