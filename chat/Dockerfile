@@ -11,7 +11,7 @@ RUN mvn clean install -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=app_builder /build/target/chat.jar app.jar
+COPY --from=app_builder /build/target/chat-0.0.1-SNAPSHOT.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=docker
 EXPOSE 8080
