@@ -4,6 +4,7 @@ import com.group3.entity.Status;
 import com.group3.events.data.datasource.postgres.model.EventModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         SELECT DISTINCT e
         FROM EventModel e
         WHERE (e.authorId = :userId OR :userId MEMBER OF e.assists)
-        AND e.status = :status
+        AND e.status <> :status
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByAuthorOrAssistant(
@@ -29,8 +30,8 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     // ======== Get Events by Filtered Page ========
 
     @Query("""
-        SELECT e FROM EventModel e WHERE
-        e.status = :status
+        SELECT e FROM EventModel e 
+        WHERE e.status <> :status
         AND
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
@@ -48,4 +49,32 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("dateEnd") Date dateEnd,
         Pageable pageable
     );
+
+    @Query("""
+        SELECT e 
+        FROM EventModel e 
+        WHERE e.status = :status 
+        AND e.dateEnd < :now 
+        ORDER BY e.id ASC
+    """)
+    Slice<EventModel> findExpiredEvents(
+        @Param("status") Status status,
+        @Param("now") Date now,
+        Pageable pageable
+    );
+
+    @Query("""
+        SELECT e 
+        FROM EventModel e 
+        WHERE e.status = :status 
+        AND e.dateInit <= :now 
+        AND e.dateEnd > :now
+        ORDER BY e.dateInit ASC
+    """)
+    Slice<EventModel> findReadyToStartEvents(
+        @Param("status") Status status,
+        @Param("now") Date now,
+        Pageable pageable
+    );
+
 }

@@ -9,10 +9,12 @@ import com.group3.events.data.repository.*;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.domain.dto.event.response.*;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,6 +36,8 @@ public class EventService implements EventServiceI {
     private final ImagesRepository imagesRepository;
 
     private final PageProfileRepository pageProfileRepository;
+
+    private final EventBatchProcessorHandler eventBatchProcessorHandler;
 
     @Override
     public CreateEventRes create(CreateEventReq dto) {
@@ -68,7 +72,7 @@ public class EventService implements EventServiceI {
         event.setContent(dto.getContent());
         event.setDateInit(dto.getDateInit());
         event.setDateEnd(dto.getDateEnd());
-        event.setStatus(Status.ACTIVE);
+        event.setStatus(Status.INACTIVE);
         event.setViews(0);
         event.setAssists(List.of(user.getId()));
         event.setCreatedAt(LocalDateTime.now());
@@ -245,4 +249,31 @@ public class EventService implements EventServiceI {
 
         this.eventRepository.update(event);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    // @Scheduled(initialDelay = 60000, fixedDelay = Long.MAX_VALUE)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updateEventsLifeCycle() {
+        log.info("Cron: Iniciando ciclo de vida de eventos...");
+
+        LocalDateTime now = LocalDateTime.now();
+
+        int batchSize = 1000;
+
+        log.info("Cron: Buscando eventos para activar...");
+        while (true) {
+            boolean hasNext = this.eventBatchProcessorHandler.processActivationBatch(now, batchSize);
+            if (!hasNext) break;
+        }
+
+        log.info("Cron: Buscando eventos para finalizar...");
+        while (true) {
+            boolean hasNext = this.eventBatchProcessorHandler.processExpirationBatch(now, batchSize);
+            if (!hasNext) break;
+        }
+
+        log.info("Cron: Finalizado.");
+    }
+
 }

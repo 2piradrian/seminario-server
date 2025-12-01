@@ -1,6 +1,7 @@
 package com.group3.events.domain.dto.event.response;
 
 import com.group3.entity.PageProfile;
+import com.group3.entity.Status;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import lombok.AllArgsConstructor;
@@ -27,11 +28,13 @@ public class GetEventByIdRes {
 
     private final Integer views;
 
-    private final Integer assists;
+    private final Integer assistsQuantity;
 
     private final Date dateInit;
 
     private final Date dateEnd;
+
+    private final Status status;
 
     private final LocalDateTime createdAt;
 
