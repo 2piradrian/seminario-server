@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class ChatService implements ChatServiceI {
 
     private final UserRepositoryI userRepository;
+
     private final ChatMessageRepositoryI chatMessageRepository;
 
     @Override
@@ -56,7 +57,7 @@ public class ChatService implements ChatServiceI {
     public ChatMessage save(ChatMessage chatMessage) {
         String uuid = PrefixedUUID.generate(PrefixedUUID.EntityType.CHAT_MESSAGE).toString();
         chatMessage.setId(uuid);
-        return chatMessageRepository.save(chatMessage);
+        return this.chatMessageRepository.save(chatMessage);
     }
 
     @Override
@@ -64,10 +65,10 @@ public class ChatService implements ChatServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        List<String> activeChatUserIds = chatMessageRepository.findActiveChats(user.getId());
+        List<String> activeChatUserIds = this.chatMessageRepository.findActiveChats(user.getId());
 
         List<Chat> activeChats = activeChatUserIds.stream().map(userId -> {
-            Optional<ChatMessage> lastMessageOpt = chatMessageRepository.findLastMessage(user.getId(), userId);
+            Optional<ChatMessage> lastMessageOpt = this.chatMessageRepository.findLastMessage(user.getId(), userId);
             if (lastMessageOpt.isPresent()) {
                 ChatMessage lastMessage = lastMessageOpt.get();
                 User otherUser = this.userRepository.getById(userId, dto.getToken());
