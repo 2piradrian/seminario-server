@@ -168,11 +168,7 @@ public class EventService implements EventServiceI {
 
         if (event.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.USER_ALREADY_IS_AUTHOR);
 
-        LocalDateTime actualDateTime = LocalDateTime.now();
-
-        LocalDateTime eventDateEnd = event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-        if (actualDateTime.isAfter(eventDateEnd)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
+        if (event.getStatus().equals(Status.ENDED)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
         List<String> updateAssists = event.getAssists();
@@ -185,6 +181,7 @@ public class EventService implements EventServiceI {
         }
 
         event.setAssists(updateAssists);
+        event.calculateAssistsQuantity();
         event.setIsAssisting(userId);
 
         this.eventRepository.update(event);
