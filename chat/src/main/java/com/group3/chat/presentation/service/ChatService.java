@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -67,20 +68,22 @@ public class ChatService implements ChatServiceI {
 
         List<String> activeChatUserIds = this.chatMessageRepository.findActiveChats(user.getId());
 
-        List<Chat> activeChats = activeChatUserIds.stream().map(userId -> {
-            Optional<ChatMessage> lastMessageOpt = this.chatMessageRepository.findLastMessage(user.getId(), userId);
-            if (lastMessageOpt.isPresent()) {
-                ChatMessage lastMessage = lastMessageOpt.get();
-                User otherUser = this.userRepository.getById(userId, dto.getToken());
-                return new Chat(
-                        userId,
-                        lastMessage.getContent(),
-                        lastMessage.getSenderId().equals(user.getId()),
-                        otherUser
-                );
-            }
-            return null;
-        }).filter(chat -> chat != null).collect(Collectors.toList());
+        List<Chat> activeChats = activeChatUserIds.stream()
+                .flatMap(userId -> {
+                    ChatMessage lastMessage = this.chatMessageRepository.findLastMessage(user.getId(), userId);
+                    if (lastMessage == null) return Stream.empty();
+
+                    User otherUser = this.userRepository.getById(userId, dto.getToken());
+                    Chat chat = new Chat(
+                            userId,
+                            lastMessage.getContent(),
+                            lastMessage.getSenderId().equals(user.getId()),
+                            otherUser
+                    );
+
+                    return Stream.of(chat);
+                })
+                .collect(Collectors.toList());
 
         return new GetActiveChatsRes(activeChats);
     }

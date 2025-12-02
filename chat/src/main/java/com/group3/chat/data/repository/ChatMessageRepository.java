@@ -53,12 +53,16 @@ public class ChatMessageRepository implements ChatMessageRepositoryI {
 
     @Override
     public List<String> findActiveChats(String userId) {
-        return repository.findActiveChats(userId);
+        return this.repository.findActiveChats(userId);
     }
 
     @Override
-    public Optional<ChatMessage> findLastMessage(String user1Id, String user2Id) {
-        List<ChatMessageModel> messages = repository.findLastMessage(user1Id, user2Id, PageRequest.of(0, 1));
-        return messages.isEmpty() ? Optional.empty() : Optional.of(ChatMessageEntityMapper.toDomain(messages.get(0)));
+    public ChatMessage findLastMessage(String user1Id, String user2Id) {
+        List<ChatMessageModel> messages = this.repository.findLastMessage(user1Id, user2Id, PageRequest.of(0, 1));
+
+        if (messages.isEmpty()) return null;
+
+        return ChatMessageEntityMapper.toDomain(messages.getFirst());
     }
+
 }

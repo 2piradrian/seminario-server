@@ -14,6 +14,6 @@ public interface ChatMessageRepositoryI {
 
     List<String> findActiveChats(String userId);
 
-    Optional<ChatMessage> findLastMessage(String user1Id, String user2Id);
+    ChatMessage findLastMessage(String user1Id, String user2Id);
 
 }
