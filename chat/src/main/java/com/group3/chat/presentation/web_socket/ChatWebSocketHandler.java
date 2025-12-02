@@ -88,7 +88,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 return null;
             }
 
-            // Parseo seguro del token
             String[] params = query.split("&");
             String token = null;
 
