@@ -29,10 +29,9 @@ public class ChatController {
 
     @GetMapping("/active-chats")
     public ResponseEntity<?> getActiveChats(
-            @RequestHeader("Authorization") String token,
-            @RequestParam String userId
+            @RequestHeader(value = "Authorization") String token
     ) {
-        GetActiveChatsReq dto = GetActiveChatsReq.create(token, userId);
+        GetActiveChatsReq dto = GetActiveChatsReq.create(token);
         return ResponseEntity.ok(service.getActiveChats(dto));
     }
 

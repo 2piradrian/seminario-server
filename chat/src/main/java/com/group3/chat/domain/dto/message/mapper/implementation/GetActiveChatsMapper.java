@@ -7,10 +7,9 @@ import com.group3.entity.Chat;
 import java.util.List;
 
 public class GetActiveChatsMapper {
-    public GetActiveChatsReq toRequest(String token, String userId) {
+    public GetActiveChatsReq toRequest(String token) {
         return GetActiveChatsReq.create(
-                token,
-                userId
+                token
         );
     }
 

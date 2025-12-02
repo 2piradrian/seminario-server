@@ -33,6 +33,6 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
         FROM ChatMessageModel m
         WHERE m.senderId = :userId OR m.receiverId = :userId
     """)
-    List<Chat> findActiveChats(@Param("userId") String userId);
+    List<ChatMessageModel> findActiveChats(@Param("userId") String userId);
 
 }

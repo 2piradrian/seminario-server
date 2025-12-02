@@ -63,11 +63,7 @@ public class ChatService implements ChatServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (!user.getId().equals(dto.getUserId())) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        return chatMessageRepository.findActiveChats(dto.getUserId());
+        return chatMessageRepository.findActiveChats(user.getId());
     }
 
 }

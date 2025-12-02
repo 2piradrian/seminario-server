@@ -9,5 +9,8 @@ public class ChatMessageMapper {
         return new GetConversationPageMapper();
     }
 
-    public static GetActiveChatsMapper getActiveChats() { return new GetActiveChatsMapper(); }
+    public static GetActiveChatsMapper getActiveChats() {
+        return new GetActiveChatsMapper();
+    }
+
 }
