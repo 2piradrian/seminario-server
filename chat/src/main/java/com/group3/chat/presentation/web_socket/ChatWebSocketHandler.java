@@ -26,11 +26,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     private final ChatServiceI chatService;
-
     private final ObjectMapper objectMapper;
-
     private final UserRepositoryI userRepository;
-
 
     public ChatWebSocketHandler(ChatServiceI chatService, ObjectMapper objectMapper, UserRepositoryI userRepository) {
         this.chatService = chatService;
@@ -40,19 +37,27 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        log.info("New WS connection -> sessionId={}, uri={}", session.getId(), session.getUri());
+
         User user = authenticate(session);
+
         if (user != null) {
             sessions.put(user.getId(), session);
-            log.info("User {} connected, session id: {}", user.getId(), session.getId());
+            log.info("User {} authenticated successfully. Session {}", user.getId(), session.getId());
         } else {
+            log.warn("Authentication FAILED for session {}. Closing...", session.getId());
             session.close(CloseStatus.POLICY_VIOLATION.withReason(ErrorType.UNAUTHORIZED.getMessage()));
         }
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        log.info("Received message on session {} -> {}", session.getId(), message.getPayload());
+
         User sender = authenticate(session);
+
         if (sender == null) {
+            log.warn("Unauthorized text message attempt. Closing session {}", session.getId());
             session.close(CloseStatus.POLICY_VIOLATION.withReason(ErrorType.UNAUTHORIZED.getMessage()));
             return;
         }
@@ -60,39 +65,84 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         ChatMessage chatMessage = objectMapper.readValue(message.getPayload(), ChatMessage.class);
         chatMessage.setSenderId(sender.getId());
         chatMessage.setCreatedAt(LocalDateTime.now());
-        
-        // Save message to database
+
         ChatMessage savedMessage = this.chatService.save(chatMessage);
-        
+
+        log.info("Message stored. sender={}, receiver={}, id={}",
+                savedMessage.getSenderId(),
+                savedMessage.getReceiverId(),
+                savedMessage.getId()
+        );
+
         WebSocketSession receiverSession = sessions.get(savedMessage.getReceiverId());
         if (receiverSession != null && receiverSession.isOpen()) {
+            log.info("Delivering message {} to receiver {}", savedMessage.getId(), savedMessage.getReceiverId());
             receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(savedMessage)));
+        } else {
+            log.info("Receiver {} is offline. Message {} will be stored only.", savedMessage.getReceiverId(), savedMessage.getId());
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        log.info("WS Closed -> sessionId={}, status={}", session.getId(), status);
+
         User user = authenticate(session);
         if (user != null) {
             sessions.remove(user.getId());
-            log.info("User {} disconnected", user.getId());
+            log.info("User {} removed from active session list", user.getId());
         }
     }
 
     private User authenticate(WebSocketSession session) {
-        // ws://<gateway-host>/api/chat/ws?token=<user-token>
+        try {
+            URI uri = session.getUri();
+            if (uri == null) {
+                log.error("Session {} has no URI", session.getId());
+                return null;
+            }
 
-        URI uri = session.getUri();
-        if (uri == null) {
+            String query = uri.getQuery();
+            log.info("Session {} query raw: {}", session.getId(), query);
+
+            if (query == null) {
+                log.warn("No query params found in session {}", session.getId());
+                return null;
+            }
+
+            // Parseo seguro del token
+            String[] params = query.split("&");
+            String token = null;
+
+            for (String p : params) {
+                if (p.startsWith("token=")) {
+                    token = p.substring("token=".length());
+                    break;
+                }
+            }
+
+            log.info("Parsed token for session {} -> {}", session.getId(), token);
+
+            if (token == null || token.isBlank()) {
+                log.warn("Token missing or blank in session {}", session.getId());
+                return null;
+            }
+
+            String bearerToken = "Bearer " + token;
+
+            User user = this.userRepository.auth(bearerToken);
+
+            if (user == null) {
+                log.warn("Repository denied token for session {}", session.getId());
+            } else {
+                log.info("Repository authenticated user {} for session {}", user.getId(), session.getId());
+            }
+
+            return user;
+
+        } catch (Exception e) {
+            log.error("Error authenticating session {} -> {}", session.getId(), e.getMessage(), e);
             return null;
         }
-        String query = uri.getQuery();
-        if (query == null || !query.startsWith("token=")) {
-            return null;
-        }
-        String token = query.substring(6);
-        String bearerToken = "Bearer " + token;
-        return this.userRepository.auth(bearerToken);
     }
-
 }
