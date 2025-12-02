@@ -2,7 +2,9 @@ package com.group3.chat.domain.dto.message.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import lombok.Getter;
 
+@Getter
 public class GetActiveChatsReq {
 
     private final String token;
