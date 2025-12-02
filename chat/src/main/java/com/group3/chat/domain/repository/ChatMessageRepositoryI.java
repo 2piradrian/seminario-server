@@ -4,6 +4,7 @@ import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatMessageRepositoryI {
 
@@ -12,5 +13,7 @@ public interface ChatMessageRepositoryI {
     ChatMessage save(ChatMessage chatMessage);
 
     List<String> findActiveChats(String userId);
+
+    ChatMessage findLastMessage(String user1Id, String user2Id);
 
 }

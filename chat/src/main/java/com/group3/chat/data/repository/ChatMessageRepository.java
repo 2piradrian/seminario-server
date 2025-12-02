@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -52,6 +53,16 @@ public class ChatMessageRepository implements ChatMessageRepositoryI {
 
     @Override
     public List<String> findActiveChats(String userId) {
-        return repository.findActiveChats(userId);
+        return this.repository.findActiveChats(userId);
     }
+
+    @Override
+    public ChatMessage findLastMessage(String user1Id, String user2Id) {
+        List<ChatMessageModel> messages = this.repository.findLastMessage(user1Id, user2Id, PageRequest.of(0, 1));
+
+        if (messages.isEmpty()) return null;
+
+        return ChatMessageEntityMapper.toDomain(messages.getFirst());
+    }
+
 }

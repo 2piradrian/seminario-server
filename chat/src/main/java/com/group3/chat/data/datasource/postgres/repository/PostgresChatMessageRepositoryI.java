@@ -34,4 +34,13 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
     """)
     List<String> findActiveChats(@Param("userId") String userId);
 
+    @Query("""
+        SELECT m
+        FROM ChatMessageModel m
+        WHERE (m.senderId = :user1Id AND m.receiverId = :user2Id)
+           OR (m.senderId = :user2Id AND m.receiverId = :user1Id)
+        ORDER BY m.createdAt DESC
+    """)
+    List<ChatMessageModel> findLastMessage(@Param("user1Id") String user1Id, @Param("user2Id") String user2Id, Pageable pageable);
+
 }
