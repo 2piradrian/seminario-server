@@ -1,5 +1,7 @@
 package com.group3.chat.presentation.service;
 
+import com.group3.chat.domain.dto.message.mapper.ChatMessageMapper;
+import com.group3.chat.domain.dto.message.mapper.implementation.GetActiveChatsMapper;
 import com.group3.chat.domain.dto.message.mapper.implementation.GetConversationPageMapper;
 import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
@@ -77,6 +79,7 @@ public class ChatService implements ChatServiceI {
                     Chat chat = new Chat(
                             userId,
                             lastMessage.getContent(),
+                            lastMessage.getCreatedAt(),
                             lastMessage.getSenderId().equals(user.getId()),
                             otherUser
                     );
@@ -85,7 +88,7 @@ public class ChatService implements ChatServiceI {
                 })
                 .collect(Collectors.toList());
 
-        return new GetActiveChatsRes(activeChats);
+        return ChatMessageMapper.getActiveChats().toResponse(activeChats);
     }
 
 }

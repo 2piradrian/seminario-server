@@ -11,6 +11,7 @@ import java.util.List;
 public class GetConversationPageRes {
 
     private final List<ChatMessage> messages;
+
     private final Integer nextPage;
 
 }
