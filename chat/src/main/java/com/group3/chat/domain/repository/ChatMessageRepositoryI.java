@@ -1,10 +1,10 @@
 package com.group3.chat.domain.repository;
 
-import com.group3.entity.Chat;
 import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatMessageRepositoryI {
 
@@ -12,6 +12,8 @@ public interface ChatMessageRepositoryI {
 
     ChatMessage save(ChatMessage chatMessage);
 
-    List<Chat> findActiveChats(String userId);
+    List<String> findActiveChats(String userId);
+
+    Optional<ChatMessage> findLastMessage(String user1Id, String user2Id);
 
 }

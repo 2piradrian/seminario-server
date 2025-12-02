@@ -17,5 +17,6 @@ public class Chat {
 
     private Boolean isMine;
 
-    private String userId;
+    private User user;
+
 }

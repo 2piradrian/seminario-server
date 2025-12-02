@@ -1,6 +1,5 @@
 package com.group3.chat.presentation.service;
 
-import com.group3.chat.domain.dto.message.mapper.implementation.GetActiveChatsMapper;
 import com.group3.chat.domain.dto.message.mapper.implementation.GetConversationPageMapper;
 import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
@@ -9,7 +8,10 @@ import com.group3.chat.domain.dto.message.response.GetConversationPageRes;
 import com.group3.chat.domain.repository.ChatMessageRepositoryI;
 import com.group3.chat.domain.repository.UserRepositoryI;
 import com.group3.config.PrefixedUUID;
-import com.group3.entity.*;
+import com.group3.entity.Chat;
+import com.group3.entity.ChatMessage;
+import com.group3.entity.PageContent;
+import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -17,6 +19,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -56,14 +60,28 @@ public class ChatService implements ChatServiceI {
     }
 
     @Override
-    public List<Chat> getActiveChats(GetActiveChatsReq dto) {
-        User user = userRepository.auth(dto.getToken());
+    public GetActiveChatsRes getActiveChats(GetActiveChatsReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        if (user == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
+        List<String> activeChatUserIds = chatMessageRepository.findActiveChats(user.getId());
 
-        return chatMessageRepository.findActiveChats(user.getId());
+        List<Chat> activeChats = activeChatUserIds.stream().map(userId -> {
+            Optional<ChatMessage> lastMessageOpt = chatMessageRepository.findLastMessage(user.getId(), userId);
+            if (lastMessageOpt.isPresent()) {
+                ChatMessage lastMessage = lastMessageOpt.get();
+                User otherUser = this.userRepository.getById(userId, dto.getToken());
+                return new Chat(
+                        userId,
+                        lastMessage.getContent(),
+                        lastMessage.getSenderId().equals(user.getId()),
+                        otherUser
+                );
+            }
+            return null;
+        }).filter(chat -> chat != null).collect(Collectors.toList());
+
+        return new GetActiveChatsRes(activeChats);
     }
 
 }
