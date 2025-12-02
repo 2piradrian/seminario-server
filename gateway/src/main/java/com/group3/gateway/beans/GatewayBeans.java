@@ -89,11 +89,6 @@ public class GatewayBeans {
 
                 // CHAT SERVER
                 .route(r -> r
-                        .path("/api/chat/ws")
-                        .filters(f -> f.rewritePath("/api/chat/ws", "/ws"))
-                        .uri("lb:ws://chat-server")
-                )
-                .route(r -> r
                         .path("/api/chat/**")
                         .filters(f -> f.rewritePath("/api/chat(?<segment>/.*)?", "/chat-server/api/chat${segment}"))
                         .uri("lb://chat-server")
