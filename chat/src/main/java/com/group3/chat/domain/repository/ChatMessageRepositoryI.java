@@ -1,5 +1,6 @@
 package com.group3.chat.domain.repository;
 
+import com.group3.entity.Chat;
 import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
 
@@ -11,6 +12,6 @@ public interface ChatMessageRepositoryI {
 
     ChatMessage save(ChatMessage chatMessage);
 
-    List<String> findActiveChats(String userId);
+    List<Chat> findActiveChats(String userId);
 
 }

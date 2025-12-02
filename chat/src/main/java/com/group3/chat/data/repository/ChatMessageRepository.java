@@ -4,6 +4,7 @@ import com.group3.chat.data.datasource.postgres.mapper.ChatMessageEntityMapper;
 import com.group3.chat.data.datasource.postgres.model.ChatMessageModel;
 import com.group3.chat.data.datasource.postgres.repository.PostgresChatMessageRepositoryI;
 import com.group3.chat.domain.repository.ChatMessageRepositoryI;
+import com.group3.entity.Chat;
 import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,8 @@ public class ChatMessageRepository implements ChatMessageRepositoryI {
     }
 
     @Override
-    public List<String> findActiveChats(String userId) {
+    public List<Chat> findActiveChats(String userId) {
         return repository.findActiveChats(userId);
     }
+
 }

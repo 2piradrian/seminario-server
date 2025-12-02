@@ -1,6 +1,7 @@
 package com.group3.chat.presentation.controller;
 
 import com.group3.chat.domain.dto.message.mapper.ChatMessageMapper;
+import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
 import com.group3.chat.presentation.service.ChatServiceI;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,12 @@ public class ChatController {
     }
 
     @GetMapping("/active-chats")
-    public ResponseEntity<?> getActiveChats(@RequestHeader(value = "Authorization") String token) {
-        return ResponseEntity.ok(this.service.getActiveChats(token));
+    public ResponseEntity<?> getActiveChats(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String userId
+    ) {
+        GetActiveChatsReq dto = GetActiveChatsReq.create(token, userId);
+        return ResponseEntity.ok(service.getActiveChats(dto));
     }
 
 }

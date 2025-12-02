@@ -1,14 +1,15 @@
 package com.group3.chat.presentation.service;
 
+import com.group3.chat.domain.dto.message.mapper.implementation.GetActiveChatsMapper;
 import com.group3.chat.domain.dto.message.mapper.implementation.GetConversationPageMapper;
+import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
+import com.group3.chat.domain.dto.message.response.GetActiveChatsRes;
 import com.group3.chat.domain.dto.message.response.GetConversationPageRes;
 import com.group3.chat.domain.repository.ChatMessageRepositoryI;
 import com.group3.chat.domain.repository.UserRepositoryI;
 import com.group3.config.PrefixedUUID;
-import com.group3.entity.ChatMessage;
-import com.group3.entity.PageContent;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -55,11 +56,18 @@ public class ChatService implements ChatServiceI {
     }
 
     @Override
-    public List<String> getActiveChats(String token) {
-        User user = userRepository.auth(token);
+    public List<Chat> getActiveChats(GetActiveChatsReq dto) {
+        User user = userRepository.auth(dto.getToken());
+
         if (user == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
-        return chatMessageRepository.findActiveChats(user.getId());
+
+        if (!user.getId().equals(dto.getUserId())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        return chatMessageRepository.findActiveChats(dto.getUserId());
     }
+
 }

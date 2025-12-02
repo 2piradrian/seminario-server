@@ -1,6 +1,7 @@
 package com.group3.chat.data.datasource.postgres.repository;
 
 import com.group3.chat.data.datasource.postgres.model.ChatMessageModel;
+import com.group3.entity.Chat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,6 +33,6 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
         FROM ChatMessageModel m
         WHERE m.senderId = :userId OR m.receiverId = :userId
     """)
-    List<String> findActiveChats(@Param("userId") String userId);
+    List<Chat> findActiveChats(@Param("userId") String userId);
 
 }
