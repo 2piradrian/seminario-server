@@ -18,6 +18,9 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -37,12 +40,26 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        User user = authenticate(session);
+        session.setTextMessageSizeLimit(512 * 1024);
+        session.setBinaryMessageSizeLimit(512 * 1024);
 
+        session.sendMessage(new TextMessage("{\"ping\": true}"));
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            try {
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage("{\"ping\": true}"));
+                }
+            } catch (IOException ignored) {}
+        }, 20, 20, TimeUnit.SECONDS);
+
+        User user = authenticate(session);
         if (user != null) {
             sessions.put(user.getId(), session);
-        } else {
-            session.close(CloseStatus.POLICY_VIOLATION.withReason(ErrorType.UNAUTHORIZED.getMessage()));
+        }
+        else {
+            session.close(CloseStatus.POLICY_VIOLATION.withReason("Unauthorized"));
         }
     }
 
