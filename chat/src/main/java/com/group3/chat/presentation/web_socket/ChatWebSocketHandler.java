@@ -37,27 +37,20 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        log.debug("New WS connection -> sessionId={}, uri={}", session.getId(), session.getUri());
-
         User user = authenticate(session);
 
         if (user != null) {
             sessions.put(user.getId(), session);
-            log.debug("User {} authenticated successfully. Session {}", user.getId(), session.getId());
         } else {
-            log.warn("Authentication FAILED for session {}. Closing...", session.getId());
             session.close(CloseStatus.POLICY_VIOLATION.withReason(ErrorType.UNAUTHORIZED.getMessage()));
         }
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        log.debug("Received message on session {} -> {}", session.getId(), message.getPayload());
-
         User sender = authenticate(session);
 
         if (sender == null) {
-            log.warn("Unauthorized text message attempt. Closing session {}", session.getId());
             session.close(CloseStatus.POLICY_VIOLATION.withReason(ErrorType.UNAUTHORIZED.getMessage()));
             return;
         }
@@ -68,29 +61,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         ChatMessage savedMessage = this.chatService.save(chatMessage);
 
-        log.debug("Message stored. sender={}, receiver={}, id={}",
-                savedMessage.getSenderId(),
-                savedMessage.getReceiverId(),
-                savedMessage.getId()
-        );
-
         WebSocketSession receiverSession = sessions.get(savedMessage.getReceiverId());
         if (receiverSession != null && receiverSession.isOpen()) {
-            log.debug("Delivering message {} to receiver {}", savedMessage.getId(), savedMessage.getReceiverId());
             receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(savedMessage)));
-        } else {
-            log.debug("Receiver {} is offline. Message {} will be stored only.", savedMessage.getReceiverId(), savedMessage.getId());
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        log.debug("WS Closed -> sessionId={}, status={}", session.getId(), status);
-
         User user = authenticate(session);
         if (user != null) {
             sessions.remove(user.getId());
-            log.debug("User {} removed from active session list", user.getId());
         }
     }
 
@@ -98,19 +79,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         try {
             URI uri = session.getUri();
             if (uri == null) {
-                log.error("Session {} has no URI", session.getId());
                 return null;
             }
 
             String query = uri.getQuery();
-            log.debug("Session {} query raw: {}", session.getId(), query);
 
             if (query == null) {
-                log.warn("No query params found in session {}", session.getId());
                 return null;
             }
 
-            // Parseo seguro del token
             String[] params = query.split("&");
             String token = null;
 
@@ -121,10 +98,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 }
             }
 
-            log.debug("Parsed token for session {} -> {}", session.getId(), token);
 
             if (token == null || token.isBlank()) {
-                log.warn("Token missing or blank in session {}", session.getId());
                 return null;
             }
 
@@ -132,16 +107,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
             User user = this.userRepository.auth(bearerToken);
 
-            if (user == null) {
-                log.debug("Repository denied token for session {}", session.getId());
-            } else {
-                log.debug("Repository authenticated user {} for session {}", user.getId(), session.getId());
-            }
-
             return user;
 
         } catch (Exception e) {
-            log.debug("Error authenticating session {} -> {}", session.getId(), e.getMessage(), e);
             return null;
         }
     }
