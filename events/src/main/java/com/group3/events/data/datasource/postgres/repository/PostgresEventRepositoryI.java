@@ -35,11 +35,24 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         AND
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
-            (LOWER(e.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
-             LOWER(e.content) LIKE LOWER(CONCAT('%', :text, '%')))
+            (
+                cast(function('unaccent', LOWER(e.title)) as string)
+                LIKE LOWER(CONCAT('%', :text, '%')) 
+                OR
+                cast(function('unaccent', LOWER(e.content)) as string)
+                LIKE LOWER(CONCAT('%', :text, '%'))
+            )
         )
-        AND (:#{#dateInit == null} = true OR e.dateInit >= :dateInit)
-        AND (:#{#dateEnd == null} = true OR e.dateEnd <= :dateEnd)
+        AND 
+        (
+            :#{#dateInit == null} = true 
+            OR e.dateInit >= :dateInit
+        )
+        AND 
+        (
+            :#{#dateEnd == null} = true 
+            OR e.dateEnd <= :dateEnd
+        )
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByFilteredPage(
