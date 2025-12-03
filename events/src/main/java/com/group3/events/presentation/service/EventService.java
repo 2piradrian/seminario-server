@@ -16,8 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -156,6 +159,41 @@ public class EventService implements EventServiceI {
         }
 
         return EventMapper.getEventAndAssistsMapper().toResponse(events);
+    }
+
+    @Override
+    public GetEventByDateRangeRes getEventsByDateRange(GetEventByDateRangeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        LocalDate localDate = dto.getDateMonth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        Date dateStart = Date.from(localDate.with(TemporalAdjusters.firstDayOfMonth())
+            .minusWeeks(1)
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant());
+
+        Date dateEnd = Date.from(localDate.with(TemporalAdjusters.lastDayOfMonth())
+            .plusWeeks(1)
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant());
+
+        List<Event> events = this.eventRepository.getInDateRange(dto.getUserId(), dateStart, dateEnd);
+
+        for (Event event : events) {
+            if (event.getAuthor().getId() != null) {
+                User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullAuthor);
+            }
+            if (event.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                event.setPageProfile(fullPage);
+            }
+            event.calculateAssistsQuantity();
+            event.setIsAssisting(user.getId());
+        }
+
+        return EventMapper.getEventByDateRange().toResponse(events);
     }
 
     @Override
