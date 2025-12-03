@@ -17,6 +17,8 @@ public interface EventRepositoryI {
 
     PageContent<Event> getByAuthorOrAssistant(String authorId, Integer page, Integer size);
 
+    List<Event> getInDateRange(String userId, Date dateStart, Date dateEnd);
+
     PageContent<Event> getFilteredEvents(Integer page, Integer size, String text, Date dateInit, Date dateEnd);
 
     PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size);
