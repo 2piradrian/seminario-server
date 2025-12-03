@@ -30,10 +30,24 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
 
     @Query("""
         SELECT u FROM UserModel u WHERE
-        u.status = :status AND
-        (:#{#fullName == null or #fullName.isEmpty()} = true OR LOWER(CONCAT(u.profile.name, ' ', u.profile.surname)) LIKE LOWER(CONCAT('%', :fullName, '%'))) AND
-        (:#{#styles == null or #styles.isEmpty()} = true OR EXISTS (SELECT 1 FROM u.profile.styles s WHERE s IN :styles)) AND
-        (:#{#instruments == null or #instruments.isEmpty()} = true OR EXISTS (SELECT 1 FROM u.profile.instruments i WHERE i IN :instruments))
+        u.status = :status 
+        AND
+        (
+            :#{#fullName == null or #fullName.isEmpty()} = true 
+            OR 
+            cast(function('unaccent', LOWER(CONCAT(u.profile.name, ' ', u.profile.surname))) as string) 
+            LIKE LOWER(CONCAT('%', :fullName, '%'))
+        ) 
+        AND 
+        (
+            :#{#styles == null or #styles.isEmpty()} = true 
+            OR EXISTS (SELECT 1 FROM u.profile.styles s WHERE s IN :styles)
+        ) 
+        AND 
+        (
+            :#{#instruments == null or #instruments.isEmpty()} = true 
+            OR EXISTS (SELECT 1 FROM u.profile.instruments i WHERE i IN :instruments)
+        )
     """)
     Page<UserModel> findByFilteredPage(
         @Param("fullName") String fullName,

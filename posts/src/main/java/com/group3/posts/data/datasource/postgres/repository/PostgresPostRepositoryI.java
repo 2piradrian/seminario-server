@@ -60,14 +60,16 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         p.status = :status
         AND
         (
-            (:#{#postTypeId == null or #postTypeId.isEmpty()} = true) OR
-            (p.postTypeId = :postTypeId)
+            (:#{#postTypeId == null or #postTypeId.isEmpty()} = true) 
+            OR (p.postTypeId = :postTypeId)
         )
         AND
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
-            (LOWER(p.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
-            LOWER(p.content) LIKE LOWER(CONCAT('%', :text, '%')))
+            (
+            cast(function('unaccent', LOWER(p.title)) as string) LIKE LOWER(CONCAT('%', :text, '%')) 
+            OR cast(function('unaccent', LOWER(p.content)) as string) LIKE LOWER(CONCAT('%', :text, '%'))
+            )
         )
         ORDER BY p.createdAt DESC
     """)
