@@ -4,8 +4,10 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
+import java.text.Normalizer;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Getter
 public class GetSerchResultFilteredReq {
@@ -94,6 +96,13 @@ public class GetSerchResultFilteredReq {
 
         if (contentTypeId == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (text != null){
+            String normalizedText = Normalizer.normalize(text, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+
+            text = pattern.matcher(normalizedText).replaceAll("");
         }
 
         return new GetSerchResultFilteredReq(
