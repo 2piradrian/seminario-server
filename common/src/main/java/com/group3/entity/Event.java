@@ -46,7 +46,7 @@ public class Event {
     // Domain Variable
     private Boolean isAssisting;
 
-    private Status status;
+    private EventStatus status;
 
     public void calculateAssistsQuantity(){
         this.assistsQuantity = this.assists.size();

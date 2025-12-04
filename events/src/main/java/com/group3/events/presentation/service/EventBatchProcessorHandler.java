@@ -1,8 +1,8 @@
 package com.group3.events.presentation.service;
 
 import com.group3.entity.Event;
+import com.group3.entity.EventStatus;
 import com.group3.entity.PageContent;
-import com.group3.entity.Status;
 import com.group3.events.data.repository.EventRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class EventBatchProcessorHandler {
         LocalDateTime now = LocalDateTime.now();
 
         events.getContent().forEach(event -> {
-            event.setStatus(Status.ENDED);
+            event.setStatus(EventStatus.ENDED);
             event.setUpdatedAt(now);
         });
 
@@ -48,7 +48,7 @@ public class EventBatchProcessorHandler {
         LocalDateTime now = LocalDateTime.now();
 
         events.getContent().forEach(event -> {
-            event.setStatus(Status.ACTIVE);
+            event.setStatus(EventStatus.IN_PROGRESS);
             event.setUpdatedAt(now);
         });
 

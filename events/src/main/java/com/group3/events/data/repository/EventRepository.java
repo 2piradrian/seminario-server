@@ -1,6 +1,7 @@
 package com.group3.events.data.repository;
 
 import com.group3.entity.Event;
+import com.group3.entity.EventStatus;
 import com.group3.entity.PageContent;
 import com.group3.entity.Status;
 import com.group3.events.data.datasource.postgres.mapper.EventEntityMapper;
@@ -70,7 +71,7 @@ public class EventRepository implements EventRepositoryI {
 
         Page<EventModel> eventModels = repository.findByAuthorOrAssistant(
                 authorId,
-                Status.DELETED,
+                EventStatus.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -89,7 +90,7 @@ public class EventRepository implements EventRepositoryI {
             dateStart,
             dateEnd,
             userId,
-            Status.DELETED
+            EventStatus.DELETED
         ).stream()
             .map(EventEntityMapper::toDomain)
             .collect(Collectors.toList());
@@ -102,7 +103,7 @@ public class EventRepository implements EventRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByFilteredPage(
-            Status.DELETED,
+            EventStatus.DELETED,
             text,
             dateInit,
             dateEnd,
@@ -124,7 +125,7 @@ public class EventRepository implements EventRepositoryI {
         Date dateNow = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 
         Slice<EventModel> eventModels = repository.findExpiredEvents(
-            Status.ACTIVE,
+            EventStatus.IN_PROGRESS,
             dateNow,
             PageRequest.of(0, size)
         );
@@ -144,7 +145,7 @@ public class EventRepository implements EventRepositoryI {
         Date dateNow = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 
         Slice<EventModel> eventModels = repository.findReadyToStartEvents(
-            Status.INACTIVE,
+            EventStatus.PENDING,
             dateNow,
             PageRequest.of(0, size)
         );

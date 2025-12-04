@@ -1,5 +1,6 @@
 package com.group3.events.data.datasource.postgres.repository;
 
+import com.group3.entity.EventStatus;
 import com.group3.entity.Status;
 import com.group3.events.data.datasource.postgres.model.EventModel;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     """)
     Page<EventModel> findByAuthorOrAssistant(
             @Param("userId") String userId,
-            @Param("status") Status status,
+            @Param("status") EventStatus status,
             Pageable pageable
     );
 
@@ -57,7 +58,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByFilteredPage(
-        @Param("status") Status status,
+        @Param("status") EventStatus status,
         @Param("text") String text,
         @Param("dateInit") Date dateInit,
         @Param("dateEnd") Date dateEnd,
@@ -72,7 +73,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         ORDER BY e.id ASC
     """)
     Slice<EventModel> findExpiredEvents(
-        @Param("status") Status status,
+        @Param("status") EventStatus status,
         @Param("now") Date now,
         Pageable pageable
     );
@@ -86,7 +87,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         ORDER BY e.dateInit ASC
     """)
     Slice<EventModel> findReadyToStartEvents(
-        @Param("status") Status status,
+        @Param("status") EventStatus status,
         @Param("now") Date now,
         Pageable pageable
     );
@@ -103,7 +104,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("dateStart") Date dateStart,
         @Param("dateEnd") Date dateEnd,
         @Param("userId") String userId,
-        @Param("status") Status status
+        @Param("status") EventStatus status
     );
 
 }
