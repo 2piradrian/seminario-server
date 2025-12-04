@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
+import java.util.List;
 
 public interface PostgresEventRepositoryI extends JpaRepository<EventModel, String> {
 
@@ -35,11 +36,24 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         AND
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
-            (LOWER(e.title) LIKE LOWER(CONCAT('%', :text, '%')) OR
-             LOWER(e.content) LIKE LOWER(CONCAT('%', :text, '%')))
+            (
+                cast(function('unaccent', LOWER(e.title)) as string)
+                LIKE LOWER(CONCAT('%', :text, '%')) 
+                OR
+                cast(function('unaccent', LOWER(e.content)) as string)
+                LIKE LOWER(CONCAT('%', :text, '%'))
+            )
         )
-        AND (:#{#dateInit == null} = true OR e.dateInit >= :dateInit)
-        AND (:#{#dateEnd == null} = true OR e.dateEnd <= :dateEnd)
+        AND 
+        (
+            :#{#dateInit == null} = true 
+            OR e.dateInit >= :dateInit
+        )
+        AND 
+        (
+            :#{#dateEnd == null} = true 
+            OR e.dateEnd <= :dateEnd
+        )
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByFilteredPage(
@@ -75,6 +89,21 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("status") Status status,
         @Param("now") Date now,
         Pageable pageable
+    );
+
+    @Query("""
+        SELECT e 
+        FROM EventModel e 
+        WHERE e.dateInit BETWEEN :dateStart AND :dateEnd
+        AND (e.authorId = :userId OR :userId MEMBER OF e.assists)
+        AND e.status <> :status
+        ORDER BY e.createdAt DESC
+    """)
+    List<EventModel> findEventsInDateRange(
+        @Param("dateStart") Date dateStart,
+        @Param("dateEnd") Date dateEnd,
+        @Param("userId") String userId,
+        @Param("status") Status status
     );
 
 }

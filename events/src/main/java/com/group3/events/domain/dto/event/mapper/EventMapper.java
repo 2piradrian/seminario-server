@@ -32,4 +32,8 @@ public class EventMapper {
         return new GetFilteredPageMapper();
     }
 
+    public static GetEventByDateRangeMapper getEventByDateRange() {
+        return new GetEventByDateRangeMapper();
+    }
+
 }

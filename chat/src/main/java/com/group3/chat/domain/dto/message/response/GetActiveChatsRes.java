@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class GetActiveChatsRes {
+
     private final List<Chat> activeChats;
+
 }
 

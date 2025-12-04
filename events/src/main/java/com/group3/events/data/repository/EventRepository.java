@@ -83,6 +83,18 @@ public class EventRepository implements EventRepositoryI {
         );
     }
 
+    @Override
+    public List<Event> getInDateRange(String userId, Date dateStart, Date dateEnd){
+        return this.repository.findEventsInDateRange(
+            dateStart,
+            dateEnd,
+            userId,
+            Status.DELETED
+        ).stream()
+            .map(EventEntityMapper::toDomain)
+            .collect(Collectors.toList());
+    }
+
     // ======== Get Events by Filtered Page with Pagination ========
 
     @Override

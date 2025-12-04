@@ -1,5 +1,6 @@
 package com.group3.posts.data.datasource.postgres.model;
 
+import com.group3.entity.PostTypeEnum;
 import com.group3.entity.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,7 @@ public class PostModel {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private String postTypeId;
+    @Enumerated(EnumType.STRING)
+    private PostTypeEnum postType;
 
 }
