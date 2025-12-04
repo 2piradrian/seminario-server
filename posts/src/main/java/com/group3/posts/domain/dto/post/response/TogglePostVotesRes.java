@@ -2,6 +2,7 @@ package com.group3.posts.domain.dto.post.response;
 
 import com.group3.entity.PageProfile;
 import com.group3.entity.PostType;
+import com.group3.entity.PostTypeEnum;
 import com.group3.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,6 @@ public class TogglePostVotesRes {
 
     private final LocalDateTime createdAt;
 
-    private final PostType postType;
+    private final PostTypeEnum postType;
 
 }
