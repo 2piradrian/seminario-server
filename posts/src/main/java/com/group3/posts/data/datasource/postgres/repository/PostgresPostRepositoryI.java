@@ -61,7 +61,7 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         p.status = :status
         AND
         (
-            (:#{#postType == null or #postType.isEmpty()} = true) 
+            (:postType IS NULL)
             OR (p.postType = :postType)
         )
         AND
