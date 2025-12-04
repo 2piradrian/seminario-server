@@ -69,13 +69,20 @@ public class EventService implements EventServiceI {
             event.setImageId(imageId);
         }
 
+        LocalDate localDateInit = dto.getDateInit().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+
+        if (localDateInit.isEqual(LocalDate.now(ZoneId.of("UTC")))){
+            event.setStatus(EventStatus.IN_PROGRESS);
+        } else {
+            event.setStatus(EventStatus.PENDING);
+        }
+
         event.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.EVENT).toString());
         event.setAuthor(user);
         event.setTitle(dto.getTitle());
         event.setContent(dto.getContent());
         event.setDateInit(dto.getDateInit());
         event.setDateEnd(dto.getDateEnd());
-        event.setStatus(Status.INACTIVE);
         event.setViews(0);
         event.setAssists(List.of(user.getId()));
         event.setCreatedAt(LocalDateTime.now());
@@ -166,16 +173,16 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        LocalDate localDate = dto.getDateMonth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate = dto.getDateMonth().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
 
         Date dateStart = Date.from(localDate.with(TemporalAdjusters.firstDayOfMonth())
             .minusWeeks(1)
-            .atStartOfDay(ZoneId.systemDefault())
+            .atStartOfDay(ZoneId.of("UTC"))
             .toInstant());
 
         Date dateEnd = Date.from(localDate.with(TemporalAdjusters.lastDayOfMonth())
             .plusWeeks(1)
-            .atStartOfDay(ZoneId.systemDefault())
+            .atStartOfDay(ZoneId.of("UTC"))
             .toInstant());
 
         List<Event> events = this.eventRepository.getInDateRange(dto.getUserId(), dateStart, dateEnd);
@@ -206,7 +213,7 @@ public class EventService implements EventServiceI {
 
         if (event.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.USER_ALREADY_IS_AUTHOR);
 
-        if (event.getStatus().equals(Status.ENDED)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
+        if (event.getStatus().equals(EventStatus.ENDED)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
 
         String userId = user.getId();
         List<String> updateAssists = event.getAssists();
@@ -280,7 +287,7 @@ public class EventService implements EventServiceI {
         }
 
         event.setUpdatedAt(LocalDateTime.now());
-        event.setStatus(Status.DELETED);
+        event.setStatus(EventStatus.DELETED);
 
         this.eventRepository.update(event);
     }
@@ -292,7 +299,7 @@ public class EventService implements EventServiceI {
     public void updateEventsLifeCycle() {
         log.info("Cron: Iniciando ciclo de vida de eventos...");
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
         int batchSize = 1000;
 

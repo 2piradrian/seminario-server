@@ -1,5 +1,6 @@
 package com.group3.events.data.datasource.postgres.model;
 
+import com.group3.entity.EventStatus;
 import com.group3.entity.PageProfile;
 import com.group3.entity.Status;
 import com.group3.entity.UserProfile;
@@ -49,6 +50,6 @@ public class EventModel {
     private List<String> assists;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private EventStatus status;
 
 }
