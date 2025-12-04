@@ -1,5 +1,6 @@
 package com.group3.posts.data.datasource.postgres.repository;
 
+import com.group3.entity.PostTypeEnum;
 import com.group3.entity.Status;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
@@ -60,8 +61,8 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         p.status = :status
         AND
         (
-            (:#{#postTypeId == null or #postTypeId.isEmpty()} = true) 
-            OR (p.postTypeId = :postTypeId)
+            (:#{#postType == null or #postType.isEmpty()} = true) 
+            OR (p.postType = :postType)
         )
         AND
         (
@@ -76,7 +77,7 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     Page<PostModel> findByFilteredPage(
         @Param("status") Status status,
         @Param("text") String text,
-        @Param("postTypeId") String postTypeId,
+        @Param("postType") PostTypeEnum postType,
         Pageable pageable
     );
 
