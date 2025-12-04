@@ -68,6 +68,8 @@ public class PostService implements PostServiceI {
         }
 
         PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
+        if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+
         PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postType.getName());
         if(postTypeEnum == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
 
@@ -335,6 +337,8 @@ public class PostService implements PostServiceI {
         }
 
         PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
+        if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+
         PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postType.getName());
         if(postTypeEnum == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
 
