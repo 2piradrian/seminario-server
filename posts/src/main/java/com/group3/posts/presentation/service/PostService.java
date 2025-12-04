@@ -151,8 +151,17 @@ public class PostService implements PostServiceI {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
-        PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postType.getName());
+        String postTypeName = null;
+
+        if (dto.getPostTypeId() != null && !dto.getPostTypeId().isBlank()) {
+            PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
+
+            if (postType != null) {
+                postTypeName = postType.getName();
+            }
+        }
+
+        PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postTypeName);
 
         PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText(), postTypeEnum);
 
