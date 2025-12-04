@@ -38,7 +38,7 @@ public class Post {
 
     private Status status;
 
-    private PostType postType;
+    private PostTypeEnum postType;
 
     // Domain variable
     private Integer upvotersQuantity;
