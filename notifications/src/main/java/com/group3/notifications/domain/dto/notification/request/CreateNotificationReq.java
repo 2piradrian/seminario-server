@@ -11,17 +11,19 @@ public class CreateNotificationReq {
     private final String secret;
     private final String targetId;
     private final String sourceId;
+    private final String carriedOutById;
     private final NotificationContent content;
 
-    private CreateNotificationReq(String secret, String targetId, String sourceId, NotificationContent content) {
+    private CreateNotificationReq(String secret, String targetId, String sourceId, String carriedOutById, NotificationContent content) {
         this.secret = secret;
         this.targetId = targetId;
         this.sourceId = sourceId;
+        this.carriedOutById = carriedOutById;
         this.content = content;
     }
 
-    public static CreateNotificationReq create(String secret, String targetId, String sourceId, String contentStr) {
-        if (secret == null || targetId == null || sourceId == null || contentStr == null) {
+    public static CreateNotificationReq create(String secret, String targetId, String sourceId, String carriedOutById, String contentStr) {
+        if (secret == null || targetId == null || sourceId == null || carriedOutById == null || contentStr == null) {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
@@ -30,6 +32,6 @@ public class CreateNotificationReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new CreateNotificationReq(secret, targetId, sourceId, content);
+        return new CreateNotificationReq(secret, targetId, sourceId, carriedOutById, content);
     }
 }

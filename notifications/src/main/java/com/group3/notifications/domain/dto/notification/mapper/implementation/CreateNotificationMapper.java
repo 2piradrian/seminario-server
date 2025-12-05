@@ -11,6 +11,7 @@ public class CreateNotificationMapper {
                 (String) payload.get("secret"),
                 (String) payload.get("targetId"),
                 (String) payload.get("sourceId"),
+                (String) payload.get("carriedOutById"),
                 (String) payload.get("content")
         );
     }

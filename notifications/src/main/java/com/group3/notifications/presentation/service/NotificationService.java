@@ -36,14 +36,28 @@ public class NotificationService implements NotificationServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        Notification existingNotification = notificationRepository.findBy(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
+
+        if (existingNotification != null) {
+            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
+            return;
+        }
+
+        if (dto.getContent() == com.group3.entity.NotificationContent.UPVOTE) {
+            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), com.group3.entity.NotificationContent.DOWNVOTE);
+        } else if (dto.getContent() == com.group3.entity.NotificationContent.DOWNVOTE) {
+            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), com.group3.entity.NotificationContent.UPVOTE);
+        }
+
         Notification notification = new Notification();
         notification.setSourceId(dto.getSourceId());
         notification.setTargetId(dto.getTargetId());
+        notification.setCarriedOutBy(User.builder().id(dto.getCarriedOutById()).build());
         notification.setContent(dto.getContent());
         notification.setCreatedAt(LocalDateTime.now());
         notification.setUpdatedAt(LocalDateTime.now());
 
-        Notification saved = notificationRepository.save(notification);
+        notificationRepository.save(notification);
     }
 
     @Override
@@ -56,6 +70,11 @@ public class NotificationService implements NotificationServiceI {
         }
 
         PageContent<Notification> notifications = this.notificationRepository.getByTargetId(dto.getTargetId(), dto.getPage(), dto.getSize());
+        
+        notifications.getContent().forEach(notification -> {
+            User carriedOutBy = this.userRepository.getById(notification.getCarriedOutBy().getId(), dto.getToken());
+            notification.setCarriedOutBy(carriedOutBy);
+        });
 
         return NotificationMapper.getPage().toResponse(notifications);
     }
