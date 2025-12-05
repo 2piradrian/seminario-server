@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
@@ -69,9 +69,9 @@ public class EventService implements EventServiceI {
             event.setImageId(imageId);
         }
 
-        LocalDate localDateInit = dto.getDateInit().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate localDateInit = dto.getDateInit().toInstant().atZone(ZoneOffset.UTC).toLocalDate();
 
-        if (localDateInit.isEqual(LocalDate.now(ZoneId.of("UTC")))){
+        if (localDateInit.isEqual(LocalDate.now(ZoneOffset.UTC))){
             event.setStatus(EventStatus.IN_PROGRESS);
         } else {
             event.setStatus(EventStatus.PENDING);
@@ -173,16 +173,16 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        LocalDate localDate = dto.getDateMonth().toInstant().atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate localDate = dto.getDateMonth().toInstant().atZone(ZoneOffset.UTC).toLocalDate();
 
         Date dateStart = Date.from(localDate.with(TemporalAdjusters.firstDayOfMonth())
             .minusWeeks(1)
-            .atStartOfDay(ZoneId.of("UTC"))
+            .atStartOfDay(ZoneOffset.UTC)
             .toInstant());
 
         Date dateEnd = Date.from(localDate.with(TemporalAdjusters.lastDayOfMonth())
             .plusWeeks(1)
-            .atStartOfDay(ZoneId.of("UTC"))
+            .atStartOfDay(ZoneOffset.UTC)
             .toInstant());
 
         List<Event> events = this.eventRepository.getInDateRange(dto.getUserId(), dateStart, dateEnd);
@@ -299,7 +299,7 @@ public class EventService implements EventServiceI {
     public void updateEventsLifeCycle() {
         log.info("Cron: Iniciando ciclo de vida de eventos...");
 
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
         int batchSize = 1000;
 

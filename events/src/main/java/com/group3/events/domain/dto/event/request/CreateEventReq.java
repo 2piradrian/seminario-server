@@ -4,6 +4,8 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 @Getter
@@ -54,6 +56,12 @@ public class CreateEventReq {
         }
 
         if (dateInit.after(dateEnd)) {
+            throw new ErrorHandler(ErrorType.INVALID_FIELDS);
+        }
+
+        LocalDate localDateInit = dateInit.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
+
+        if(localDateInit.isBefore(LocalDate.now(ZoneOffset.UTC))){
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
