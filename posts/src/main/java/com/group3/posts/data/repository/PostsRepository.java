@@ -2,7 +2,6 @@ package com.group3.posts.data.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Post;
-import com.group3.entity.PostTypeEnum;
 import com.group3.entity.Status;
 import com.group3.posts.data.datasource.postgres.mapper.PostsEntityMapper;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
@@ -110,13 +109,13 @@ public class PostsRepository implements PostRepositoryI {
     // ======== Get Posts by Filtered Page or Author with Pagination ========
 
     @Override
-    public PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, PostTypeEnum postType) {
+    public PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId) {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByFilteredPage(
                 Status.ACTIVE,
                 text,
-                postType,
+                postTypeId,
                 PageRequest.of(pageIndex, size)
         );
 

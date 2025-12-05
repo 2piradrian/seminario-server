@@ -2,9 +2,6 @@ package com.group3.posts.domain.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Post;
-import com.group3.entity.PostTypeEnum;
-
-import java.util.List;
 
 public interface PostRepositoryI {
 
@@ -16,7 +13,7 @@ public interface PostRepositoryI {
 
     PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size);
 
-    PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, PostTypeEnum postType);
+    PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId);
 
     Post save(Post post);
 

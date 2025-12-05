@@ -323,7 +323,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/catalog-db:/var/lib/postgresql/data
+            - ./database/catalog-db:/var/lib/postgresql/data
         ports:
             - 5433:5432
         networks:
@@ -342,7 +342,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/events-db:/var/lib/postgresql/data
+            - ./database/events-db:/var/lib/postgresql/data
         ports:
             - 5437:5432
         networks:
@@ -361,7 +361,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/page-profiles-db:/var/lib/postgresql/data
+            - ./database/page-profiles-db:/var/lib/postgresql/data
         ports:
             - 5436:5432
         networks:
@@ -380,7 +380,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/posts-db:/var/lib/postgresql/data
+            - ./database/posts-db:/var/lib/postgresql/data
         ports:
             - 5435:5432
         networks:
@@ -399,7 +399,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/users-db:/var/lib/postgresql/data
+            - ./database/users-db:/var/lib/postgresql/data
         ports:
             - 5432:5432
         networks:
@@ -418,7 +418,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/notifications-db:/var/lib/postgresql/data
+            - ./database/notifications-db:/var/lib/postgresql/data
         ports:
             - 5438:5432
         networks:
@@ -437,7 +437,7 @@ services:
             POSTGRES_PASSWORD: develop
             POSTGRES_HOST_AUTH_METHOD: trust
         volumes:
-            - ./dabatase/chat-db:/var/lib/postgresql/data
+            - ./database/chat-db:/var/lib/postgresql/data
         ports:
             - 5439:5432
         networks:

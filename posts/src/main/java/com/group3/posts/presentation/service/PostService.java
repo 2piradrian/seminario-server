@@ -70,10 +70,7 @@ public class PostService implements PostServiceI {
         PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
         if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
 
-        PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postType.getName());
-        if(postTypeEnum == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
-
-        post.setPostType(postTypeEnum);
+        post.setPostType(postType);
 
         post.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.POST).toString());
         post.setAuthor(user);
@@ -153,23 +150,7 @@ public class PostService implements PostServiceI {
 
         if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        String postTypeName = null;
-
-        if (dto.getPostTypeId() != null && !dto.getPostTypeId().isBlank()) {
-            PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
-
-            if (postType != null) {
-                postTypeName = postType.getName();
-            }
-        }
-
-        PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postTypeName);
-
-        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText(), postTypeEnum);
-
-        for (Post post : posts.getContent()) {
-            post.setVotersToNull();
-        }
+        PageContent<Post> posts = this.postsRepository.getFilteredPosts(dto.getPage(), dto.getSize(), dto.getText(), dto.getPostTypeId());
 
         return PostMapper.getFilteredPage().toResponse(posts);
     }
@@ -287,6 +268,7 @@ public class PostService implements PostServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.UPVOTE.name()
             );
         }
@@ -295,6 +277,7 @@ public class PostService implements PostServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.DOWNVOTE.name()
             );
         }
@@ -339,10 +322,7 @@ public class PostService implements PostServiceI {
         PostType postType = this.catalogRepository.getByPostTypeId(dto.getPostTypeId());
         if(postType == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
 
-        PostTypeEnum postTypeEnum = PostTypeEnum.fromName(postType.getName());
-        if(postTypeEnum == null) throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
-
-        post.setPostType(postTypeEnum);
+        post.setPostType(postType);
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());

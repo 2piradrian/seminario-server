@@ -25,6 +25,9 @@ public class NotificationModel {
     @Column(name = "source_id")
     private String sourceId;
 
+    @Column(name= "carried_out_by_id")
+    private String carriedOutById;
+
     @Enumerated(EnumType.STRING)
     private NotificationContent content;
 

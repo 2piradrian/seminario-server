@@ -104,6 +104,7 @@ public class CommentService implements CommentServiceI {
                 secretKeyHelper.getSecret(),
                 targetId,
                 post.getId(),
+                author.getId(),
                 NotificationContent.COMMENT.name()
         );
 
@@ -218,6 +219,7 @@ public class CommentService implements CommentServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.UPVOTE.name()
             );
         }
@@ -226,6 +228,7 @@ public class CommentService implements CommentServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.DOWNVOTE.name()
             );
         }

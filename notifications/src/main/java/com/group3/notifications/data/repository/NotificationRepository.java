@@ -1,6 +1,7 @@
 package com.group3.notifications.data.repository;
 
 import com.group3.entity.Notification;
+import com.group3.entity.NotificationContent;
 import com.group3.entity.PageContent;
 import com.group3.notifications.data.datasource.postgres.mapper.NotificationEntityMapper;
 import com.group3.notifications.data.datasource.postgres.model.NotificationModel;
@@ -46,6 +47,20 @@ public class NotificationRepository implements NotificationRepositoryI {
         NotificationModel notificationModel = NotificationEntityMapper.toModel(notification);
         NotificationModel saved = this.repository.save(notificationModel);
         return NotificationEntityMapper.toDomain(saved);
+    }
+
+    @Override
+    public Notification findBy(String targetId, String carriedOutById, NotificationContent content) {
+        NotificationModel notificationModel = this.repository.findByTargetIdAndCarriedOutByIdAndContent(targetId, carriedOutById, content);
+        if (notificationModel == null) {
+            return null;
+        }
+        return NotificationEntityMapper.toDomain(notificationModel);
+    }
+
+    @Override
+    public void delete(String targetId, String carriedOutById, NotificationContent content) {
+        this.repository.deleteByTargetIdAndCarriedOutByIdAndContent(targetId, carriedOutById, content);
     }
 
 }

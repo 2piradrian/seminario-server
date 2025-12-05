@@ -19,6 +19,8 @@ public class Notification {
 
     private String sourceId;
 
+    private User carriedOutBy;
+
     private NotificationContent content;
 
     private LocalDateTime createdAt;
