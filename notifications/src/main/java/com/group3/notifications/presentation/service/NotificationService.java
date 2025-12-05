@@ -1,6 +1,7 @@
 package com.group3.notifications.presentation.service;
 
 import com.group3.entity.Notification;
+import com.group3.entity.NotificationContent;
 import com.group3.entity.PageContent;
 import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
@@ -43,10 +44,11 @@ public class NotificationService implements NotificationServiceI {
             return;
         }
 
-        if (dto.getContent() == com.group3.entity.NotificationContent.UPVOTE) {
-            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), com.group3.entity.NotificationContent.DOWNVOTE);
-        } else if (dto.getContent() == com.group3.entity.NotificationContent.DOWNVOTE) {
-            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), com.group3.entity.NotificationContent.UPVOTE);
+        if (dto.getContent() == NotificationContent.UPVOTE) {
+            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), NotificationContent.DOWNVOTE);
+        }
+        else if (dto.getContent() == NotificationContent.DOWNVOTE) {
+            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), NotificationContent.UPVOTE);
         }
 
         Notification notification = new Notification();

@@ -81,6 +81,7 @@ public class FollowService implements FollowServiceI {
                 this.secretKeyHelper.getSecret(),
                 dto.getId(), // targetId
                 user.getId(), // sourceId
+                user.getId(),
                 NotificationContent.FOLLOW.name()
         );
     }

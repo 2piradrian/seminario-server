@@ -287,6 +287,7 @@ public class PostService implements PostServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.UPVOTE.name()
             );
         }
@@ -295,6 +296,7 @@ public class PostService implements PostServiceI {
                     this.secretKeyHelper.getSecret(),
                     targetId,
                     post.getId(),
+                    user.getId(),
                     NotificationContent.DOWNVOTE.name()
             );
         }
