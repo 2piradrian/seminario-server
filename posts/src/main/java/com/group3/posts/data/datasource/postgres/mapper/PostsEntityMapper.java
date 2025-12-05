@@ -19,7 +19,7 @@ public class PostsEntityMapper {
             postModel.getCreatedAt(),
             postModel.getUpdatedAt(),
             postModel.getStatus(),
-            postModel.getPostType(),
+            new PostType(postModel.getPostTypeId(), null),
             postModel.getUpvoters().size(),
             postModel.getDownvoters().size()
             );
@@ -39,7 +39,7 @@ public class PostsEntityMapper {
             post.getCreatedAt(),
             post.getUpdatedAt(),
             post.getStatus(),
-            post.getPostType()
+            post.getPostType().getId()
         );
     }
 
