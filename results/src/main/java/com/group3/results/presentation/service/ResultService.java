@@ -51,86 +51,85 @@ public class ResultService implements ResultServiceI {
         List<Post> posts = new ArrayList<>();
         List<Event> events = new ArrayList<>();
 
-        ContentTypeEnum type = ContentTypeEnum.fromName(contentType.getId());
+        ContentType type = this.catalogRepository.getContentById(dto.getContentTypeId());
+        if (type == null) throw new ErrorHandler(ErrorType.CONTENT_TYPE_NOT_FOUND);
 
-        switch (type) {
+        if(type.isPageType()){
 
-            case PAGEPROFILE -> {
-                pageProfiles = pageProfileRepository.getPageFilteredPage(
-                        dto.getToken(),
-                        dto.getText(),
-                        dto.getPageTypeId(),
-                        dto.getPage(),
-                        dto.getSize(),
-                        secret
-                );
+            pageProfiles = pageProfileRepository.getPageFilteredPage(
+                dto.getToken(),
+                dto.getText(),
+                dto.getPageTypeId(),
+                dto.getPage(),
+                dto.getSize(),
+                secret
+            );
 
-            }
+        } else if (type.isUserType()) {
 
-            case USERPROFILE -> {
-                List<String> styleIds = dto.getStyles() != null
-                        ? dto.getStyles()
-                        : List.of();
+            List<String> styleIds = dto.getStyles() != null
+                ? dto.getStyles()
+                : List.of();
 
-                List<String> instrumentIds = dto.getInstruments() != null
-                        ? dto.getInstruments()
-                        : List.of();
+            List<String> instrumentIds = dto.getInstruments() != null
+                ? dto.getInstruments()
+                : List.of();
 
-                users = userRepository.getUserFilteredPage(
-                        dto.getToken(),
-                        dto.getText(),
-                        styleIds,
-                        instrumentIds,
-                        dto.getPage(),
-                        dto.getSize(),
-                        secret
-                );
-            }
+            users = userRepository.getUserFilteredPage(
+                dto.getToken(),
+                dto.getText(),
+                styleIds,
+                instrumentIds,
+                dto.getPage(),
+                dto.getSize(),
+                secret
+            );
 
-            case POST -> {
-                posts = postRepository.getFilteredPosts(
-                        dto.getToken(),
-                        dto.getPage(),
-                        dto.getSize(),
-                        dto.getText(),
-                        dto.getPostTypeId(),
-                        secret
-                );
+        } else if (type.isPostType()) {
 
-                for (Post post : posts) {
-                    if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                        User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                        post.setAuthor(author);
-                    }
-                    if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                        PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
-                        post.setPageProfile(page);
-                    }
+            posts = postRepository.getFilteredPosts(
+                dto.getToken(),
+                dto.getPage(),
+                dto.getSize(),
+                dto.getText(),
+                dto.getPostTypeId(),
+                secret
+            );
+
+            for (Post post : posts) {
+                if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                    User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                    post.setAuthor(author);
+                }
+                if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                    PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                    post.setPageProfile(page);
                 }
             }
 
-            case EVENT -> {
-                events = eventRepository.getFilteredEventsPage(
-                    dto.getToken(),
-                    dto.getPage(),
-                    dto.getSize(),
-                    dto.getText(),
-                    secret,
-                    dto.getDateInit(),
-                    dto.getDateEnd()
-                );
+        } else if (type.isEventType()){
 
-                for (Event event : events) {
-                    if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-                        User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
-                        event.setAuthor(author);
-                    }
-                    if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
-                        PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
-                        event.setPageProfile(page);
-                    }
+            events = eventRepository.getFilteredEventsPage(
+                dto.getToken(),
+                dto.getPage(),
+                dto.getSize(),
+                dto.getText(),
+                secret,
+                dto.getDateInit(),
+                dto.getDateEnd()
+            );
+
+            for (Event event : events) {
+                if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+                    User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                    event.setAuthor(author);
+                }
+                if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+                    PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                    event.setPageProfile(page);
                 }
             }
+
         }
 
         return ResultsMapper.getSearchResult().toResponse(users, pageProfiles, posts, events);
