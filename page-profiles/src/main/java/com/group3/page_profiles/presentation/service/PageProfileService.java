@@ -199,16 +199,21 @@ public class PageProfileService implements PageProfileServiceI {
                     if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
                 });
 
-        List<User> members = page.getMembers();
-        Set<User> existingMembers = new HashSet<>(members);
+        List<User> newMembersList = new ArrayList<>();
+
+        newMembersList.add(page.getOwner());
 
         dto.getMembers().forEach(id -> {
-            User member = this.userRepository.getById(dto.getToken(), id);
-            if (existingMembers.add(member)) {
-                members.add(member);
+            if (!id.equals(page.getOwner().getId())) {
+                User member = this.userRepository.getById(dto.getToken(), id);
+
+                if (member == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+                newMembersList.add(member);
             }
         });
-        page.setMembers(members);
+
+        page.setMembers(newMembersList);
 
         // ======== Update Page Type and Metadata ========
         PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
