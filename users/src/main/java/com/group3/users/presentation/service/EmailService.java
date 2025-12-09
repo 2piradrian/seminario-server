@@ -34,8 +34,6 @@ public class EmailService implements EmailServiceI {
 
             if (logoResource.exists()) {
                 helper.addInline("fortuneLogo", logoResource);
-            } else {
-                log.warn("ERROR");
             }
 
             mailSender.send(message);
