@@ -76,12 +76,33 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/recover-password")
+    public ResponseEntity<?> recoverPassword(
+        @RequestBody Map<String, Object> payload
+    ) {
+        RecoverPasswordReq dto = AuthMapper.recover().toRequest(payload);
+        this.authService.recoverPassword(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/resend-verify-email")
     public ResponseEntity<?> resendVerifyEmail(
             @RequestBody Map<String, Object> payload
     ) {
         ResendEmailReq dto = AuthMapper.resendEmail().toRequest(payload);
         this.authService.resendVerifyEmail(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestBody Map<String, Object> payload
+    ) {
+        ChangePasswordReq dto = AuthMapper.changePassword().toRequest(token, payload);
+        this.authService.changePassword(dto);
 
         return ResponseEntity.ok().build();
     }

@@ -25,4 +25,8 @@ public interface AuthServiceI {
 
     void revokeRole(RevokeRoleUserReq dto);
 
+    void recoverPassword(RecoverPasswordReq dto);
+
+    void  changePassword(ChangePasswordReq dto);
+
 }

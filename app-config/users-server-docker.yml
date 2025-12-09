@@ -32,3 +32,6 @@ application:
     secret: "I'll see you on the dark side of the moon"
   host:
       url: https://vps-5486356-x.dattaweb.com
+  client:
+      url: https://fortune-utn.vercel.app
+      recover: /recover/pass/

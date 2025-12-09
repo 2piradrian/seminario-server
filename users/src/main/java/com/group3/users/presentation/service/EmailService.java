@@ -5,6 +5,7 @@ import com.group3.error.ErrorType;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,12 @@ public class EmailService implements EmailServiceI {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text, true);
+
+            ClassPathResource logoResource = new ClassPathResource("email-logo.png");
+
+            if (logoResource.exists()) {
+                helper.addInline("fortuneLogo", logoResource);
+            }
 
             mailSender.send(message);
         }

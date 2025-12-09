@@ -31,4 +31,12 @@ public class AuthMapper {
     public static RevokeUserMapper revokeRole() {
         return new RevokeUserMapper();
     }
+
+    public static RecoverMapper recover() {
+        return new RecoverMapper();
+    }
+
+    public static ChangePasswordMapper changePassword() {
+        return new ChangePasswordMapper();
+    }
 }

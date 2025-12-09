@@ -6,7 +6,6 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.config.helpers.AuthHelper;
 import com.group3.users.config.helpers.EmailHelper;
-import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.data.repository.UserRepository;
 import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.*;
@@ -30,8 +29,6 @@ public class AuthService implements AuthServiceI {
     private final AuthHelper authHelper;
 
     private final UserRepository userRepository;
-
-    private final UserProfileRepository userProfileRepository;
 
     private final EmailService emailService;
 
@@ -126,7 +123,11 @@ public class AuthService implements AuthServiceI {
 
         Token token = this.authHelper.createToken(saved);
 
-        this.emailService.sendEmail(saved.getEmail(),"Email Validation", this.emailHelper.verifyEmailHTML(token.getAccessToken()));
+        this.emailService.sendEmail(
+            saved.getEmail(),
+            "Email Validation",
+            this.emailHelper.verifyEmailHTML(token.getAccessToken())
+        );
     }
 
     // ======== Grant roles to user ========
@@ -242,6 +243,39 @@ public class AuthService implements AuthServiceI {
             "Email Verification",
             this.emailHelper.verifyEmailHTML(token.getAccessToken())
         );
+    }
+
+    @Override
+    public void recoverPassword(RecoverPasswordReq dto) {
+
+        User user = this.userRepository.getByEmail(dto.getEmail());
+
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (user.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        Token token = this.authHelper.createToken(user);
+
+        this.emailService.sendEmail(
+            user.getEmail(),
+            "Recover password",
+            this.emailHelper.recoverPasswordHTML(token.getAccessToken())
+        );
+
+    }
+
+    @Override
+    public void changePassword(ChangePasswordReq dto) {
+
+        AuthUserRes userAuth = this.auth(AuthUserReq.create(dto.getToken()));
+        if (userAuth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        User user = this.userRepository.getByEmail(userAuth.getEmail());
+        if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
+
+        this.userRepository.update(user);
+
     }
 
 }
