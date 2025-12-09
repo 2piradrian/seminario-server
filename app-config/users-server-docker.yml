@@ -35,5 +35,3 @@ application:
   client:
       url: https://fortune-utn.vercel.app
       recover: /recover/pass/
-  assets:
-      logo-url: https://vps-5486356-x.dattaweb.com/api/images/logo-fortune.webp

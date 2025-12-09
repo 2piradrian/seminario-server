@@ -35,5 +35,3 @@ application:
   client:
       url: https://localhost:5671
       recover: /recover/pass/
-  assets:
-    logo-url: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
