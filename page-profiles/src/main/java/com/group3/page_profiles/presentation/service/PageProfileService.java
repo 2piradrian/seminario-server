@@ -175,7 +175,7 @@ public class PageProfileService implements PageProfileServiceI {
         // ======== Update Profile Image ========
         if (dto.getProfileImage() != null) {
             String profileImage = page.getProfileImage();
-            if (profileImage != null) {
+            if (profileImage != null && !profileImage.isEmpty()) {
                 this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
             }
             String profileId = this.imagesRepository.upload(dto.getProfileImage(), secretKeyHelper.getSecret());
@@ -185,7 +185,7 @@ public class PageProfileService implements PageProfileServiceI {
         // ======== Update Portrait Image ========
         if (dto.getPortraitImage() != null) {
             String portraitImage = page.getPortraitImage();
-            if (portraitImage != null) {
+            if (portraitImage != null && !portraitImage.isEmpty()) {
                 this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
             }
             String portraitId = this.imagesRepository.upload(dto.getPortraitImage(), secretKeyHelper.getSecret());
