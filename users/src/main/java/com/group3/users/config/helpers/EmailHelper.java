@@ -15,9 +15,6 @@ public class EmailHelper {
     @Value("${application.client.recover}")
     private String recoverPath;
 
-    @Value("${application.assets.logo-url}")
-    private String logoUrl;
-
     public String verifyEmailHTML(String token){
 
         String link = baseUrl + "/api/auth/verify-email/" + token;
@@ -90,7 +87,7 @@ public class EmailHelper {
         <body style="background-color: #FBF8FF; padding: 20px; margin: 0;">
             <div class="container">
                 <div class="header">
-                    <img src="%s" alt="Logo de Fortune" class="logo">
+                    <img src="cid:fortuneLogo" alt="Logo de Fortune" class="logo">
                 </div>
                 <div class="content">
                     <h2 style="color: #E3550B;">%s</h2>
@@ -104,7 +101,7 @@ public class EmailHelper {
             </div>
         </body>
         </html>
-        """.formatted(logoUrl, title, message, link, buttonText);
+        """.formatted(title, message, link, buttonText);
     }
 
 }
