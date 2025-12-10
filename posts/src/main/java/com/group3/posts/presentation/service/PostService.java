@@ -141,6 +141,28 @@ public class PostService implements PostServiceI {
         return PostMapper.getPage().toResponse(posts);
     }
 
+    @Override
+    public GetPostByCursorPageRes getPostByCursorPage(GetPostByCursorPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        CursorContent<Post> posts = this.postsRepository.getByCursorPage(dto.getCursor(), dto.getSize(), dto.getProfileId());
+
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor().getId() != null) {
+                User fullAuthor = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullAuthor);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                post.setPageProfile(fullPage);
+            }
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getPostByCursor().toResponse(posts);
+    }
+
     // ======== Get Filtered Posts ========
 
     @Override

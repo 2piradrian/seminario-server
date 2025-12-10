@@ -11,6 +11,8 @@ public interface PostServiceI {
 
     GetPostPageRes getPosts(GetPostPageReq dto);
 
+    GetPostByCursorPageRes getPostByCursorPage(GetPostByCursorPageReq dto);
+
     GetFilteredPostPageRes getFilteredPosts(GetFilteredPostPageReq dto);
 
     GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto);
