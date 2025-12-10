@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetFeedMergedPageRes {
+public class GetFeedMergedCursorPageRes {
 
     private final List<?> content;
 

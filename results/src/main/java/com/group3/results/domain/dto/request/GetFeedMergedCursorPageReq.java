@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class GetFeedMergedPageReq {
+public class GetFeedMergedCursorPageReq {
 
     private final LocalDateTime cursor;
 
@@ -17,14 +17,14 @@ public class GetFeedMergedPageReq {
 
     private final String profileId;
 
-    private GetFeedMergedPageReq(String token, String profileId, LocalDateTime cursor, Integer size ) {
+    private GetFeedMergedCursorPageReq(String token, String profileId, LocalDateTime cursor, Integer size ) {
         this.cursor = cursor;
         this.size = size;
         this.token = token;
         this.profileId = profileId;
     }
 
-    public static GetFeedMergedPageReq create(String token, String profileId, LocalDateTime cursor, Integer size) {
+    public static GetFeedMergedCursorPageReq create(String token, String profileId, LocalDateTime cursor, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -46,7 +46,7 @@ public class GetFeedMergedPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFeedMergedPageReq(token, profileId, cursor, size);
+        return new GetFeedMergedCursorPageReq(token, profileId, cursor, size);
     }
 
 }

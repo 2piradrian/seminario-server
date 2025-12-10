@@ -1,7 +1,9 @@
 package com.group3.results.domain.dto.mapper;
 
 import com.group3.results.domain.dto.mapper.implementation.GetFeedMapper;
+import com.group3.results.domain.dto.mapper.implementation.GetFeedMergedCursorMapper;
 import com.group3.results.domain.dto.mapper.implementation.GetSearchResultMapper;
+import com.group3.results.domain.dto.request.GetFeedMergedCursorPageReq;
 
 public class ResultsMapper {
 
@@ -12,4 +14,9 @@ public class ResultsMapper {
     public static GetFeedMapper getFeed(){
         return new GetFeedMapper();
     }
+
+    public static GetFeedMergedCursorMapper getFeedMerged(){
+        return new GetFeedMergedCursorMapper();
+    }
+
 }
