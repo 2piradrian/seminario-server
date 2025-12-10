@@ -3,18 +3,23 @@ package com.group3.results.presentation.service;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.results.config.helpers.FeedUtil;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.*;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
+import com.group3.results.domain.dto.request.GetFeedMergedCursorPageReq;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
+import com.group3.results.domain.dto.response.GetFeedMergedCursorPageRes;
 import com.group3.results.domain.dto.response.GetFeedPageRes;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -161,6 +166,85 @@ public class ResultService implements ResultServiceI {
         }
 
         return ResultsMapper.getFeed().toResponse(posts);
+    }
+
+    @Override
+    public GetFeedMergedCursorPageRes getMergedFeedPage(GetFeedMergedCursorPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        CursorContent<Post> posts = this.postRepository.getPostsByCursorPage(
+            dto.getToken(),
+            dto.getProfileId(),
+            dto.getCursor(),
+            dto.getSize()
+        );
+
+        CursorContent<Event> events = this.eventRepository.getEventsByCursorPage(
+            dto.getToken(),
+            dto.getProfileId(),
+            dto.getCursor(),
+            dto.getSize()
+        );
+
+        List<Object> feed = new ArrayList<>();
+
+        feed.addAll(posts.getContent());
+        feed.addAll(events.getContent());
+
+        feed.sort(Comparator.comparing(FeedUtil::getCreatedAt).reversed());
+
+        List<Object> finalFeed;
+        LocalDateTime nextCursor = null;
+
+        if (feed.size() > dto.getSize()) {
+            finalFeed = feed.subList(0, dto.getSize());
+
+            Object lastItem = finalFeed.getLast();
+            nextCursor = FeedUtil.getCreatedAt(lastItem);
+        } else {
+            finalFeed = feed;
+        }
+
+        for (Object feedContent : finalFeed) {
+
+            if (feedContent instanceof Event event) {
+
+                if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+                    User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                    event.setAuthor(author);
+                }
+                if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+                    PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                    event.setPageProfile(page);
+                }
+
+            } else if (feedContent instanceof Post post) {
+
+                if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                    User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                    post.setAuthor(author);
+                }
+                if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                    PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                    post.setPageProfile(page);
+                }
+
+            }
+
+        }
+
+        return ResultsMapper.getFeedMerged().toResponse(finalFeed, nextCursor);
+    }
+
+    private LocalDateTime getDateFromObject(Object obj) {
+        if (obj instanceof Event) {
+            return ((Event) obj).getCreatedAt();
+        } else if (obj instanceof Post) {
+            return ((Post) obj).getCreatedAt();
+        } else {
+            throw new ErrorHandler(ErrorType.INTERNAL_ERROR);
+        }
     }
 
 
