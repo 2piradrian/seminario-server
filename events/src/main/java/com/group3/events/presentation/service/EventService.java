@@ -169,11 +169,11 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetEventByCursorPageRes getEventsByCursorPage(GetEventByCursorPageReq dto) {
+    public GetEventByProfileIdPageRes getEventsByProfileIdPage(GetEventByProfileIdPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        CursorContent<Event> events = this.eventRepository.getByCursorPage(dto.getCursor(), dto.getSize(), dto.getProfileId());
+        PageContent<Event> events = this.eventRepository.getByProfileIdPage(dto.getPage(), dto.getSize(), dto.getProfileId());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {

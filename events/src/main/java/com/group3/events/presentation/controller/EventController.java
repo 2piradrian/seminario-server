@@ -3,13 +3,11 @@ package com.group3.events.presentation.controller;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.presentation.service.EventService;
-import jakarta.ws.rs.GET;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -65,15 +63,15 @@ public class EventController {
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
     }
 
-    @GetMapping("/get-events-by-cursor")
-    public ResponseEntity<?> getEventsByCursor(
+    @GetMapping("/get-by-profile")
+    public ResponseEntity<?> getEventsByProfileId(
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "profileId") String profileId,
-        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+        @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetEventByCursorPageReq dto = EventMapper.getEventByCursor().toRequest(token, profileId, cursor, size);
-        return ResponseEntity.ok(this.service.getEventsByCursorPage(dto));
+        GetEventByProfileIdPageReq dto = EventMapper.getEventByCursor().toRequest(token, profileId, page, size);
+        return ResponseEntity.ok(this.service.getEventsByProfileIdPage(dto));
     }
 
     @GetMapping("/get-events-by-date-range")

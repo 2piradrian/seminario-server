@@ -117,21 +117,20 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public CursorContent<Event> getByCursorPage(LocalDateTime cursor, Integer size, String profileId){
+    public PageContent<Event> getByProfileIdPage(Integer page, Integer size, String profileId){
 
-        List<EventModel> eventModels = this.repository.findByCursorPage(
-                cursor,
-                profileId,
-                EventStatus.DELETED,
-                PageRequest.of(0, size + 1)
-            );
+        Page<EventModel> eventModels = this.repository.findByProfileIdPage(
+            profileId,
+            EventStatus.DELETED,
+            PageRequest.of(page, size)
+        );
 
-        return new CursorContent<>(
-            eventModels.stream()
-                .limit(size)
+        return new PageContent<>(
+            eventModels.getContent().stream()
                 .map(EventEntityMapper::toDomain)
                 .collect(Collectors.toList()),
-            (eventModels.size() > size) ? eventModels.get(size).getCreatedAt() : null
+            eventModels.getNumber() + 1,
+            eventModels.hasNext() ? eventModels.getNumber() + 2 : null
         );
     }
 

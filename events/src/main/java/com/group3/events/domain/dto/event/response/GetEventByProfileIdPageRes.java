@@ -4,15 +4,13 @@ import com.group3.entity.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetEventByCursorPageRes {
+public class GetEventByProfileIdPageRes {
 
     private final List<Event> events;
 
-    private final LocalDateTime nextCursor;
-
+    private final Integer nextPage;
 }

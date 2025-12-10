@@ -1,6 +1,5 @@
 package com.group3.events.domain.repository;
 
-import com.group3.entity.CursorContent;
 import com.group3.entity.Event;
 import com.group3.entity.PageContent;
 
@@ -22,7 +21,7 @@ public interface EventRepositoryI {
 
     PageContent<Event> getFilteredEvents(Integer page, Integer size, String text, Date dateInit, Date dateEnd);
 
-    CursorContent<Event> getByCursorPage(LocalDateTime cursor, Integer size, String profileId);
+    PageContent<Event> getByProfileIdPage(Integer page, Integer size, String profileId);
 
     PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size);
 

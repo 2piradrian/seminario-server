@@ -18,6 +18,7 @@ import java.util.List;
 public interface PostgresEventRepositoryI extends JpaRepository<EventModel, String> {
 
     // ======== Get Events by Author or Assistant ========
+
     @Query("""
         SELECT DISTINCT e
         FROM EventModel e
@@ -69,13 +70,11 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
 
     @Query("""
         SELECT e FROM EventModel e 
-        WHERE (:#{#cursor == null} = true OR e.createdAt < :cursor)
-        AND (e.pageId = :profileId OR e.authorId = :profileId)
+        WHERE (e.pageId = :profileId OR e.authorId = :profileId)
         AND e.status <> :status 
         ORDER BY e.createdAt DESC
     """)
-    List<EventModel> findByCursorPage(
-        @Param("cursor") LocalDateTime cursor,
+    Page<EventModel> findByProfileIdPage(
         @Param("profileId") String profileId,
         @Param("status") EventStatus status,
         Pageable pageable
