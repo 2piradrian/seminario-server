@@ -16,6 +16,10 @@ public class EventMapper {
         return new GetEventAndAssistsMapper();
     }
 
+    public static GetEventByCursorMapper getEventByCursor(){
+        return new GetEventByCursorMapper();
+    }
+
     public static EditMapper edit() {
         return new EditMapper();
     }
