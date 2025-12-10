@@ -169,6 +169,29 @@ public class EventService implements EventServiceI {
     }
 
     @Override
+    public GetEventByProfileIdPageRes getEventsByProfileIdPage(GetEventByProfileIdPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<Event> events = this.eventRepository.getByProfileIdPage(dto.getPage(), dto.getSize(), dto.getProfileId());
+
+        for (Event event : events.getContent()) {
+            if (event.getAuthor().getId() != null) {
+                User fullAuthor = this.userRepository.getById(event.getAuthor().getId(), dto.getToken());
+                event.setAuthor(fullAuthor);
+            }
+            if (event.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
+                event.setPageProfile(fullPage);
+            }
+            event.calculateAssistsQuantity();
+            event.setIsAssisting(user.getId());
+        }
+
+        return EventMapper.getEventByCursor().toResponse(events);
+    }
+
+    @Override
     public GetEventByDateRangeRes getEventsByDateRange(GetEventByDateRangeReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);

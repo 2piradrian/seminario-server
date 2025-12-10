@@ -3,12 +3,11 @@ package com.group3.events.presentation.controller;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.presentation.service.EventService;
-import jakarta.ws.rs.GET;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -62,6 +61,17 @@ public class EventController {
     ) {
         GetEventAndAssistsPageReq dto = EventMapper.getEventAndAssistsMapper().toRequest(token, userId, page, size);
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
+    }
+
+    @GetMapping("/get-by-profile")
+    public ResponseEntity<?> getEventsByProfileId(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size
+    ) {
+        GetEventByProfileIdPageReq dto = EventMapper.getEventByCursor().toRequest(token, profileId, page, size);
+        return ResponseEntity.ok(this.service.getEventsByProfileIdPage(dto));
     }
 
     @GetMapping("/get-events-by-date-range")

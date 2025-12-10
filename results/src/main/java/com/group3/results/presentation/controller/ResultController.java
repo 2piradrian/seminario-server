@@ -1,6 +1,7 @@
 package com.group3.results.presentation.controller;
 
 import com.group3.results.domain.dto.mapper.ResultsMapper;
+import com.group3.results.domain.dto.request.GetFeedMergedByProfileIdPageReq;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.presentation.service.ResultService;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -44,6 +44,17 @@ public class ResultController {
     ) {
         GetFeedPageReq dto = ResultsMapper.getFeed().toRequest(page, size, token);
         return ResponseEntity.ok(this.resultService.getFeedPage(dto));
+    }
+
+    @GetMapping("/get-feed-merged")
+    public ResponseEntity<?> getFeedMerged(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "page") Integer page,
+        @RequestParam(value = "size") Integer size
+    ) {
+        GetFeedMergedByProfileIdPageReq dto = ResultsMapper.getFeedMerged().toRequest(token, profileId, page, size);
+        return ResponseEntity.ok(this.resultService.getMergedFeedPage(dto));
     }
 
 }

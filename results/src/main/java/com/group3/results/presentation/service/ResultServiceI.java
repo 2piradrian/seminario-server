@@ -1,7 +1,9 @@
 package com.group3.results.presentation.service;
 
+import com.group3.results.domain.dto.request.GetFeedMergedByProfileIdPageReq;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
+import com.group3.results.domain.dto.response.GetFeedMergedByProfileIdPageRes;
 import com.group3.results.domain.dto.response.GetFeedPageRes;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 
@@ -10,5 +12,7 @@ public interface ResultServiceI {
     GetSearchResultFilteredRes getSearchResult(GetSerchResultFilteredReq dto);
 
     GetFeedPageRes getFeedPage(GetFeedPageReq dto);
+
+    GetFeedMergedByProfileIdPageRes getMergedFeedPage(GetFeedMergedByProfileIdPageReq dto);
 
 }

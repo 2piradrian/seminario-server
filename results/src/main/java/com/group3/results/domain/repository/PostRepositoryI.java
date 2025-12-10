@@ -8,4 +8,6 @@ public interface PostRepositoryI {
 
     List<Post> getFilteredPosts(String token, Integer page, Integer size, String text, String postTypeId, String secret);
 
+    List<Post> getPostsByProfileIdPage(String token, String profileId, Integer page, Integer size);
+
 }

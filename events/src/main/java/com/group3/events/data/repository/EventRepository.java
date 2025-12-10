@@ -1,9 +1,6 @@
 package com.group3.events.data.repository;
 
-import com.group3.entity.Event;
-import com.group3.entity.EventStatus;
-import com.group3.entity.PageContent;
-import com.group3.entity.Status;
+import com.group3.entity.*;
 import com.group3.events.data.datasource.postgres.mapper.EventEntityMapper;
 import com.group3.events.data.datasource.postgres.model.EventModel;
 import com.group3.events.data.datasource.postgres.repository.PostgresEventRepositoryI;
@@ -118,6 +115,25 @@ public class EventRepository implements EventRepositoryI {
             eventModels.hasNext() ? eventModels.getNumber() + 2 : null
         );
     }
+
+    @Override
+    public PageContent<Event> getByProfileIdPage(Integer page, Integer size, String profileId){
+
+        Page<EventModel> eventModels = this.repository.findByProfileIdPage(
+            profileId,
+            EventStatus.DELETED,
+            PageRequest.of(page, size)
+        );
+
+        return new PageContent<>(
+            eventModels.getContent().stream()
+                .map(EventEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            eventModels.getNumber() + 1,
+            eventModels.hasNext() ? eventModels.getNumber() + 2 : null
+        );
+    }
+
 
     @Override
     public PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size) {

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
@@ -24,33 +25,18 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             Pageable pageable
     );
 
-    // ======== Get Posts by Author ========
+    // ======== Get Posts by profile ========
+
     @Query("""
-        SELECT p
-        FROM PostModel p
-        WHERE p.authorId = :authorId
-        AND p.status = :status
+        SELECT p FROM PostModel p
+        WHERE (p.pageId = :profileId OR p.authorId = :profileId)
+        AND p.status = :status 
         ORDER BY p.createdAt DESC
     """)
-    Page<PostModel> findByAuthorId(
-            @Param("authorId") String authorId,
-            @Param("status") Status status,
-            Pageable pageable
-    );
-
-
-    // ======== Get Posts by Page ========
-    @Query("""
-        SELECT p
-        FROM PostModel p
-        WHERE p.pageId = :pageId
-        AND p.status = :status
-        ORDER BY p.createdAt DESC
-    """)
-    Page<PostModel> findByPageId(
-            @Param("pageId") String pageId,
-            @Param("status") Status status,
-            Pageable pageable
+    Page<PostModel> findByProfileIdPage(
+        @Param("profileId") String profileId,
+        @Param("status") Status status,
+        Pageable pageable
     );
 
     // ======== Get Posts by Filtered Page or Author ========

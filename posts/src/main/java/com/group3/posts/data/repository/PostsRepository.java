@@ -1,8 +1,6 @@
 package com.group3.posts.data.repository;
 
-import com.group3.entity.PageContent;
-import com.group3.entity.Post;
-import com.group3.entity.Status;
+import com.group3.entity.*;
 import com.group3.posts.data.datasource.postgres.mapper.PostsEntityMapper;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
-
 
     // ======== Pagination Helper ========
 
@@ -61,47 +58,23 @@ public class PostsRepository implements PostRepositoryI {
         );
     }
 
-
-    // ======== Get Posts by Author ID with Pagination ========
+    // ======== Get Posts by profile ID with Pagination ========
 
     @Override
-    public PageContent<Post> getPostsByAuthorId(String authorId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
+    public PageContent<Post> getByProfileIdPage(String profileId, Integer page, Integer size){
 
-        Page<PostModel> postModels = repository.findByAuthorId(
-                authorId,
-                Status.ACTIVE,
-                PageRequest.of(pageIndex, size)
+        Page<PostModel> postModels = this.repository.findByProfileIdPage(
+            profileId,
+            Status.ACTIVE,
+            PageRequest.of(page, size)
         );
 
         return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber() + 1,
-                postModels.hasNext() ? postModels.getNumber() + 2 : null
-        );
-    }
-
-
-    // ======== Get Posts by Page ID with Pagination ========
-
-    @Override
-    public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<PostModel> postModels = repository.findByPageId(
-                pageId,
-                Status.ACTIVE,
-                PageRequest.of(pageIndex, size)
-        );
-
-        return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber() + 1,
-                postModels.hasNext() ? postModels.getNumber() + 2 : null
+            postModels.getContent().stream()
+                .map(PostsEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            postModels.getNumber() + 1,
+            postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
 
