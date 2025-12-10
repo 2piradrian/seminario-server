@@ -64,17 +64,6 @@ public class PostController {
         return ResponseEntity.ok(this.service.getFilteredPosts(dto));
     }
 
-    @GetMapping("/get-posts-by-cursor")
-    public ResponseEntity<?> getPostsByCursor(
-        @RequestHeader(value = "Authorization") String token,
-        @RequestParam(value = "profileId") String profileId,
-        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
-        @RequestParam(value = "size") Integer size
-    ) {
-        GetPostByCursorPageReq dto = PostMapper.getPostByCursor().toRequest(token, profileId, cursor, size);
-        return ResponseEntity.ok(this.service.getPostByCursorPage(dto));
-    }
-
     @GetMapping("/get-by-profile")
     public ResponseEntity<?> getPostsByProfile(
             @RequestHeader(value = "Authorization") String token,

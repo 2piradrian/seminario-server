@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 public class PostsRepository implements PostRepositoryI {
 
     private final PostgresPostRepositoryI repository;
-
 
     // ======== Pagination Helper ========
 
@@ -61,66 +58,23 @@ public class PostsRepository implements PostRepositoryI {
         );
     }
 
-    @Override
-    public CursorContent<Post> getByCursorPage(LocalDateTime cursor, Integer size, String profileId){
+    // ======== Get Posts by profile ID with Pagination ========
 
-        List<PostModel> eventModels = this.repository.findByCursorPage(
-            cursor,
+    @Override
+    public PageContent<Post> getByProfileIdPage(String profileId, Integer page, Integer size){
+
+        Page<PostModel> postModels = this.repository.findByProfileIdPage(
             profileId,
-            Status.DELETED,
-            PageRequest.of(0, size + 1)
+            Status.ACTIVE,
+            PageRequest.of(page, size)
         );
 
-        return new CursorContent<>(
-            eventModels.stream()
-                .limit(size)
+        return new PageContent<>(
+            postModels.getContent().stream()
                 .map(PostsEntityMapper::toDomain)
                 .collect(Collectors.toList()),
-            (eventModels.size() > size) ? eventModels.get(size).getCreatedAt() : null
-        );
-    }
-
-
-    // ======== Get Posts by Author ID with Pagination ========
-
-    @Override
-    public PageContent<Post> getPostsByAuthorId(String authorId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<PostModel> postModels = repository.findByAuthorId(
-                authorId,
-                Status.ACTIVE,
-                PageRequest.of(pageIndex, size)
-        );
-
-        return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber() + 1,
-                postModels.hasNext() ? postModels.getNumber() + 2 : null
-        );
-    }
-
-
-    // ======== Get Posts by Page ID with Pagination ========
-
-    @Override
-    public PageContent<Post> getPostsByPageId(String pageId, Integer page, Integer size) {
-        int pageIndex = normalizePage(page);
-
-        Page<PostModel> postModels = repository.findByPageId(
-                pageId,
-                Status.ACTIVE,
-                PageRequest.of(pageIndex, size)
-        );
-
-        return new PageContent<>(
-                postModels.getContent().stream()
-                        .map(PostsEntityMapper::toDomain)
-                        .collect(Collectors.toList()),
-                postModels.getNumber() + 1,
-                postModels.hasNext() ? postModels.getNumber() + 2 : null
+            postModels.getNumber() + 1,
+            postModels.hasNext() ? postModels.getNumber() + 2 : null
         );
     }
 

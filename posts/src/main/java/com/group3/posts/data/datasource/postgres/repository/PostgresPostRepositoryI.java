@@ -25,44 +25,15 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             Pageable pageable
     );
 
-    // ======== Get Posts by Author ========
-    @Query("""
-        SELECT p
-        FROM PostModel p
-        WHERE p.authorId = :authorId
-        AND p.status = :status
-        ORDER BY p.createdAt DESC
-    """)
-    Page<PostModel> findByAuthorId(
-            @Param("authorId") String authorId,
-            @Param("status") Status status,
-            Pageable pageable
-    );
-
-
-    // ======== Get Posts by Page ========
-    @Query("""
-        SELECT p
-        FROM PostModel p
-        WHERE p.pageId = :pageId
-        AND p.status = :status
-        ORDER BY p.createdAt DESC
-    """)
-    Page<PostModel> findByPageId(
-            @Param("pageId") String pageId,
-            @Param("status") Status status,
-            Pageable pageable
-    );
+    // ======== Get Posts by profile ========
 
     @Query("""
         SELECT p FROM PostModel p
-        WHERE (:#{#cursor == null} = true OR p.createdAt < :cursor)
-        AND (p.pageId = :profileId OR p.authorId = :profileId)
-        AND p.status <> :status 
+        WHERE (p.pageId = :profileId OR p.authorId = :profileId)
+        AND p.status = :status 
         ORDER BY p.createdAt DESC
     """)
-    List<PostModel> findByCursorPage(
-        @Param("cursor") LocalDateTime cursor,
+    Page<PostModel> findByProfileIdPage(
         @Param("profileId") String profileId,
         @Param("status") Status status,
         Pageable pageable

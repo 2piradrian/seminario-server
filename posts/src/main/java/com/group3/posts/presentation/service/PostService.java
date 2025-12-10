@@ -141,28 +141,6 @@ public class PostService implements PostServiceI {
         return PostMapper.getPage().toResponse(posts);
     }
 
-    @Override
-    public GetPostByCursorPageRes getPostByCursorPage(GetPostByCursorPageReq dto) {
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-
-        CursorContent<Post> posts = this.postsRepository.getByCursorPage(dto.getCursor(), dto.getSize(), dto.getProfileId());
-
-        for (Post post : posts.getContent()) {
-            if (post.getAuthor().getId() != null) {
-                User fullAuthor = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(fullAuthor);
-            }
-            if (post.getPageProfile().getId() != null) {
-                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
-                post.setPageProfile(fullPage);
-            }
-            post.setVotersToNull();
-        }
-
-        return PostMapper.getPostByCursor().toResponse(posts);
-    }
-
     // ======== Get Filtered Posts ========
 
     @Override
@@ -183,15 +161,7 @@ public class PostService implements PostServiceI {
     @Override
     public GetPostPageByProfileRes getPostsByProfile(GetPostPageByProfileReq dto) {
 
-        PageContent<Post> posts = null;
-
-        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getProfileId()));
-        if (type == PrefixedUUID.EntityType.USER) {
-            posts = this.postsRepository.getPostsByAuthorId(dto.getProfileId(), dto.getPage(), dto.getSize());
-        }
-        else if (type == PrefixedUUID.EntityType.PAGE) {
-            posts = this.postsRepository.getPostsByPageId(dto.getProfileId(), dto.getPage(), dto.getSize());
-        }
+        PageContent<Post> posts = this.postsRepository.getByProfileIdPage(dto.getProfileId(), dto.getPage(), dto.getSize());;
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
@@ -216,7 +186,7 @@ public class PostService implements PostServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Post> posts = this.postsRepository.getPostsByAuthorId(user.getId(), dto.getPage(), dto.getSize());
+        PageContent<Post> posts = this.postsRepository.getByProfileIdPage(user.getId(), dto.getPage(), dto.getSize());
 
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
