@@ -1,8 +1,6 @@
 package com.group3.posts.data.repository;
 
-import com.group3.entity.PageContent;
-import com.group3.entity.Post;
-import com.group3.entity.Status;
+import com.group3.entity.*;
 import com.group3.posts.data.datasource.postgres.mapper.PostsEntityMapper;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
@@ -12,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -58,6 +58,25 @@ public class PostsRepository implements PostRepositoryI {
                         .collect(Collectors.toList()),
                 postModels.getNumber() + 1,
                 postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
+    @Override
+    public CursorContent<Post> getByCursorPage(LocalDateTime cursor, Integer size, String profileId){
+
+        List<PostModel> eventModels = this.repository.findByCursorPage(
+            cursor,
+            profileId,
+            Status.DELETED,
+            PageRequest.of(0, size + 1)
+        );
+
+        return new CursorContent<>(
+            eventModels.stream()
+                .limit(size)
+                .map(PostsEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            (eventModels.size() > size) ? eventModels.get(size).getCreatedAt() : null
         );
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
@@ -51,6 +52,20 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             @Param("pageId") String pageId,
             @Param("status") Status status,
             Pageable pageable
+    );
+
+    @Query("""
+        SELECT p FROM PostModel p
+        WHERE (:#{#cursor == null} = true OR p.createdAt < :cursor)
+        AND (p.pageId = :profileId OR p.authorId = :profileId)
+        AND p.status <> :status 
+        ORDER BY p.createdAt DESC
+    """)
+    List<PostModel> findByCursorPage(
+        @Param("cursor") LocalDateTime cursor,
+        @Param("profileId") String profileId,
+        @Param("status") Status status,
+        Pageable pageable
     );
 
     // ======== Get Posts by Filtered Page or Author ========
