@@ -1,11 +1,14 @@
 package com.group3.results.data.datasource.event_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.event_server.responses.GetEventByCursorPageRes;
 import com.group3.results.data.datasource.event_server.responses.GetFilteredEventPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -22,6 +25,14 @@ public interface EventServerRepositoryI {
             @RequestParam(value = "text", required = false) String text,
             @RequestParam(value = "dateInit", required = false) String dateInit,
             @RequestParam(value = "dateEnd", required = false) String dateEnd
+    );
+
+    @GetMapping("/api/events/get-events-by-cursor")
+    GetEventByCursorPageRes getEventsByCursor(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+        @RequestParam(value = "size") Integer size
     );
 
 }
