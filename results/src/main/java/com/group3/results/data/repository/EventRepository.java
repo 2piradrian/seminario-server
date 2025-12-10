@@ -1,15 +1,13 @@
 package com.group3.results.data.repository;
 
-import com.group3.entity.CursorContent;
 import com.group3.entity.Event;
 import com.group3.results.data.datasource.event_server.repository.EventServerRepositoryI;
-import com.group3.results.data.datasource.event_server.responses.GetEventByCursorPageRes;
+import com.group3.results.data.datasource.event_server.responses.GetEventByProfileIdPageRes;
 import com.group3.results.data.datasource.event_server.responses.GetFilteredEventPageRes;
 import com.group3.results.domain.repository.EventRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -28,12 +26,12 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public CursorContent<Event> getEventsByCursorPage(String token, String profileId, LocalDateTime cursor, Integer size) {
-        GetEventByCursorPageRes response = this.repository.getEventsByCursor(
-            token, profileId, cursor, size
+    public List<Event> getEventsByProfileIdPage(String token, String profileId, Integer page, Integer size) {
+        GetEventByProfileIdPageRes response = this.repository.getEventsByProfileId(
+            token, profileId, page, size
         );
 
-        return new CursorContent<>(response.getEvents(), response.getNextCursor());
+        return response.getEvents();
     }
 
 }

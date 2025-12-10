@@ -1,7 +1,7 @@
 package com.group3.results.presentation.controller;
 
 import com.group3.results.domain.dto.mapper.ResultsMapper;
-import com.group3.results.domain.dto.request.GetFeedMergedCursorPageReq;
+import com.group3.results.domain.dto.request.GetFeedMergedByProfileIdPageReq;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
 import com.group3.results.presentation.service.ResultService;
@@ -9,9 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -52,10 +50,10 @@ public class ResultController {
     public ResponseEntity<?> getFeedMerged(
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "profileId") String profileId,
-        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+        @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetFeedMergedCursorPageReq dto = ResultsMapper.getFeedMerged().toRequest(token, profileId, cursor, size);
+        GetFeedMergedByProfileIdPageReq dto = ResultsMapper.getFeedMerged().toRequest(token, profileId, page, size);
         return ResponseEntity.ok(this.resultService.getMergedFeedPage(dto));
     }
 

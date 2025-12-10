@@ -7,17 +7,16 @@ import com.group3.results.config.helpers.FeedUtil;
 import com.group3.results.config.helpers.SecretKeyHelper;
 import com.group3.results.data.repository.*;
 import com.group3.results.domain.dto.mapper.ResultsMapper;
-import com.group3.results.domain.dto.request.GetFeedMergedCursorPageReq;
+import com.group3.results.domain.dto.request.GetFeedMergedByProfileIdPageReq;
 import com.group3.results.domain.dto.request.GetFeedPageReq;
 import com.group3.results.domain.dto.request.GetSerchResultFilteredReq;
-import com.group3.results.domain.dto.response.GetFeedMergedCursorPageRes;
+import com.group3.results.domain.dto.response.GetFeedMergedByProfileIdPageRes;
 import com.group3.results.domain.dto.response.GetFeedPageRes;
 import com.group3.results.domain.dto.response.GetSearchResultFilteredRes;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -169,44 +168,35 @@ public class ResultService implements ResultServiceI {
     }
 
     @Override
-    public GetFeedMergedCursorPageRes getMergedFeedPage(GetFeedMergedCursorPageReq dto) {
+    public GetFeedMergedByProfileIdPageRes getMergedFeedPage(GetFeedMergedByProfileIdPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        CursorContent<Post> posts = this.postRepository.getPostsByCursorPage(
+        int postsLimit = (int) Math.ceil(dto.getSize() / 2.0);
+        int eventsLimit = dto.getSize() - postsLimit;
+
+        List<Post> posts = this.postRepository.getPostsByProfileIdPage(
             dto.getToken(),
             dto.getProfileId(),
-            dto.getCursor(),
-            dto.getSize()
+            dto.getPage(),
+            postsLimit
         );
 
-        CursorContent<Event> events = this.eventRepository.getEventsByCursorPage(
+        List<Event> events = this.eventRepository.getEventsByProfileIdPage(
             dto.getToken(),
             dto.getProfileId(),
-            dto.getCursor(),
-            dto.getSize()
+            dto.getPage(),
+            eventsLimit
         );
 
         List<Object> feed = new ArrayList<>();
 
-        feed.addAll(posts.getContent());
-        feed.addAll(events.getContent());
+        feed.addAll(posts);
+        feed.addAll(events);
 
         feed.sort(Comparator.comparing(FeedUtil::getCreatedAt).reversed());
 
-        List<Object> finalFeed;
-        LocalDateTime nextCursor = null;
-
-        if (feed.size() > dto.getSize()) {
-            finalFeed = feed.subList(0, dto.getSize());
-
-            Object lastItem = finalFeed.getLast();
-            nextCursor = FeedUtil.getCreatedAt(lastItem);
-        } else {
-            finalFeed = feed;
-        }
-
-        for (Object feedContent : finalFeed) {
+        for (Object feedContent : feed) {
 
             if (feedContent instanceof Event event) {
 
@@ -234,18 +224,7 @@ public class ResultService implements ResultServiceI {
 
         }
 
-        return ResultsMapper.getFeedMerged().toResponse(finalFeed, nextCursor);
+        return ResultsMapper.getFeedMerged().toResponse(feed);
     }
-
-    private LocalDateTime getDateFromObject(Object obj) {
-        if (obj instanceof Event) {
-            return ((Event) obj).getCreatedAt();
-        } else if (obj instanceof Post) {
-            return ((Post) obj).getCreatedAt();
-        } else {
-            throw new ErrorHandler(ErrorType.INTERNAL_ERROR);
-        }
-    }
-
 
 }

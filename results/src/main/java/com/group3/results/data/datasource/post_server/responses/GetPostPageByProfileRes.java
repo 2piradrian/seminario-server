@@ -4,15 +4,14 @@ import com.group3.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPostByCursorPageRes {
+public class GetPostPageByProfileRes {
 
     private final List<Post> posts;
 
-    private final LocalDateTime nextCursor;
+    private final Integer nextPage;
 
 }

@@ -4,12 +4,10 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
-public class GetFeedMergedCursorPageReq {
+public class GetFeedMergedByProfileIdPageReq {
 
-    private final LocalDateTime cursor;
+    private final Integer page;
 
     private final Integer size;
 
@@ -17,14 +15,14 @@ public class GetFeedMergedCursorPageReq {
 
     private final String profileId;
 
-    private GetFeedMergedCursorPageReq(String token, String profileId, LocalDateTime cursor, Integer size ) {
-        this.cursor = cursor;
+    private GetFeedMergedByProfileIdPageReq(String token, String profileId, Integer page, Integer size ) {
+        this.page = page;
         this.size = size;
         this.token = token;
         this.profileId = profileId;
     }
 
-    public static GetFeedMergedCursorPageReq create(String token, String profileId, LocalDateTime cursor, Integer size) {
+    public static GetFeedMergedByProfileIdPageReq create(String token, String profileId, Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -34,7 +32,11 @@ public class GetFeedMergedCursorPageReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (cursor != null && cursor.isAfter(LocalDateTime.now())) {
+        if (page == null) {
+            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        }
+
+        if (page < 0) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
@@ -46,7 +48,7 @@ public class GetFeedMergedCursorPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFeedMergedCursorPageReq(token, profileId, cursor, size);
+        return new GetFeedMergedByProfileIdPageReq(token, profileId, page, size);
     }
 
 }
