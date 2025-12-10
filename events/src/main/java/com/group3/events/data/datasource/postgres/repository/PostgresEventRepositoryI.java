@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +64,20 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("text") String text,
         @Param("dateInit") Date dateInit,
         @Param("dateEnd") Date dateEnd,
+        Pageable pageable
+    );
+
+    @Query("""
+        SELECT e FROM EventModel e 
+        WHERE (:#{#cursor == null} = true OR e.createdAt < :cursor)
+        AND (e.pageId = :profileId OR e.authorId = :profileId)
+        AND e.status <> :status 
+        ORDER BY e.createdAt DESC
+    """)
+    List<EventModel> findByCursorPage(
+        @Param("cursor") LocalDateTime cursor,
+        @Param("profileId") String profileId,
+        @Param("status") EventStatus status,
         Pageable pageable
     );
 
