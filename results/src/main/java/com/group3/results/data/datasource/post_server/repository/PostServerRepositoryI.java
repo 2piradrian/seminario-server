@@ -2,10 +2,12 @@ package com.group3.results.data.datasource.post_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
 import com.group3.results.data.datasource.post_server.responses.GetFilteredPostPageRes;
+import com.group3.results.data.datasource.post_server.responses.GetPostByCursorPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @FeignClient(name = "posts-server", path = "/posts-server")
@@ -20,6 +22,14 @@ public interface PostServerRepositoryI {
         @RequestParam(value = "text", required = false) String text,
         @RequestParam(value = "postTypeId", required = false) String postTypeId,
         @RequestParam(value = "secret") String secret
+    );
+
+    @GetMapping("/api/posts/get-posts-by-cursor")
+    GetPostByCursorPageRes getPostByCursor(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+        @RequestParam(value = "size") Integer size
     );
 
 }
