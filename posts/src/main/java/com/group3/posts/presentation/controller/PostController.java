@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -61,6 +62,17 @@ public class PostController {
         GetFilteredPostPageReq dto = PostMapper.getFilteredPage().toRequest(token, page, size, text, postTypeId, secret);
 
         return ResponseEntity.ok(this.service.getFilteredPosts(dto));
+    }
+
+    @GetMapping("/get-posts-by-cursor")
+    public ResponseEntity<?> getPostsByCursor(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+        @RequestParam(value = "size") Integer size
+    ) {
+        GetPostByCursorPageReq dto = PostMapper.getPostByCursor().toRequest(token, profileId, cursor, size);
+        return ResponseEntity.ok(this.service.getPostByCursorPage(dto));
     }
 
     @GetMapping("/get-by-profile")
