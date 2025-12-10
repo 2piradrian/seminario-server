@@ -16,6 +16,10 @@ public class PostMapper {
         return new GetFilteredPageMapper();
     }
 
+    public static GetPostByCursorMapper getPostByCursor(){
+        return new GetPostByCursorMapper();
+    }
+
     public static GetOwnPageMapper getOwnPage() {
         return new GetOwnPageMapper();
     }
