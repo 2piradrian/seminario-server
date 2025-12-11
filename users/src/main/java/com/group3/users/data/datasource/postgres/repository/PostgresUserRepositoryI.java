@@ -57,4 +57,38 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
         Pageable pageable
     );
 
+    @Query(value = """
+        WITH RECURSIVE user_graph AS (
+        
+            SELECT 
+                f1.followed_id AS user_id, 
+                1 AS depth
+            FROM follows f1
+            JOIN follows f2 ON f1.followed_id = f2.follower_id
+            WHERE f1.follower_id = :userId 
+            AND f2.followed_id = :userId
+        
+            UNION
+        
+        
+            SELECT 
+                f3.followed_id, 
+                ug.depth + 1
+            FROM follows f3
+            JOIN follows f4 ON f3.followed_id = f4.follower_id
+            JOIN user_graph ug ON f3.follower_id = ug.user_id
+            WHERE f4.followed_id = ug.user_id
+            AND ug.depth < 2
+            AND f3.followed_id != :userId -- Evitar volver a mí mismo
+        )
+        
+        
+        SELECT u.* FROM users u
+        WHERE u.id IN (SELECT user_id FROM user_graph)
+        AND u.status = :#{#status.name()}
+    """, nativeQuery = true)
+    List<UserModel> findMutualsFollowers(
+        @Param("userId") String userId,
+        @Param("status") Status status
+    );
 }

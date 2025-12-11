@@ -71,6 +71,16 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
+    public List<User> getMutualsFollowers(String userId) {
+        return this.userRepository.findMutualsFollowers(
+            userId,
+            Status.ACTIVE
+        ).stream()
+            .map(UserEntityMapper::toDomain)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public User save(User user) {
         UserModel userModel = UserEntityMapper.toModel(user);
         UserModel saved = this.userRepository.save(userModel);
