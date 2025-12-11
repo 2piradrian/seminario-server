@@ -21,7 +21,7 @@ public interface EventRepositoryI {
 
     PageContent<Event> getFilteredEvents(Integer page, Integer size, String text, Date dateInit, Date dateEnd);
 
-    PageContent<Event> getByProfileIdPage(Integer page, Integer size, String profileId);
+    PageContent<Event> getOnlyPageEvents(Integer page, Integer size);
 
     PageContent<Event> getExpiredEvents(LocalDateTime now, Integer size);
 

@@ -69,13 +69,13 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     );
 
     @Query("""
-        SELECT e FROM EventModel e 
-        WHERE (e.pageId = :profileId OR e.authorId = :profileId)
-        AND e.status <> :status 
+        SELECT e FROM EventModel e
+        WHERE e.status <> :status
+        AND e.pageId IS NOT NULL
+        AND e.pageId != ''
         ORDER BY e.createdAt DESC
     """)
-    Page<EventModel> findByProfileIdPage(
-        @Param("profileId") String profileId,
+    Page<EventModel> findOnlyPageEvents(
         @Param("status") EventStatus status,
         Pageable pageable
     );

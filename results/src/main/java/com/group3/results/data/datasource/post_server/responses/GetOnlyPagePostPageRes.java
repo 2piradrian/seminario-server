@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPostPageByProfileRes {
+public class GetOnlyPagePostPageRes {
 
     private final List<Post> posts;
 
