@@ -169,11 +169,11 @@ public class EventService implements EventServiceI {
     }
 
     @Override
-    public GetEventByProfileIdPageRes getEventsByProfileIdPage(GetEventByProfileIdPageReq dto) {
+    public GetOnlyPageEventPageRes getPageOnlyEventsPage(GetOnlyPageEventPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        PageContent<Event> events = this.eventRepository.getByProfileIdPage(dto.getPage(), dto.getSize(), dto.getProfileId());
+        PageContent<Event> events = this.eventRepository.getOnlyPageEvents(dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {
             if (event.getAuthor().getId() != null) {
@@ -188,7 +188,7 @@ public class EventService implements EventServiceI {
             event.setIsAssisting(user.getId());
         }
 
-        return EventMapper.getEventByCursor().toResponse(events);
+        return EventMapper.getOnlyPageEvents().toResponse(events);
     }
 
     @Override
