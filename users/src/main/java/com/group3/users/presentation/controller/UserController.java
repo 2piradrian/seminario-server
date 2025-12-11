@@ -36,6 +36,16 @@ public class UserController {
 
         return ResponseEntity.ok(this.userService.getAllStaff(dto));
     }
+
+    @GetMapping("/get-mutuals-followers/{userId}")
+    public ResponseEntity<?> getMutualsFollowers(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "userId") String userId
+    ) {
+        GetUserMutualsFollowersReq dto = UserMapper.getMutualsFollowers().toRequest(token, userId);
+
+        return ResponseEntity.ok(this.userService.getMutualsFollowers(dto));
+    }
     
     @PutMapping
     public ResponseEntity<?> update(
