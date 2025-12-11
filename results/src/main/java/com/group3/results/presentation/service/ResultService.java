@@ -175,16 +175,14 @@ public class ResultService implements ResultServiceI {
         int postsLimit = (int) Math.ceil(dto.getSize() / 2.0);
         int eventsLimit = dto.getSize() - postsLimit;
 
-        List<Post> posts = this.postRepository.getPostsByProfileIdPage(
+        List<Post> posts = this.postRepository.getOnlyPagePosts(
             dto.getToken(),
-            dto.getProfileId(),
             dto.getPage(),
             postsLimit
         );
 
-        List<Event> events = this.eventRepository.getEventsByProfileIdPage(
+        List<Event> events = this.eventRepository.getOnlyPageEvents(
             dto.getToken(),
-            dto.getProfileId(),
             dto.getPage(),
             eventsLimit
         );
