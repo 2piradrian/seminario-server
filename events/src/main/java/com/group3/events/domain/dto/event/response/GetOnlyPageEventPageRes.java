@@ -13,4 +13,5 @@ public class GetOnlyPageEventPageRes {
     private final List<Event> events;
 
     private final Integer nextPage;
+
 }
