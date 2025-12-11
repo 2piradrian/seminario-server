@@ -172,17 +172,21 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        String secret = this.secretKeyHelper.getSecret();
+
         int postsLimit = (int) Math.ceil(dto.getSize() / 2.0);
         int eventsLimit = dto.getSize() - postsLimit;
 
         List<Post> posts = this.postRepository.getOnlyPagePosts(
             dto.getToken(),
+            secret,
             dto.getPage(),
             postsLimit
         );
 
         List<Event> events = this.eventRepository.getOnlyPageEvents(
             dto.getToken(),
+            secret,
             dto.getPage(),
             eventsLimit
         );

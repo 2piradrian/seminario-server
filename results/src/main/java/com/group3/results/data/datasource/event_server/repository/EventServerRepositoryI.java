@@ -25,6 +25,7 @@ public interface EventServerRepositoryI {
     @GetMapping("/api/events/get-page-events")
     GetOnlyPageEventPageRes getOnlyPageEvents(
         @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     );

@@ -8,6 +8,6 @@ public interface PostRepositoryI {
 
     List<Post> getFilteredPosts(String token, Integer page, Integer size, String text, String postTypeId, String secret);
 
-    List<Post> getOnlyPagePosts(String token, Integer page, Integer size);
+    List<Post> getOnlyPagePosts(String token, String secret, Integer page, Integer size);
 
 }

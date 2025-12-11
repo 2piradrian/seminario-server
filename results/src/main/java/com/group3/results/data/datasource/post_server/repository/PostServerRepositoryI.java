@@ -24,6 +24,7 @@ public interface PostServerRepositoryI {
     @GetMapping("/api/posts/get-page-posts")
     GetOnlyPagePostPageRes getOnlyPagePosts(
         @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     );

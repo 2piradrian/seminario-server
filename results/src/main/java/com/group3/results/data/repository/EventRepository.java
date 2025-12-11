@@ -26,9 +26,9 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public List<Event> getOnlyPageEvents(String token, Integer page, Integer size) {
+    public List<Event> getOnlyPageEvents(String token, String secret, Integer page, Integer size) {
         GetOnlyPageEventPageRes response = this.repository.getOnlyPageEvents(
-            token, page, size
+            token, secret, page, size
         );
 
         return response.getEvents();

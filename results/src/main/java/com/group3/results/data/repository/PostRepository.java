@@ -25,10 +25,10 @@ public class PostRepository implements PostRepositoryI {
     }
 
     @Override
-    public List<Post> getOnlyPagePosts(String token, Integer page, Integer size) {
+    public List<Post> getOnlyPagePosts(String token, String secret, Integer page, Integer size) {
 
         GetOnlyPagePostPageRes response = this.repository.getOnlyPagePosts(
-            token, page, size
+            token, secret, page, size
         );
 
         return response.getPosts();
