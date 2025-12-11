@@ -20,6 +20,10 @@ public class UserMapper {
         return new GetPageFilteredMapper();
     }
 
+    public static GetMutualsFollowersMapper getMutualsFollowers(){
+        return new GetMutualsFollowersMapper();
+    }
+
     public static EditMapper update() {
         return new EditMapper();
     }
