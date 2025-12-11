@@ -9,6 +9,8 @@ public interface PostRepositoryI {
 
     PageContent<Post> getAllPosts(Integer page, Integer size);
 
+    PageContent<Post> getOnlyPagePosts(Integer page, Integer size);
+
     PageContent<Post> getByProfileIdPage(String profileId, Integer page, Integer size);
 
     PageContent<Post> getFilteredPosts(Integer page, Integer size, String text, String postTypeId);
