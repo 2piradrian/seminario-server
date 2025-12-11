@@ -9,8 +9,6 @@ import com.group3.users.domain.dto.auth.request.AuthUserReq;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
 import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
-import com.group3.users.domain.dto.follow.request.GetFollowersQuantityByIdReq;
-import com.group3.users.domain.dto.follow.request.GetFollowingQuantityByIdReq;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
@@ -19,10 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -86,6 +81,33 @@ public class UserService implements UserServiceI {
         List<User> staffUsers = this.userRepository.getAllStaff();
 
         return UserMapper.getAllStaff().toResponse(staffUsers);
+    }
+
+    @Override
+    public GetUserMutualsFollowersRes getMutualsFollowers(GetUserMutualsFollowersReq dto){
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        List<User> mutualsFollowers = this.userRepository.getMutualsFollowers(dto.getUserId());
+
+        for (User mutualFollower : mutualsFollowers) {
+            UserProfile profileResult = mutualFollower.getProfile();
+
+            List<String> following = this.followService.getAllFollowing(
+                GetAllFollowingReq.create(mutualFollower.getId(), secretKeyHelper.getSecret())
+            ).getFollowing().stream().map(Follow::getFollowedId).toList();
+
+            List<String> followers = this.followService.getAllFollowers(
+                GetAllFollowersReq.create(mutualFollower.getId(), secretKeyHelper.getSecret())
+            ).getFollowers().stream().map(Follow::getFollowerId).toList();
+
+            profileResult.isOwnProfile(user.getId());
+            profileResult.setFollowsChecks(user.getId(), following, followers);
+
+            mutualFollower.setProfile(profileResult);
+        }
+
+        return UserMapper.getMutualsFollowers().toResponse(mutualsFollowers);
     }
 
     @Override

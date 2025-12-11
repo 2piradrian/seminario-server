@@ -7,6 +7,8 @@ public interface UserServiceI {
 
     GetUserByIdRes getById(GetUserByIdReq dto);
 
+    GetUserMutualsFollowersRes getMutualsFollowers(GetUserMutualsFollowersReq dto);
+
     void delete(DeleteUserReq dto);
 
     GetAllStaffRes getAllStaff(GetAllStaffReq dto);
