@@ -13,15 +13,22 @@ public class GetOnlyPagePostPageReq {
 
     private final String token;
 
-    private GetOnlyPagePostPageReq(Integer page, Integer size, String token) {
+    private final String secret;
+
+    private GetOnlyPagePostPageReq(Integer page, Integer size, String token, String secret) {
         this.page = page;
         this.size = size;
         this.token = token;
+        this.secret = secret;
     }
 
-    public static GetOnlyPagePostPageReq create(Integer page, Integer size, String token) {
+    public static GetOnlyPagePostPageReq create(Integer page, Integer size, String token, String secret) {
 
         if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (secret == null || secret.isEmpty()){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -41,7 +48,7 @@ public class GetOnlyPagePostPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetOnlyPagePostPageReq(page, size, token);
+        return new GetOnlyPagePostPageReq(page, size, token, secret);
     }
 
 }

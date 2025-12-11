@@ -7,11 +7,12 @@ import com.group3.posts.domain.dto.post.response.GetOnlyPagePostPageRes;
 
 public class GetOnlyPageMapper {
 
-    public GetOnlyPagePostPageReq toRequest(Integer page, Integer size, String token) {
+    public GetOnlyPagePostPageReq toRequest(Integer page, Integer size, String token, String secret) {
         return GetOnlyPagePostPageReq.create(
             page,
             size,
-            token
+            token,
+            secret
         );
     }
 

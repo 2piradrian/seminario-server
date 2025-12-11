@@ -53,10 +53,11 @@ public class PostController {
     @GetMapping("/get-page-posts")
     public ResponseEntity<?> getPagePosts(
         @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetOnlyPagePostPageReq dto = PostMapper.getOnlyPage().toRequest(page, size, token);
+        GetOnlyPagePostPageReq dto = PostMapper.getOnlyPage().toRequest(page, size, token, secret);
 
         return ResponseEntity.ok(this.service.getPageOnlyPosts(dto));
     }

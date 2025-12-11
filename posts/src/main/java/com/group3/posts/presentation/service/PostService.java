@@ -145,6 +145,8 @@ public class PostService implements PostServiceI {
     public GetOnlyPagePostPageRes getPageOnlyPosts(GetOnlyPagePostPageReq dto) {
         PageContent<Post> posts = this.postsRepository.getOnlyPagePosts(dto.getPage(), dto.getSize());
 
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         // Enrich author and page profile for each post
         for (Post post : posts.getContent()) {
             if (post.getAuthor().getId() != null) {
