@@ -173,6 +173,8 @@ public class EventService implements EventServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
         PageContent<Event> events = this.eventRepository.getOnlyPageEvents(dto.getPage(), dto.getSize());
 
         for (Event event : events.getContent()) {

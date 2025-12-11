@@ -65,10 +65,11 @@ public class EventController {
     @GetMapping("/get-page-events")
     public ResponseEntity<?> getPageEvents(
         @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetOnlyPageEventPageReq dto = EventMapper.getOnlyPageEvents().toRequest(token, page, size);
+        GetOnlyPageEventPageReq dto = EventMapper.getOnlyPageEvents().toRequest(token, secret, page, size);
 
         return ResponseEntity.ok(this.service.getPageOnlyEventsPage(dto));
     }

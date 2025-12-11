@@ -9,19 +9,26 @@ public class GetOnlyPageEventPageReq {
 
     private final String token;
 
+    private final String secret;
+
     private final Integer page;
 
     private final Integer size;
 
-    private GetOnlyPageEventPageReq(String token, Integer page, Integer size) {
+    private GetOnlyPageEventPageReq(String token, String secret, Integer page, Integer size) {
         this.page = page;
         this.size = size;
         this.token = token;
+        this.secret = secret;
     }
 
-    public static GetOnlyPageEventPageReq create(String token, Integer page, Integer size) {
+    public static GetOnlyPageEventPageReq create(String token, String secret, Integer page, Integer size) {
 
         if (token == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (secret == null || secret.isBlank()) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -41,6 +48,6 @@ public class GetOnlyPageEventPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetOnlyPageEventPageReq(token, page, size);
+        return new GetOnlyPageEventPageReq(token, secret, page, size);
     }
 }
