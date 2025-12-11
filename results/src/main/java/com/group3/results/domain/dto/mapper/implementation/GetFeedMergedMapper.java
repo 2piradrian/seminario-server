@@ -8,10 +8,9 @@ import java.util.List;
 
 public class GetFeedMergedMapper {
 
-    public GetFeedMergedByProfileIdPageReq toRequest(String token, String profileId, Integer page, Integer size) {
+    public GetFeedMergedByProfileIdPageReq toRequest(String token, Integer page, Integer size) {
         return GetFeedMergedByProfileIdPageReq.create(
             token,
-            profileId,
             page,
             size
         );

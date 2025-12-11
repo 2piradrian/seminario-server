@@ -13,23 +13,16 @@ public class GetFeedMergedByProfileIdPageReq {
 
     private final String token;
 
-    private final String profileId;
-
-    private GetFeedMergedByProfileIdPageReq(String token, String profileId, Integer page, Integer size ) {
+    private GetFeedMergedByProfileIdPageReq(String token, Integer page, Integer size ) {
         this.page = page;
         this.size = size;
         this.token = token;
-        this.profileId = profileId;
     }
 
-    public static GetFeedMergedByProfileIdPageReq create(String token, String profileId, Integer page, Integer size) {
+    public static GetFeedMergedByProfileIdPageReq create(String token, Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
-        if (profileId == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
         if (page == null) {
@@ -48,7 +41,7 @@ public class GetFeedMergedByProfileIdPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFeedMergedByProfileIdPageReq(token, profileId, page, size);
+        return new GetFeedMergedByProfileIdPageReq(token, page, size);
     }
 
 }
