@@ -80,11 +80,12 @@ public class PostsRepository implements PostRepositoryI {
 
     @Override
     public PageContent<Post> getByProfileIdPage(String profileId, Integer page, Integer size){
+        int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findByProfileIdPage(
             profileId,
             Status.ACTIVE,
-            PageRequest.of(page, size)
+            PageRequest.of(pageIndex, size)
         );
 
         return new PageContent<>(
