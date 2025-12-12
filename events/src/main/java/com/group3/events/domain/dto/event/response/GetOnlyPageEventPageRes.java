@@ -8,9 +8,10 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetEventByProfileIdPageRes {
+public class GetOnlyPageEventPageRes {
 
     private final List<Event> events;
 
     private final Integer nextPage;
+
 }

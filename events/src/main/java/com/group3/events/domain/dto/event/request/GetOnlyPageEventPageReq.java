@@ -4,34 +4,32 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
-public class GetEventByProfileIdPageReq {
+public class GetOnlyPageEventPageReq {
 
     private final String token;
 
-    private final String profileId;
+    private final String secret;
 
     private final Integer page;
 
     private final Integer size;
 
-    private GetEventByProfileIdPageReq(String token, String profileId, Integer page, Integer size) {
+    private GetOnlyPageEventPageReq(String token, String secret, Integer page, Integer size) {
         this.page = page;
         this.size = size;
         this.token = token;
-        this.profileId = profileId;
+        this.secret = secret;
     }
 
-    public static GetEventByProfileIdPageReq create(String token, String profileId, Integer page, Integer size) {
+    public static GetOnlyPageEventPageReq create(String token, String secret, Integer page, Integer size) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        if (profileId == null) {
-            throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+        if (secret == null || secret.isBlank()) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
         if (page == null) {
@@ -50,6 +48,6 @@ public class GetEventByProfileIdPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetEventByProfileIdPageReq(token, profileId, page, size);
+        return new GetOnlyPageEventPageReq(token, secret, page, size);
     }
 }

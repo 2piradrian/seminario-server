@@ -16,6 +16,8 @@ public interface UserRepositoryI {
 
     PageContent<User> getFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size);
 
+    List<User> getMutualsFollowers(String userId);
+
     User save(User user);
 
     User update(User user);

@@ -1,13 +1,11 @@
 package com.group3.results.data.datasource.event_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
-import com.group3.results.data.datasource.event_server.responses.GetEventByProfileIdPageRes;
+import com.group3.results.data.datasource.event_server.responses.GetOnlyPageEventPageRes;
 import com.group3.results.data.datasource.event_server.responses.GetFilteredEventPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @FeignClient(name = "events-server", path = "/events-server")
 @LoadBalancerClient(name = "events-server", configuration = LoadBalancerConfiguration.class)
@@ -24,10 +22,10 @@ public interface EventServerRepositoryI {
             @RequestParam(value = "dateEnd", required = false) String dateEnd
     );
 
-    @GetMapping("/api/events/get-by-profile")
-    GetEventByProfileIdPageRes getEventsByProfileId(
+    @GetMapping("/api/events/get-page-events")
+    GetOnlyPageEventPageRes getOnlyPageEvents(
         @RequestHeader(value = "Authorization") String token,
-        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     );

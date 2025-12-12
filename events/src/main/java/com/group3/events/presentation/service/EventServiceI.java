@@ -13,7 +13,7 @@ public interface EventServiceI {
 
     GetEventAndAssistsPageRes getEventsAndAssistsById(GetEventAndAssistsPageReq dto);
 
-    GetEventByProfileIdPageRes getEventsByProfileIdPage(GetEventByProfileIdPageReq dto);
+    GetOnlyPageEventPageRes getPageOnlyEventsPage(GetOnlyPageEventPageReq dto);
 
     GetEventByDateRangeRes getEventsByDateRange(GetEventByDateRangeReq dto);
 

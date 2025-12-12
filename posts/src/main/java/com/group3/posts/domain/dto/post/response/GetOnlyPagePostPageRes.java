@@ -1,4 +1,4 @@
-package com.group3.results.data.datasource.post_server.responses;
+package com.group3.posts.domain.dto.post.response;
 
 import com.group3.entity.Post;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GetPostPageByProfileRes {
+public class GetOnlyPagePostPageRes {
 
     private final List<Post> posts;
 

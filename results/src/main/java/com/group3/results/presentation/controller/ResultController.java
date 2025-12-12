@@ -49,11 +49,10 @@ public class ResultController {
     @GetMapping("/get-feed-merged")
     public ResponseEntity<?> getFeedMerged(
         @RequestHeader(value = "Authorization") String token,
-        @RequestParam(value = "profileId") String profileId,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetFeedMergedByProfileIdPageReq dto = ResultsMapper.getFeedMerged().toRequest(token, profileId, page, size);
+        GetFeedMergedByProfileIdPageReq dto = ResultsMapper.getFeedMerged().toRequest(token, page, size);
         return ResponseEntity.ok(this.resultService.getMergedFeedPage(dto));
     }
 

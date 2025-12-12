@@ -58,6 +58,24 @@ public class PostsRepository implements PostRepositoryI {
         );
     }
 
+    @Override
+    public PageContent<Post> getOnlyPagePosts(Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<PostModel> postModels = this.repository.findOnlyPagePosts(
+            Status.ACTIVE,
+            PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+            postModels.getContent().stream()
+                .map(PostsEntityMapper::toDomain)
+                .collect(Collectors.toList()),
+            postModels.getNumber() + 1,
+            postModels.hasNext() ? postModels.getNumber() + 2 : null
+        );
+    }
+
     // ======== Get Posts by profile ID with Pagination ========
 
     @Override

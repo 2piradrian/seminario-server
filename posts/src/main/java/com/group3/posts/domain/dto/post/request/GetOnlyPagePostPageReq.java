@@ -1,11 +1,11 @@
-package com.group3.results.domain.dto.request;
+package com.group3.posts.domain.dto.post.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import lombok.Getter;
 
 @Getter
-public class GetFeedMergedByProfileIdPageReq {
+public class GetOnlyPagePostPageReq {
 
     private final Integer page;
 
@@ -13,15 +13,22 @@ public class GetFeedMergedByProfileIdPageReq {
 
     private final String token;
 
-    private GetFeedMergedByProfileIdPageReq(String token, Integer page, Integer size ) {
+    private final String secret;
+
+    private GetOnlyPagePostPageReq(Integer page, Integer size, String token, String secret) {
         this.page = page;
         this.size = size;
         this.token = token;
+        this.secret = secret;
     }
 
-    public static GetFeedMergedByProfileIdPageReq create(String token, Integer page, Integer size) {
+    public static GetOnlyPagePostPageReq create(Integer page, Integer size, String token, String secret) {
 
-        if (token == null) {
+        if (token == null || token.isEmpty()){
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (secret == null || secret.isEmpty()){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -41,7 +48,7 @@ public class GetFeedMergedByProfileIdPageReq {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        return new GetFeedMergedByProfileIdPageReq(token, page, size);
+        return new GetOnlyPagePostPageReq(page, size, token, secret);
     }
 
 }

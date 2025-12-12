@@ -117,12 +117,12 @@ public class EventRepository implements EventRepositoryI {
     }
 
     @Override
-    public PageContent<Event> getByProfileIdPage(Integer page, Integer size, String profileId){
+    public PageContent<Event> getOnlyPageEvents(Integer page, Integer size) {
+        int pageIndex = (page != null && page > 0) ? page - 1 : 0;
 
-        Page<EventModel> eventModels = this.repository.findByProfileIdPage(
-            profileId,
+        Page<EventModel> eventModels = this.repository.findOnlyPageEvents(
             EventStatus.DELETED,
-            PageRequest.of(page, size)
+            PageRequest.of(pageIndex, size)
         );
 
         return new PageContent<>(

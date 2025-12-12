@@ -8,6 +8,6 @@ public interface EventRepositoryI {
 
     List<Event> getFilteredEventsPage(String token, Integer page, Integer size, String text, String secret, String dateInit, String dateEnd);
 
-    List<Event> getEventsByProfileIdPage(String token, String profileId, Integer page, Integer size);
+    List<Event> getOnlyPageEvents(String token, String secret, Integer page, Integer size);
 
 }

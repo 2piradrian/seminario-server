@@ -3,7 +3,7 @@ package com.group3.results.data.repository;
 import com.group3.entity.Post;
 import com.group3.results.data.datasource.post_server.repository.PostServerRepositoryI;
 import com.group3.results.data.datasource.post_server.responses.GetFilteredPostPageRes;
-import com.group3.results.data.datasource.post_server.responses.GetPostPageByProfileRes;
+import com.group3.results.data.datasource.post_server.responses.GetOnlyPagePostPageRes;
 import com.group3.results.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,10 +25,10 @@ public class PostRepository implements PostRepositoryI {
     }
 
     @Override
-    public List<Post> getPostsByProfileIdPage(String token, String profileId, Integer page, Integer size) {
+    public List<Post> getOnlyPagePosts(String token, String secret, Integer page, Integer size) {
 
-        GetPostPageByProfileRes response = this.repository.getPostByCursor(
-            token, profileId, page, size
+        GetOnlyPagePostPageRes response = this.repository.getOnlyPagePosts(
+            token, secret, page, size
         );
 
         return response.getPosts();

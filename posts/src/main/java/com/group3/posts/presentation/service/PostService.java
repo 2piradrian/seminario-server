@@ -141,6 +141,28 @@ public class PostService implements PostServiceI {
         return PostMapper.getPage().toResponse(posts);
     }
 
+    @Override
+    public GetOnlyPagePostPageRes getPageOnlyPosts(GetOnlyPagePostPageReq dto) {
+        PageContent<Post> posts = this.postsRepository.getOnlyPagePosts(dto.getPage(), dto.getSize());
+
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        // Enrich author and page profile for each post
+        for (Post post : posts.getContent()) {
+            if (post.getAuthor().getId() != null) {
+                User fullProfile = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
+                post.setAuthor(fullProfile);
+            }
+            if (post.getPageProfile().getId() != null) {
+                PageProfile fullPage = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
+                post.setPageProfile(fullPage);
+            }
+            post.setVotersToNull();
+        }
+
+        return PostMapper.getOnlyPage().toResponse(posts);
+    }
+
     // ======== Get Filtered Posts ========
 
     @Override

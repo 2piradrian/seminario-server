@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -63,15 +62,16 @@ public class EventController {
         return ResponseEntity.ok(this.service.getEventsAndAssistsById(dto));
     }
 
-    @GetMapping("/get-by-profile")
-    public ResponseEntity<?> getEventsByProfileId(
+    @GetMapping("/get-page-events")
+    public ResponseEntity<?> getPageEvents(
         @RequestHeader(value = "Authorization") String token,
-        @RequestParam(value = "profileId") String profileId,
+        @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
     ) {
-        GetEventByProfileIdPageReq dto = EventMapper.getEventByCursor().toRequest(token, profileId, page, size);
-        return ResponseEntity.ok(this.service.getEventsByProfileIdPage(dto));
+        GetOnlyPageEventPageReq dto = EventMapper.getOnlyPageEvents().toRequest(token, secret, page, size);
+
+        return ResponseEntity.ok(this.service.getPageOnlyEventsPage(dto));
     }
 
     @GetMapping("/get-events-by-date-range")

@@ -14,6 +14,7 @@ import java.util.List;
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
     // ======== Get All Posts (excluding deleted) ========
+
     @Query("""
         SELECT p
         FROM PostModel p
@@ -23,6 +24,17 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     Page<PostModel> findAll(
             @Param("status") Status status,
             Pageable pageable
+    );
+
+    @Query("""
+        SELECT p FROM PostModel p
+        WHERE p.status = :status
+        AND p.pageId IS NOT NULL
+        ORDER BY p.createdAt DESC
+    """)
+    Page<PostModel> findOnlyPagePosts(
+        @Param("status") Status status,
+        Pageable pageable
     );
 
     // ======== Get Posts by profile ========
