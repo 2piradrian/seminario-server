@@ -32,7 +32,7 @@ public class EventRepository implements EventRepositoryI {
         EventModel eventModel = this.repository.findById(eventId).orElse(null);
 
         if (eventModel == null) return null;
-        if (eventModel.getStatus().equals(Status.DELETED)) return null;
+        if (eventModel.getStatus().equals(EventStatus.DELETED)) return null;
 
         return EventEntityMapper.toDomain(eventModel);
     }
@@ -161,7 +161,7 @@ public class EventRepository implements EventRepositoryI {
         Date dateNow = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 
         Slice<EventModel> eventModels = repository.findReadyToStartEvents(
-            EventStatus.PENDING,
+            EventStatus.UPCOMING,
             dateNow,
             PageRequest.of(0, size)
         );
