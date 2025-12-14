@@ -1,7 +1,7 @@
 package com.group3.entity;
 
 public enum EventStatus {
-    PENDING,
+    UPCOMING,
     IN_PROGRESS,
     ENDED,
     CANCELED,
