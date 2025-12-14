@@ -94,6 +94,16 @@ public class EventController {
         return ResponseEntity.ok(this.service.toggleAssist(dto));
     }
 
+    @PutMapping("/cancel/{eventId}")
+    public ResponseEntity<?> cancel(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "eventId") String eventId
+    ) {
+        CancelEventReq dto = EventMapper.cancel().toRequest(token, eventId);
+
+        return ResponseEntity.ok(this.service.cancel(dto));
+    }
+
     @PutMapping("/{eventId}")
     public ResponseEntity<?> edit(
             @RequestHeader(value = "Authorization") String token,
