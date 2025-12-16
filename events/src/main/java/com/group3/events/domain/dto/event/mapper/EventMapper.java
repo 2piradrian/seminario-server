@@ -24,6 +24,10 @@ public class EventMapper {
         return new EditMapper();
     }
 
+    public static CancelMapper cancel() {
+        return new CancelMapper();
+    }
+
     public static ToggleAssistMapper toggleAssist(){
         return new ToggleAssistMapper();
     }

@@ -74,7 +74,7 @@ public class EventService implements EventServiceI {
         if (localDateInit.isEqual(LocalDate.now(ZoneOffset.UTC))){
             event.setStatus(EventStatus.IN_PROGRESS);
         } else {
-            event.setStatus(EventStatus.PENDING);
+            event.setStatus(EventStatus.UPCOMING);
         }
 
         event.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.EVENT).toString());
@@ -277,6 +277,8 @@ public class EventService implements EventServiceI {
         Event event = this.eventRepository.getById(dto.getEventId());
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
+        if (event.getStatus().equals(EventStatus.ENDED)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
+
         if (!event.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         if (dto.getBase64Image() != null) {
@@ -307,7 +309,7 @@ public class EventService implements EventServiceI {
         Event event = this.eventRepository.getById(dto.getEventId());
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
-        if (event.getAuthor() == null || !event.getAuthor().getId().equals(user.getId())) {
+        if (!user.canDelete(event)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
@@ -315,6 +317,26 @@ public class EventService implements EventServiceI {
         event.setStatus(EventStatus.DELETED);
 
         this.eventRepository.update(event);
+    }
+
+    @Override
+    public CancelEventRes cancel(CancelEventReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Event event = this.eventRepository.getById(dto.getEventId());
+        if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
+
+        if (event.getStatus().equals(EventStatus.ENDED)) throw new ErrorHandler(ErrorType.EVENT_ALREADY_ENDED);
+
+        if (!event.getAuthor().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        event.setUpdatedAt(LocalDateTime.now());
+        event.setStatus(EventStatus.CANCELED);
+
+        Event edited = this.eventRepository.update(event);
+
+        return EventMapper.cancel().toResponse(edited);
     }
 
     @Override

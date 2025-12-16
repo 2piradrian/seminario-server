@@ -36,6 +36,12 @@ public class User {
         this.isPageMember(post.getPageProfile());
     }
 
+    public boolean canDelete(Event event){
+        return this.role.canDelete() ||
+            (event.getAuthor() != null && event.getAuthor().getId().equals(this.getId())) ||
+            this.isPageMember(event.getPageProfile());
+    }
+
     public boolean canDelete(PageProfile page){
         return this.role.canDelete() || (page.getOwner()!= null && page.getOwner().getId().equals(this.getId()));
     }

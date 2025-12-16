@@ -23,6 +23,8 @@ public interface EventServiceI {
 
     void delete(DeleteEventReq dto);
 
+    CancelEventRes cancel(CancelEventReq dto);
+
     void updateEventsLifeCycle();
 
 }
