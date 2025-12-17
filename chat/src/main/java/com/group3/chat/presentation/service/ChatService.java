@@ -80,7 +80,7 @@ public class ChatService implements ChatServiceI {
                             userId,
                             lastMessage.getContent(),
                             lastMessage.getCreatedAt(),
-                            lastMessage.getSenderId().equals(user.getId()),
+                            lastMessage.getSender().getId().equals(user.getId()),
                             otherUser
                     );
 
