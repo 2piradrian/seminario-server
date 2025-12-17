@@ -73,12 +73,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
 
         ChatMessage chatMessage = objectMapper.readValue(message.getPayload(), ChatMessage.class);
-        chatMessage.setSenderId(sender.getId());
+        chatMessage.setSender(User.builder().id(sender.getId()).build());
         chatMessage.setCreatedAt(LocalDateTime.now());
 
         ChatMessage savedMessage = this.chatService.save(chatMessage);
 
-        WebSocketSession receiverSession = sessions.get(savedMessage.getReceiverId());
+        WebSocketSession receiverSession = sessions.get(savedMessage.getReceiver().getId());
         if (receiverSession != null && receiverSession.isOpen()) {
             receiverSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(savedMessage)));
         }
