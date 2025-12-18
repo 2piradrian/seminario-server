@@ -3,6 +3,7 @@ package com.group3.entity;
 public enum NotificationContent {
     COMMENT,
     UPVOTE,
+    PAGE_INVITATION,
     DOWNVOTE,
     ASSIST,
     FOLLOW;
