@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -35,6 +33,8 @@ public class PageProfileService implements PageProfileServiceI {
     private final UserRepository userRepository;
 
     private final ImagesRepository imagesRepository;
+
+    private final NotificationRepository notificationRepository;
 
 
     // ======== Create Page ========
@@ -193,29 +193,34 @@ public class PageProfileService implements PageProfileServiceI {
         }
 
         // ======== Validate and Update Members ========
-        dto.getMembers().stream()
-                .map(memberId -> this.userRepository.getById(dto.getToken(), memberId))
-                .forEach(userProfile -> {
-                    if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-                });
 
-        List<User> newMembersList = new ArrayList<>();
-
-        newMembersList.add(page.getOwner());
+        /*List<User> members = page.getMembers();
 
         dto.getMembers().forEach(id -> {
-            if (!id.equals(page.getOwner().getId())) {
+
+            boolean exists = members.stream()
+                .anyMatch(member -> member.getId().equals(id));
+
+            if (!exists){
                 User member = this.userRepository.getById(dto.getToken(), id);
 
-                if (member == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+                // GENERATE INVITATION TOKEN
+                String invitationToken = "";
 
-                newMembersList.add(member);
+                this.notificationRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    member.getId(),
+                    page.getId(),
+                    user.getId(),
+                    NotificationContent.PAGE_INVITATION.name()
+                );
+
             }
-        });
 
-        page.setMembers(newMembersList);
+        });*/
 
         // ======== Update Page Type and Metadata ========
+
         PageType pageType = this.catalogRepository.getById(dto.getPageTypeId());
         if(pageType == null) throw new ErrorHandler(ErrorType.PAGE_TYPE_NOT_FOUND);
         page.setPageType(pageType);
@@ -223,6 +228,65 @@ public class PageProfileService implements PageProfileServiceI {
         page.setName(dto.getName());
         page.setShortDescription(dto.getShortDescription());
         page.setLongDescription(dto.getLongDescription());
+
+        this.pageProfileRepository.update(page);
+    }
+
+    /*@Override
+    public void joinPage(JoinPageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
+        if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+
+        // ======== Validate invitation token ========
+
+        if (dto.getInvitationToken() == null){
+           throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        // ======== Validate and Update Member ========
+
+        List<User> newMembersList = new ArrayList<>(page.getMembers());
+
+        boolean alreadyExists = newMembersList.stream()
+            .anyMatch(member -> member.getId().equals(user.getId()));
+
+        if (alreadyExists){
+            // USER ALREADY IN PAGE
+        }
+
+        newMembersList.add(user);
+
+        page.setMembers(newMembersList);
+
+        this.pageProfileRepository.update(page);
+    }*/
+
+    @Override
+    public void leavePage(LeavePageReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
+        if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+        if (page.getOwner().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        // ======== Validate and Update Member ========
+
+        List<User> members = page.getMembers();
+
+        boolean alreadyExists = members.stream()
+            .anyMatch(member -> member.getId().equals(user.getId()));
+
+        if (!alreadyExists){
+            throw new ErrorHandler(ErrorType.USER_NOT_MEMBER);
+        }
+
+        members.removeIf(m -> m.getId().equals(user.getId()));
+
+        page.setMembers(members);
 
         this.pageProfileRepository.update(page);
     }
