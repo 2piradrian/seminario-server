@@ -50,7 +50,11 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
         FROM PageProfileModel p
         JOIN p.members m
         WHERE m = :userId
+        AND p.status = :status
     """)
-    List<PageProfileModel> findByUserId(@Param("userId") String userId);
+    List<PageProfileModel> findByUserId(
+        @Param("userId") String userId,
+        @Param("status") Status status
+    );
 
 }
