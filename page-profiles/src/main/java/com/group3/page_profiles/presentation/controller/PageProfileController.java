@@ -81,6 +81,17 @@ public class PageProfileController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/leave/{pageId}")
+    public ResponseEntity<?> leave(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "pageId") String pageId
+    ) {
+        LeavePageReq dto = PageMapper.leavePage().toRequest(token, pageId);
+        this.pageService.leavePage(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{pageId}")
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token,
