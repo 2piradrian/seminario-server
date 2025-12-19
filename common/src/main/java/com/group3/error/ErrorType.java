@@ -56,6 +56,7 @@ public enum ErrorType {
     PAGETYPE_NOT_FOUND("Page type not found", 404),
     POSTYPE_NOT_FOUND("Post type not found", 404),
     CONTENT_TYPE_NOT_FOUND("Content type not found", 404),
+    STYLE_NOT_FOUND("Style not found", 404),
 
     // ===== Notification =====
 
