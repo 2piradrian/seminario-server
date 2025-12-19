@@ -19,6 +19,8 @@ public interface PageProfileServiceI {
 
     // void joinPage(JoinPageReq dto);
 
+    void joinPage(JoinPageReq dto);
+
     void leavePage(LeavePageReq dto);
 
     void delete(DeletePageReq dto);

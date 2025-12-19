@@ -194,22 +194,28 @@ public class PageProfileService implements PageProfileServiceI {
 
         // ======== Validate and Update Members ========
 
-        /*List<User> members = page.getMembers();
+        List<User> newMembersList = dto.getMembers().stream()
+            .map(memberId -> {
+                User userProfile = this.userRepository.getById(dto.getToken(), memberId);
+                if (userProfile == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+                return userProfile;
+            })
+            .toList();
+        List<String> newMembersListId = newMembersList.stream()
+            .map(User::getId)
+            .toList();
 
-        dto.getMembers().forEach(id -> {
+        List<User> currentMembers = page.getMembers();
+        List<String> currentMemberIds = currentMembers.stream()
+            .map(User::getId)
+            .toList();
 
-            boolean exists = members.stream()
-                .anyMatch(member -> member.getId().equals(id));
-
-            if (!exists){
-                User member = this.userRepository.getById(dto.getToken(), id);
-
-                // GENERATE INVITATION TOKEN
-                String invitationToken = "";
+        newMembersList.forEach(newMember -> {
+            if (!currentMemberIds.contains(newMember.getId())){
 
                 this.notificationRepository.create(
                     this.secretKeyHelper.getSecret(),
-                    member.getId(),
+                    newMember.getId(),
                     page.getId(),
                     user.getId(),
                     NotificationContent.PAGE_INVITATION.name()
@@ -217,7 +223,13 @@ public class PageProfileService implements PageProfileServiceI {
 
             }
 
-        });*/
+        });
+
+        List<User> membersToKeep = currentMembers.stream()
+            .filter(member -> newMembersListId.contains(member.getId()))
+            .toList();
+
+        page.setMembers(membersToKeep);
 
         // ======== Update Page Type and Metadata ========
 
@@ -232,19 +244,33 @@ public class PageProfileService implements PageProfileServiceI {
         this.pageProfileRepository.update(page);
     }
 
-    /*@Override
+    @Override
     public void joinPage(JoinPageReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         PageProfile page = this.pageProfileRepository.getById(dto.getPageId());
         if (page == null) throw new ErrorHandler(ErrorType.PAGE_NOT_FOUND);
+        if (page.getOwner().getId().equals(user.getId())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        // ======== Validate invitation token ========
+        // ======== Validate and Update Member ========
 
-        if (dto.getInvitationToken() == null){
-           throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        Notification notification = this.notificationRepository.getLatestUncheckNotification(
+            dto.getToken(),
+            this.secretKeyHelper.getSecret(),
+            user.getId(),
+            page.getId()
+        );
+
+        if (notification == null){
+            throw new ErrorHandler(ErrorType.INVITATION_ALREADY_USED);
         }
+
+        this.notificationRepository.checkInvitation(
+            dto.getToken(),
+            this.secretKeyHelper.getSecret(),
+            notification.getId()
+        );
 
         // ======== Validate and Update Member ========
 
@@ -254,7 +280,7 @@ public class PageProfileService implements PageProfileServiceI {
             .anyMatch(member -> member.getId().equals(user.getId()));
 
         if (alreadyExists){
-            // USER ALREADY IN PAGE
+            throw new ErrorHandler(ErrorType.USER_ALREADY_MEMBER);
         }
 
         newMembersList.add(user);
@@ -262,7 +288,7 @@ public class PageProfileService implements PageProfileServiceI {
         page.setMembers(newMembersList);
 
         this.pageProfileRepository.update(page);
-    }*/
+    }
 
     @Override
     public void leavePage(LeavePageReq dto) {
