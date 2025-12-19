@@ -1,8 +1,6 @@
 package com.group3.notifications.data.repository;
 
-import com.group3.entity.Notification;
-import com.group3.entity.NotificationContent;
-import com.group3.entity.PageContent;
+import com.group3.entity.*;
 import com.group3.notifications.data.datasource.postgres.mapper.NotificationEntityMapper;
 import com.group3.notifications.data.datasource.postgres.model.NotificationModel;
 import com.group3.notifications.data.datasource.postgres.repository.PostgresNotificationRepositoryI;
@@ -12,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
@@ -43,10 +42,26 @@ public class NotificationRepository implements NotificationRepositoryI {
     }
 
     @Override
+    public Notification getById(String notificationId) {
+        NotificationModel notificationModel = this.repository.findById(notificationId).orElse(null);
+
+        if (notificationModel == null) return null;
+
+        return NotificationEntityMapper.toDomain(notificationModel);
+    }
+
+    @Override
     public Notification save(Notification notification) {
         NotificationModel notificationModel = NotificationEntityMapper.toModel(notification);
         NotificationModel saved = this.repository.save(notificationModel);
         return NotificationEntityMapper.toDomain(saved);
+    }
+
+    @Override
+    public Notification update(Notification notification) {
+        NotificationModel notificationModel = NotificationEntityMapper.toModel(notification);
+        NotificationModel updated = this.repository.save(notificationModel);
+        return NotificationEntityMapper.toDomain(updated);
     }
 
     @Override
@@ -61,6 +76,23 @@ public class NotificationRepository implements NotificationRepositoryI {
     @Override
     public void delete(String targetId, String carriedOutById, NotificationContent content) {
         this.repository.deleteByTargetIdAndCarriedOutByIdAndContent(targetId, carriedOutById, content);
+    }
+
+    @Override
+    public Notification getLatestUncheck(String sourceId, String targetId, NotificationContent content) {
+
+        List<NotificationModel> result = this.repository.findLatestUncheckNotifications(
+            sourceId,
+            targetId,
+            content,
+            PageRequest.of(0, 1)
+        );
+
+        if(result.isEmpty()){
+            return null;
+        }
+
+        return NotificationEntityMapper.toDomain(result.getFirst());
     }
 
 }

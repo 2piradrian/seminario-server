@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PostgresNotificationRepositoryI extends JpaRepository<NotificationModel, String> {
 
     @Query("""
@@ -36,6 +38,22 @@ public interface PostgresNotificationRepositoryI extends JpaRepository<Notificat
             @Param("targetId") String targetId,
             @Param("carriedOutById") String carriedOutById,
             @Param("content") NotificationContent content
+    );
+
+    @Query("""
+        SELECT n 
+        FROM NotificationModel n 
+        WHERE n.sourceId = :sourceId 
+        AND n.targetId = :targetId 
+        AND n.content = :content 
+        AND n.createdAt = n.updatedAt 
+        ORDER BY n.createdAt DESC
+    """)
+    List<NotificationModel> findLatestUncheckNotifications(
+        @Param("sourceId") String sourceId,
+        @Param("targetId") String targetId,
+        @Param("content") NotificationContent content,
+        Pageable pageable
     );
 
 }
