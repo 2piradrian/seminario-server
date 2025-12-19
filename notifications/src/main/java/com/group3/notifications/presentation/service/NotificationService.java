@@ -8,8 +8,11 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.notifications.config.helpers.SecretKeyHelper;
 import com.group3.notifications.domain.dto.notification.mapper.NotificationMapper;
+import com.group3.notifications.domain.dto.notification.request.CheckInvitationReq;
 import com.group3.notifications.domain.dto.notification.request.CreateNotificationReq;
+import com.group3.notifications.domain.dto.notification.request.GetLatestUncheckNotificationReq;
 import com.group3.notifications.domain.dto.notification.request.GetNotificationPageReq;
+import com.group3.notifications.domain.dto.notification.response.GetLatestUncheckNotificationRes;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
 import com.group3.notifications.domain.repository.NotificationRepositoryI;
 import com.group3.notifications.domain.repository.UserRepositoryI;
@@ -56,8 +59,11 @@ public class NotificationService implements NotificationServiceI {
         notification.setTargetId(dto.getTargetId());
         notification.setCarriedOutBy(User.builder().id(dto.getCarriedOutById()).build());
         notification.setContent(dto.getContent());
-        notification.setCreatedAt(LocalDateTime.now());
-        notification.setUpdatedAt(LocalDateTime.now());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        notification.setCreatedAt(now);
+        notification.setUpdatedAt(now);
 
         notificationRepository.save(notification);
     }
@@ -79,6 +85,51 @@ public class NotificationService implements NotificationServiceI {
         });
 
         return NotificationMapper.getPage().toResponse(notifications);
+    }
+
+    @Override
+    public GetLatestUncheckNotificationRes getLatestUncheckNotification(GetLatestUncheckNotificationReq dto) {
+
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Notification notification = this.notificationRepository.getLatestUncheck(dto.getSourceId(), dto.getTargetId(), NotificationContent.PAGE_INVITATION);
+        if (notification == null) throw new ErrorHandler(ErrorType.NOTIFICATION_NOT_FOUND);
+
+        User userCarrier = this.userRepository.getById(notification.getCarriedOutBy().getId(), dto.getToken());
+        if (userCarrier == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        notification.setCarriedOutBy(userCarrier);
+
+        return NotificationMapper.getLatestUncheck().toResponse(notification);
+    }
+
+    @Override
+    public void checkInvitation(CheckInvitationReq dto) {
+
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Notification notification = this.notificationRepository.getById(dto.getNotificationId());
+        if (notification == null) throw new ErrorHandler(ErrorType.NOTIFICATION_NOT_FOUND);
+
+        if (!notification.getContent().equals(NotificationContent.PAGE_INVITATION)){
+            throw new ErrorHandler(ErrorType.NOTIFICATION_NOT_FOUND);
+        }
+
+        notification.setUpdatedAt(LocalDateTime.now());
+
+        this.notificationRepository.update(notification);
+
+        this.notificationRepository.delete(notification.getTargetId(), notification.getCarriedOutBy().getId(), notification.getContent());
     }
 
 }
