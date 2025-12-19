@@ -81,13 +81,24 @@ public class PageProfileController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/leave/{pageId}")
+    @PatchMapping("/leave/{pageId}")
     public ResponseEntity<?> leave(
         @RequestHeader(value = "Authorization") String token,
         @PathVariable(value = "pageId") String pageId
     ) {
         LeavePageReq dto = PageMapper.leavePage().toRequest(token, pageId);
         this.pageService.leavePage(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/join/{pageId}")
+    public ResponseEntity<?> join(
+        @RequestHeader(value = "Authorization") String token,
+        @PathVariable(value = "pageId") String pageId
+    ) {
+        JoinPageReq dto = PageMapper.joinPage().toRequest(token, pageId);
+        this.pageService.joinPage(dto);
 
         return ResponseEntity.ok().build();
     }
