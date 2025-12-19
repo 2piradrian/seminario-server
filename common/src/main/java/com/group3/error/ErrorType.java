@@ -45,6 +45,7 @@ public enum ErrorType {
     PAGENAME_ALREADY_EXISTS("Page name already exists", 400),
     USER_NOT_MEMBER("User is not a member of the page", 400),
     USER_ALREADY_MEMBER("User is already a member of the page", 400),
+    INVITATION_ALREADY_USED("Invitation has already been used", 400),
 
     // ===== Catalog =====
 
@@ -55,6 +56,10 @@ public enum ErrorType {
     PAGETYPE_NOT_FOUND("Page type not found", 404),
     POSTYPE_NOT_FOUND("Post type not found", 404),
     CONTENT_TYPE_NOT_FOUND("Content type not found", 404),
+
+    // ===== Notification =====
+
+    NOTIFICATION_NOT_FOUND("Notification not found", 404),
 
     // ===== Internal errors =====
 
