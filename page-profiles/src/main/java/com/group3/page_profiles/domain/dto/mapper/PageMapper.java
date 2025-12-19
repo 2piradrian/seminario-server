@@ -24,6 +24,14 @@ public class PageMapper {
         return new EditMapper();
     }
 
+    public static JoinPageMapper joinPage() {
+        return new JoinPageMapper();
+    }
+
+    public static LeavePageMapper leavePage() {
+        return new LeavePageMapper();
+    }
+
     public static GetPageFilteredMapper getFiltered(){
         return new GetPageFilteredMapper();
     }

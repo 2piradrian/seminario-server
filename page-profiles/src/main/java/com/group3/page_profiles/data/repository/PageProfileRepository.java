@@ -35,13 +35,20 @@ public class PageProfileRepository implements PageRepositoryI {
     @Override
     public PageProfile getById(String pageId) {
         PageProfileModel pageProfileModel = this.repository.findById(pageId).orElse(null);
-        return pageProfileModel != null ? PageEntityMapper.toDomain(pageProfileModel) : null;
+
+        if (pageProfileModel == null) return null;
+        if (!pageProfileModel.getStatus().equals(Status.ACTIVE)) return null;
+
+        return PageEntityMapper.toDomain(pageProfileModel);
     }
 
     @Override
     public PageProfile getByName(String name) {
         PageProfileModel pageProfileModel = this.repository.findByName(name);
-        return pageProfileModel != null ? PageEntityMapper.toDomain(pageProfileModel) : null;
+        if (pageProfileModel == null) return null;
+        if (!pageProfileModel.getStatus().equals(Status.ACTIVE)) return null;
+
+        return PageEntityMapper.toDomain(pageProfileModel);
     }
 
 
@@ -49,7 +56,7 @@ public class PageProfileRepository implements PageRepositoryI {
 
     @Override
     public List<PageProfile> getByUserId(String userId) {
-        List<PageProfileModel> pageProfileModels = this.repository.findByUserId(userId);
+        List<PageProfileModel> pageProfileModels = this.repository.findByUserId(userId, Status.ACTIVE);
         return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
 

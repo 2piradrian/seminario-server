@@ -5,8 +5,6 @@ import com.group3.entity.PageContent;
 import com.group3.notifications.domain.dto.notification.request.GetNotificationPageReq;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
 
-import java.util.Map;
-
 public class GetNotificationPageMapper {
 
     public GetNotificationPageReq toRequest(String token, Integer page, Integer size, String targetId) {

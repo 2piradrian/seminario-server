@@ -3,8 +3,10 @@ package com.group3.page_profiles.config.exception;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ErrorHandler.class)
