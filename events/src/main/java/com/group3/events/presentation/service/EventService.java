@@ -229,6 +229,22 @@ public class EventService implements EventServiceI {
     }
 
     @Override
+    public GetAssistantsByEventIdRes getAssistantsByEventId(GetAssistantsByEventIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Event event = this.eventRepository.getById(dto.getEventId());
+        if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
+
+        List<String> assistIds = event.getAssists();
+        List<User> assistants = assistIds.stream()
+                .map(userId -> this.userRepository.getById(userId, dto.getToken()))
+                .toList();
+
+        return EventMapper.getAssistantsByEventId().toResponse(assistants);
+    }
+
+    @Override
     public ToggleAssistRes toggleAssist(ToggleAssistReq dto) {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);

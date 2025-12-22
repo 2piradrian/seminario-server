@@ -2,6 +2,7 @@ package com.group3.events.domain.repository;
 
 import com.group3.entity.Event;
 import com.group3.entity.PageContent;
+import com.group3.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -28,5 +29,7 @@ public interface EventRepositoryI {
     void updateBatch(List<Event> events);
 
     PageContent<Event> getInactiveEventsToActivate(LocalDateTime now, Integer size);
+
+    PageContent<User> getAssistantsByEventId(String eventId, Integer page, Integer size);
 
 }
