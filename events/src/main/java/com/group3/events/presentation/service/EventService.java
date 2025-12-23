@@ -9,6 +9,7 @@ import com.group3.events.data.repository.*;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.domain.dto.event.response.*;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -236,10 +237,22 @@ public class EventService implements EventServiceI {
         Event event = this.eventRepository.getById(dto.getEventId());
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
-        List<String> assistIds = event.getAssists();
-        List<User> assistants = assistIds.stream()
-                .map(userId -> this.userRepository.getById(userId, dto.getToken()))
+        PageContent<String> assistantsIds =
+                this.eventRepository.getAssistantsByEventId(
+                        dto.getEventId(),
+                        dto.getPage(),
+                        dto.getSize()
+                );
+
+        List<User> users = assistantsIds.getContent().stream()
+                .map(id -> this.userRepository.getById(id, dto.getToken()))
                 .toList();
+
+        PageContent<User> assistants = new PageContent<>(
+                users,
+                assistantsIds.getPage(),
+                assistantsIds.getNextPage()
+        );
 
         return EventMapper.getAssistantsByEventId().toResponse(assistants);
     }

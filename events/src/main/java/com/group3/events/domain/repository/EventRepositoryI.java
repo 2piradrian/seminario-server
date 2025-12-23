@@ -30,6 +30,6 @@ public interface EventRepositoryI {
 
     PageContent<Event> getInactiveEventsToActivate(LocalDateTime now, Integer size);
 
-    PageContent<User> getAssistantsByEventId(String eventId, Integer page, Integer size);
+    PageContent<String> getAssistantsByEventId(String eventId, Integer page, Integer size);
 
 }

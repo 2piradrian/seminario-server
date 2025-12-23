@@ -4,6 +4,12 @@ import com.group3.entity.PageContent;
 import com.group3.entity.User;
 import org.springframework.stereotype.Component;
 
+import com.group3.events.domain.dto.event.request.GetAssistantsByEventIdReq;
+import com.group3.events.domain.dto.event.response.GetAssistantsByEventIdRes;
+
+import java.util.List;
+
+
 @Component
 public class GetAssistantsByEventIdMapper {
 
@@ -23,7 +29,7 @@ public class GetAssistantsByEventIdMapper {
 
     public GetAssistantsByEventIdRes toResponse(PageContent<User> assistants) {
         return new GetAssistantsByEventIdRes(
-                assistants.getContent(),
+            assistants.getContent(),
                 assistants.getNextPage()
         );
     }

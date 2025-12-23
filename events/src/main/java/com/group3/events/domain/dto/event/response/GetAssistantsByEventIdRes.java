@@ -11,4 +11,7 @@ import java.util.List;
 public class GetAssistantsByEventIdRes {
 
     private final List<User> assistants;
+
+    private final Integer nextPage;
+
 }

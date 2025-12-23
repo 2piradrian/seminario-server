@@ -93,6 +93,27 @@ public class EventRepository implements EventRepositoryI {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public PageContent<String> getAssistantsByEventId(String eventId, Integer page, Integer size) {
+        EventModel eventModel = repository.findById(eventId).orElse(null);
+
+        List<String> assistants = eventModel.getAssists();
+
+        int pageIndex = normalizePage(page);
+
+        int fromIndex = pageIndex * size;
+
+        int toIndex = Math.min(fromIndex + size, assistants.size());
+
+        return new PageContent<>(
+                assistants.subList(fromIndex, toIndex),
+                pageIndex + 1,
+                toIndex < assistants.size() ? pageIndex + 2 : null
+        );
+    }
+
+
+
     // ======== Get Events by Filtered Page with Pagination ========
 
     @Override
