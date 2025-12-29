@@ -175,19 +175,9 @@ public class UserService implements UserServiceI {
         );
 
         for (User userResult : users.getContent()) {
+            userResult.setPassword(null);
             UserProfile profileResult = userResult.getProfile();
-
-            List<String> following = this.followService.getAllFollowing(
-                    GetAllFollowingReq.create(userResult.getId(), secretKeyHelper.getSecret())
-            ).getFollowing().stream().map(Follow::getFollowedId).toList();
-
-            List<String> followers = this.followService.getAllFollowers(
-                    GetAllFollowersReq.create(userResult.getId(), secretKeyHelper.getSecret())
-            ).getFollowers().stream().map(Follow::getFollowerId).toList();
-
             profileResult.isOwnProfile(user.getId());
-            profileResult.setFollowsChecks(user.getId(), following, followers);
-
             userResult.setProfile(profileResult);
         }
 
