@@ -18,6 +18,8 @@ public interface UserRepositoryI {
 
     List<User> getMutualsFollowers(String userId);
 
+    PageContent<User> getByListOfIds(List<String> ids, Integer page, Integer size);
+
     User save(User user);
 
     User update(User user);

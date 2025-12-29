@@ -17,6 +17,8 @@ public interface EventServiceI {
 
     GetEventByDateRangeRes getEventsByDateRange(GetEventByDateRangeReq dto);
 
+    GetAssistantsByEventIdRes getAssistantsByEventId(GetAssistantsByEventIdReq dto);
+
     ToggleAssistRes toggleAssist(ToggleAssistReq dto);
 
     EditEventRes edit(EditEventReq dto);

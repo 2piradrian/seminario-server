@@ -81,6 +81,24 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
+    public PageContent<User> getByListOfIds(List<String> ids, Integer page, Integer size) {
+        int pageIndex = normalizePage(page);
+
+        Page<UserModel> profilesModels = this.userRepository.findByListOfIds(
+            ids,
+            PageRequest.of(pageIndex, size)
+        );
+
+        return new PageContent<>(
+                profilesModels.getContent().stream()
+                        .map(UserEntityMapper::toDomain)
+                        .collect(Collectors.toList()),
+                profilesModels.getNumber() + 1,
+                profilesModels.hasNext() ? profilesModels.getNumber() + 2 : null
+        );
+    }
+
+    @Override
     public User save(User user) {
         UserModel userModel = UserEntityMapper.toModel(user);
         UserModel saved = this.userRepository.save(userModel);

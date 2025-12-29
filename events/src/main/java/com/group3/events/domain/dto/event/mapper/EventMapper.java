@@ -44,4 +44,6 @@ public class EventMapper {
         return new GetEventByDateRangeMapper();
     }
 
+    public static GetAssistantsByEventIdMapper getAssistantsByEventId() { return new GetAssistantsByEventIdMapper(); }
+
 }

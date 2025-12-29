@@ -91,4 +91,14 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
         @Param("userId") String userId,
         @Param("status") Status status
     );
+
+    @Query("""
+           SELECT u
+           FROM UserModel u
+           WHERE u.id IN :ids
+           """)
+    Page<UserModel> findByListOfIds(
+            @Param("ids") List<String> ids,
+            Pageable pageable
+    );
 }

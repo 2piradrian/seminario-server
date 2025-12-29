@@ -10,6 +10,7 @@ import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
 import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
+import com.group3.users.domain.dto.user.mapper.implementation.GetByListOfIdsPageMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
 import jakarta.transaction.Transactional;
@@ -158,6 +159,29 @@ public class UserService implements UserServiceI {
         }
 
         return UserMapper.getFiltered().toResponse(profiles);
+    }
+
+    @Override
+    public GetByListOfIdsPageRes getByListOfIds(GetByListOfIdsPageReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        PageContent<User> users = this.userRepository.getByListOfIds(
+                dto.getIds(),
+                dto.getPage(),
+                dto.getSize()
+        );
+
+        for (User userResult : users.getContent()) {
+            userResult.setPassword(null);
+            UserProfile profileResult = userResult.getProfile();
+            profileResult.isOwnProfile(user.getId());
+            userResult.setProfile(profileResult);
+        }
+
+        return UserMapper.getByListOfIdsPage().toResponse(users);
     }
 
     // ======== Update User Profile ========
