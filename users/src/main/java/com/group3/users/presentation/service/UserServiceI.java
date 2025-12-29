@@ -15,6 +15,8 @@ public interface UserServiceI {
 
     GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto);
 
+    GetByListOfIdsPageRes getByListOfIds(GetByListOfIdsPageReq dto);
+
     void update(EditUserReq dto);
 
 }

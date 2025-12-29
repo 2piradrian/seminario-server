@@ -237,22 +237,9 @@ public class EventService implements EventServiceI {
         Event event = this.eventRepository.getById(dto.getEventId());
         if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
 
-        PageContent<String> assistantsIds =
-                this.eventRepository.getAssistantsByEventId(
-                        dto.getEventId(),
-                        dto.getPage(),
-                        dto.getSize()
-                );
-
-        List<User> users = assistantsIds.getContent().stream()
-                .map(id -> this.userRepository.getById(id, dto.getToken()))
-                .toList();
-
-        PageContent<User> assistants = new PageContent<>(
-                users,
-                assistantsIds.getPage(),
-                assistantsIds.getNextPage()
-        );
+        List<String> assistantsIds = event.getAssists();
+        PageContent<User> assistants = userRepository.getByListByIdsPage(dto.getToken(),
+                this.secretKeyHelper.getSecret(), dto.getPage(), dto.getSize(), assistantsIds);
 
         return EventMapper.getAssistantsByEventId().toResponse(assistants);
     }

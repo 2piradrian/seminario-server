@@ -71,6 +71,18 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getProfileFiltered(dto));
     }
 
+    @GetMapping("/get-by-list-of-ids")
+    public ResponseEntity<?> getByListOfIds(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "ids", required = false) List<String> ids
+    ) {
+        GetByListOfIdsPageReq dto = UserMapper.getByListOfIdsPage().toRequest(token, secret, page, size, ids);
+        return ResponseEntity.ok(this.userService.getByListOfIds(dto));
+    }
+
     @DeleteMapping()
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token

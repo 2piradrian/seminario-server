@@ -30,7 +30,7 @@ public class GetAssistantsByEventIdMapper {
     public GetAssistantsByEventIdRes toResponse(PageContent<User> assistants) {
         return new GetAssistantsByEventIdRes(
             assistants.getContent(),
-                assistants.getNextPage()
+            assistants.getNextPage()
         );
     }
 }
