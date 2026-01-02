@@ -14,7 +14,8 @@ public class NotificationEntityMapper {
                 User.builder().id(notificationModel.getCarriedOutById()).build(),
                 notificationModel.getContent(),
                 notificationModel.getCreatedAt(),
-                notificationModel.getUpdatedAt()
+                notificationModel.getUpdatedAt(),
+                notificationModel.getIsRead()
         );
     }
 
@@ -26,7 +27,8 @@ public class NotificationEntityMapper {
                 notification.getCarriedOutBy().getId(),
                 notification.getContent(),
                 notification.getCreatedAt(),
-                notification.getUpdatedAt()
+                notification.getUpdatedAt(),
+                notification.getIsRead()
         );
     }
 }

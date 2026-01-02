@@ -27,4 +27,6 @@ public class Notification {
 
     private LocalDateTime updatedAt;
 
+    private Boolean isRead;
+
 }
