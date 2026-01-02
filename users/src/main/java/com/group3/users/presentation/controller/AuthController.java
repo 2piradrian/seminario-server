@@ -4,9 +4,12 @@ import com.group3.users.domain.dto.auth.mapper.AuthMapper;
 import com.group3.users.domain.dto.auth.request.*;
 import com.group3.users.presentation.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @RestController
@@ -71,9 +74,9 @@ public class AuthController {
             @PathVariable(value = "token") String token
     ) {
         VerifyEmailReq dto = AuthMapper.verifyEmail().toRequest(token);
-        this.authService.verifyEmail(dto);
+        String htmlContent = this.authService.verifyEmail(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(htmlContent);
     }
 
     @PostMapping("/recover-password")

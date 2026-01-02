@@ -1,5 +1,6 @@
 package com.group3.users.config.helpers;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ public class EmailHelper {
     @Value("${application.host.url}")
     private String baseUrl;
 
+    @Getter
     @Value("${application.client.url}")
     private String clientUrl;
 
@@ -96,7 +98,7 @@ public class EmailHelper {
                 </div>
                 <div class="footer">
                     <p>Si no solicitaste este correo, por favor ignóralo.</p>
-                    <p>&copy; 2025 Fortune. Todos los derechos reservados.</p>
+                    <p>&copy; 2026 Fortune. Todos los derechos reservados.</p>
                 </div>
             </div>
         </body>

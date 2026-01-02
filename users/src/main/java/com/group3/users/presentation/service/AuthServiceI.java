@@ -17,7 +17,7 @@ public interface AuthServiceI {
 
     LoginUserRes login(LoginUserReq dto);
 
-    void verifyEmail(VerifyEmailReq dto);
+    String verifyEmail(VerifyEmailReq dto);
 
     void resendVerifyEmail(ResendEmailReq dto);
 
@@ -27,6 +27,6 @@ public interface AuthServiceI {
 
     void recoverPassword(RecoverPasswordReq dto);
 
-    void  changePassword(ChangePasswordReq dto);
+    void changePassword(ChangePasswordReq dto);
 
 }

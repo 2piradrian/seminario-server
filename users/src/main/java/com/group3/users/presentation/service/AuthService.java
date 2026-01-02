@@ -12,11 +12,20 @@ import com.group3.users.domain.dto.auth.request.*;
 import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.auth.response.LoginUserRes;
 import com.group3.utils.Verse;
+import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.rmi.ServerError;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -197,7 +206,7 @@ public class AuthService implements AuthServiceI {
     // ======== Verify Email ========
 
     @Override
-    public void verifyEmail(VerifyEmailReq dto){
+    public String verifyEmail(VerifyEmailReq dto){
 
         String token = this.authHelper.validateUrlToken(dto.getToken());
 
@@ -218,7 +227,25 @@ public class AuthService implements AuthServiceI {
 
         user.setStatus(Status.ACTIVE);
 
+        String htmlContent = "";
+
+        try {
+            ClassPathResource resource = new ClassPathResource("verification.html");
+
+            htmlContent = StreamUtils.copyToString(
+                resource.getInputStream(),
+                StandardCharsets.UTF_8
+            );
+
+            htmlContent = htmlContent.replace("{{REDIRECT_URL}}", this.emailHelper.getClientUrl());
+
+        } catch (IOException e) {
+            throw new ErrorHandler(ErrorType.INTERNAL_ERROR);
+        }
+
         this.userRepository.update(user);
+
+        return htmlContent;
     }
 
     // ======== Resend Verify Email ========
