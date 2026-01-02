@@ -2,6 +2,7 @@ package com.group3.events.domain.repository;
 
 import com.group3.entity.Event;
 import com.group3.entity.PageContent;
+import com.group3.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.Date;

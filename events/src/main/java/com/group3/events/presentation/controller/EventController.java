@@ -84,6 +84,18 @@ public class EventController {
         return ResponseEntity.ok(this.service.getEventsByDateRange(dto));
     }
 
+    @GetMapping("/get-assistants-by-event-id")
+    public ResponseEntity<?> getAssistantsByEventId(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "eventId") String eventId,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size
+
+    ) {
+       GetAssistantsByEventIdReq dto = EventMapper.getAssistantsByEventId().toRequest(token, eventId, page, size);
+       return ResponseEntity.ok(this.service.getAssistantsByEventId(dto));
+    }
+
     @PutMapping("/toggle-assist")
     public ResponseEntity<?> toggleAssist(
         @RequestHeader(value = "Authorization") String token,

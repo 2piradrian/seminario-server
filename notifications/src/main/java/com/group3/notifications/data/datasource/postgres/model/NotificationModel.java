@@ -37,4 +37,7 @@ public class NotificationModel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead = false;
+
 }

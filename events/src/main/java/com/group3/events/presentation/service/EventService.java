@@ -9,6 +9,7 @@ import com.group3.events.data.repository.*;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.domain.dto.event.response.*;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -226,6 +227,21 @@ public class EventService implements EventServiceI {
         }
 
         return EventMapper.getEventByDateRange().toResponse(events);
+    }
+
+    @Override
+    public GetAssistantsByEventIdRes getAssistantsByEventId(GetAssistantsByEventIdReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        Event event = this.eventRepository.getById(dto.getEventId());
+        if (event == null) throw new ErrorHandler(ErrorType.EVENT_NOT_FOUND);
+
+        List<String> assistantsIds = event.getAssists();
+        PageContent<User> assistants = userRepository.getByListByIdsPage(dto.getToken(),
+                this.secretKeyHelper.getSecret(), dto.getPage(), dto.getSize(), assistantsIds);
+
+        return EventMapper.getAssistantsByEventId().toResponse(assistants);
     }
 
     @Override

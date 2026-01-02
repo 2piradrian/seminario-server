@@ -28,4 +28,6 @@ public class UserMapper {
         return new EditMapper();
     }
 
+    public static GetByListOfIdsPageMapper getByListOfIdsPage() { return new GetByListOfIdsPageMapper(); }
+
 }
