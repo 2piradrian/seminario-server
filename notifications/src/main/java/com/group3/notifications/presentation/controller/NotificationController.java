@@ -1,10 +1,7 @@
 package com.group3.notifications.presentation.controller;
 
 import com.group3.notifications.domain.dto.notification.mapper.NotificationMapper;
-import com.group3.notifications.domain.dto.notification.request.CheckInvitationReq;
-import com.group3.notifications.domain.dto.notification.request.CreateNotificationReq;
-import com.group3.notifications.domain.dto.notification.request.GetLatestUncheckNotificationReq;
-import com.group3.notifications.domain.dto.notification.request.GetNotificationPageReq;
+import com.group3.notifications.domain.dto.notification.request.*;
 import com.group3.notifications.presentation.service.NotificationServiceI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +56,16 @@ public class NotificationController {
     ) {
         CheckInvitationReq dto = NotificationMapper.checkInvitation().toRequest(token, secret, notificationId);
         this.service.checkInvitation(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{notificationId}/read")
+    public ResponseEntity<?> markAsRead(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "notificationId") String notificationId
+    ) {
+        MarkAsReadReq dto = NotificationMapper.markAsRead().toRequest(token, notificationId);
+        this.service.markAsRead(dto);
         return ResponseEntity.ok().build();
     }
 

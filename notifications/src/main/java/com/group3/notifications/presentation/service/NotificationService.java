@@ -8,10 +8,7 @@ import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.notifications.config.helpers.SecretKeyHelper;
 import com.group3.notifications.domain.dto.notification.mapper.NotificationMapper;
-import com.group3.notifications.domain.dto.notification.request.CheckInvitationReq;
-import com.group3.notifications.domain.dto.notification.request.CreateNotificationReq;
-import com.group3.notifications.domain.dto.notification.request.GetLatestUncheckNotificationReq;
-import com.group3.notifications.domain.dto.notification.request.GetNotificationPageReq;
+import com.group3.notifications.domain.dto.notification.request.*;
 import com.group3.notifications.domain.dto.notification.response.GetLatestUncheckNotificationRes;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
 import com.group3.notifications.domain.repository.NotificationRepositoryI;
@@ -59,6 +56,7 @@ public class NotificationService implements NotificationServiceI {
         notification.setTargetId(dto.getTargetId());
         notification.setCarriedOutBy(User.builder().id(dto.getCarriedOutById()).build());
         notification.setContent(dto.getContent());
+        notification.setIsRead(false);
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -132,4 +130,25 @@ public class NotificationService implements NotificationServiceI {
         this.notificationRepository.delete(notification.getTargetId(), notification.getCarriedOutBy().getId(), notification.getContent());
     }
 
+    @Override
+    public void markAsRead(MarkAsReadReq dto){
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Notification notification = this.notificationRepository.getById(dto.getNotificationId());
+        if (notification == null) throw new ErrorHandler(ErrorType.NOTIFICATION_NOT_FOUND);
+
+        if (!notification.getTargetId().equals(user.getId())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (!notification.getIsRead()) {
+            notification.setIsRead(true);
+            notification.setUpdatedAt(LocalDateTime.now());
+
+            this.notificationRepository.update(notification);
+        }
+    }
 }

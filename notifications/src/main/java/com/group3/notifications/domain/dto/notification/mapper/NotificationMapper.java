@@ -1,9 +1,6 @@
 package com.group3.notifications.domain.dto.notification.mapper;
 
-import com.group3.notifications.domain.dto.notification.mapper.implementation.CheckInvitationMapper;
-import com.group3.notifications.domain.dto.notification.mapper.implementation.CreateNotificationMapper;
-import com.group3.notifications.domain.dto.notification.mapper.implementation.GetLatestUncheckMapper;
-import com.group3.notifications.domain.dto.notification.mapper.implementation.GetNotificationPageMapper;
+import com.group3.notifications.domain.dto.notification.mapper.implementation.*;
 
 public class NotificationMapper {
 
@@ -23,4 +20,5 @@ public class NotificationMapper {
         return new CheckInvitationMapper();
     }
 
+    public static MarkAsReadMapper markAsRead() {return new MarkAsReadMapper();}
 }
