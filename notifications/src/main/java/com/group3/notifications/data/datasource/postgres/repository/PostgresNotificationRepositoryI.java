@@ -46,7 +46,7 @@ public interface PostgresNotificationRepositoryI extends JpaRepository<Notificat
         WHERE n.sourceId = :sourceId 
         AND n.targetId = :targetId 
         AND n.content = :content 
-        AND n.createdAt = n.updatedAt 
+        AND n.isRead = false
         ORDER BY n.createdAt DESC
     """)
     List<NotificationModel> findLatestUncheckNotifications(

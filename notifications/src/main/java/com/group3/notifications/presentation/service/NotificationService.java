@@ -123,6 +123,7 @@ public class NotificationService implements NotificationServiceI {
             throw new ErrorHandler(ErrorType.NOTIFICATION_NOT_FOUND);
         }
 
+        notification.setIsRead(true);
         notification.setUpdatedAt(LocalDateTime.now());
 
         this.notificationRepository.update(notification);
