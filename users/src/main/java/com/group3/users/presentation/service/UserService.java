@@ -13,6 +13,7 @@ import com.group3.users.domain.dto.user.mapper.UserMapper;
 import com.group3.users.domain.dto.user.mapper.implementation.GetByListOfIdsPageMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
+import com.group3.users.domain.repository.NotificationsRepositoryI;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,8 @@ public class UserService implements UserServiceI {
     private final AuthService authService;
 
     private final FollowService followService;
+
+    private final NotificationsRepository notificationsRepository;
 
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
@@ -118,6 +121,12 @@ public class UserService implements UserServiceI {
 
         User user = this.userRepository.getById(auth.getId());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        if (!user.canDelete(user)) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
 
         user.setStatus(Status.DELETED);
 
