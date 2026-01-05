@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum RegexValidators {
 
-    USERNAME("^[a-zA-Z0-9]{3,20}$"),
-    PASSWORD("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"),
-    EMAIL("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+    COMMENT_CONTENT("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?'\"¡¿@%&$*+_:;\\-\\s]{1,250}$"),
+    TITLE("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?'\"¡¿@%&$*+_:;\\-\\s]{1,64}$"),
+    CONTENT("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,!?'\"¡¿@%&$*+_=#/?;:\\\\\\\\-\\s\\r\\n]{1,4096}$");
 
     private final String regex;
 

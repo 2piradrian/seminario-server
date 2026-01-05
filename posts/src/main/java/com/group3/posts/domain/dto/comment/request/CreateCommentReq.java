@@ -2,6 +2,7 @@ package com.group3.posts.domain.dto.comment.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.posts.domain.validator.RegexValidators;
 import lombok.Getter;
 
 @Getter
@@ -44,7 +45,7 @@ public class CreateCommentReq {
         }
 
         content = content.trim();
-        if (content.isEmpty() || content.length() > 2048) {
+        if (content.isEmpty() || !content.matches(RegexValidators.COMMENT_CONTENT.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 

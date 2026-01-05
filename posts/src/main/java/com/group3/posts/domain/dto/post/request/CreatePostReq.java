@@ -3,6 +3,7 @@ package com.group3.posts.domain.dto.post.request;
 import com.group3.entity.PostType;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.posts.domain.validator.RegexValidators;
 import lombok.Getter;
 
 @Getter
@@ -40,7 +41,7 @@ public class CreatePostReq {
         }
 
         title = title.trim();
-        if (title.isEmpty() || title.length() > 64) {
+        if (title.isEmpty() || !title.matches(RegexValidators.TITLE.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
@@ -49,7 +50,7 @@ public class CreatePostReq {
         }
 
         content = content.trim();
-        if (content.isEmpty() || content.length() > 4096) {
+        if (content.isEmpty() || !content.matches(RegexValidators.CONTENT.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
