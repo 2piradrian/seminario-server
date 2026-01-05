@@ -1,12 +1,10 @@
 package com.group3.notifications.presentation.service;
 
-import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.notifications.config.helpers.SecretKeyHelper;
 import com.group3.notifications.domain.dto.notification.mapper.NotificationMapper;
-import com.group3.notifications.domain.repository.PageRepositoryI;
 import com.group3.notifications.domain.dto.notification.request.*;
 import com.group3.notifications.domain.dto.notification.response.GetLatestUncheckNotificationRes;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
@@ -17,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Service
@@ -30,8 +27,6 @@ public class NotificationService implements NotificationServiceI {
     private final NotificationRepositoryI notificationRepository;
 
     private final UserRepositoryI userRepository;
-
-    private final PageRepositoryI pageProfileRepository;
 
     @Override
     public void create(CreateNotificationReq dto) {
@@ -163,24 +158,6 @@ public class NotificationService implements NotificationServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-        
-        PrefixedUUID.EntityType type = PrefixedUUID.resolveType(UUID.fromString(dto.getSourceId()));
-
-        if (type == PrefixedUUID.EntityType.USER) {
-            User sourceUser = this.userRepository.getById(dto.getSourceId(), dto.getToken());
-
-            if (!sourceUser.getStatus().equals(Status.DELETED)) {
-                throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-            }
-
-        }
-        else if (type == PrefixedUUID.EntityType.PAGE) {
-            PageProfile sourcePAge = this.pageProfileRepository.getById(dto.getToken(), dto.getSourceId());
-
-            if (!sourcePAge.getStatus().equals(Status.DELETED)) {
-                throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
-            }
         }
 
         this.notificationRepository.deleteBySourceId(dto.getSourceId());

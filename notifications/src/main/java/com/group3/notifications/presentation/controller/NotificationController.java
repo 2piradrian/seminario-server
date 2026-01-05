@@ -69,7 +69,7 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-by-soruceId")
+    @DeleteMapping("/delete-by-sourceId")
     public ResponseEntity<?> deleteBySourceId(
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
