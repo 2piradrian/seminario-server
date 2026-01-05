@@ -331,6 +331,8 @@ public class PageProfileService implements PageProfileServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        this.notificationRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), page.getId());
+
         page.setStatus(Status.DELETED);
         this.pageProfileRepository.update(page);
     }
