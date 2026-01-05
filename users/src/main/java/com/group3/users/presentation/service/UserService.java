@@ -126,11 +126,11 @@ public class UserService implements UserServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
-
         user.setStatus(Status.DELETED);
 
         this.userRepository.save(user);
+
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
     }
 
     // ======== Get User Profile Page Filtered ========
