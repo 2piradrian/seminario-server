@@ -16,4 +16,6 @@ public interface NotificationServiceI {
 
     void markAsRead(MarkAsReadReq dto);
 
+    void deleteBySourceId(DeleteBySourceIdReq dto) ;
+
 }
