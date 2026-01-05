@@ -43,6 +43,8 @@ public class EventService implements EventServiceI {
 
     private final EventBatchProcessorHandler eventBatchProcessorHandler;
 
+    private final NotificationsRepository notificationsRepository;
+
     @Override
     public CreateEventRes create(CreateEventReq dto) {
         User user = this.userRepository.auth(dto.getToken());
@@ -281,6 +283,22 @@ public class EventService implements EventServiceI {
             PageProfile fullPage = this.pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
             event.setPageProfile(fullPage);
         }
+
+        String targetId;
+        if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+            targetId = event.getPageProfile().getId();
+        }
+        else {
+            targetId = event.getAuthor().getId();
+        }
+
+        this.notificationsRepository.create(
+            this.secretKeyHelper.getSecret(),
+            targetId,
+            event.getId(),
+            user.getId(),
+            NotificationContent.ASSIST.name()
+        );
 
         return EventMapper.toggleAssist().toResponse(event);
     }
