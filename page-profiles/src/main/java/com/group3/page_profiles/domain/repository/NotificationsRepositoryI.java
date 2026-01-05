@@ -10,4 +10,6 @@ public interface NotificationsRepositoryI {
 
     void checkInvitation(String token, String secret, String notificationId);
 
+    void deleteBySourceId(String token, String secret, String soruceId);
+
 }

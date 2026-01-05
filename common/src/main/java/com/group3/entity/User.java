@@ -46,6 +46,11 @@ public class User {
         return this.role.canDelete() || (page.getOwner()!= null && page.getOwner().getId().equals(this.getId()));
     }
 
+    public boolean canDelete(User user){
+        return this.role.canDelete() ||
+            (user.getId().equals(this.getId()));
+    }
+
     public boolean canDelete(Comment comment){
         return this.role.canDelete() ||
                 (comment.getAuthor() != null && comment.getAuthor().getId().equals(this.getId())) ||

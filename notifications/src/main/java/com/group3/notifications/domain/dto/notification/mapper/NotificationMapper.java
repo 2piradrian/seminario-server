@@ -20,5 +20,12 @@ public class NotificationMapper {
         return new CheckInvitationMapper();
     }
 
-    public static MarkAsReadMapper markAsRead() {return new MarkAsReadMapper();}
+    public static MarkAsReadMapper markAsRead() {
+        return new MarkAsReadMapper();
+    }
+
+    public static DeleteBySourceIdMapper deleteBySource() {
+        return new DeleteBySourceIdMapper();
+    }
+
 }

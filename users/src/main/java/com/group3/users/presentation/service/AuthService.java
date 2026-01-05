@@ -299,7 +299,7 @@ public class AuthService implements AuthServiceI {
         User user = this.userRepository.getByEmail(userAuth.getEmail());
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
-        user.setPassword(this.authHelper.hashPassword(dto.getPassword()));
+        user.setPassword(this.authHelper.hashPassword(dto.getNewPassword()));
 
         this.userRepository.update(user);
 

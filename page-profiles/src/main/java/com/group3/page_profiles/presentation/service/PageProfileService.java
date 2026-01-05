@@ -333,6 +333,8 @@ public class PageProfileService implements PageProfileServiceI {
 
         page.setStatus(Status.DELETED);
         this.pageProfileRepository.update(page);
+
+        this.notificationRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), page.getId());
     }
 
 }
