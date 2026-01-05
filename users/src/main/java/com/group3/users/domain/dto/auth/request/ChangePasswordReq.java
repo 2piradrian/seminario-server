@@ -10,11 +10,11 @@ public class ChangePasswordReq {
 
     private final String token;
 
-    private final String password;
+    private final String newPassword;
 
-    private ChangePasswordReq(String token, String password){
+    private ChangePasswordReq(String token, String newPassword){
         this.token = token;
-        this.password = password;
+        this.newPassword = newPassword;
     }
 
     public static ChangePasswordReq create(String token, String newPassword) {

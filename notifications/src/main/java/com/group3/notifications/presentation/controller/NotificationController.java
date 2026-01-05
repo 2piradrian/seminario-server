@@ -69,4 +69,15 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete-by-sourceId")
+    public ResponseEntity<?> deleteBySourceId(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "sourceId") String soruceId
+    ) {
+        DeleteBySourceIdReq dto = NotificationMapper.deleteBySource().toRequest(secret, soruceId ,token);
+        this.service.deleteBySourceId(dto);
+        return ResponseEntity.ok().build();
+    }
+
 }

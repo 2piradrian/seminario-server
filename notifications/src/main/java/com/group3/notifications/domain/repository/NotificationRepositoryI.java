@@ -18,6 +18,8 @@ public interface NotificationRepositoryI {
 
     void delete(String targetId, String carriedOutById, NotificationContent content);
 
+    void deleteBySourceId(String sourceId);
+
     Notification getLatestUncheck(String sourceId, String targetId, NotificationContent content);
 
 }

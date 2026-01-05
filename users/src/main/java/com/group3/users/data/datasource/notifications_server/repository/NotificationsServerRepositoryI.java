@@ -5,6 +5,10 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 
 import java.util.Map;
 
@@ -15,6 +19,13 @@ public interface NotificationsServerRepositoryI {
     @PostMapping("/api/notifications")
     void create(
             @RequestBody Map<String, Object> payload
+    );
+
+    @DeleteMapping("/api/notifications/delete-by-source")
+    void deleteBySourceId(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "sourceId") String sourceId
     );
 
 }

@@ -81,7 +81,7 @@ public class EditUserReq {
         }
 
         RegexValidators surnameValidator = RegexValidators.SURNAME;
-        if (!name.matches(surnameValidator.getRegex())) {
+        if (!surname.matches(surnameValidator.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 

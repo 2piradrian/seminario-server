@@ -49,4 +49,9 @@ public class NotificationRepository implements NotificationsRepositoryI {
         this.repository.checkInvitation(token, secret, notificationId);
     }
 
+    @Override
+    public void deleteBySourceId(String token, String secret, String soruceId) {
+        this.repository.deleteBySourceId(token, secret, soruceId);
+    }
+
 }

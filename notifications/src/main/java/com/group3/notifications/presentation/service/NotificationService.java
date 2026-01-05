@@ -1,9 +1,6 @@
 package com.group3.notifications.presentation.service;
 
-import com.group3.entity.Notification;
-import com.group3.entity.NotificationContent;
-import com.group3.entity.PageContent;
-import com.group3.entity.User;
+import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.notifications.config.helpers.SecretKeyHelper;
@@ -152,4 +149,19 @@ public class NotificationService implements NotificationServiceI {
             this.notificationRepository.update(notification);
         }
     }
+
+    @Override
+    public void deleteBySourceId(DeleteBySourceIdReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.notificationRepository.deleteBySourceId(dto.getSourceId());
+    }
+    
 }

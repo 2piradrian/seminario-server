@@ -25,4 +25,10 @@ public class NotificationsRepository implements NotificationsRepositoryI {
         
         this.repository.create(payload);
     }
+
+    @Override
+    public void deleteBySourceId(String token, String secret, String soruceId) {
+        this.repository.deleteBySourceId(token, secret, soruceId);
+    }
+
 }

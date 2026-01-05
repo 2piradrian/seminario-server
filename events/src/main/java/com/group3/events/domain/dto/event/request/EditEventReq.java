@@ -2,6 +2,7 @@ package com.group3.events.domain.dto.event.request;
 
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.events.domain.validator.RegexValidators;
 import lombok.Getter;
 
 import java.text.ParseException;
@@ -50,12 +51,12 @@ public class EditEventReq {
         }
 
         title = title.trim();
-        if (title.isEmpty() || title.length() > 64) {
+        if (title.isEmpty() || !title.matches(RegexValidators.TITLE.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
         content = content.trim();
-        if (content.isEmpty() || content.length() > 4096) {
+        if (content.isEmpty() || !content.matches(RegexValidators.CONTENT.getRegex())) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 

@@ -32,5 +32,12 @@ public interface NotificationsServerRepositoryI {
             @PathVariable(value = "notificationId") String notificationId
     );
 
+    @DeleteMapping("/api/notifications/delete-by-sourceId")
+    void deleteBySourceId(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret,
+            @RequestParam(value = "sourceId") String sourceId
+    );
+
 
 }
