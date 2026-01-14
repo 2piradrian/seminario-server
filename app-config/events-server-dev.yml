@@ -19,5 +19,9 @@ spring:
                 batch_versioned_data: true
 
 application:
-    internal:
-        secret: "I'll see you on the dark side of the moon"
+  internal:
+    secret: "I'll see you on the dark side of the moon"
+
+server:
+  tomcat:
+    max-http-post-size: 15MB

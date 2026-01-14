@@ -13,3 +13,7 @@ spring:
 application:
   internal:
     secret: "I'll see you on the dark side of the moon"
+
+server:
+  tomcat:
+    max-http-post-size: 15MB

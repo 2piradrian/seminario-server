@@ -35,3 +35,7 @@ application:
   client:
       url: https://fortune-utn.vercel.app
       recover: /recover/pass/
+
+server:
+  tomcat:
+    max-http-post-size: 15MB

@@ -1,3 +1,13 @@
 application:
   internal:
     secret: "I'll see you on the dark side of the moon"
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+server:
+  tomcat:
+    max-http-post-size: 15MB

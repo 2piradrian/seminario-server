@@ -35,3 +35,7 @@ application:
   client:
       url: https://localhost:5671
       recover: /recover/pass/
+
+server:
+  tomcat:
+    max-http-post-size: 15MB
