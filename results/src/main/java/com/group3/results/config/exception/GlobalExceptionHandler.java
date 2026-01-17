@@ -20,7 +20,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public  ResponseEntity<?> handleGenericException(Exception e) {
-        log.error("Unexpected Error on " + e);
         return  ResponseEntity
             .status(500)
             .body(new ErrorHandler(ErrorType.INTERNAL_ERROR).toResponse());
