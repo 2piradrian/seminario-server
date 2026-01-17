@@ -15,4 +15,6 @@ public interface UserRepositoryI {
     User getById(String userId, String token);
 
     List<Follow> getAllFollowers(String token, String id, String secret);
+
+    List<User> getByListOfIds(String token, String secret, Integer page, Integer size, List<String> ids);
 }
