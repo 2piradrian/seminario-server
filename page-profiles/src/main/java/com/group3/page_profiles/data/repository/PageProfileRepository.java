@@ -85,7 +85,7 @@ public class PageProfileRepository implements PageRepositoryI {
 
     @Override
     public List<PageProfile> getListByIds(List<String> ids) {
-        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids);
+        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids, Status.ACTIVE);
         return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
 
