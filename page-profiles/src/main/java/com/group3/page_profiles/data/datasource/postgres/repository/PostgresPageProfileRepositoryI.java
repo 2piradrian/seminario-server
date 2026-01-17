@@ -16,7 +16,15 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
 
     PageProfileModel findByName(String name);
 
-    List<PageProfileModel> findAllByIdIn(List<String> ids);
+    @Query("""
+        SELECT p FROM PageProfileModel p
+        WHERE p.id IN :ids
+        AND p.status = :status
+    """)
+    List<PageProfileModel> findAllByIdIn(
+        @Param("ids") List<String> ids,
+        @Param("status") Status status
+    );
 
 
     // ======== Get filtered By Filtered Page ========
