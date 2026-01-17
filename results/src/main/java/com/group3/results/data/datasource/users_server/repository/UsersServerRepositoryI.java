@@ -49,4 +49,13 @@ public interface UsersServerRepositoryI {
         @RequestParam(value = "secret") String secret
     );
 
+    @GetMapping("/api/users/get-by-list-of-ids")
+    GetByListOfIdsPageRes getByListOfIds(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "ids", required = false) List<String> ids
+    );
+
 }
