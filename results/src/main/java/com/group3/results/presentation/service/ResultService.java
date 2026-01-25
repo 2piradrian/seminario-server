@@ -17,9 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -100,16 +99,7 @@ public class ResultService implements ResultServiceI {
                 secret
             );
 
-            for (Post post : posts) {
-                if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                    User author = userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                    post.setAuthor(author);
-                }
-                if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                    PageProfile page = pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
-                    post.setPageProfile(page);
-                }
-            }
+            this.enrichPosts(posts, dto.getToken(), secret);
 
         } else if (type.isEventType()){
 
@@ -123,16 +113,7 @@ public class ResultService implements ResultServiceI {
                 dto.getDateEnd()
             );
 
-            for (Event event : events) {
-                if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-                    User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
-                    event.setAuthor(author);
-                }
-                if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
-                    PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
-                    event.setPageProfile(page);
-                }
-            }
+            this.enrichEvents(events, dto.getToken(), secret);
 
         }
 
@@ -144,25 +125,18 @@ public class ResultService implements ResultServiceI {
         User user = this.userRepository.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
+        String secret = this.secretKeyHelper.getSecret();
+
         List<Post> posts = this.postRepository.getFilteredPosts(
             dto.getToken(),
             dto.getPage(),
             dto.getSize(),
             "",
             "",
-            secretKeyHelper.getSecret()
+            secret
         );
 
-        for (Post post : posts) {
-            if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                post.setAuthor(author);
-            }
-            if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
-                post.setPageProfile(page);
-            }
-        }
+        this.enrichPosts(posts, dto.getToken(), secret);
 
         return ResultsMapper.getFeed().toResponse(posts);
     }
@@ -191,42 +165,145 @@ public class ResultService implements ResultServiceI {
             eventsLimit
         );
 
-        List<Object> feed = new ArrayList<>();
+        this.enrichPosts(posts, dto.getToken(), secret);
+        this.enrichEvents(events, dto.getToken(), secret);
 
+        List<Object> feed = new ArrayList<>();
         feed.addAll(posts);
         feed.addAll(events);
 
         feed.sort(Comparator.comparing(FeedUtil::getCreatedAt).reversed());
 
-        for (Object feedContent : feed) {
+        return ResultsMapper.getFeedMerged().toResponse(feed);
+    }
 
-            if (feedContent instanceof Event event) {
+    // ======== Helper Methods for Batch Enrichment ========
 
-                if (event.getAuthor() != null && event.getAuthor().getId() != null) {
-                    User author = userRepository.getById(event.getAuthor().getId(), dto.getToken());
-                    event.setAuthor(author);
-                }
-                if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
-                    PageProfile page = pageProfileRepository.getById(event.getPageProfile().getId(), dto.getToken());
-                    event.setPageProfile(page);
-                }
+    private void enrichPosts(List<Post> posts, String token, String secret) {
+        if (posts == null || posts.isEmpty()) return;
 
-            } else if (feedContent instanceof Post post) {
+        Set<String> userIds = new HashSet<>();
+        Set<String> pageIds = new HashSet<>();
 
-                if (post.getAuthor() != null && post.getAuthor().getId() != null) {
-                    User author = this.userRepository.getById(post.getAuthor().getId(), dto.getToken());
-                    post.setAuthor(author);
-                }
-                if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
-                    PageProfile page = this.pageProfileRepository.getById(post.getPageProfile().getId(), dto.getToken());
-                    post.setPageProfile(page);
-                }
-
+        for (Post post : posts) {
+            if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                userIds.add(post.getAuthor().getId());
             }
-
+            if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                pageIds.add(post.getPageProfile().getId());
+            }
         }
 
-        return ResultsMapper.getFeedMerged().toResponse(feed);
+        Map<String, User> userMap = this.fetchUsersMap(userIds, token, secret);
+        Map<String, PageProfile> pageMap = this.fetchPagesMap(pageIds, secret);
+
+        posts.removeIf(post -> {
+            boolean isValid = true;
+
+            if (post.getAuthor() != null && post.getAuthor().getId() != null) {
+                User author = userMap.get(post.getAuthor().getId());
+
+                if (author == null) {
+                    isValid = false;
+                } else {
+                    post.setAuthor(author);
+                }
+            }
+
+            if (isValid && post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+                PageProfile page = pageMap.get(post.getPageProfile().getId());
+
+                if (page == null) {
+                    isValid = false;
+                } else {
+                    post.setPageProfile(page);
+                }
+            }
+
+            return !isValid;
+        });
+    }
+
+    private void enrichEvents(List<Event> events, String token, String secret) {
+        if (events == null || events.isEmpty()) return;
+
+        Set<String> userIds = new HashSet<>();
+        Set<String> pageIds = new HashSet<>();
+
+        for (Event event : events) {
+            if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+                userIds.add(event.getAuthor().getId());
+            }
+            if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+                pageIds.add(event.getPageProfile().getId());
+            }
+        }
+
+        Map<String, User> userMap = this.fetchUsersMap(userIds, token, secret);
+        Map<String, PageProfile> pageMap = this.fetchPagesMap(pageIds, secret);
+
+        events.removeIf(event -> {
+            boolean isValid = true;
+
+            if (event.getAuthor() != null && event.getAuthor().getId() != null) {
+                User author = userMap.get(event.getAuthor().getId());
+
+                if (author == null) {
+                    isValid = false;
+                } else {
+                    event.setAuthor(author);
+                }
+            }
+
+            if (isValid && event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+                PageProfile page = pageMap.get(event.getPageProfile().getId());
+
+                if (page == null) {
+                    isValid = false;
+                } else {
+                    event.setPageProfile(page);
+                }
+            }
+
+            return !isValid;
+        });
+    }
+
+    private Map<String, User> fetchUsersMap(Set<String> userIds, String token, String secret) {
+        if (userIds.isEmpty()) return Collections.emptyMap();
+
+        List<User> users = this.userRepository.getByListOfIds(
+            token,
+            secret,
+            1,
+            userIds.size(),
+            new ArrayList<>(userIds)
+        );
+
+        return users.stream()
+            .collect(
+                Collectors.toMap(
+                    User::getId,
+                    page -> page,
+                    (a, b) -> a)
+            );
+    }
+
+    private Map<String, PageProfile> fetchPagesMap(Set<String> pageIds, String secret) {
+        if (pageIds.isEmpty()) return Collections.emptyMap();
+
+        List<PageProfile> pages = this.pageProfileRepository.getListByIds(
+            new ArrayList<>(pageIds),
+            secret
+        );
+
+        return pages.stream().
+            collect(
+                Collectors.toMap(
+                    PageProfile::getId,
+                    page -> page,
+                    (a, b) -> a)
+            );
     }
 
 }

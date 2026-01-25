@@ -11,4 +11,6 @@ public interface PageRepositoryI {
 
     PageProfile getById(String pageId, String token);
 
+    List<PageProfile> getListByIds(List<String> ids, String secret);
+
 }

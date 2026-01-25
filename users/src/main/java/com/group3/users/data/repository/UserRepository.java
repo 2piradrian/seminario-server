@@ -86,6 +86,7 @@ public class UserRepository implements UserRepositoryI {
 
         Page<UserModel> profilesModels = this.userRepository.findByListOfIds(
             ids,
+            Status.ACTIVE,
             PageRequest.of(pageIndex, size)
         );
 
