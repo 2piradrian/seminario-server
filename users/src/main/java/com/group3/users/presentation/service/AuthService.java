@@ -133,6 +133,8 @@ public class AuthService implements AuthServiceI {
         Token token = this.authHelper.createToken(saved);
 
         this.emailService.sendEmail(
+            this.emailHelper.getFrom(),
+            this.emailHelper.getFromName(),
             saved.getEmail(),
             "Email Validation",
             this.emailHelper.verifyEmailHTML(token.getAccessToken())
@@ -266,6 +268,8 @@ public class AuthService implements AuthServiceI {
         Token token = this.authHelper.createToken(user);
 
         this.emailService.sendEmail(
+            this.emailHelper.getFrom(),
+            this.emailHelper.getFromName(),
             user.getEmail(),
             "Email Verification",
             this.emailHelper.verifyEmailHTML(token.getAccessToken())
@@ -283,6 +287,8 @@ public class AuthService implements AuthServiceI {
         Token token = this.authHelper.createToken(user);
 
         this.emailService.sendEmail(
+            this.emailHelper.getFrom(),
+            this.emailHelper.getFromName(),
             user.getEmail(),
             "Recover password",
             this.emailHelper.recoverPasswordHTML(token.getAccessToken())
