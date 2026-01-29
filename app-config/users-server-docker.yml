@@ -13,16 +13,16 @@ spring:
         hibernate.jdbc.time_zone: UTC
   
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: develop
-    password: develop
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+      host: smtp-relay.brevo.com
+      port: 587
+      username: develop
+      password: develop
+      properties:
+          mail:
+              smtp:
+                  auth: true
+                  starttls:
+                      enable: true
 
 application:
   jwt:
@@ -35,6 +35,9 @@ application:
   client:
       url: https://fortune-utn.vercel.app
       recover: /recover/pass/
+  mail:
+      from: develop
+      detail: develop
 
 server:
   tomcat:

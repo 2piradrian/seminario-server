@@ -14,6 +14,14 @@ public class EmailHelper {
     @Value("${application.client.url}")
     private String clientUrl;
 
+    @Getter
+    @Value("${application.mail.from}")
+    private String from;
+
+    @Getter
+    @Value("${application.mail.detail}")
+    private String fromName;
+
     @Value("${application.client.recover}")
     private String recoverPath;
 

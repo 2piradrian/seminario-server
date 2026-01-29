@@ -11,18 +11,18 @@ spring:
       ddl-auto: "update"
       properties:
         hibernate.jdbc.time_zone: UTC
-  
+
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.brevo.com
     port: 587
-    username: fortuneappok@gmail.com
-    password: galf rarw flbp hdqg
+    username: develop
+    password: develop
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+        mail:
+            smtp:
+                auth: true
+                starttls:
+                    enable: true
 
 application:
   jwt:
@@ -35,6 +35,9 @@ application:
   client:
       url: https://localhost:5671
       recover: /edit-password/
+  mail:
+      from: develop
+      detail: develop
 
 server:
   tomcat:
