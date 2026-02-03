@@ -156,11 +156,6 @@ public class NotificationService implements NotificationServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        User user = this.userRepository.auth(dto.getToken());
-        if (user == null) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        }
-
         this.notificationRepository.deleteBySourceId(dto.getSourceId());
     }
     
