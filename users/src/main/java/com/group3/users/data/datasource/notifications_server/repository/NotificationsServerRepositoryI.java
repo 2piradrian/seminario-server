@@ -21,7 +21,7 @@ public interface NotificationsServerRepositoryI {
             @RequestBody Map<String, Object> payload
     );
 
-    @DeleteMapping("/api/notifications/delete-by-source")
+    @DeleteMapping("/api/notifications/delete-by-sourceId")
     void deleteBySourceId(
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
