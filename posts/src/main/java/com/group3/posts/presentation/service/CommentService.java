@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -76,8 +77,8 @@ public class CommentService implements CommentServiceI {
         comment.setAuthor(author);
         comment.setPostId(post.getId());
         comment.setContent(dto.getContent());
-        comment.setUpvoters(List.of());
-        comment.setDownvoters(List.of());
+        comment.setUpvoters(Set.of());
+        comment.setDownvoters(Set.of());
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setStatus(Status.ACTIVE);
@@ -176,8 +177,8 @@ public class CommentService implements CommentServiceI {
         if (comment == null) throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
 
         String userId = user.getId();
-        List<String> upvoters = comment.getUpvoters();
-        List<String> downvoters = comment.getDownvoters();
+        Set<String> upvoters = comment.getUpvoters();
+        Set<String> downvoters = comment.getDownvoters();
 
         boolean isNewUpvote = false;
         boolean isNewDownvote = false;
