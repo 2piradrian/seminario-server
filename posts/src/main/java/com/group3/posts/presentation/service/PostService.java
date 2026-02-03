@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -78,8 +79,8 @@ public class PostService implements PostServiceI {
         post.setContent(dto.getContent());
         post.setStatus(Status.ACTIVE);
         post.setViews(0);
-        post.setUpvoters(List.of());
-        post.setDownvoters(List.of());
+        post.setUpvoters(Set.of());
+        post.setDownvoters(Set.of());
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
 
@@ -237,8 +238,8 @@ public class PostService implements PostServiceI {
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
 
         String userId = user.getId();
-        List<String> upvoters = post.getUpvoters();
-        List<String> downvoters = post.getDownvoters();
+        Set<String> upvoters = post.getUpvoters();
+        Set<String> downvoters = post.getDownvoters();
 
         boolean isNewUpvote = false;
         boolean isNewDownvote = false;

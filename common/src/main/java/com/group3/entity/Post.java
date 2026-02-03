@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -28,9 +29,9 @@ public class Post {
 
     private String imageId;
 
-    private List<String> upvoters;
+    private Set<String> upvoters;
 
-    private List<String> downvoters;
+    private Set<String> downvoters;
 
     private LocalDateTime createdAt;
 
