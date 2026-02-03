@@ -45,6 +45,7 @@ public interface PostgresNotificationRepositoryI extends JpaRepository<Notificat
         DELETE
         FROM NotificationModel n
         WHERE n.sourceId = :sourceId
+        OR n.carriedOutById = :sourceId
     """)
     void deleteBySourceId(
         @Param("sourceId") String sourceId
