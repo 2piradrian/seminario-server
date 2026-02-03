@@ -49,7 +49,7 @@ public class UserService implements UserServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         User userResult = this.userRepository.getById(dto.getUserId());
-        if (userResult == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+        if (userResult == null || userResult.getStatus().equals(Status.DELETED)) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
 
         UserProfile profileResult = userResult.getProfile();
 
