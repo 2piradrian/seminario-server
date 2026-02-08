@@ -65,4 +65,9 @@ public class ChatMessageRepository implements ChatMessageRepositoryI {
         return ChatMessageEntityMapper.toDomain(messages.getFirst());
     }
 
+    @Override
+    public void deleteAllByUserId(String userId) {
+        this.repository.deleteAllByUserId(userId);
+    }
+
 }
