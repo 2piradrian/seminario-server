@@ -46,8 +46,8 @@ public class ChatService implements ChatServiceI {
         User user1 = userRepository.getById(dto.getUser1Id(), dto.getToken());
         User user2 = userRepository.getById(dto.getUser2Id(), dto.getToken());
 
-        if (user1 == null || user2 == null || user1.getStatus() != Status.ACTIVE || user2.getStatus() != Status.ACTIVE) {
-            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        if (user1 == null || user2 == null) {
+            return new GetConversationPageMapper().toResponse(new PageContent<>(List.of(), null, null));
         }
 
         if (!user.getId().equals(dto.getUser1Id()) && !user.getId().equals(dto.getUser2Id())) {

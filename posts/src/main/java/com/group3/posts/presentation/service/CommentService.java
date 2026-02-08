@@ -149,16 +149,20 @@ public class CommentService implements CommentServiceI {
 
         comments.getContent().removeIf(
                 comment -> {
-                    if (comment.getAuthor().getId() != null) {
+                    if (comment.getAuthor() != null && comment.getAuthor().getId() != null) {
                         User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
-                        if (fullProfile.getStatus() == Status.DELETED) {
+                        if (fullProfile == null) {
                             return true;
                         }
                         comment.setAuthor(fullProfile);
-                    }
-                    if (comment.getPageProfile().getId() != null) {
+                    } else if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
                         PageProfile fullPage = this.pageProfileRepository.getById(comment.getPageProfile().getId(), dto.getToken());
+                        if (fullPage == null) {
+                            return true;
+                        }
                         comment.setPageProfile(fullPage);
+                    } else {
+                        return true;
                     }
                     comment.setVotersToNull();
                     comment.setReplies(this.commentRepository.getRepliesComment(comment.getId()));

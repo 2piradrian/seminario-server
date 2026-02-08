@@ -123,6 +123,9 @@ public class FollowService implements FollowServiceI {
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
 
+        userProfiles = userProfiles.stream().filter(Objects::nonNull).toList();
+        pageProfiles = pageProfiles.stream().filter(Objects::nonNull).toList();
+
         List<String> followingIds = followRepository.getAllFollowing(authUser.getId()).stream().map(Follow::getFollowedId).toList();
         Set<String> followingSet = new HashSet<>(followingIds);
 
@@ -172,6 +175,9 @@ public class FollowService implements FollowServiceI {
 
         List<UserProfile> userProfiles = this.userProfileRepository.getListByIds(userIds);
         List<PageProfile> pageProfiles = this.pageProfileRepository.getListByIds(pageIds, secretKeyHelper.getSecret());
+
+        userProfiles = userProfiles.stream().filter(Objects::nonNull).toList();
+        pageProfiles = pageProfiles.stream().filter(Objects::nonNull).toList();
 
         List<String> authUserFollowingIds = followRepository.getAllFollowing(authUser.getId()).stream().map(Follow::getFollowedId).toList();
         Set<String> authUserFollowingSet = new HashSet<>(authUserFollowingIds);
