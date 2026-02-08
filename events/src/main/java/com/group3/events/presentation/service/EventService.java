@@ -378,28 +378,22 @@ public class EventService implements EventServiceI {
 
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    // @Scheduled(initialDelay = 60000, fixedDelay = Long.MAX_VALUE)
     @Scheduled(cron = "0 0 0 * * *")
     public void updateEventsLifeCycle() {
-        log.info("Cron: Iniciando ciclo de vida de eventos...");
-
         LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
         int batchSize = 1000;
 
-        log.info("Cron: Buscando eventos para activar...");
         while (true) {
             boolean hasNext = this.eventBatchProcessorHandler.processActivationBatch(now, batchSize);
             if (!hasNext) break;
         }
 
-        log.info("Cron: Buscando eventos para finalizar...");
         while (true) {
             boolean hasNext = this.eventBatchProcessorHandler.processExpirationBatch(now, batchSize);
             if (!hasNext) break;
         }
 
-        log.info("Cron: Finalizado.");
     }
 
 }
