@@ -147,10 +147,13 @@ public class CommentService implements CommentServiceI {
         PageContent<Comment> comments =
                 this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
 
-        comments.getContent().forEach(
+        comments.getContent().removeIf(
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
                         User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
+                        if (fullProfile.getStatus() == Status.DELETED) {
+                            return true;
+                        }
                         comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
@@ -159,6 +162,7 @@ public class CommentService implements CommentServiceI {
                     }
                     comment.setVotersToNull();
                     comment.setReplies(this.commentRepository.getRepliesComment(comment.getId()));
+                    return false;
                 }
         );
 
