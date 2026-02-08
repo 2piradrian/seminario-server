@@ -30,4 +30,6 @@ public interface EventRepositoryI {
 
     PageContent<Event> getInactiveEventsToActivate(LocalDateTime now, Integer size);
 
+    void deleteById(String eventId);
+
 }

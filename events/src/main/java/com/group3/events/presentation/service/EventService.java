@@ -347,10 +347,13 @@ public class EventService implements EventServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        event.setUpdatedAt(LocalDateTime.now());
-        event.setStatus(EventStatus.DELETED);
+        if (event.getImageId() != null) {
+            this.imagesRepository.delete(event.getImageId(), secretKeyHelper.getSecret());
+        }
 
-        this.eventRepository.update(event);
+        // TODO: Delete notifications related to this event
+
+        this.eventRepository.deleteById(event.getId());
     }
 
     @Override
