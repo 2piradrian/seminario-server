@@ -13,6 +13,7 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.Chat;
 import com.group3.entity.ChatMessage;
 import com.group3.entity.PageContent;
+import com.group3.entity.Status;
 import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
@@ -42,9 +43,17 @@ public class ChatService implements ChatServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        User user1 = userRepository.getById(dto.getUser1Id(), dto.getToken());
+        User user2 = userRepository.getById(dto.getUser2Id(), dto.getToken());
+
+        if (user1 == null || user2 == null || user1.getStatus() != Status.ACTIVE || user2.getStatus() != Status.ACTIVE) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
         if (!user.getId().equals(dto.getUser1Id()) && !user.getId().equals(dto.getUser2Id())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
+
 
         PageContent<ChatMessage> messages = this.chatMessageRepository.getConversation(
                 dto.getUser1Id(),
@@ -76,6 +85,9 @@ public class ChatService implements ChatServiceI {
                     if (lastMessage == null) return Stream.empty();
 
                     User otherUser = this.userRepository.getById(userId, dto.getToken());
+                    if (otherUser == null || otherUser.getStatus() != Status.ACTIVE) {
+                        return Stream.empty();
+                    }
                     Chat chat = new Chat(
                             userId,
                             lastMessage.getContent(),
