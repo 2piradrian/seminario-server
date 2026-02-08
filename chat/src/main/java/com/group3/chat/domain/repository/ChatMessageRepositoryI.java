@@ -16,4 +16,6 @@ public interface ChatMessageRepositoryI {
 
     ChatMessage findLastMessage(String user1Id, String user2Id);
 
+    void deleteAllByUserId(String userId);
+
 }

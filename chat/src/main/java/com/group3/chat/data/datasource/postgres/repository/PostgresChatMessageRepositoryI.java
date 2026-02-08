@@ -4,6 +4,7 @@ import com.group3.chat.data.datasource.postgres.model.ChatMessageModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -42,5 +43,12 @@ public interface PostgresChatMessageRepositoryI extends JpaRepository<ChatMessag
         ORDER BY m.createdAt DESC
     """)
     List<ChatMessageModel> findLastMessage(@Param("user1Id") String user1Id, @Param("user2Id") String user2Id, Pageable pageable);
+
+    @Modifying
+    @Query("""
+        DELETE FROM ChatMessageModel m
+        WHERE m.senderId = :userId OR m.receiverId = :userId
+    """)
+    void deleteAllByUserId(@Param("userId") String userId);
 
 }
