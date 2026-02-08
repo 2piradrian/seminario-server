@@ -243,6 +243,11 @@ public class EventService implements EventServiceI {
         PageContent<User> assistants = userRepository.getByListByIdsPage(dto.getToken(),
                 this.secretKeyHelper.getSecret(), dto.getPage(), dto.getSize(), assistantsIds);
 
+        List<User> filteredAssistants = assistants.getContent().stream()
+                                            .filter(Objects::nonNull)
+                                            .toList();
+        assistants.setContent(filteredAssistants);
+
         return EventMapper.getAssistantsByEventId().toResponse(assistants);
     }
 
