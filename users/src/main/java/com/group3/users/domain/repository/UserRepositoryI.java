@@ -3,7 +3,7 @@ package com.group3.users.domain.repository;
 import com.group3.entity.ContentType;
 import com.group3.entity.PageContent;
 import com.group3.entity.User;
-
+import com.group3.entity.Status;
 import java.util.List;
 
 public interface UserRepositoryI {
@@ -23,5 +23,11 @@ public interface UserRepositoryI {
     User save(User user);
 
     User update(User user);
+
+    List<User> getAllByStatus(Status status);
+
+    User getByIdIgnoreStatus(String userId);
+
+    User getByEmailIgnoreStatus(String email);
 
 }

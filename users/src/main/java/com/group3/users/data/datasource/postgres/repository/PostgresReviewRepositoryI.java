@@ -8,18 +8,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface PostgresReviewRepositoryI extends JpaRepository<ReviewModel, String> {
+
+    @Query("""
+        SELECT r FROM ReviewModel r
+        WHERE r.id = :id AND r.status = 'ACTIVE'
+    """)
+    Optional<ReviewModel> findById(@Param("id") String id);
 
     @Query("""
         SELECT r
         FROM ReviewModel r
         WHERE r.reviewerUserId = :reviewerId
-        AND r.status <> :status
+        AND r.status = 'ACTIVE'
         ORDER BY r.createdAt DESC
     """)
     Page<ReviewModel> findByReviewerId(
             @Param("reviewerId") String reviewerId,
-            @Param("status") Status status,
             Pageable pageable
     );
 
@@ -27,12 +34,11 @@ public interface PostgresReviewRepositoryI extends JpaRepository<ReviewModel, St
         SELECT r
         FROM ReviewModel r
         WHERE r.reviewedId = :reviewedUserId
-        AND r.status <> :status
+        AND r.status = 'ACTIVE'
         ORDER BY r.createdAt DESC
     """)
     Page<ReviewModel> findByReviewedUserId(
             @Param("reviewedUserId") String reviewedUserId,
-            @Param("status") Status status,
             Pageable pageable
     );
 

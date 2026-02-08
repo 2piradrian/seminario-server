@@ -32,7 +32,6 @@ public class PostsRepository implements PostRepositoryI {
         PostModel postModel = this.repository.findById(postId).orElse(null);
 
         if (postModel == null) return null;
-        if (!postModel.getStatus().equals(Status.ACTIVE)) return null;
 
         return PostsEntityMapper.toDomain(postModel);
     }
@@ -45,7 +44,6 @@ public class PostsRepository implements PostRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findAll(
-                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -63,7 +61,6 @@ public class PostsRepository implements PostRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findOnlyPagePosts(
-            Status.ACTIVE,
             PageRequest.of(pageIndex, size)
         );
 
@@ -84,7 +81,6 @@ public class PostsRepository implements PostRepositoryI {
 
         Page<PostModel> postModels = this.repository.findByProfileIdPage(
             profileId,
-            Status.ACTIVE,
             PageRequest.of(pageIndex, size)
         );
 
@@ -105,7 +101,6 @@ public class PostsRepository implements PostRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = repository.findByFilteredPage(
-                Status.ACTIVE,
                 text,
                 postTypeId,
                 PageRequest.of(pageIndex, size)

@@ -100,7 +100,7 @@ public class AuthService implements AuthServiceI {
 
     @Override
     public void register(RegisterUserReq dto) {
-        var emailCheck = this.userRepository.getByEmail(dto.getEmail());
+        var emailCheck = this.userRepository.getByEmailIgnoreStatus(dto.getEmail());
         if (emailCheck != null) throw new ErrorHandler(ErrorType.EMAIL_ALREADY_EXISTS);
 
         String userId = PrefixedUUID.generate(PrefixedUUID.EntityType.USER).toString();
@@ -217,7 +217,7 @@ public class AuthService implements AuthServiceI {
         }
 
         String subject = this.authHelper.getSubject(token);
-        User user = this.userRepository.getByEmail(subject);
+        User user = this.userRepository.getByEmailIgnoreStatus(subject);
 
         if (user == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -255,7 +255,7 @@ public class AuthService implements AuthServiceI {
     @Override
     public void resendVerifyEmail (ResendEmailReq dto){
 
-        User user = this.userRepository.getByEmail(dto.getEmail());
+        User user = this.userRepository.getByEmailIgnoreStatus(dto.getEmail());
 
         if (user == null){
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -279,7 +279,7 @@ public class AuthService implements AuthServiceI {
     @Override
     public void recoverPassword(RecoverPasswordReq dto) {
 
-        User user = this.userRepository.getByEmail(dto.getEmail());
+        User user = this.userRepository.getByEmailIgnoreStatus(dto.getEmail());
 
         if (user == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         if (user.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);

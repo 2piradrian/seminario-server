@@ -43,7 +43,7 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<User> getAllStaff() {
-        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER, Status.ACTIVE);
+        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER);
         return UserEntityMapper.toDomain(models);
     }
 
@@ -55,7 +55,6 @@ public class UserRepository implements UserRepositoryI {
 
         Page<UserModel> profilesModels = this.userRepository.findByFilteredPage(
             fullname,
-            Status.ACTIVE,
             styles,
             instruments,
             PageRequest.of(pageIndex, size)
@@ -73,8 +72,7 @@ public class UserRepository implements UserRepositoryI {
     @Override
     public List<User> getMutualsFollowers(String userId) {
         return this.userRepository.findMutualsFollowers(
-            userId,
-            Status.ACTIVE
+            userId
         ).stream()
             .map(UserEntityMapper::toDomain)
             .collect(Collectors.toList());
@@ -86,7 +84,6 @@ public class UserRepository implements UserRepositoryI {
 
         Page<UserModel> profilesModels = this.userRepository.findByListOfIds(
             ids,
-            Status.ACTIVE,
             PageRequest.of(pageIndex, size)
         );
 
@@ -113,6 +110,24 @@ public class UserRepository implements UserRepositoryI {
         UserModel updated = this.userRepository.save(userModel);
 
         return UserEntityMapper.toDomain(updated);
+    }
+
+    @Override
+    public List<User> getAllByStatus(Status status) {
+        List<UserModel> userModels = this.userRepository.findAllByStatus(status);
+        return UserEntityMapper.toDomain(userModels);
+    }
+
+    @Override
+    public User getByIdIgnoreStatus(String userId) {
+        UserModel userModel = this.userRepository.findByIdIgnoreStatus(userId).orElse(null);
+        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+    }
+
+    @Override
+    public User getByEmailIgnoreStatus(String email) {
+        UserModel userModel = this.userRepository.findByEmailIgnoreStatus(email).orElse(null);
+        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
     }
 
 }

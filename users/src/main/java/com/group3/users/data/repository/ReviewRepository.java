@@ -63,7 +63,6 @@ public class ReviewRepository implements ReviewRepositoryI {
 
         Page<ReviewModel> reviewModels = repository.findByReviewerId(
                 reviewerId,
-                Status.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -82,7 +81,6 @@ public class ReviewRepository implements ReviewRepositoryI {
 
         Page<ReviewModel> reviewModels = repository.findByReviewedUserId(
                 reviewedUserId,
-                Status.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 

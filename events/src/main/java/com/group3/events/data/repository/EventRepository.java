@@ -32,7 +32,6 @@ public class EventRepository implements EventRepositoryI {
         EventModel eventModel = this.repository.findById(eventId).orElse(null);
 
         if (eventModel == null) return null;
-        if (eventModel.getStatus().equals(EventStatus.DELETED)) return null;
 
         return EventEntityMapper.toDomain(eventModel);
     }
@@ -68,7 +67,6 @@ public class EventRepository implements EventRepositoryI {
 
         Page<EventModel> eventModels = repository.findByAuthorOrAssistant(
                 authorId,
-                EventStatus.DELETED,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -86,8 +84,7 @@ public class EventRepository implements EventRepositoryI {
         return this.repository.findEventsInDateRange(
             dateStart,
             dateEnd,
-            userId,
-            EventStatus.DELETED
+            userId
         ).stream()
             .map(EventEntityMapper::toDomain)
             .collect(Collectors.toList());
@@ -100,7 +97,6 @@ public class EventRepository implements EventRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<EventModel> eventModels = repository.findByFilteredPage(
-            EventStatus.DELETED,
             text,
             dateInit,
             dateEnd,
@@ -121,7 +117,6 @@ public class EventRepository implements EventRepositoryI {
         int pageIndex = (page != null && page > 0) ? page - 1 : 0;
 
         Page<EventModel> eventModels = this.repository.findOnlyPageEvents(
-            EventStatus.DELETED,
             PageRequest.of(pageIndex, size)
         );
 

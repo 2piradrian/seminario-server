@@ -10,30 +10,35 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
+
+    @Query("""
+        SELECT p FROM PostModel p
+        WHERE p.id = :id AND p.status = 'ACTIVE'
+    """)
+    Optional<PostModel> findById(@Param("id") String id);
 
     // ======== Get All Posts (excluding deleted) ========
 
     @Query("""
         SELECT p
         FROM PostModel p
-        WHERE p.status = :status
+        WHERE p.status = 'ACTIVE'
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findAll(
-            @Param("status") Status status,
             Pageable pageable
     );
 
     @Query("""
         SELECT p FROM PostModel p
-        WHERE p.status = :status
+        WHERE p.status = 'ACTIVE'
         AND p.pageId IS NOT NULL
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findOnlyPagePosts(
-        @Param("status") Status status,
         Pageable pageable
     );
 
@@ -42,12 +47,11 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     @Query("""
         SELECT p FROM PostModel p
         WHERE (p.pageId = :profileId OR p.authorId = :profileId)
-        AND p.status = :status 
+        AND p.status = 'ACTIVE' 
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByProfileIdPage(
         @Param("profileId") String profileId,
-        @Param("status") Status status,
         Pageable pageable
     );
 
@@ -55,7 +59,7 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
 
     @Query("""
         SELECT p FROM PostModel p WHERE
-        p.status = :status
+        p.status = 'ACTIVE'
         AND
          (
              (:#{#postTypeId == null or #postTypeId.isEmpty()} = true)\s
@@ -72,7 +76,6 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByFilteredPage(
-        @Param("status") Status status,
         @Param("text") String text,
         @Param("postTypeId") String postTypeId,
         Pageable pageable

@@ -9,21 +9,31 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfileModel, String> {
 
+    @Query("""
+        SELECT p FROM PageProfileModel p
+        WHERE p.id = :id AND p.status = 'ACTIVE'
+    """)
+    Optional<PageProfileModel> findById(@Param("id") String id);
+
     // ======== Search ========
 
-    PageProfileModel findByName(String name);
+    @Query("""
+        SELECT p FROM PageProfileModel p
+        WHERE p.name = :name AND p.status = 'ACTIVE'
+    """)
+    PageProfileModel findByName(@Param("name") String name);
 
     @Query("""
         SELECT p FROM PageProfileModel p
         WHERE p.id IN :ids
-        AND p.status = :status
+        AND p.status = 'ACTIVE'
     """)
     List<PageProfileModel> findAllByIdIn(
-        @Param("ids") List<String> ids,
-        @Param("status") Status status
+        @Param("ids") List<String> ids
     );
 
 
@@ -31,7 +41,7 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
 
     @Query("""
         SELECT p FROM PageProfileModel p WHERE
-        p.status = :status 
+        p.status = 'ACTIVE' 
         AND
         (
             :#{#name == null or #name.isEmpty()} = true 
@@ -46,7 +56,6 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
     """)
     Page<PageProfileModel> findByFilteredPage(
         @Param("name") String name,
-        @Param("status") Status status,
         @Param("pageTypeId") String pageTypeId,
         Pageable pageable
     );
@@ -58,11 +67,10 @@ public interface PostgresPageProfileRepositoryI extends JpaRepository<PageProfil
         FROM PageProfileModel p
         JOIN p.members m
         WHERE m = :userId
-        AND p.status = :status
+        AND p.status = 'ACTIVE'
     """)
     List<PageProfileModel> findByUserId(
-        @Param("userId") String userId,
-        @Param("status") Status status
+        @Param("userId") String userId
     );
 
 }

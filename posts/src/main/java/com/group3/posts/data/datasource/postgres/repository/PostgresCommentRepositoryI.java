@@ -9,8 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, String> {
+
+    @Query("""
+        SELECT c FROM CommentModel c
+        WHERE c.id = :id AND c.status = 'ACTIVE'
+    """)
+    Optional<CommentModel> findById(@Param("id") String id);
 
     // ======== Search Comments by Post ========
 
@@ -18,12 +25,11 @@ public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, 
         SELECT c
         FROM CommentModel c
         WHERE c.postId = :postId
-        AND c.status = :status
+        AND c.status = 'ACTIVE'
         ORDER BY c.createdAt DESC
     """)
     Page<CommentModel> findAllByPostIdAndActiveStatus(
             @Param("postId") String postId,
-            @Param("status") Status status,
             Pageable pageable
     );
 
@@ -32,12 +38,11 @@ public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, 
         FROM CommentModel c
         INNER JOIN c.replyTo parent
         WHERE parent.Id = :parentId
-        AND c.status = :status
+        AND c.status = 'ACTIVE'
         ORDER BY c.createdAt ASC
     """)
     List<CommentModel> findRepliesByParentId(
-        @Param("parentId") String parentId,
-        @Param("status") Status status
+        @Param("parentId") String parentId
     );
 
 }
