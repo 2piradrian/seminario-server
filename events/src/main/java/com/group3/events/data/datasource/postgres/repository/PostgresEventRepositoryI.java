@@ -23,12 +23,10 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         SELECT DISTINCT e
         FROM EventModel e
         WHERE (e.authorId = :userId OR :userId MEMBER OF e.assists)
-        AND e.status <> :status
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByAuthorOrAssistant(
             @Param("userId") String userId,
-            @Param("status") EventStatus status,
             Pageable pageable
     );
 
@@ -36,8 +34,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
 
     @Query("""
         SELECT e FROM EventModel e 
-        WHERE e.status <> :status
-        AND
+        WHERE 
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
             (
@@ -61,7 +58,6 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByFilteredPage(
-        @Param("status") EventStatus status,
         @Param("text") String text,
         @Param("dateInit") Date dateInit,
         @Param("dateEnd") Date dateEnd,
@@ -70,13 +66,11 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
 
     @Query("""
         SELECT e FROM EventModel e
-        WHERE e.status <> :status
-        AND e.pageId IS NOT NULL
+        WHERE e.pageId IS NOT NULL
         AND e.pageId != ''
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findOnlyPageEvents(
-        @Param("status") EventStatus status,
         Pageable pageable
     );
 
@@ -112,14 +106,12 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         FROM EventModel e 
         WHERE e.dateInit BETWEEN :dateStart AND :dateEnd
         AND (e.authorId = :userId OR :userId MEMBER OF e.assists)
-        AND e.status <> :status
         ORDER BY e.createdAt DESC
     """)
     List<EventModel> findEventsInDateRange(
         @Param("dateStart") Date dateStart,
         @Param("dateEnd") Date dateEnd,
-        @Param("userId") String userId,
-        @Param("status") EventStatus status
+        @Param("userId") String userId
     );
 
 }

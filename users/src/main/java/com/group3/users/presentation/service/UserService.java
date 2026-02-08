@@ -149,6 +149,13 @@ public class UserService implements UserServiceI {
         // ======== Delete Notifications ========
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
 
+        // TODO: DELETE CHATS
+        // TODO: DELETE COMMENTS
+        // TODO: DELETE PAGES and PARTICIPANTS
+        // TODO: DELETE EVENTS
+        // TODO: DELETE POSTS
+        // TODO: DELETE UPVOTES and DOWNVOTES
+
         // ======== Delete User ========
         this.userRepository.delete(user);
     }
