@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+import jakarta.transaction.Transactional;
+
 public interface PostgresFollowRepositoryI extends JpaRepository<FollowModel, String> {
 
     @Query("""
@@ -45,4 +47,13 @@ public interface PostgresFollowRepositoryI extends JpaRepository<FollowModel, St
     @Query("SELECT COUNT(f) FROM FollowModel f WHERE f.followedId = :followedId")
     Integer countByFollowedId(@Param("followedId") String followedId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM FollowModel f WHERE f.followerId = :followerId")
+    void deleteByFollowerId(@Param("followerId") String followerId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM FollowModel f WHERE f.followedId = :followedId")
+    void deleteByFollowedId(@Param("followedId") String followedId);
 }

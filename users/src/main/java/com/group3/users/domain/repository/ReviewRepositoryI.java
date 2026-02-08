@@ -17,4 +17,8 @@ public interface ReviewRepositoryI {
 
     PageContent<Review> findByReviewedUserId(String reviewedUserId, Integer page, Integer size);
 
+    void deleteByReviewerId(String reviewerId);
+
+    void deleteByReviewedId(String reviewedId);
+
 }

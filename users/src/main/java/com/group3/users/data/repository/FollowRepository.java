@@ -103,4 +103,14 @@ public class FollowRepository implements FollowRepositoryI {
         return repository.countByFollowerId(followerId);
     }
 
+    @Override
+    public void deleteByFollowerId(String followerId) {
+        this.repository.deleteByFollowerId(followerId);
+    }
+
+    @Override
+    public void deleteByFollowedId(String followedId) {
+        this.repository.deleteByFollowedId(followedId);
+    }
+
 }

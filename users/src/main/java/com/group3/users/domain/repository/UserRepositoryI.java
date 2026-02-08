@@ -24,4 +24,6 @@ public interface UserRepositoryI {
 
     User update(User user);
 
+    void delete(User user);
+
 }

@@ -42,6 +42,8 @@ public class UserService implements UserServiceI {
     private final FollowService followService;
 
     private final NotificationsRepository notificationsRepository;
+    private final ReviewRepository reviewRepository;
+    private final FollowRepository followRepository;
 
     @Override
     public GetUserByIdRes getById(GetUserByIdReq dto) {
@@ -126,11 +128,29 @@ public class UserService implements UserServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        user.setStatus(Status.DELETED);
+        // ======== Delete Images ========
+        String profileImage = user.getProfile().getProfileImage();
+        if (profileImage != null && !profileImage.isEmpty()) {
+            this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+        }
+        String portraitImage = user.getProfile().getPortraitImage();
+        if (portraitImage != null && !portraitImage.isEmpty()) {
+            this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+        }
 
-        this.userRepository.save(user);
+        // ======== Delete Reviews ========
+        this.reviewRepository.deleteByReviewerId(user.getId());
+        this.reviewRepository.deleteByReviewedId(user.getId());
 
+        // ======== Delete Follows ========
+        this.followRepository.deleteByFollowerId(user.getId());
+        this.followRepository.deleteByFollowedId(user.getId());
+
+        // ======== Delete Notifications ========
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
+
+        // ======== Delete User ========
+        this.userRepository.delete(user);
     }
 
     // ======== Get User Profile Page Filtered ========
