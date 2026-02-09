@@ -1,17 +1,15 @@
 package com.group3.users.presentation.service;
 
+import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.users.data.repository.ReviewRepository;
 import com.group3.users.data.repository.UserProfileRepository;
-import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
-import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
 import com.group3.users.domain.dto.review.mapper.ReviewMapper;
 import com.group3.users.domain.dto.review.request.*;
 import com.group3.users.domain.dto.review.response.*;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
-import com.group3.users.domain.dto.user.request.GetUserByIdReq;
 import com.group3.users.domain.dto.user.response.GetUserByIdRes;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -19,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -61,7 +58,7 @@ public class ReviewService implements ReviewServiceI {
         if(dto.getReviewedUserId().equals(user.getId()))
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         
-        review.setReviewedId(dto.getReviewedUserId());
+        review.setReviewedId(PrefixedUUID.generate(PrefixedUUID.EntityType.REVIEW).toString());
         review.setReviewerUser(userProfileRepository.getById(user.getId()));
         review.setReview(dto.getReview());
         review.setRating(dto.getRating());
