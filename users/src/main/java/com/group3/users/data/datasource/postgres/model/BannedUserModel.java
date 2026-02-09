@@ -24,7 +24,7 @@ public class BannedUserModel {
     @Column(unique = true)
     private String email;
 
-    private String reason;
+    private String reasonId;
 
     private LocalDateTime createdAt;
 

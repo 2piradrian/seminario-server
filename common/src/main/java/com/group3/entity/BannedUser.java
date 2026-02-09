@@ -20,7 +20,7 @@ public class BannedUser {
 
     private String email;
 
-    private String reason;
+    private ModerationReason reason;
 
     private LocalDateTime createdAt;
 

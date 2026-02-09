@@ -1,6 +1,7 @@
 package com.group3.users.data.datasource.postgres.mapper;
 
 import com.group3.entity.BannedUser;
+import com.group3.entity.ModerationReason;
 import com.group3.users.data.datasource.postgres.model.BannedUserModel;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class BannedUserEntityMapper {
                 bannedUserModel.getId(),
                 UserEntityMapper.toDomain(bannedUserModel.getBannedBy()),
                 bannedUserModel.getEmail(),
-                bannedUserModel.getReason(),
+                ModerationReason.builder().id(bannedUserModel.getReasonId()).build(),
                 bannedUserModel.getCreatedAt(),
                 bannedUserModel.getUpdatedAt()
         );
@@ -29,7 +30,7 @@ public class BannedUserEntityMapper {
                 bannedUser.getId(),
                 UserEntityMapper.toModel(bannedUser.getBannedBy()),
                 bannedUser.getEmail(),
-                bannedUser.getReason(),
+                bannedUser.getReason().getId(),
                 bannedUser.getCreatedAt(),
                 bannedUser.getUpdatedAt()
         );
