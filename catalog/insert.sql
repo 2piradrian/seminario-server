@@ -1,4 +1,3 @@
--- Inserts para instrumentos musicales
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Guitarra');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Piano');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Batería');
@@ -48,7 +47,6 @@ INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Cuica');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Maracas');
 INSERT INTO instruments (id, name) VALUES (gen_random_uuid(), 'Pandereta');
 
--- Inserts para estilos musicales
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Jazz');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Rock');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Pop');
@@ -101,14 +99,12 @@ INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Post-Punk');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Folk Rock');
 INSERT INTO styles (id, name) VALUES (gen_random_uuid(), 'Neo-Soul');
 
--- Inserts para Tipos de página
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Banda');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'General');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Marca');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Lugar');
 INSERT INTO page_Types (id, name) VALUES (gen_random_uuid(), 'Creador de contenido');
 
--- Inserts para categorías
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Ofrezco servicio');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Busco músicos');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Busco banda');
@@ -139,13 +135,11 @@ INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Equipamiento / Bac
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Sonidista / Iluminación');
 INSERT INTO categories (id, name) VALUES (gen_random_uuid(), 'Disponibilidad / Agenda');
 
--- Inserts para Tipos de contenidos
 INSERT INTO content_types (id, name) VALUES ('post', 'Posts');
 INSERT INTO content_types (id, name) VALUES ('userprofile', 'Usuarios');
 INSERT INTO content_types (id, name) VALUES ('pageprofile', 'Páginas');
 INSERT INTO content_types (id, name) VALUES ('event', 'Eventos');
 
--- Inserts para Tipos de post
 INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'Market');
 INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'Job');
 INSERT INTO post_types (id, name) VALUES (gen_random_uuid(), 'General');

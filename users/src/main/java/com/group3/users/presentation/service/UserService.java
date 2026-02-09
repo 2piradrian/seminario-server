@@ -177,8 +177,6 @@ public class UserService implements UserServiceI {
         // ======== Delete Posts ========
         this.postsRepository.deletePostsByUserId(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
 
-        // TODO: DELETE UPVOTES and DOWNVOTES
-
         // ======== Delete User ========
         this.userRepository.delete(user);
     }

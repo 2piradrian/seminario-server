@@ -23,4 +23,10 @@ public interface EventsServerRepositoryI {
             @PathVariable("userId") String userId
     );
 
+    @DeleteMapping("/api/events/delete-by/page/{pageProfileId}")
+    void deleteByPageProfileId(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable("pageProfileId") String pageProfileId
+    );
+
 }

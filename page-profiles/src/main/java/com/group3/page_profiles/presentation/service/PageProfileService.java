@@ -40,6 +40,8 @@ public class PageProfileService implements PageProfileServiceI {
 
     private final CommentsRepository commentsRepository;
 
+    private final EventsRepository eventsRepository;
+
 
     // ======== Create Page ========
 
@@ -344,8 +346,13 @@ public class PageProfileService implements PageProfileServiceI {
         }
 
         this.postsRepository.deletePostsByPageId(page.getId(), secretKeyHelper.getSecret());
+
         this.commentsRepository.deleteCommentsByPageId(page.getId(), secretKeyHelper.getSecret());
+
+        this.eventsRepository.deleteEventsByPageId(page.getId(), secretKeyHelper.getSecret());
+
         this.pageProfileRepository.delete(page.getId());
+
         this.notificationRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), page.getId());
     }
 
