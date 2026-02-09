@@ -130,6 +130,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
+    @Transactional
     public void delete(DeleteUserReq dto) {
         AuthUserRes auth = this.authService.auth(AuthUserReq.create(dto.getToken()));
         if (auth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
