@@ -39,5 +39,9 @@ public class PageMapper {
     public static GetListByIdsMapper getListByIds() {
         return new GetListByIdsMapper();
     }
+
+    public static DeleteUserPagesMapper deleteUserPages() {
+        return new DeleteUserPagesMapper();
+    }
     
 }

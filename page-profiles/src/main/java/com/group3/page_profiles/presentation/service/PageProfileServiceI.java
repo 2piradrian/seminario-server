@@ -25,4 +25,6 @@ public interface PageProfileServiceI {
 
     void delete(DeletePageReq dto);
 
+    void deleteUserPages(DeleteUserPagesReq dto);
+
 }
