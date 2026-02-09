@@ -42,6 +42,12 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
+    public User getByEmailIgnoreStatus(String email) {
+        UserModel userModel = this.userRepository.findByEmail(email).orElse(null);
+        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+    }
+
+    @Override
     public List<User> getAllStaff() {
         List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER);
         return UserEntityMapper.toDomain(models);
