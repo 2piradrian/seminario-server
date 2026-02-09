@@ -35,10 +35,6 @@ public class CommentRepository implements CommentRepositoryI {
     public Comment getById(String commentId) {
         CommentModel commentModel = this.repository.findById(commentId).orElse(null);
 
-        if (commentModel != null && !commentModel.getStatus().equals(Status.ACTIVE)) {
-            return null;
-        }
-
         if (commentModel == null) return null;
         return CommentEntityMapper.toDomain(commentModel);
     }
@@ -50,9 +46,8 @@ public class CommentRepository implements CommentRepositoryI {
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<CommentModel> commentModels = this.repository.findAllByPostIdAndActiveStatus(
+        Page<CommentModel> commentModels = this.repository.findAllByPostId(
                 postId,
-                Status.ACTIVE,
                 PageRequest.of(pageIndex, size)
         );
 
@@ -69,8 +64,7 @@ public class CommentRepository implements CommentRepositoryI {
     public List<Comment> getRepliesComment(String commentId) {
 
         List<CommentModel> commentModels = this.repository.findRepliesByParentId(
-            commentId,
-            Status.ACTIVE
+            commentId
         );
 
         return CommentEntityMapper.toDomain(commentModels);
@@ -94,6 +88,21 @@ public class CommentRepository implements CommentRepositoryI {
         CommentModel commentModel = CommentEntityMapper.toModel(comment);
         CommentModel updated = this.repository.save(commentModel);
         return CommentEntityMapper.toDomain(updated);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        this.repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllByPostId(String postId) {
+        this.repository.deleteAllByPostId(postId);
+    }
+
+    @Override
+    public void deleteAllRepliesByCommentId(String commentId) {
+        this.repository.deleteAllByReplyToId(commentId);
     }
 
 }

@@ -39,6 +39,8 @@ public class PostService implements PostServiceI {
 
     private final CatalogRepository catalogRepository;
 
+    private final CommentRepository commentRepository;
+
 
     // ======== Create Post ========
 
@@ -78,6 +80,7 @@ public class PostService implements PostServiceI {
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setStatus(Status.ACTIVE);
+
         post.setViews(0);
         post.setUpvoters(Set.of());
         post.setDownvoters(Set.of());
@@ -362,10 +365,8 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        post.setUpdatedAt(LocalDateTime.now());
-        post.setStatus(Status.DELETED);
-
-        this.postsRepository.update(post);
+        this.commentRepository.deleteAllByPostId(post.getId());
+        this.postsRepository.deleteById(post.getId());
     }
 
 }

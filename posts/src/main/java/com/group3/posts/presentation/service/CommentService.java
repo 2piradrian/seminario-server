@@ -54,7 +54,7 @@ public class CommentService implements CommentServiceI {
 
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-        if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
+
 
         Comment comment = new Comment();
 
@@ -151,9 +151,7 @@ public class CommentService implements CommentServiceI {
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
                         User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
-                        if (fullProfile.getStatus() == Status.DELETED) {
-                            return true;
-                        }
+
                         comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
@@ -263,7 +261,7 @@ public class CommentService implements CommentServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Comment comment = this.commentRepository.getById(dto.getCommentId());
-        if (comment == null || comment.getStatus() == Status.DELETED) {
+        if (comment == null) {
             throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
         }
 
@@ -271,10 +269,8 @@ public class CommentService implements CommentServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        comment.setUpdatedAt(LocalDateTime.now());
-        comment.setStatus(Status.DELETED);
-
-        this.commentRepository.update(comment);
+        this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
+        this.commentRepository.deleteById(comment.getId());
     }
 
 }

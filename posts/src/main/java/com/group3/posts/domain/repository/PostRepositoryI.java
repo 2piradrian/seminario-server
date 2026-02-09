@@ -19,4 +19,6 @@ public interface PostRepositoryI {
 
     Post update(Post post);
 
+    void deleteById(String id);
+
 }

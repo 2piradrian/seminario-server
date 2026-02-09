@@ -17,4 +17,10 @@ public interface CommentRepositoryI {
 
     Comment update(Comment comment);
 
+    void deleteById(String id);
+
+    void deleteAllByPostId(String postId);
+
+    void deleteAllRepliesByCommentId(String commentId);
+
 }
