@@ -9,15 +9,15 @@ public class BanUserReq {
 
     private final String token;
     private final String userId;
-    private final String reason;
+    private final String reasonId;
 
-    private BanUserReq(String token, String userId, String reason) {
+    private BanUserReq(String token, String userId, String reasonId) {
         this.token = token;
         this.userId = userId;
-        this.reason = reason;
+        this.reasonId = reasonId;
     }
 
-    public static BanUserReq create(String token, String userId, String reason) {
+    public static BanUserReq create(String token, String userId, String reasonId) {
 
         if (token == null || token.isEmpty()){
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -27,10 +27,10 @@ public class BanUserReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (reason == null || reason.isEmpty()){
+        if (reasonId == null || reasonId.isEmpty()){
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new BanUserReq(token, userId, reason);
+        return new BanUserReq(token, userId, reasonId);
     }
 }
