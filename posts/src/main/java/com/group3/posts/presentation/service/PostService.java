@@ -366,6 +366,8 @@ public class PostService implements PostServiceI {
         }
 
         this.commentRepository.deleteAllByPostId(post.getId());
+        this.postsRepository.deleteAllUpvoters(post.getId());
+        this.postsRepository.deleteAllDownvoters(post.getId());
         this.postsRepository.deleteById(post.getId());
     }
 

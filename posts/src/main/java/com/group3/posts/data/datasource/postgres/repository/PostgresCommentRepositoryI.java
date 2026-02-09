@@ -45,4 +45,12 @@ public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, 
     @Query("DELETE FROM CommentModel c WHERE c.replyTo.Id = :replyToId")
     void deleteAllByReplyToId(@Param("replyToId") String replyToId);
 
+    @Modifying
+    @Query(value = "DELETE FROM comment_upvoters WHERE comment_id = :commentId", nativeQuery = true)
+    void deleteAllCommentUpvoters(@Param("commentId") String commentId);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment_downvoters WHERE comment_id = :commentId", nativeQuery = true)
+    void deleteAllCommentDownvoters(@Param("commentId") String commentId);
+
 }

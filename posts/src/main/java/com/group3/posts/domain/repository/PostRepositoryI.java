@@ -21,4 +21,8 @@ public interface PostRepositoryI {
 
     void deleteById(String id);
 
+    void deleteAllUpvoters(String postId);
+
+    void deleteAllDownvoters(String postId);
+
 }

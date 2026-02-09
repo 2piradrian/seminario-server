@@ -4,6 +4,7 @@ import com.group3.posts.data.datasource.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -55,4 +56,12 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
             @Param("postTypeId") String postTypeId,
             Pageable pageable
         );
+
+    @Modifying
+    @Query(value = "DELETE FROM post_upvoters WHERE post_id = :postId", nativeQuery = true)
+    void deleteAllUpvoters(@Param("postId") String postId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_downvoters WHERE post_id = :postId", nativeQuery = true)
+    void deleteAllDownvoters(@Param("postId") String postId);
 }

@@ -23,4 +23,8 @@ public interface CommentRepositoryI {
 
     void deleteAllRepliesByCommentId(String commentId);
 
+    void deleteAllUpvoters(String commentId);
+
+    void deleteAllDownvoters(String commentId);
+
 }

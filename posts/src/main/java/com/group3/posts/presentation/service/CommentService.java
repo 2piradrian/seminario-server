@@ -270,6 +270,8 @@ public class CommentService implements CommentServiceI {
         }
 
         this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
+        this.commentRepository.deleteAllUpvoters(comment.getId());
+        this.commentRepository.deleteAllDownvoters(comment.getId());
         this.commentRepository.deleteById(comment.getId());
     }
 

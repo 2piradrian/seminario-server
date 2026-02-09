@@ -105,4 +105,14 @@ public class CommentRepository implements CommentRepositoryI {
         this.repository.deleteAllByReplyToId(commentId);
     }
 
+    @Override
+    public void deleteAllUpvoters(String commentId) {
+        this.repository.deleteAllCommentUpvoters(commentId);
+    }
+
+    @Override
+    public void deleteAllDownvoters(String commentId) {
+        this.repository.deleteAllCommentDownvoters(commentId);
+    }
+
 }
