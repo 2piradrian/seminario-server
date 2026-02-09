@@ -6,6 +6,7 @@ public enum NotificationContent {
     PAGE_INVITATION,
     DOWNVOTE,
     ASSIST,
+    MODERATION,
     FOLLOW;
 
     public static NotificationContent fromString(String contentId) {
