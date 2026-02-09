@@ -113,21 +113,9 @@ public class UserRepository implements UserRepositoryI {
     }
 
     @Override
-    public List<User> getAllByStatus(Status status) {
-        List<UserModel> userModels = this.userRepository.findAllByStatus(status);
-        return UserEntityMapper.toDomain(userModels);
-    }
-
-    @Override
-    public User getByIdIgnoreStatus(String userId) {
-        UserModel userModel = this.userRepository.findByIdIgnoreStatus(userId).orElse(null);
-        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
-    }
-
-    @Override
-    public User getByEmailIgnoreStatus(String email) {
-        UserModel userModel = this.userRepository.findByEmailIgnoreStatus(email).orElse(null);
-        return userModel != null ? UserEntityMapper.toDomain(userModel) : null;
+    public void delete(User user) {
+        UserModel userModel = UserEntityMapper.toModel(user);
+        this.userRepository.delete(userModel);
     }
 
 }

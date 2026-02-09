@@ -103,4 +103,21 @@ public class PageProfileRepository implements PageRepositoryI {
         return PageEntityMapper.toDomain(updated);
     }
 
+    // ======== Delete Operations ========
+
+    @Override
+    public void delete(String pageId) {
+        this.repository.deleteById(pageId);
+    }
+
+    @Override
+    public void deleteByOwnerId(String ownerId) {
+        this.repository.deleteByOwnerId(ownerId);
+    }
+
+    @Override
+    public void removeMemberFromAllPages(String userId) {
+        this.repository.removeMemberFromAllPages(userId);
+    }
+
 }

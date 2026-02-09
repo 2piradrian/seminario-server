@@ -46,7 +46,7 @@ public class CommentRepository implements CommentRepositoryI {
     public PageContent<Comment> getByPostId(String postId, Integer page, Integer size) {
         int pageIndex = normalizePage(page);
 
-        Page<CommentModel> commentModels = this.repository.findAllByPostIdAndActiveStatus(
+        Page<CommentModel> commentModels = this.repository.findAllByPostId(
                 postId,
                 PageRequest.of(pageIndex, size)
         );
@@ -90,4 +90,48 @@ public class CommentRepository implements CommentRepositoryI {
         return CommentEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void deleteById(String id) {
+        this.repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllByPostId(String postId) {
+        this.repository.deleteAllByPostId(postId);
+    }
+
+    @Override
+    public void deleteAllRepliesByCommentId(String commentId) {
+        this.repository.deleteAllByReplyToId(commentId);
+    }
+
+    @Override
+    public void deleteAllUpvoters(String commentId) {
+        this.repository.deleteAllCommentUpvoters(commentId);
+    }
+
+    @Override
+    public void deleteAllDownvoters(String commentId) {
+        this.repository.deleteAllCommentDownvoters(commentId);
+    }
+
+    @Override
+    public void deleteUpvotesByUserId(String userId) {
+        this.repository.deleteUpvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteDownvotesByUserId(String userId) {
+        this.repository.deleteDownvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteAllByAuthorId(String authorId) {
+        this.repository.deleteAllByAuthorId(authorId);
+    }
+
+    @Override
+    public void deleteAllByPageId(String pageId) {
+        this.repository.deleteAllByPageId(pageId);
+    }
 }

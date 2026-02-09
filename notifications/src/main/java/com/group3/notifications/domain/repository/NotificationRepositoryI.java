@@ -20,6 +20,8 @@ public interface NotificationRepositoryI {
 
     void deleteBySourceId(String sourceId);
 
+    void deleteAllByUserId(String userId);
+
     Notification getLatestUncheck(String sourceId, String targetId, NotificationContent content);
 
 }

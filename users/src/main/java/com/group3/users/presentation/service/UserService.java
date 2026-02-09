@@ -43,7 +43,22 @@ public class UserService implements UserServiceI {
 
     private final NotificationsRepository notificationsRepository;
 
+    private final ReviewRepository reviewRepository;
+
+    private final FollowRepository followRepository;
+
+    private final ChatRepository chatRepository;
+
+    private final PageProfileRepository pageProfileRepository;
+
+    private final CommentsRepository commentsRepository;
+
+    private final PostsRepository postsRepository;
+
+    private final EventsRepository eventsRepository;
+
     @Override
+
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.authService.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -115,6 +130,7 @@ public class UserService implements UserServiceI {
     }
 
     @Override
+    @Transactional
     public void delete(DeleteUserReq dto) {
         AuthUserRes auth = this.authService.auth(AuthUserReq.create(dto.getToken()));
         if (auth == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
@@ -126,11 +142,44 @@ public class UserService implements UserServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        user.setStatus(Status.DELETED);
+        // ======== Delete Images ========
+        String profileImage = user.getProfile().getProfileImage();
+        if (profileImage != null && !profileImage.isEmpty()) {
+            this.imagesRepository.delete(profileImage, secretKeyHelper.getSecret());
+        }
+        String portraitImage = user.getProfile().getPortraitImage();
+        if (portraitImage != null && !portraitImage.isEmpty()) {
+            this.imagesRepository.delete(portraitImage, secretKeyHelper.getSecret());
+        }
 
-        this.userRepository.save(user);
+        // ======== Delete Reviews ========
+        this.reviewRepository.deleteByReviewerId(user.getId());
+        this.reviewRepository.deleteByReviewedId(user.getId());
 
+        // ======== Delete Follows ========
+        this.followRepository.deleteByFollowerId(user.getId());
+        this.followRepository.deleteByFollowedId(user.getId());
+
+        // ======== Delete Notifications ========
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
+
+        // ======== Delete Chats ========
+        this.chatRepository.deleteUserHistory(user.getId(), this.secretKeyHelper.getSecret());
+
+        // ======== Delete Comments ========
+        this.commentsRepository.deleteCommentsByUserId(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
+
+        // ======== Delete Pages and Participants ========
+        this.pageProfileRepository.deleteUserPages(user.getId(), this.secretKeyHelper.getSecret());
+
+        // ======== Delete Events ========
+        this.eventsRepository.deleteByUserId(this.secretKeyHelper.getSecret(), user.getId());
+
+        // ======== Delete Posts ========
+        this.postsRepository.deletePostsByUserId(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
+
+        // ======== Delete User ========
+        this.userRepository.delete(user);
     }
 
     // ======== Get User Profile Page Filtered ========

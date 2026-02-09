@@ -80,4 +80,13 @@ public class NotificationController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete-all-by-userId")
+    public ResponseEntity<?> deleteAllByUserId(
+        @RequestParam(value = "secret") String secret,
+        @RequestParam(value = "userId") String userId
+    ) {
+        this.service.deleteAllByUserId(NotificationMapper.deleteAllByUserId().toRequest(secret, userId));
+        return ResponseEntity.ok().build();
+    }
+
 }

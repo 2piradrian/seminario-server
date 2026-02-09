@@ -18,4 +18,6 @@ public interface NotificationServiceI {
 
     void deleteBySourceId(DeleteBySourceIdReq dto) ;
 
+    void deleteAllByUserId(DeleteAllByUserIdReq dto);
+
 }

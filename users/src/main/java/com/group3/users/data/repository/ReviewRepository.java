@@ -2,7 +2,6 @@ package com.group3.users.data.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Review;
-import com.group3.entity.Status;
 import com.group3.users.data.datasource.postgres.mapper.ReviewEntityMapper;
 import com.group3.users.data.datasource.postgres.model.ReviewModel;
 import com.group3.users.data.datasource.postgres.repository.PostgresReviewRepositoryI;
@@ -20,20 +19,19 @@ public class ReviewRepository implements ReviewRepositoryI {
 
     private final PostgresReviewRepositoryI repository;
 
+    // ======== Helper Methods ========
+
     private int normalizePage(Integer page) {
         return (page != null && page > 0) ? page - 1 : 0;
     }
 
-    // ======== Get Review by ID ========
+    // ======== CRUD Operations ========
 
     @Override
     public Review getById(String reviewId) {
         ReviewModel reviewModel = this.repository.findById(reviewId).orElse(null);
         return reviewModel != null ? ReviewEntityMapper.toDomain(reviewModel) : null;
     }
-
-
-    // ======== Save and Update ========
 
     @Override
     public Review save(Review review) {
@@ -49,13 +47,22 @@ public class ReviewRepository implements ReviewRepositoryI {
         return ReviewEntityMapper.toDomain(updated);
     }
 
-
-    // ======== Delete ========
-
     @Override
     public void delete(String reviewId) {
         this.repository.deleteById(reviewId);
     }
+
+    @Override
+    public void deleteByReviewerId(String reviewerId) {
+        this.repository.deleteByReviewerId(reviewerId);
+    }
+
+    @Override
+    public void deleteByReviewedId(String reviewedId) {
+        this.repository.deleteByReviewedId(reviewedId);
+    }
+
+    // ======== Finder Methods ========
 
     @Override
     public PageContent<Review> findByReviewerId(String reviewerId, Integer page, Integer size) {

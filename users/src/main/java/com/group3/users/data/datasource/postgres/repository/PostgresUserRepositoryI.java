@@ -14,22 +14,12 @@ import java.util.Optional;
 
 public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String> {
 
-    @Query("""
-        SELECT u FROM UserModel u
-        WHERE u.id = :id AND u.status = 'ACTIVE'
-    """)
-    Optional<UserModel> findById(@Param("id") String id);
-
-    @Query("""
-        SELECT u FROM UserModel u
-        WHERE u.email = :email AND u.status = 'ACTIVE'
-    """)
-    Optional<UserModel> findByEmail(@Param("email") String email);
+    Optional<UserModel> findByEmail(String email);
 
     @Query("""
         SELECT u FROM UserModel u 
         WHERE u.role <> :roleExcluded
-        AND u.status = 'ACTIVE'
+        AND u.status = :activeStatus
     """)
     List<UserModel> findWithExcludedRole(
         @Param("roleExcluded") Role roleExcluded
@@ -39,8 +29,6 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
 
     @Query("""
         SELECT u FROM UserModel u WHERE
-        u.status = 'ACTIVE'
-        AND
         (
             :#{#fullName == null or #fullName.isEmpty()} = true 
             OR 
@@ -93,7 +81,6 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
         
         SELECT u.* FROM users u
         WHERE u.id IN (SELECT user_id FROM user_graph)
-        AND u.status = 'ACTIVE'
     """, nativeQuery = true)
     List<UserModel> findMutualsFollowers(
         @Param("userId") String userId
@@ -103,28 +90,9 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
            SELECT u
            FROM UserModel u
            WHERE u.id IN :ids
-           AND u.status = 'ACTIVE'
            """)
     Page<UserModel> findByListOfIds(
             @Param("ids") List<String> ids,
             Pageable pageable
     );
-
-    @Query("""
-            SELECT u FROM UserModel u
-            WHERE u.status = :status
-            """)
-    List<UserModel> findAllByStatus(@Param("status") Status status);
-
-    @Query("""
-        SELECT u FROM UserModel u
-        WHERE u.id = :id
-    """)
-    Optional<UserModel> findByIdIgnoreStatus(@Param("id") String id);
-
-    @Query("""
-        SELECT u FROM UserModel u
-        WHERE u.email = :email
-    """)
-    Optional<UserModel> findByEmailIgnoreStatus(@Param("email") String email);
 }

@@ -25,4 +25,8 @@ public interface FollowRepositoryI {
 
     Integer getFollowingQuantity(String followerId);
 
+    void deleteByFollowerId(String followerId);
+
+    void deleteByFollowedId(String followedId);
+
 }

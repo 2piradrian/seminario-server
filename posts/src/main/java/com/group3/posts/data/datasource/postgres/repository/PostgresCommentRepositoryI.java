@@ -5,19 +5,13 @@ import com.group3.posts.data.datasource.postgres.model.CommentModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, String> {
-
-    @Query("""
-        SELECT c FROM CommentModel c
-        WHERE c.id = :id AND c.status = 'ACTIVE'
-    """)
-    Optional<CommentModel> findById(@Param("id") String id);
 
     // ======== Search Comments by Post ========
 
@@ -25,10 +19,9 @@ public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, 
         SELECT c
         FROM CommentModel c
         WHERE c.postId = :postId
-        AND c.status = 'ACTIVE'
         ORDER BY c.createdAt DESC
     """)
-    Page<CommentModel> findAllByPostIdAndActiveStatus(
+    Page<CommentModel> findAllByPostId(
             @Param("postId") String postId,
             Pageable pageable
     );
@@ -38,11 +31,36 @@ public interface PostgresCommentRepositoryI extends JpaRepository<CommentModel, 
         FROM CommentModel c
         INNER JOIN c.replyTo parent
         WHERE parent.Id = :parentId
-        AND c.status = 'ACTIVE'
         ORDER BY c.createdAt ASC
     """)
     List<CommentModel> findRepliesByParentId(
         @Param("parentId") String parentId
     );
 
+    @Modifying
+    @Query("DELETE FROM CommentModel c WHERE c.postId = :postId")
+    void deleteAllByPostId(@Param("postId") String postId);
+
+    @Modifying
+    @Query("DELETE FROM CommentModel c WHERE c.replyTo.Id = :replyToId")
+    void deleteAllByReplyToId(@Param("replyToId") String replyToId);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment_upvoters WHERE comment_id = :commentId", nativeQuery = true)
+    void deleteAllCommentUpvoters(@Param("commentId") String commentId);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment_downvoters WHERE comment_id = :commentId", nativeQuery = true)
+    void deleteAllCommentDownvoters(@Param("commentId") String commentId);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment_upvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteUpvotesByUserId(@Param("userId") String userId);
+
+    @Modifying
+    @Query(value = "DELETE FROM comment_downvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteDownvotesByUserId(@Param("userId") String userId);
+
+    void deleteAllByAuthorId(String authorId);
+    void deleteAllByPageId(String pageId);
 }

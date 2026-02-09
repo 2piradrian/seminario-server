@@ -1,8 +1,10 @@
 package com.group3.chat.presentation.service;
 
+import com.group3.chat.config.helpers.SecretKeyHelper;
 import com.group3.chat.domain.dto.message.mapper.ChatMessageMapper;
 import com.group3.chat.domain.dto.message.mapper.implementation.GetActiveChatsMapper;
 import com.group3.chat.domain.dto.message.mapper.implementation.GetConversationPageMapper;
+import com.group3.chat.domain.dto.message.request.DeleteUserChatHistoryReq;
 import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
 import com.group3.chat.domain.dto.message.response.GetActiveChatsRes;
@@ -34,6 +36,8 @@ public class ChatService implements ChatServiceI {
     private final UserRepositoryI userRepository;
 
     private final ChatMessageRepositoryI chatMessageRepository;
+
+    private final SecretKeyHelper secretKeyHelper;
 
     @Override
     public GetConversationPageRes getConversation(GetConversationPageReq dto) {
@@ -101,6 +105,14 @@ public class ChatService implements ChatServiceI {
                 .collect(Collectors.toList());
 
         return ChatMessageMapper.getActiveChats().toResponse(activeChats);
+    }
+
+    @Override
+    public void deleteUserHistory(DeleteUserChatHistoryReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+        this.chatMessageRepository.deleteAllByUserId(dto.getUserId());
     }
 
 }

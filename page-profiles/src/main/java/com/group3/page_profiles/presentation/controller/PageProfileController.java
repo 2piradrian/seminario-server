@@ -113,5 +113,15 @@ public class PageProfileController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/delete-user-pages/{userId}")
+    public ResponseEntity<?> deleteUserPages(
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        this.pageService.deleteUserPages(PageMapper.deleteUserPages().toRequest(userId, secret));
+
+        return ResponseEntity.ok().build();
+    }
     
 }

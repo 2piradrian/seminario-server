@@ -129,4 +129,23 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete-by/user/{userId}")
+    public ResponseEntity<?> deleteFromUser(
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeletePostsByUserIdReq dto = PostMapper.deletePostsByUserId().toRequest(userId, secret);
+        this.service.deletePostsByUserId(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-by/page/{pageId}")
+    public ResponseEntity<?> deleteFromPage(
+            @PathVariable(value = "pageId") String pageId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeletePostsByPageIdReq dto = PostMapper.deletePostsByPageId().toRequest(pageId, secret);
+        this.service.deletePostsByPageId(dto);
+        return ResponseEntity.ok().build();
+    }
 }

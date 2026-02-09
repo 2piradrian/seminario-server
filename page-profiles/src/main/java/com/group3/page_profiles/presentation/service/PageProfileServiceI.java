@@ -17,12 +17,12 @@ public interface PageProfileServiceI {
 
     void edit(EditPageReq dto);
 
-    // void joinPage(JoinPageReq dto);
-
     void joinPage(JoinPageReq dto);
 
     void leavePage(LeavePageReq dto);
 
     void delete(DeletePageReq dto);
+
+    void deleteUserPages(DeleteUserPagesReq dto);
 
 }

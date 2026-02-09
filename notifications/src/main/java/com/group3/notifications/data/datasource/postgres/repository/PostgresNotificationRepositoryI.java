@@ -51,6 +51,17 @@ public interface PostgresNotificationRepositoryI extends JpaRepository<Notificat
         @Param("sourceId") String sourceId
     );
 
+    @Modifying
+    @Query("""
+        DELETE
+        FROM NotificationModel n
+        WHERE n.carriedOutById = :userId
+        OR n.targetId = :userId
+    """)
+    void deleteAllByUserId(
+        @Param("userId") String userId
+    );
+
     @Query("""
         SELECT n 
         FROM NotificationModel n 

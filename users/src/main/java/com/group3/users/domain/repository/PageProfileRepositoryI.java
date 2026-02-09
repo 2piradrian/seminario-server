@@ -10,4 +10,8 @@ public interface PageProfileRepositoryI {
 
     List<PageProfile> getListByIds(List<String> pageIds, String secret);
 
+    void delete(String id, String token);
+
+    void deleteUserPages(String userId, String secret);
+
 }

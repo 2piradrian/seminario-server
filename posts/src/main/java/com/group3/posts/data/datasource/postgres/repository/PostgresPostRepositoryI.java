@@ -1,41 +1,20 @@
 package com.group3.posts.data.datasource.postgres.repository;
 
-import com.group3.entity.Status;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
 
-    @Query("""
-        SELECT p FROM PostModel p
-        WHERE p.id = :id AND p.status = 'ACTIVE'
-    """)
-    Optional<PostModel> findById(@Param("id") String id);
 
-    // ======== Get All Posts (excluding deleted) ========
-
-    @Query("""
-        SELECT p
-        FROM PostModel p
-        WHERE p.status = 'ACTIVE'
-        ORDER BY p.createdAt DESC
-    """)
-    Page<PostModel> findAll(
-            Pageable pageable
-    );
 
     @Query("""
         SELECT p FROM PostModel p
-        WHERE p.status = 'ACTIVE'
-        AND p.pageId IS NOT NULL
+        WHERE p.pageId IS NOT NULL
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findOnlyPagePosts(
@@ -47,7 +26,6 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     @Query("""
         SELECT p FROM PostModel p
         WHERE (p.pageId = :profileId OR p.authorId = :profileId)
-        AND p.status = 'ACTIVE' 
         ORDER BY p.createdAt DESC
     """)
     Page<PostModel> findByProfileIdPage(
@@ -57,28 +35,45 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
 
     // ======== Get Posts by Filtered Page or Author ========
 
-    @Query("""
-        SELECT p FROM PostModel p WHERE
-        p.status = 'ACTIVE'
-        AND
-         (
-             (:#{#postTypeId == null or #postTypeId.isEmpty()} = true)\s
-             OR (p.postTypeId = :postTypeId)
-         )
-        AND
-        (
-            (:#{#text == null or #text.isEmpty()} = true) OR
+        @Query("""
+            SELECT p FROM PostModel p WHERE
+             (
+                 (:#{#postTypeId == null or #postTypeId.isEmpty()} = true)\s
+                 OR (p.postTypeId = :postTypeId)
+             )
+            AND
             (
-            cast(function('unaccent', LOWER(p.title)) as string) LIKE LOWER(CONCAT('%', :text, '%')) 
-            OR cast(function('unaccent', LOWER(p.content)) as string) LIKE LOWER(CONCAT('%', :text, '%'))
+                (:#{#text == null or #text.isEmpty()} = true) OR
+                (
+                cast(function('unaccent', LOWER(p.title)) as string) LIKE LOWER(CONCAT('%', :text, '%'))
+                OR cast(function('unaccent', LOWER(p.content)) as string) LIKE LOWER(CONCAT('%', :text, '%'))
+                )
             )
-        )
-        ORDER BY p.createdAt DESC
-    """)
-    Page<PostModel> findByFilteredPage(
-        @Param("text") String text,
-        @Param("postTypeId") String postTypeId,
-        Pageable pageable
-    );
+            ORDER BY p.createdAt DESC
+        """)
+        Page<PostModel> findByFilteredPage(
+            @Param("text") String text,
+            @Param("postTypeId") String postTypeId,
+            Pageable pageable
+        );
 
+    @Modifying
+    @Query(value = "DELETE FROM post_upvoters WHERE post_id = :postId", nativeQuery = true)
+    void deleteAllUpvoters(@Param("postId") String postId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_downvoters WHERE post_id = :postId", nativeQuery = true)
+    void deleteAllDownvoters(@Param("postId") String postId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_upvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteUpvotesByUserId(@Param("userId") String userId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_downvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteDownvotesByUserId(@Param("userId") String userId);
+
+    void deleteAllByAuthorId(String authorId);
+
+    void deleteAllByPageId(String pageId);
 }

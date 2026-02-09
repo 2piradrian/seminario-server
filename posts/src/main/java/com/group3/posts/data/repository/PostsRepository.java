@@ -8,6 +8,7 @@ import com.group3.posts.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class PostsRepository implements PostRepositoryI {
         int pageIndex = normalizePage(page);
 
         Page<PostModel> postModels = this.repository.findAll(
-                PageRequest.of(pageIndex, size)
+                PageRequest.of(pageIndex, size, Sort.by(Sort.Direction.DESC, "createdAt"))
         );
 
         return new PageContent<>(
@@ -134,4 +135,38 @@ public class PostsRepository implements PostRepositoryI {
         return PostsEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void deleteById(String id) {
+        this.repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllUpvoters(String postId) {
+        this.repository.deleteAllUpvoters(postId);
+    }
+
+    @Override
+    public void deleteAllDownvoters(String postId) {
+        this.repository.deleteAllDownvoters(postId);
+    }
+
+    @Override
+    public void deleteUpvotesByUserId(String userId) {
+        this.repository.deleteUpvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteDownvotesByUserId(String userId) {
+        this.repository.deleteDownvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteAllByAuthorId(String authorId) {
+        this.repository.deleteAllByAuthorId(authorId);
+    }
+
+    @Override
+    public void deleteAllByPageId(String pageId) {
+        this.repository.deleteAllByPageId(pageId);
+    }
 }

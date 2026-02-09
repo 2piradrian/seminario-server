@@ -21,5 +21,11 @@ public interface PageRepositoryI {
     PageProfile update(PageProfile page);
 
     List<PageProfile> getListByIds(List<String> ids);
+
+    void delete(String pageId);
+
+    void deleteByOwnerId(String ownerId);
+
+    void removeMemberFromAllPages(String userId);
     
 }

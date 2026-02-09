@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,15 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface PostgresEventRepositoryI extends JpaRepository<EventModel, String> {
-
-    @Query("""
-        SELECT e FROM EventModel e
-        WHERE e.id = :id AND e.status <> 'DELETED'
-    """)
-    Optional<EventModel> findById(@Param("id") String id);
 
     // ======== Get Events by Author or Assistant ========
 
@@ -30,7 +24,6 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         SELECT DISTINCT e
         FROM EventModel e
         WHERE (e.authorId = :userId OR :userId MEMBER OF e.assists)
-        AND e.status <> 'DELETED'
         ORDER BY e.createdAt DESC
     """)
     Page<EventModel> findByAuthorOrAssistant(
@@ -42,8 +35,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
 
     @Query("""
         SELECT e FROM EventModel e 
-        WHERE e.status <> 'DELETED'
-        AND
+        WHERE 
         (
             (:#{#text == null or #text.isEmpty()} = true) OR
             (
@@ -75,8 +67,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
 
     @Query("""
         SELECT e FROM EventModel e
-        WHERE e.status <> 'DELETED'
-        AND e.pageId IS NOT NULL
+        WHERE e.pageId IS NOT NULL
         AND e.pageId != ''
         ORDER BY e.createdAt DESC
     """)
@@ -89,7 +80,6 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         FROM EventModel e 
         WHERE e.status = :status 
         AND e.dateEnd < :now 
-        AND e.status <> 'DELETED'
         ORDER BY e.id ASC
     """)
     Slice<EventModel> findExpiredEvents(
@@ -104,7 +94,6 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         WHERE e.status = :status 
         AND e.dateInit <= :now 
         AND e.dateEnd > :now
-        AND e.status <> 'DELETED'
         ORDER BY e.dateInit ASC
     """)
     Slice<EventModel> findReadyToStartEvents(
@@ -118,7 +107,6 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         FROM EventModel e 
         WHERE e.dateInit BETWEEN :dateStart AND :dateEnd
         AND (e.authorId = :userId OR :userId MEMBER OF e.assists)
-        AND e.status <> 'DELETED'
         ORDER BY e.createdAt DESC
     """)
     List<EventModel> findEventsInDateRange(
@@ -126,5 +114,17 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("dateEnd") Date dateEnd,
         @Param("userId") String userId
     );
+
+    @Modifying
+    @Query("DELETE FROM EventModel e WHERE e.authorId = :authorId")
+    void deleteByAuthorId(@Param("authorId") String authorId);
+
+    @Modifying
+    @Query("DELETE FROM EventModel e WHERE e.pageId = :pageId")
+    void deleteByPageId(@Param("pageId") String pageId);
+
+    @Modifying
+    @Query(value = "DELETE FROM event_assist WHERE profile_id = :userId", nativeQuery = true)
+    void removeAssistantFromAllEvents(@Param("userId") String userId);
 
 }

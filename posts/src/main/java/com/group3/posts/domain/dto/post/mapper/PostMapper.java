@@ -44,4 +44,11 @@ public class PostMapper {
         return new ToggleVotesMapper();
     }
 
+    public static DeletePostsByUserIdMapper deletePostsByUserId() {
+        return new DeletePostsByUserIdMapper();
+    }
+
+    public static DeletePostsByPageIdMapper deletePostsByPageId() {
+        return new DeletePostsByPageIdMapper();
+    }
 }
