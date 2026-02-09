@@ -7,11 +7,7 @@ import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
-import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
-import com.group3.posts.domain.dto.comment.request.DeleteCommentReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentByIdReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentPageReq;
-import com.group3.posts.domain.dto.comment.request.ToggleCommentVotesReq;
+import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentByIdRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
@@ -275,4 +271,23 @@ public class CommentService implements CommentServiceI {
         this.commentRepository.deleteById(comment.getId());
     }
 
+    @Override
+    public void deleteCommentsByUserId(DeleteCommentsByUserIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.commentRepository.deleteUpvotesByUserId(dto.getUserId());
+        this.commentRepository.deleteDownvotesByUserId(dto.getUserId());
+        this.commentRepository.deleteAllByAuthorId(dto.getUserId());
+    }
+
+    @Override
+    public void deleteCommentsByPageId(DeleteCommentsByPageIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.commentRepository.deleteAllByPageId(dto.getPageId());
+    }
 }

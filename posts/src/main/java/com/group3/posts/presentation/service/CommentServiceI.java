@@ -21,4 +21,8 @@ public interface CommentServiceI {
 
     void delete(DeleteCommentReq dto);
 
+    void deleteCommentsByUserId(DeleteCommentsByUserIdReq dto);
+
+    void deleteCommentsByPageId(DeleteCommentsByPageIdReq dto);
+
 }

@@ -150,4 +150,23 @@ public class PostsRepository implements PostRepositoryI {
         this.repository.deleteAllDownvoters(postId);
     }
 
+    @Override
+    public void deleteUpvotesByUserId(String userId) {
+        this.repository.deleteUpvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteDownvotesByUserId(String userId) {
+        this.repository.deleteDownvotesByUserId(userId);
+    }
+
+    @Override
+    public void deleteAllByAuthorId(String authorId) {
+        this.repository.deleteAllByAuthorId(authorId);
+    }
+
+    @Override
+    public void deleteAllByPageId(String pageId) {
+        this.repository.deleteAllByPageId(pageId);
+    }
 }

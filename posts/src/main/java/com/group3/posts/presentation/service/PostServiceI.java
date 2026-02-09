@@ -25,4 +25,8 @@ public interface PostServiceI {
 
     void delete(DeletePostReq dto);
 
+    void deletePostsByUserId(DeletePostsByUserIdReq dto);
+
+    void deletePostsByPageId(DeletePostsByPageIdReq dto);
+
 }

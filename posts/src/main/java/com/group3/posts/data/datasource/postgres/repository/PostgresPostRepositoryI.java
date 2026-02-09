@@ -64,4 +64,15 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     @Modifying
     @Query(value = "DELETE FROM post_downvoters WHERE post_id = :postId", nativeQuery = true)
     void deleteAllDownvoters(@Param("postId") String postId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_upvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteUpvotesByUserId(@Param("userId") String userId);
+
+    @Modifying
+    @Query(value = "DELETE FROM post_downvoters WHERE user_id = :userId", nativeQuery = true)
+    void deleteDownvotesByUserId(@Param("userId") String userId);
+
+    void deleteAllByAuthorId(String authorId);
+    void deleteAllByPageId(String pageId);
 }

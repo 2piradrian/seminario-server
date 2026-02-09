@@ -371,4 +371,24 @@ public class PostService implements PostServiceI {
         this.postsRepository.deleteById(post.getId());
     }
 
+    @Override
+    public void deletePostsByUserId(DeletePostsByUserIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.postsRepository.deleteUpvotesByUserId(dto.getUserId());
+        this.postsRepository.deleteDownvotesByUserId(dto.getUserId());
+        this.postsRepository.deleteAllByAuthorId(dto.getUserId());
+    }
+
+    @Override
+    public void deletePostsByPageId(DeletePostsByPageIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.postsRepository.deleteAllByPageId(dto.getPageId());
+    }
+
 }
