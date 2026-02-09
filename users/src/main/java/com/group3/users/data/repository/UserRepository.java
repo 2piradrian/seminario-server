@@ -43,7 +43,7 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<User> getAllStaff() {
-        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER, Status.ACTIVE);
+        List<UserModel> models = this.userRepository.findWithExcludedRole(Role.USER);
         return UserEntityMapper.toDomain(models);
     }
 
