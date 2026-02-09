@@ -28,4 +28,8 @@ public class NotificationMapper {
         return new DeleteBySourceIdMapper();
     }
 
+    public static DeleteAllByUserIdMapper deleteAllByUserId() {
+        return new DeleteAllByUserIdMapper();
+    }
+
 }

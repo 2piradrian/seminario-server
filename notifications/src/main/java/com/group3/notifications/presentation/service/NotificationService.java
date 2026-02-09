@@ -158,5 +158,14 @@ public class NotificationService implements NotificationServiceI {
 
         this.notificationRepository.deleteBySourceId(dto.getSourceId());
     }
+
+    @Override
+    public void deleteAllByUserId(DeleteAllByUserIdReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.notificationRepository.deleteAllByUserId(dto.getUserId());
+    }
     
 }

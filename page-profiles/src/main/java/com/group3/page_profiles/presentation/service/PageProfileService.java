@@ -331,10 +331,28 @@ public class PageProfileService implements PageProfileServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        page.setStatus(Status.DELETED);
-        this.pageProfileRepository.update(page);
+        if (page.getProfileImage() != null && !page.getProfileImage().isEmpty()) {
+            this.imagesRepository.delete(page.getProfileImage(), secretKeyHelper.getSecret());
+        }
+
+        if (page.getPortraitImage() != null && !page.getPortraitImage().isEmpty()) {
+            this.imagesRepository.delete(page.getPortraitImage(), secretKeyHelper.getSecret());
+        }
+
+        this.pageProfileRepository.delete(page.getId());
 
         this.notificationRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), page.getId());
+    }
+
+    @Override
+    public void deleteUserPages(DeleteUserPagesReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.pageProfileRepository.deleteByOwnerId(dto.getUserId());
+        
+        this.pageProfileRepository.removeMemberFromAllPages(dto.getUserId());
     }
 
 }

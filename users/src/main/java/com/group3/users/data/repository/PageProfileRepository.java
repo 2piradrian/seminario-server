@@ -46,4 +46,9 @@ public class PageProfileRepository implements PageProfileRepositoryI {
         return this.repository.getListByIds(pageIds,secret).getPages();
     }
 
+    @Override
+    public void delete(String id, String token) {
+        this.repository.delete(token, id);
+    }
+
 }
