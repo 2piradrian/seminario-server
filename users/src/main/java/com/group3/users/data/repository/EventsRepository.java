@@ -16,4 +16,9 @@ public class EventsRepository implements EventsRepositoryI {
         this.repository.delete(token, eventId);
     }
 
+    @Override
+    public void deleteByUserId(String token, String userId) {
+        this.repository.deleteByUserId(token, userId);
+    }
+
 }

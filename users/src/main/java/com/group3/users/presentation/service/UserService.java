@@ -55,6 +55,8 @@ public class UserService implements UserServiceI {
 
     private final PostsRepository postsRepository;
 
+    private final EventsRepository eventsRepository;
+
     @Override
 
     public GetUserByIdRes getById(GetUserByIdReq dto) {
@@ -169,10 +171,13 @@ public class UserService implements UserServiceI {
         // ======== Delete Pages and Participants ========
         this.pageProfileRepository.deleteUserPages(user.getId(), this.secretKeyHelper.getSecret());
 
-        // TODO: DELETE EVENTS
+        // ======== Delete Events ========
+        this.eventsRepository.deleteByUserId(dto.getToken(), user.getId());
 
         // ======== Delete Posts ========
         this.postsRepository.deletePostsByUserId(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
+
+        // TODO: DELETE UPVOTES and DOWNVOTES
 
         // ======== Delete User ========
         this.userRepository.delete(user);

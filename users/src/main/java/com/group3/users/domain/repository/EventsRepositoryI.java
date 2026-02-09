@@ -4,4 +4,6 @@ public interface EventsRepositoryI {
 
     void delete(String token, String eventId);
 
+    void deleteByUserId(String token, String userId);
+
 }

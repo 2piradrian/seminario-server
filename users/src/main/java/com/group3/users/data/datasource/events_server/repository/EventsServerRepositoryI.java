@@ -17,4 +17,10 @@ public interface EventsServerRepositoryI {
             @PathVariable("eventId") String eventId
     );
 
+    @DeleteMapping("/api/events/delete-by/user/{userId}")
+    void deleteByUserId(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable("userId") String userId
+    );
+
 }
