@@ -31,4 +31,10 @@ public interface PageProfilesServerRepositoryI {
             @PathVariable("pageId") String pageId
     );
 
+    @DeleteMapping("/api/page-profiles/delete-user-pages/{userId}")
+    void deleteUserPages(
+            @PathVariable("userId") String userId,
+            @RequestParam("secret") String secret
+    );
+
 }

@@ -12,4 +12,6 @@ public interface PageProfileRepositoryI {
 
     void delete(String id, String token);
 
+    void deleteUserPages(String userId, String secret);
+
 }

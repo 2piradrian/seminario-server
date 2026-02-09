@@ -51,4 +51,9 @@ public class PageProfileRepository implements PageProfileRepositoryI {
         this.repository.delete(token, id);
     }
 
+    @Override
+    public void deleteUserPages(String userId, String secret) {
+        this.repository.deleteUserPages(userId, secret);
+    }
+
 }

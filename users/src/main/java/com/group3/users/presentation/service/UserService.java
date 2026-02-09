@@ -42,10 +42,17 @@ public class UserService implements UserServiceI {
     private final FollowService followService;
 
     private final NotificationsRepository notificationsRepository;
+
     private final ReviewRepository reviewRepository;
+
     private final FollowRepository followRepository;
 
+    private final ChatRepository chatRepository;
+
+    private final PageProfileRepository pageProfileRepository;
+
     @Override
+
     public GetUserByIdRes getById(GetUserByIdReq dto) {
         User user = this.authService.auth(dto.getToken());
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -149,9 +156,14 @@ public class UserService implements UserServiceI {
         // ======== Delete Notifications ========
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), user.getId());
 
-        // TODO: DELETE CHATS
+        // ======== Delete Chats ========
+        this.chatRepository.deleteUserHistory(user.getId(), this.secretKeyHelper.getSecret());
+
         // TODO: DELETE COMMENTS
-        // TODO: DELETE PAGES and PARTICIPANTS
+
+        // ======== Delete Pages and Participants ========
+        this.pageProfileRepository.deleteUserPages(user.getId(), this.secretKeyHelper.getSecret());
+
         // TODO: DELETE EVENTS
         // TODO: DELETE POSTS
         // TODO: DELETE UPVOTES and DOWNVOTES
