@@ -14,4 +14,6 @@ public interface ContentTypeRepositoryI {
 
     ContentType update(ContentType contentType);
 
+    void delete(String contentTypeId);
+
 }

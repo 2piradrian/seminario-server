@@ -42,4 +42,9 @@ public class StyleRepository implements StyleRepositoryI {
         return StyleEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String styleId) {
+        this.styleRepository.deleteById(styleId);
+    }
+
 }

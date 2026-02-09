@@ -42,4 +42,9 @@ public class PageTypeRepository implements PageTypeRepositoryI {
         return PageTypeEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String pageTypeId) {
+        this.pageTypeRepository.deleteById(pageTypeId);
+    }
+
 }

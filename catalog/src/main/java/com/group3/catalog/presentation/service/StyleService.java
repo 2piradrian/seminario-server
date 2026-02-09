@@ -2,12 +2,14 @@ package com.group3.catalog.presentation.service;
 
 import com.group3.catalog.data.repository.StyleRepository;
 import com.group3.catalog.domain.dto.style.mapper.StyleMapper;
-import com.group3.catalog.domain.dto.style.request.GetStyleByIdReq;
-import com.group3.catalog.domain.dto.style.request.GetStyleListByIdReq;
-import com.group3.catalog.domain.dto.style.response.GetAllStyleRes;
-import com.group3.catalog.domain.dto.style.response.GetStyleByIdRes;
-import com.group3.catalog.domain.dto.style.response.GetStyleListByIdRes;
+import com.group3.catalog.data.repository.StyleRepository;
+import com.group3.catalog.data.repository.UserRepository;
+import com.group3.catalog.domain.dto.style.mapper.StyleMapper;
+import com.group3.catalog.domain.dto.style.request.*;
+import com.group3.catalog.domain.dto.style.response.*;
+import com.group3.entity.Role;
 import com.group3.entity.Style;
+import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class StyleService implements StyleServiceI {
 
     private final StyleRepository repository;
+    private final UserRepository userRepository;
 
     @Override
     public GetAllStyleRes getAll() {
@@ -55,6 +58,57 @@ public class StyleService implements StyleServiceI {
         }
 
         return StyleMapper.getListById().toResponse(styles);
+    }
+
+    @Override
+    public CreateStyleRes create(CreateStyleReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Style style = new Style();
+        style.setName(dto.getName());
+
+        Style saved = this.repository.save(style);
+
+        return StyleMapper.create().toResponse(saved);
+    }
+
+    @Override
+    public EditStyleRes edit(EditStyleReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Style style = this.repository.getById(dto.getId());
+
+        if (style == null) {
+            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
+        }
+
+        style.setName(dto.getName());
+
+        Style updated = this.repository.update(style);
+
+        return StyleMapper.edit().toResponse(updated);
+    }
+
+    @Override
+    public void delete(DeleteStyleReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Style style = this.repository.getById(dto.getId());
+
+        if (style == null) {
+            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
+        }
+
+        this.repository.delete(style.getId());
     }
 
 }

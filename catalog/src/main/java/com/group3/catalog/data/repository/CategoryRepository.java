@@ -42,4 +42,9 @@ public class CategoryRepository implements CategoryRepositoryI {
         return CategoryEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String categoryId) {
+        this.categoryRepository.deleteById(categoryId);
+    }
+
 }

@@ -15,4 +15,6 @@ public interface InstrumentRepositoryI {
 
     Instrument update(Instrument instrument);
 
+    void delete(String instrumentId);
+
 }

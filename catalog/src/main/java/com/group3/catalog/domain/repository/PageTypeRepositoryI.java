@@ -14,4 +14,6 @@ public interface PageTypeRepositoryI {
 
     PageType update(PageType pageType);
 
+    void delete(String pageTypeId);
+
 }

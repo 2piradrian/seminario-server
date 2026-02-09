@@ -1,18 +1,14 @@
 package com.group3.catalog.presentation.controller;
 
 import com.group3.catalog.domain.dto.pagetype.mapper.PageTypeMapper;
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeByIdReq;
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeListByIdReq;
+import com.group3.catalog.domain.dto.pagetype.request.*;
 import com.group3.catalog.presentation.service.PageTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -42,5 +38,37 @@ public class PageTypeController {
         GetPageTypeListByIdReq dto = GetPageTypeListByIdReq.create(ids);
 
         return ResponseEntity.ok(this.service.getListById(dto));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreatePageTypeReq dto = PageTypeMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @PutMapping("/{pageTypeId}")
+    public ResponseEntity<?> edit(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "pageTypeId") String pageTypeId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        EditPageTypeReq dto = PageTypeMapper.edit().toRequest(token, pageTypeId, payload);
+
+        return ResponseEntity.ok(this.service.edit(dto));
+    }
+
+    @DeleteMapping("/{pageTypeId}")
+    public ResponseEntity<?> delete(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "pageTypeId") String pageTypeId
+    ) {
+        DeletePageTypeReq dto = PageTypeMapper.delete().toRequest(token, pageTypeId);
+        this.service.delete(dto);
+
+        return ResponseEntity.ok().build();
     }
 }

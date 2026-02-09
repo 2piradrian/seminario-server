@@ -1,18 +1,14 @@
 package com.group3.catalog.presentation.controller;
 
 import com.group3.catalog.domain.dto.instrument.mapper.InstrumentMapper;
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentByIdReq;
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentListByIdReq;
+import com.group3.catalog.domain.dto.instrument.request.*;
 import com.group3.catalog.presentation.service.InstrumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -42,6 +38,38 @@ public class InstrumentController {
         GetInstrumentListByIdReq dto = GetInstrumentListByIdReq.create(ids);
 
         return ResponseEntity.ok(this.service.getListById(dto));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreateInstrumentReq dto = InstrumentMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @PutMapping("/{instrumentId}")
+    public ResponseEntity<?> edit(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "instrumentId") String instrumentId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        EditInstrumentReq dto = InstrumentMapper.edit().toRequest(token, instrumentId, payload);
+
+        return ResponseEntity.ok(this.service.edit(dto));
+    }
+
+    @DeleteMapping("/{instrumentId}")
+    public ResponseEntity<?> delete(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "instrumentId") String instrumentId
+    ) {
+        DeleteInstrumentReq dto = InstrumentMapper.delete().toRequest(token, instrumentId);
+        this.service.delete(dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }

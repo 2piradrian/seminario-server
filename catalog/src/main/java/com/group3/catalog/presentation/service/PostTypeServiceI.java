@@ -1,10 +1,7 @@
 package com.group3.catalog.presentation.service;
 
-import com.group3.catalog.domain.dto.posttype.request.GetPostTypeByIdReq;
-import com.group3.catalog.domain.dto.posttype.request.GetPostTypeListByIdReq;
-import com.group3.catalog.domain.dto.posttype.response.GetAllPostTypeRes;
-import com.group3.catalog.domain.dto.posttype.response.GetPostTypeByIdRes;
-import com.group3.catalog.domain.dto.posttype.response.GetPostTypeListByIdRes;
+import com.group3.catalog.domain.dto.posttype.request.*;
+import com.group3.catalog.domain.dto.posttype.response.*;
 
 public interface PostTypeServiceI {
 
@@ -13,4 +10,10 @@ public interface PostTypeServiceI {
     GetPostTypeByIdRes getById(GetPostTypeByIdReq dto);
 
     GetPostTypeListByIdRes getListById(GetPostTypeListByIdReq dto);
+
+    CreatePostTypeRes create(CreatePostTypeReq dto);
+
+    EditPostTypeRes edit(EditPostTypeReq dto);
+
+    void delete(DeletePostTypeReq dto);
 }

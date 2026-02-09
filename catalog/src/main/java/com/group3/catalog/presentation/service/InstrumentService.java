@@ -2,12 +2,14 @@ package com.group3.catalog.presentation.service;
 
 import com.group3.catalog.data.repository.InstrumentRepository;
 import com.group3.catalog.domain.dto.instrument.mapper.InstrumentMapper;
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentByIdReq;
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentListByIdReq;
-import com.group3.catalog.domain.dto.instrument.response.GetAllInstrumentRes;
-import com.group3.catalog.domain.dto.instrument.response.GetInstrumentByIdRes;
-import com.group3.catalog.domain.dto.instrument.response.GetInstrumentListByIdRes;
+import com.group3.catalog.data.repository.InstrumentRepository;
+import com.group3.catalog.data.repository.UserRepository;
+import com.group3.catalog.domain.dto.instrument.mapper.InstrumentMapper;
+import com.group3.catalog.domain.dto.instrument.request.*;
+import com.group3.catalog.domain.dto.instrument.response.*;
 import com.group3.entity.Instrument;
+import com.group3.entity.Role;
+import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class InstrumentService implements InstrumentServiceI {
 
     private final InstrumentRepository repository;
+    private final UserRepository userRepository;
 
     @Override
     public GetAllInstrumentRes getAll() {
@@ -55,6 +58,57 @@ public class InstrumentService implements InstrumentServiceI {
         }
 
         return InstrumentMapper.getListById().toResponse(instruments);
+    }
+
+    @Override
+    public CreateInstrumentRes create(CreateInstrumentReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Instrument instrument = new Instrument();
+        instrument.setName(dto.getName());
+
+        Instrument saved = this.repository.save(instrument);
+
+        return InstrumentMapper.create().toResponse(saved);
+    }
+
+    @Override
+    public EditInstrumentRes edit(EditInstrumentReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Instrument instrument = this.repository.getById(dto.getId());
+
+        if (instrument == null) {
+            throw new ErrorHandler(ErrorType.INSTRUMENT_NOT_FOUND);
+        }
+
+        instrument.setName(dto.getName());
+
+        Instrument updated = this.repository.update(instrument);
+
+        return InstrumentMapper.edit().toResponse(updated);
+    }
+
+    @Override
+    public void delete(DeleteInstrumentReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        Instrument instrument = this.repository.getById(dto.getId());
+
+        if (instrument == null) {
+            throw new ErrorHandler(ErrorType.INSTRUMENT_NOT_FOUND);
+        }
+
+        this.repository.delete(instrument.getId());
     }
 
 }

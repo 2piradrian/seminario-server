@@ -42,4 +42,9 @@ public class PostTypeRepository implements PostTypeRepositoryI {
         return PostTypeEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String postTypeId) {
+        this.postTypeRepository.deleteById(postTypeId);
+    }
+
 }

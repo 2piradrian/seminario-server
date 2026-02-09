@@ -2,12 +2,14 @@ package com.group3.catalog.presentation.service;
 
 import com.group3.catalog.data.repository.PostTypeRepository;
 import com.group3.catalog.domain.dto.posttype.mapper.PostTypeMapper;
-import com.group3.catalog.domain.dto.posttype.request.GetPostTypeByIdReq;
-import com.group3.catalog.domain.dto.posttype.request.GetPostTypeListByIdReq;
-import com.group3.catalog.domain.dto.posttype.response.GetAllPostTypeRes;
-import com.group3.catalog.domain.dto.posttype.response.GetPostTypeByIdRes;
-import com.group3.catalog.domain.dto.posttype.response.GetPostTypeListByIdRes;
+import com.group3.catalog.data.repository.PostTypeRepository;
+import com.group3.catalog.data.repository.UserRepository;
+import com.group3.catalog.domain.dto.posttype.mapper.PostTypeMapper;
+import com.group3.catalog.domain.dto.posttype.request.*;
+import com.group3.catalog.domain.dto.posttype.response.*;
 import com.group3.entity.PostType;
+import com.group3.entity.Role;
+import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class PostTypeService implements PostTypeServiceI {
 
     private final PostTypeRepository repository;
+    private final UserRepository userRepository;
 
     @Override
     public GetAllPostTypeRes getAll(){
@@ -37,7 +40,7 @@ public class PostTypeService implements PostTypeServiceI {
         PostType postType = this.repository.getById(dto.getId());
 
         if (postType == null) {
-            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
+            throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
         }
 
         return PostTypeMapper.getById().toResponse(postType);
@@ -55,5 +58,56 @@ public class PostTypeService implements PostTypeServiceI {
         }
 
         return PostTypeMapper.getListById().toResponse(postTypes);
+    }
+
+    @Override
+    public CreatePostTypeRes create(CreatePostTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PostType postType = new PostType();
+        postType.setName(dto.getName());
+
+        PostType saved = this.repository.save(postType);
+
+        return PostTypeMapper.create().toResponse(saved);
+    }
+
+    @Override
+    public EditPostTypeRes edit(EditPostTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PostType postType = this.repository.getById(dto.getId());
+
+        if (postType == null) {
+            throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+        }
+
+        postType.setName(dto.getName());
+
+        PostType updated = this.repository.update(postType);
+
+        return PostTypeMapper.edit().toResponse(updated);
+    }
+
+    @Override
+    public void delete(DeletePostTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PostType postType = this.repository.getById(dto.getId());
+
+        if (postType == null) {
+            throw new ErrorHandler(ErrorType.POSTYPE_NOT_FOUND);
+        }
+
+        this.repository.delete(postType.getId());
     }
 }
