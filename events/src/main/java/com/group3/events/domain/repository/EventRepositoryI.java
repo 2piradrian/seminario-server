@@ -32,4 +32,10 @@ public interface EventRepositoryI {
 
     void deleteById(String eventId);
 
+    void deleteByAuthorId(String authorId);
+
+    void deleteByPageId(String pageId);
+
+    void removeAssistantFromAllEvents(String userId);
+
 }

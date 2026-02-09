@@ -138,4 +138,24 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete-by/user/{userId}")
+    public ResponseEntity<?> deleteFromUser(
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeleteUserDataReq dto = EventMapper.deleteUserData().toRequest(userId, secret);
+        this.service.deleteEventsByUserId(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-by/page/{pageId}")
+    public ResponseEntity<?> deleteFromPage(
+            @PathVariable(value = "pageId") String pageId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeletePageEventsReq dto = EventMapper.deletePageEvents().toRequest(pageId, secret);
+        this.service.deleteEventsByPageId(dto);
+        return ResponseEntity.ok().build();
+    }
+
 }

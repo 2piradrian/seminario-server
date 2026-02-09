@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -113,5 +114,17 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
         @Param("dateEnd") Date dateEnd,
         @Param("userId") String userId
     );
+
+    @Modifying
+    @Query("DELETE FROM EventModel e WHERE e.authorId = :authorId")
+    void deleteByAuthorId(@Param("authorId") String authorId);
+
+    @Modifying
+    @Query("DELETE FROM EventModel e WHERE e.pageId = :pageId")
+    void deleteByPageId(@Param("pageId") String pageId);
+
+    @Modifying
+    @Query(value = "DELETE FROM event_assist WHERE profile_id = :userId", nativeQuery = true)
+    void removeAssistantFromAllEvents(@Param("userId") String userId);
 
 }

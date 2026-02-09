@@ -175,4 +175,19 @@ public class EventRepository implements EventRepositoryI {
         this.repository.deleteById(eventId);
     }
 
+    @Override
+    public void deleteByAuthorId(String authorId) {
+        this.repository.deleteByAuthorId(authorId);
+    }
+
+    @Override
+    public void deleteByPageId(String pageId) {
+        this.repository.deleteByPageId(pageId);
+    }
+
+    @Override
+    public void removeAssistantFromAllEvents(String userId) {
+        this.repository.removeAssistantFromAllEvents(userId);
+    }
+
 }
