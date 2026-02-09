@@ -173,7 +173,7 @@ public class UserService implements UserServiceI {
         this.pageProfileRepository.deleteUserPages(user.getId(), this.secretKeyHelper.getSecret());
 
         // ======== Delete Events ========
-        this.eventsRepository.deleteByUserId(dto.getToken(), user.getId());
+        this.eventsRepository.deleteByUserId(this.secretKeyHelper.getSecret(), user.getId());
 
         // ======== Delete Posts ========
         this.postsRepository.deletePostsByUserId(dto.getToken(), user.getId(), this.secretKeyHelper.getSecret());
