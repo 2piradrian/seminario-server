@@ -25,4 +25,10 @@ public interface PageProfilesServerRepositoryI {
         @RequestParam(value = "secret") String secret
     );
 
+    @DeleteMapping("/api/page-profiles/{pageId}")
+    void delete(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable("pageId") String pageId
+    );
+
 }
