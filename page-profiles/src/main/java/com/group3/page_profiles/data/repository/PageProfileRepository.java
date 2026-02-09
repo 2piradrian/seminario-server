@@ -37,7 +37,6 @@ public class PageProfileRepository implements PageRepositoryI {
         PageProfileModel pageProfileModel = this.repository.findById(pageId).orElse(null);
 
         if (pageProfileModel == null) return null;
-        if (!pageProfileModel.getStatus().equals(Status.ACTIVE)) return null;
 
         return PageEntityMapper.toDomain(pageProfileModel);
     }
@@ -46,7 +45,6 @@ public class PageProfileRepository implements PageRepositoryI {
     public PageProfile getByName(String name) {
         PageProfileModel pageProfileModel = this.repository.findByName(name);
         if (pageProfileModel == null) return null;
-        if (!pageProfileModel.getStatus().equals(Status.ACTIVE)) return null;
 
         return PageEntityMapper.toDomain(pageProfileModel);
     }
@@ -56,7 +54,7 @@ public class PageProfileRepository implements PageRepositoryI {
 
     @Override
     public List<PageProfile> getByUserId(String userId) {
-        List<PageProfileModel> pageProfileModels = this.repository.findByUserId(userId, Status.ACTIVE);
+        List<PageProfileModel> pageProfileModels = this.repository.findByUserId(userId);
         return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
 
@@ -66,7 +64,6 @@ public class PageProfileRepository implements PageRepositoryI {
 
         Page<PageProfileModel> pageProfileModels = repository.findByFilteredPage(
             name,
-            Status.ACTIVE,
             pageTypeId,
             PageRequest.of(pageIndex, size)
         );
@@ -85,7 +82,7 @@ public class PageProfileRepository implements PageRepositoryI {
 
     @Override
     public List<PageProfile> getListByIds(List<String> ids) {
-        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids, Status.ACTIVE);
+        List<PageProfileModel> pageProfileModels = this.repository.findAllByIdIn(ids);
         return pageProfileModels.isEmpty() ? List.of() : PageEntityMapper.toDomain(pageProfileModels);
     }
 
@@ -104,6 +101,23 @@ public class PageProfileRepository implements PageRepositoryI {
         PageProfileModel pageProfileModel = PageEntityMapper.toModel(page);
         PageProfileModel updated = this.repository.save(pageProfileModel);
         return PageEntityMapper.toDomain(updated);
+    }
+
+    // ======== Delete Operations ========
+
+    @Override
+    public void delete(String pageId) {
+        this.repository.deleteById(pageId);
+    }
+
+    @Override
+    public void deleteByOwnerId(String ownerId) {
+        this.repository.deleteByOwnerId(ownerId);
+    }
+
+    @Override
+    public void removeMemberFromAllPages(String userId) {
+        this.repository.removeMemberFromAllPages(userId);
     }
 
 }

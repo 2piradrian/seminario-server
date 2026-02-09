@@ -19,4 +19,17 @@ public interface PostRepositoryI {
 
     Post update(Post post);
 
+    void deleteById(String id);
+
+    void deleteAllUpvoters(String postId);
+
+    void deleteAllDownvoters(String postId);
+
+    void deleteUpvotesByUserId(String userId);
+
+    void deleteDownvotesByUserId(String userId);
+
+    void deleteAllByAuthorId(String authorId);
+
+    void deleteAllByPageId(String pageId);
 }

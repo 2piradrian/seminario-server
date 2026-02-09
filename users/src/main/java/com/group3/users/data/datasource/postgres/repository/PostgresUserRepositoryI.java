@@ -28,8 +28,6 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
 
     @Query("""
         SELECT u FROM UserModel u WHERE
-        u.status = :status 
-        AND
         (
             :#{#fullName == null or #fullName.isEmpty()} = true 
             OR 
@@ -49,7 +47,6 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
     """)
     Page<UserModel> findByFilteredPage(
         @Param("fullName") String fullName,
-        @Param("status") Status status,
         @Param("styles") List<String> styles,
         @Param("instruments") List<String> instruments,
         Pageable pageable
@@ -83,22 +80,18 @@ public interface PostgresUserRepositoryI extends JpaRepository<UserModel, String
         
         SELECT u.* FROM users u
         WHERE u.id IN (SELECT user_id FROM user_graph)
-        AND u.status = :#{#status.name()}
     """, nativeQuery = true)
     List<UserModel> findMutualsFollowers(
-        @Param("userId") String userId,
-        @Param("status") Status status
+        @Param("userId") String userId
     );
 
     @Query("""
            SELECT u
            FROM UserModel u
            WHERE u.id IN :ids
-           AND u.status = :status
            """)
     Page<UserModel> findByListOfIds(
             @Param("ids") List<String> ids,
-            @Param("status") Status status,
             Pageable pageable
     );
 }

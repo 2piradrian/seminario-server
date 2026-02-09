@@ -4,10 +4,13 @@ import com.group3.users.data.datasource.postgres.model.FollowModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 
 public interface PostgresFollowRepositoryI extends JpaRepository<FollowModel, String> {
 
@@ -45,4 +48,13 @@ public interface PostgresFollowRepositoryI extends JpaRepository<FollowModel, St
     @Query("SELECT COUNT(f) FROM FollowModel f WHERE f.followedId = :followedId")
     Integer countByFollowedId(@Param("followedId") String followedId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM FollowModel f WHERE f.followerId = :followerId")
+    void deleteByFollowerId(@Param("followerId") String followerId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM FollowModel f WHERE f.followedId = :followedId")
+    void deleteByFollowedId(@Param("followedId") String followedId);
 }

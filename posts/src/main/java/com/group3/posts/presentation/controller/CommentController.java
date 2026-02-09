@@ -1,11 +1,7 @@
 package com.group3.posts.presentation.controller;
 
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
-import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
-import com.group3.posts.domain.dto.comment.request.DeleteCommentReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentByIdReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentPageReq;
-import com.group3.posts.domain.dto.comment.request.ToggleCommentVotesReq;
+import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.presentation.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -73,4 +69,23 @@ public class CommentController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/delete-by/user/{userId}")
+    public ResponseEntity<?> deleteFromUser(
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeleteCommentsByUserIdReq dto = CommentMapper.deleteCommentsByUserId().toRequest(userId, secret);
+        this.service.deleteCommentsByUserId(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-by/page/{pageId}")
+    public ResponseEntity<?> deleteFromPage(
+            @PathVariable(value = "pageId") String pageId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        DeleteCommentsByPageIdReq dto = CommentMapper.deleteCommentsByPageId().toRequest(pageId, secret);
+        this.service.deleteCommentsByPageId(dto);
+        return ResponseEntity.ok().build();
+    }
 }

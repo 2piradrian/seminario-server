@@ -1,6 +1,7 @@
 package com.group3.chat.presentation.controller;
 
 import com.group3.chat.domain.dto.message.mapper.ChatMessageMapper;
+import com.group3.chat.domain.dto.message.request.DeleteUserChatHistoryReq;
 import com.group3.chat.domain.dto.message.request.GetActiveChatsReq;
 import com.group3.chat.domain.dto.message.request.GetConversationPageReq;
 import com.group3.chat.presentation.service.ChatServiceI;
@@ -33,6 +34,15 @@ public class ChatController {
     ) {
         GetActiveChatsReq dto = ChatMessageMapper.getActiveChats().toRequest(token);
         return ResponseEntity.ok(service.getActiveChats(dto));
+    }
+
+    @DeleteMapping("/user-history")
+    public ResponseEntity<?> deleteUserHistory(
+            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    ) {
+        service.deleteUserHistory(ChatMessageMapper.deleteUserHistory().toRequest(userId, secret));
+        return ResponseEntity.ok().build();
     }
 
 }

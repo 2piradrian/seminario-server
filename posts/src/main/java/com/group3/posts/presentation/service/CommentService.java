@@ -7,11 +7,7 @@ import com.group3.error.ErrorType;
 import com.group3.posts.config.helpers.SecretKeyHelper;
 import com.group3.posts.data.repository.*;
 import com.group3.posts.domain.dto.comment.mapper.CommentMapper;
-import com.group3.posts.domain.dto.comment.request.CreateCommentReq;
-import com.group3.posts.domain.dto.comment.request.DeleteCommentReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentByIdReq;
-import com.group3.posts.domain.dto.comment.request.GetCommentPageReq;
-import com.group3.posts.domain.dto.comment.request.ToggleCommentVotesReq;
+import com.group3.posts.domain.dto.comment.request.*;
 import com.group3.posts.domain.dto.comment.response.CreateCommentRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentByIdRes;
 import com.group3.posts.domain.dto.comment.response.GetCommentPageRes;
@@ -54,7 +50,7 @@ public class CommentService implements CommentServiceI {
 
         Post post = this.postsRepository.getById(dto.getPostId());
         if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
-        if (post.getStatus() != Status.ACTIVE) throw new ErrorHandler(ErrorType.POST_NOT_ACTIVE);
+
 
         Comment comment = new Comment();
 
@@ -147,10 +143,11 @@ public class CommentService implements CommentServiceI {
         PageContent<Comment> comments =
                 this.commentRepository.getByPostId(dto.getPostId(), dto.getPage(), dto.getSize());
 
-        comments.getContent().forEach(
+        comments.getContent().removeIf(
                 comment -> {
                     if (comment.getAuthor().getId() != null) {
                         User fullProfile = this.userRepository.getById(comment.getAuthor().getId(), dto.getToken());
+
                         comment.setAuthor(fullProfile);
                     }
                     if (comment.getPageProfile().getId() != null) {
@@ -159,6 +156,7 @@ public class CommentService implements CommentServiceI {
                     }
                     comment.setVotersToNull();
                     comment.setReplies(this.commentRepository.getRepliesComment(comment.getId()));
+                    return false;
                 }
         );
 
@@ -259,7 +257,7 @@ public class CommentService implements CommentServiceI {
         if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
         Comment comment = this.commentRepository.getById(dto.getCommentId());
-        if (comment == null || comment.getStatus() == Status.DELETED) {
+        if (comment == null) {
             throw new ErrorHandler(ErrorType.COMMENT_NOT_FOUND);
         }
 
@@ -267,10 +265,30 @@ public class CommentService implements CommentServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        comment.setUpdatedAt(LocalDateTime.now());
-        comment.setStatus(Status.DELETED);
-
-        this.commentRepository.update(comment);
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), comment.getId());
+        this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
+        this.commentRepository.deleteAllUpvoters(comment.getId());
+        this.commentRepository.deleteAllDownvoters(comment.getId());
+        this.commentRepository.deleteById(comment.getId());
     }
 
+    @Override
+    public void deleteCommentsByUserId(DeleteCommentsByUserIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.commentRepository.deleteUpvotesByUserId(dto.getUserId());
+        this.commentRepository.deleteDownvotesByUserId(dto.getUserId());
+        this.commentRepository.deleteAllByAuthorId(dto.getUserId());
+    }
+
+    @Override
+    public void deleteCommentsByPageId(DeleteCommentsByPageIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        this.commentRepository.deleteAllByPageId(dto.getPageId());
+    }
 }

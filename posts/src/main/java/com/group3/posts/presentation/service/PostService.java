@@ -39,6 +39,8 @@ public class PostService implements PostServiceI {
 
     private final CatalogRepository catalogRepository;
 
+    private final CommentRepository commentRepository;
+
 
     // ======== Create Post ========
 
@@ -78,6 +80,7 @@ public class PostService implements PostServiceI {
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
         post.setStatus(Status.ACTIVE);
+
         post.setViews(0);
         post.setUpvoters(Set.of());
         post.setDownvoters(Set.of());
@@ -362,10 +365,37 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
-        post.setUpdatedAt(LocalDateTime.now());
-        post.setStatus(Status.DELETED);
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), post.getId());
+        this.commentRepository.deleteAllByPostId(post.getId());
+        this.postsRepository.deleteAllUpvoters(post.getId());
+        this.postsRepository.deleteAllDownvoters(post.getId());
+        this.postsRepository.deleteById(post.getId());
+    }
 
-        this.postsRepository.update(post);
+    @Override
+    public void deletePostsByUserId(DeletePostsByUserIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        // Note: Individual post notifications are not deleted here as this is a bulk operation
+        // Consider implementing bulk notification deletion if needed
+        
+        this.postsRepository.deleteUpvotesByUserId(dto.getUserId());
+        this.postsRepository.deleteDownvotesByUserId(dto.getUserId());
+        this.postsRepository.deleteAllByAuthorId(dto.getUserId());
+    }
+
+    @Override
+    public void deletePostsByPageId(DeletePostsByPageIdReq dto) {
+        if (!secretKeyHelper.isValid(dto.getSecret())) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        // Note: Individual post notifications are not deleted here as this is a bulk operation
+        // Consider implementing bulk notification deletion if needed
+        
+        this.postsRepository.deleteAllByPageId(dto.getPageId());
     }
 
 }

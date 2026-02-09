@@ -14,20 +14,19 @@ public class CommentMapper {
         return new DeleteMapper();
     }
 
-        public static ToggleVotesMapper toggleVotes() {
-
-            return new ToggleVotesMapper();
-
-        }
-
-    
-
-        public static GetByIdMapper getById() {
-
-            return new GetByIdMapper();
-
-        }
-
+    public static ToggleVotesMapper toggleVotes() {
+        return new ToggleVotesMapper();
     }
 
-    
+    public static GetByIdMapper getById() {
+        return new GetByIdMapper();
+    }
+
+    public static DeleteCommentsByUserIdMapper deleteCommentsByUserId() {
+        return new DeleteCommentsByUserIdMapper();
+    }
+
+    public static DeleteCommentsByPageIdMapper deleteCommentsByPageId() {
+        return new DeleteCommentsByPageIdMapper();
+    }
+}

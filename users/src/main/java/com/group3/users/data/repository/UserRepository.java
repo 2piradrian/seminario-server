@@ -55,7 +55,6 @@ public class UserRepository implements UserRepositoryI {
 
         Page<UserModel> profilesModels = this.userRepository.findByFilteredPage(
             fullname,
-            Status.ACTIVE,
             styles,
             instruments,
             PageRequest.of(pageIndex, size)
@@ -73,8 +72,7 @@ public class UserRepository implements UserRepositoryI {
     @Override
     public List<User> getMutualsFollowers(String userId) {
         return this.userRepository.findMutualsFollowers(
-            userId,
-            Status.ACTIVE
+            userId
         ).stream()
             .map(UserEntityMapper::toDomain)
             .collect(Collectors.toList());
@@ -86,7 +84,6 @@ public class UserRepository implements UserRepositoryI {
 
         Page<UserModel> profilesModels = this.userRepository.findByListOfIds(
             ids,
-            Status.ACTIVE,
             PageRequest.of(pageIndex, size)
         );
 
@@ -113,6 +110,12 @@ public class UserRepository implements UserRepositoryI {
         UserModel updated = this.userRepository.save(userModel);
 
         return UserEntityMapper.toDomain(updated);
+    }
+
+    @Override
+    public void delete(User user) {
+        UserModel userModel = UserEntityMapper.toModel(user);
+        this.userRepository.delete(userModel);
     }
 
 }

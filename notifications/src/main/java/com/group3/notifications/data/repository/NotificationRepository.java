@@ -84,6 +84,11 @@ public class NotificationRepository implements NotificationRepositoryI {
     }
 
     @Override
+    public void deleteAllByUserId(String userId) {
+        this.repository.deleteAllByUserId(userId);
+    }
+
+    @Override
     public Notification getLatestUncheck(String sourceId, String targetId, NotificationContent content) {
 
         List<NotificationModel> result = this.repository.findLatestUncheckNotifications(
