@@ -16,4 +16,9 @@ public class CommentsRepository implements CommentsRepositoryI {
         this.repository.deleteComment(token, commentId);
     }
 
+    @Override
+    public void deleteCommentsByUserId(String token, String userId, String secret) {
+        this.repository.deleteCommentsByUserId(token, userId, secret);
+    }
+
 }

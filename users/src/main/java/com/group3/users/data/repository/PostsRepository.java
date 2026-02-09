@@ -16,4 +16,9 @@ public class PostsRepository implements PostsRepositoryI {
         this.repository.deletePost(token, postId);
     }
 
+    @Override
+    public void deletePostsByUserId(String token, String userId, String secret) {
+        this.repository.deletePostsByUserId(token, userId, secret);
+    }
+
 }

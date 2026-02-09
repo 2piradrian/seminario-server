@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "posts-server", path = "/posts-server")
 @LoadBalancerClient(name = "posts-server", configuration = LoadBalancerConfiguration.class)
@@ -21,6 +22,20 @@ public interface PostsServerRepositoryI {
     void deleteComment(
             @RequestHeader(value = "Authorization") String token,
             @PathVariable("commentId") String commentId
+    );
+
+    @DeleteMapping("/api/comments/delete-by/user/{userId}")
+    void deleteCommentsByUserId(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
+    );
+
+    @DeleteMapping("/api/posts/delete-by/user/{userId}")
+    void deletePostsByUserId(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "userId") String userId,
+            @RequestParam(value = "secret") String secret
     );
 
 }
