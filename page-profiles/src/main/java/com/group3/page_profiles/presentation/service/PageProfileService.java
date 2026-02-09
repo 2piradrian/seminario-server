@@ -36,6 +36,10 @@ public class PageProfileService implements PageProfileServiceI {
 
     private final NotificationRepository notificationRepository;
 
+    private final PostsRepository postsRepository;
+
+    private final CommentsRepository commentsRepository;
+
 
     // ======== Create Page ========
 
@@ -339,8 +343,9 @@ public class PageProfileService implements PageProfileServiceI {
             this.imagesRepository.delete(page.getPortraitImage(), secretKeyHelper.getSecret());
         }
 
+        this.postsRepository.deletePostsByPageId(page.getId(), secretKeyHelper.getSecret());
+        this.commentsRepository.deleteCommentsByPageId(page.getId(), secretKeyHelper.getSecret());
         this.pageProfileRepository.delete(page.getId());
-
         this.notificationRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), page.getId());
     }
 
