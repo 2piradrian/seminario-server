@@ -1,18 +1,14 @@
 package com.group3.catalog.presentation.controller;
 
 import com.group3.catalog.domain.dto.contentType.mapper.ContentTypeMapper;
-import com.group3.catalog.domain.dto.contentType.request.GetContentTypeByIdReq;
-import com.group3.catalog.domain.dto.contentType.request.GetContentTypeListByIdReq;
+import com.group3.catalog.domain.dto.contentType.request.*;
 import com.group3.catalog.presentation.service.ContentTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -42,6 +38,38 @@ public class ContentTypeController {
         GetContentTypeListByIdReq dto = GetContentTypeListByIdReq.create(ids);
         
         return ResponseEntity.ok(this.service.getListById(dto));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreateContentTypeReq dto = ContentTypeMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @PutMapping("/{contentTypeId}")
+    public ResponseEntity<?> edit(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "contentTypeId") String contentTypeId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        EditContentTypeReq dto = ContentTypeMapper.edit().toRequest(token, contentTypeId, payload);
+
+        return ResponseEntity.ok(this.service.edit(dto));
+    }
+
+    @DeleteMapping("/{contentTypeId}")
+    public ResponseEntity<?> delete(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "contentTypeId") String contentTypeId
+    ) {
+        DeleteContentTypeReq dto = ContentTypeMapper.delete().toRequest(token, contentTypeId);
+        this.service.delete(dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }

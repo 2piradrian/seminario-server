@@ -1,8 +1,7 @@
 package com.group3.catalog.presentation.controller;
 
 import com.group3.catalog.domain.dto.category.mapper.CategoryMapper;
-import com.group3.catalog.domain.dto.category.request.GetCategoryByIdReq;
-import com.group3.catalog.domain.dto.category.request.GetCategoryListByIdReq;
+import com.group3.catalog.domain.dto.category.request.*;
 import com.group3.catalog.presentation.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +39,38 @@ public class CategoryController {
         GetCategoryListByIdReq dto = GetCategoryListByIdReq.create(ids);
 
         return ResponseEntity.ok(this.service.getListById(dto));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestBody Map<String, Object> payload
+    ) {
+        CreateCategoryReq dto = CategoryMapper.create().toRequest(token, payload);
+
+        return ResponseEntity.ok(this.service.create(dto));
+    }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<?> edit(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "categoryId") String categoryId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        EditCategoryReq dto = CategoryMapper.edit().toRequest(token, categoryId, payload);
+
+        return ResponseEntity.ok(this.service.edit(dto));
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> delete(
+            @RequestHeader(value = "Authorization") String token,
+            @PathVariable(value = "categoryId") String categoryId
+    ) {
+        DeleteCategoryReq dto = CategoryMapper.delete().toRequest(token, categoryId);
+        this.service.delete(dto);
+
+        return ResponseEntity.ok().build();
     }
 
 }
