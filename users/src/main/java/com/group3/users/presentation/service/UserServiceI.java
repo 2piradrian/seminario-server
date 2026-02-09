@@ -11,6 +11,8 @@ public interface UserServiceI {
 
     void delete(DeleteUserReq dto);
 
+    void deleteById(String token, String id);
+
     GetAllStaffRes getAllStaff(GetAllStaffReq dto);
 
     GetUserPageFilteredRes getProfileFiltered(GetUserPageFilteredReq dto);

@@ -13,7 +13,6 @@ public class ReviewEntityMapper {
     public static Review toDomain(ReviewModel model) {
         if (model == null) return null;
 
-
         return new Review(
                 model.getId(),
                 model.getReviewedId(),
