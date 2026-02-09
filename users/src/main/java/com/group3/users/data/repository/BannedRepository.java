@@ -24,37 +24,6 @@ public class BannedRepository implements BannedRepositoryI {
     }
 
     @Override
-    public BannedUser getById(String id) {
-        BannedUserModel bannedUserModel = this.repository.findById(id).orElse(null);
-        return bannedUserModel != null ? BannedUserEntityMapper.toDomain(bannedUserModel) : null;
-    }
-
-    @Override
-    public BannedUser save(BannedUser bannedUser) {
-        BannedUserModel bannedUserModel = BannedUserEntityMapper.toModel(bannedUser);
-        BannedUserModel saved = this.repository.save(bannedUserModel);
-        return BannedUserEntityMapper.toDomain(saved);
-    }
-
-    @Override
-    public BannedUser update(BannedUser bannedUser) {
-        BannedUserModel bannedUserModel = BannedUserEntityMapper.toModel(bannedUser);
-        BannedUserModel updated = this.repository.save(bannedUserModel);
-        return BannedUserEntityMapper.toDomain(updated);
-    }
-
-    @Override
-    public void delete(String id) {
-        this.repository.deleteById(id);
-    }
-
-    @Override
-    public BannedUser getByEmail(String email) {
-        BannedUserModel bannedUserModel = this.repository.findByEmail(email).orElse(null);
-        return bannedUserModel != null ? BannedUserEntityMapper.toDomain(bannedUserModel) : null;
-    }
-
-    @Override
     public PageContent<BannedUser> getAll(Integer page, Integer size) {
         int pageIndex = this.normalizePage(page);
 
@@ -70,4 +39,23 @@ public class BannedRepository implements BannedRepositoryI {
                 bannedUserModels.hasNext() ? bannedUserModels.getNumber() + 2 : null
         );
     }
+
+    @Override
+    public BannedUser getByEmail(String email) {
+        BannedUserModel bannedUserModel = this.repository.findByEmail(email).orElse(null);
+        return bannedUserModel != null ? BannedUserEntityMapper.toDomain(bannedUserModel) : null;
+    }
+
+    @Override
+    public BannedUser save(BannedUser bannedUser) {
+        BannedUserModel bannedUserModel = BannedUserEntityMapper.toModel(bannedUser);
+        BannedUserModel saved = this.repository.save(bannedUserModel);
+        return BannedUserEntityMapper.toDomain(saved);
+    }
+
+    @Override
+    public void delete(String id) {
+        this.repository.deleteById(id);
+    }
+
 }
