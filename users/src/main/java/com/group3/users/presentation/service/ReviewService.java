@@ -107,16 +107,10 @@ public class ReviewService implements ReviewServiceI {
         Review review = reviewRepository.getById(dto.getId());
         if (review == null) throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
 
-        if (review.getStatus() == Status.DELETED)
-            throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
-
         if (!user.canDelete(review))
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
-        review.setUpdatedAt(LocalDateTime.now());
-        review.setStatus(Status.DELETED);
-
-        this.reviewRepository.update(review);
+        this.reviewRepository.delete(review.getId());
     }
 
     @Override

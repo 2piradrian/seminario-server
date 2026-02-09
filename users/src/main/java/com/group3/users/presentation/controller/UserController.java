@@ -83,7 +83,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getByListOfIds(dto));
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token
     ) {
