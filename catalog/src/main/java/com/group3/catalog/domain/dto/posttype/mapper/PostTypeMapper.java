@@ -1,8 +1,6 @@
 package com.group3.catalog.domain.dto.posttype.mapper;
 
-import com.group3.catalog.domain.dto.posttype.mapper.implementation.GetAllPostTypeMapper;
-import com.group3.catalog.domain.dto.posttype.mapper.implementation.GetPostTypeByIdMapper;
-import com.group3.catalog.domain.dto.posttype.mapper.implementation.GetPostTypeListByIdMapper;
+import com.group3.catalog.domain.dto.posttype.mapper.implementation.*;
 
 public class PostTypeMapper {
 
@@ -11,4 +9,10 @@ public class PostTypeMapper {
     public static GetPostTypeListByIdMapper getListById() { return new GetPostTypeListByIdMapper(); }
 
     public static GetAllPostTypeMapper getAll() { return new GetAllPostTypeMapper(); }
+
+    public static CreateMapper create() { return new CreateMapper(); }
+
+    public static EditMapper edit() { return new EditMapper(); }
+
+    public static DeleteMapper delete() { return new DeleteMapper(); }
 }
