@@ -1,10 +1,7 @@
 package com.group3.catalog.presentation.service;
 
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeByIdReq;
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeListByIdReq;
-import com.group3.catalog.domain.dto.pagetype.response.GetAllPageTypeRes;
-import com.group3.catalog.domain.dto.pagetype.response.GetPageTypeByIdRes;
-import com.group3.catalog.domain.dto.pagetype.response.GetPageTypeListByIdRes;
+import com.group3.catalog.domain.dto.pagetype.request.*;
+import com.group3.catalog.domain.dto.pagetype.response.*;
 
 public interface PageTypeServiceI {
 
@@ -13,4 +10,10 @@ public interface PageTypeServiceI {
     GetPageTypeByIdRes getById(GetPageTypeByIdReq dto);
 
     GetPageTypeListByIdRes getListById(GetPageTypeListByIdReq dto);
+
+    CreatePageTypeRes create(CreatePageTypeReq dto);
+
+    EditPageTypeRes edit(EditPageTypeReq dto);
+
+    void delete(DeletePageTypeReq dto);
 }

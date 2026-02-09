@@ -2,12 +2,14 @@ package com.group3.catalog.presentation.service;
 
 import com.group3.catalog.data.repository.PageTypeRepository;
 import com.group3.catalog.domain.dto.pagetype.mapper.PageTypeMapper;
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeByIdReq;
-import com.group3.catalog.domain.dto.pagetype.request.GetPageTypeListByIdReq;
-import com.group3.catalog.domain.dto.pagetype.response.GetAllPageTypeRes;
-import com.group3.catalog.domain.dto.pagetype.response.GetPageTypeByIdRes;
-import com.group3.catalog.domain.dto.pagetype.response.GetPageTypeListByIdRes;
+import com.group3.catalog.data.repository.PageTypeRepository;
+import com.group3.catalog.data.repository.UserRepository;
+import com.group3.catalog.domain.dto.pagetype.mapper.PageTypeMapper;
+import com.group3.catalog.domain.dto.pagetype.request.*;
+import com.group3.catalog.domain.dto.pagetype.response.*;
 import com.group3.entity.PageType;
+import com.group3.entity.Role;
+import com.group3.entity.User;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class PageTypeService implements PageTypeServiceI {
 
     private final PageTypeRepository repository;
+    private final UserRepository userRepository;
 
     @Override
     public GetAllPageTypeRes getAll(){
@@ -37,7 +40,7 @@ public class PageTypeService implements PageTypeServiceI {
         PageType pageType = this.repository.getById(dto.getId());
 
         if (pageType == null) {
-            throw new ErrorHandler(ErrorType.STYLE_NOT_FOUND);
+            throw new ErrorHandler(ErrorType.PAGETYPE_NOT_FOUND);
         }
 
         return PageTypeMapper.getById().toResponse(pageType);
@@ -55,5 +58,56 @@ public class PageTypeService implements PageTypeServiceI {
         }
 
         return PageTypeMapper.getListById().toResponse(pageTypes);
+    }
+
+    @Override
+    public CreatePageTypeRes create(CreatePageTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PageType pageType = new PageType();
+        pageType.setName(dto.getName());
+
+        PageType saved = this.repository.save(pageType);
+
+        return PageTypeMapper.create().toResponse(saved);
+    }
+
+    @Override
+    public EditPageTypeRes edit(EditPageTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PageType pageType = this.repository.getById(dto.getId());
+
+        if (pageType == null) {
+            throw new ErrorHandler(ErrorType.PAGETYPE_NOT_FOUND);
+        }
+
+        pageType.setName(dto.getName());
+
+        PageType updated = this.repository.update(pageType);
+
+        return PageTypeMapper.edit().toResponse(updated);
+    }
+
+    @Override
+    public void delete(DeletePageTypeReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null || user.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        PageType pageType = this.repository.getById(dto.getId());
+
+        if (pageType == null) {
+            throw new ErrorHandler(ErrorType.PAGETYPE_NOT_FOUND);
+        }
+
+        this.repository.delete(pageType.getId());
     }
 }

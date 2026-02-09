@@ -1,10 +1,7 @@
 package com.group3.catalog.presentation.service;
 
-import com.group3.catalog.domain.dto.category.request.GetCategoryByIdReq;
-import com.group3.catalog.domain.dto.category.request.GetCategoryListByIdReq;
-import com.group3.catalog.domain.dto.category.response.GetAllCategoryRes;
-import com.group3.catalog.domain.dto.category.response.GetCategoryByIdRes;
-import com.group3.catalog.domain.dto.category.response.GetCategoryListByIdRes;
+import com.group3.catalog.domain.dto.category.request.*;
+import com.group3.catalog.domain.dto.category.response.*;
 
 public interface CategoryServiceI {
 
@@ -13,4 +10,10 @@ public interface CategoryServiceI {
     GetCategoryByIdRes getById(GetCategoryByIdReq dto);
 
     GetCategoryListByIdRes getListById(GetCategoryListByIdReq dto);
+
+    CreateCategoryRes create(CreateCategoryReq dto);
+
+    EditCategoryRes edit(EditCategoryReq dto);
+
+    void delete(DeleteCategoryReq dto);
 }

@@ -1,10 +1,7 @@
 package com.group3.catalog.presentation.service;
 
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentByIdReq;
-import com.group3.catalog.domain.dto.instrument.request.GetInstrumentListByIdReq;
-import com.group3.catalog.domain.dto.instrument.response.GetAllInstrumentRes;
-import com.group3.catalog.domain.dto.instrument.response.GetInstrumentByIdRes;
-import com.group3.catalog.domain.dto.instrument.response.GetInstrumentListByIdRes;
+import com.group3.catalog.domain.dto.instrument.request.*;
+import com.group3.catalog.domain.dto.instrument.response.*;
 
 public interface InstrumentServiceI {
 
@@ -13,5 +10,11 @@ public interface InstrumentServiceI {
     GetInstrumentByIdRes getById(GetInstrumentByIdReq dto);
 
     GetInstrumentListByIdRes getListById(GetInstrumentListByIdReq dto);
+
+    CreateInstrumentRes create(CreateInstrumentReq dto);
+
+    EditInstrumentRes edit(EditInstrumentReq dto);
+
+    void delete(DeleteInstrumentReq dto);
 
 }
