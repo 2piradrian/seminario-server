@@ -29,4 +29,8 @@ public interface EventServiceI {
 
     void updateEventsLifeCycle();
 
+    void deleteEventsByUserId(DeleteUserDataReq dto);
+
+    void deleteEventsByPageId(DeletePageEventsReq dto);
+
 }

@@ -396,4 +396,19 @@ public class EventService implements EventServiceI {
 
     }
 
+    @Override
+    public void deleteEventsByUserId(DeleteUserDataReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        this.eventRepository.deleteByAuthorId(dto.getUserId());
+        this.eventRepository.removeAssistantFromAllEvents(dto.getUserId());
+    }
+
+    @Override
+    public void deleteEventsByPageId(DeletePageEventsReq dto) {
+        if (!this.secretKeyHelper.isValid(dto.getSecret())) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        this.eventRepository.deleteByPageId(dto.getPageId());
+    }
+
 }

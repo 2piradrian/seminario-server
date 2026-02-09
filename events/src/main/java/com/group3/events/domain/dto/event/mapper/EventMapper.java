@@ -46,4 +46,12 @@ public class EventMapper {
 
     public static GetAssistantsByEventIdMapper getAssistantsByEventId() { return new GetAssistantsByEventIdMapper(); }
 
+    public static DeleteUserDataMapper deleteUserData() {
+        return new DeleteUserDataMapper();
+    }
+
+    public static DeletePageEventsMapper deletePageEvents() {
+        return new DeletePageEventsMapper();
+    }
+
 }
