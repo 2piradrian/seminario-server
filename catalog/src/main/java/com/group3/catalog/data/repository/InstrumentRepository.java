@@ -42,4 +42,9 @@ public class InstrumentRepository implements InstrumentRepositoryI {
         return InstrumentEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String instrumentId) {
+        this.instrumentRepository.deleteById(instrumentId);
+    }
+
 }

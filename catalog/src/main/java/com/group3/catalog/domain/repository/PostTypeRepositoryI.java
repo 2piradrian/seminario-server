@@ -14,4 +14,6 @@ public interface PostTypeRepositoryI {
 
     PostType update(PostType postType);
 
+    void delete(String postTypeId);
+
 }

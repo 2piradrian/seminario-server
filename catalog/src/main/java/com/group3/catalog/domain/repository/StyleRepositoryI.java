@@ -14,4 +14,6 @@ public interface StyleRepositoryI {
 
     Style update(Style style);
 
+    void delete(String styleId);
+
 }

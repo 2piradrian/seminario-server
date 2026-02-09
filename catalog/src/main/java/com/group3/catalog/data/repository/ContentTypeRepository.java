@@ -42,4 +42,9 @@ public class ContentTypeRepository implements ContentTypeRepositoryI {
         return ContentTypeEntityMapper.toDomain(updated);
     }
 
+    @Override
+    public void delete(String contentTypeId) {
+        this.contentTypeRepository.deleteById(contentTypeId);
+    }
+
 }
