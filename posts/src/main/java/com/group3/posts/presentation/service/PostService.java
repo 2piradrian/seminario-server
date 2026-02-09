@@ -365,6 +365,7 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), post.getId());
         this.commentRepository.deleteAllByPostId(post.getId());
         this.postsRepository.deleteAllUpvoters(post.getId());
         this.postsRepository.deleteAllDownvoters(post.getId());
@@ -377,6 +378,9 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        // Note: Individual post notifications are not deleted here as this is a bulk operation
+        // Consider implementing bulk notification deletion if needed
+        
         this.postsRepository.deleteUpvotesByUserId(dto.getUserId());
         this.postsRepository.deleteDownvotesByUserId(dto.getUserId());
         this.postsRepository.deleteAllByAuthorId(dto.getUserId());
@@ -388,6 +392,9 @@ public class PostService implements PostServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        // Note: Individual post notifications are not deleted here as this is a bulk operation
+        // Consider implementing bulk notification deletion if needed
+        
         this.postsRepository.deleteAllByPageId(dto.getPageId());
     }
 

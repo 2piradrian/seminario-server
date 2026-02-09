@@ -265,6 +265,7 @@ public class CommentService implements CommentServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), comment.getId());
         this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
         this.commentRepository.deleteAllUpvoters(comment.getId());
         this.commentRepository.deleteAllDownvoters(comment.getId());
