@@ -351,7 +351,7 @@ public class EventService implements EventServiceI {
             this.imagesRepository.delete(event.getImageId(), secretKeyHelper.getSecret());
         }
 
-        // TODO: Delete notifications related to this event
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), event.getId());
 
         this.eventRepository.deleteById(event.getId());
     }

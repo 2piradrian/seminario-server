@@ -74,5 +74,6 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     void deleteDownvotesByUserId(@Param("userId") String userId);
 
     void deleteAllByAuthorId(String authorId);
+
     void deleteAllByPageId(String pageId);
 }
