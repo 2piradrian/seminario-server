@@ -25,4 +25,11 @@ public interface PostRepositoryI {
 
     void deleteAllDownvoters(String postId);
 
+    void deleteUpvotesByUserId(String userId);
+
+    void deleteDownvotesByUserId(String userId);
+
+    void deleteAllByAuthorId(String authorId);
+
+    void deleteAllByPageId(String pageId);
 }
