@@ -13,6 +13,7 @@ public class NotificationEntityMapper {
                 notificationModel.getSourceId(),
                 User.builder().id(notificationModel.getCarriedOutById()).build(),
                 notificationModel.getContent(),
+                null,
                 notificationModel.getCreatedAt(),
                 notificationModel.getUpdatedAt(),
                 notificationModel.getIsRead()
