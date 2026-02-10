@@ -303,7 +303,8 @@ public class EventService implements EventServiceI {
             targetId,
             event.getId(),
             user.getId(),
-            NotificationContent.ASSIST.name()
+            NotificationContent.ASSIST.name(),
+            null
         );
 
         return EventMapper.toggleAssist().toResponse(event);
@@ -355,6 +356,25 @@ public class EventService implements EventServiceI {
 
         if (event.getImageId() != null) {
             this.imagesRepository.delete(event.getImageId(), secretKeyHelper.getSecret());
+        }
+
+        String targetId;
+        if (event.getPageProfile() != null && event.getPageProfile().getId() != null) {
+            targetId = event.getPageProfile().getId();
+        }
+        else {
+            targetId = event.getAuthor().getId();
+        }
+
+        if (user.isStaff()){
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    targetId,
+                    event.getId(),
+                    user.getId(),
+                    NotificationContent.MODERATION.name(),
+                    dto.getReasonId()
+            );
         }
 
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), event.getId());

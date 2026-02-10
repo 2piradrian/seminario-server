@@ -7,10 +7,11 @@ import java.util.Map;
 
 public class DeleteMapper {
 
-    public DeleteReviewReq toRequest(String token, String id) {
+    public DeleteReviewReq toRequest(String token, String id, Map<String, Object> payload) {
         return DeleteReviewReq.create(
             id,
-            token
+            token,
+            (String) payload.get("reasonId")
         );
     }
 

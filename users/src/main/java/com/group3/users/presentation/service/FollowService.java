@@ -82,7 +82,8 @@ public class FollowService implements FollowServiceI {
                 dto.getId(), // targetId
                 user.getId(), // sourceId
                 user.getId(),
-                NotificationContent.FOLLOW.name()
+                NotificationContent.FOLLOW.name(),
+                null
         );
     }
 

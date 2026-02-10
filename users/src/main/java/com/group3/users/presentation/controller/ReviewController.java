@@ -53,9 +53,10 @@ public class ReviewController {
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> delete(
             @RequestHeader("Authorization") String token,
-            @PathVariable("reviewId") String reviewId
+            @PathVariable("reviewId") String reviewId,
+            @RequestBody Map<String, Object> payload
     ) {
-        DeleteReviewReq dto = ReviewMapper.delete().toRequest(token, reviewId);
+        DeleteReviewReq dto = ReviewMapper.delete().toRequest(token, reviewId, payload);
         reviewService.delete(dto);
         return ResponseEntity.ok().build();
     }

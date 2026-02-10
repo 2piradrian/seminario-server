@@ -61,9 +61,10 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @PathVariable(value = "commentId") String commentId
+            @PathVariable(value = "commentId") String commentId,
+            @RequestBody Map<String, Object> payload
     ) {
-        DeleteCommentReq dto = CommentMapper.delete().toRequest(token, commentId);
+        DeleteCommentReq dto = CommentMapper.delete().toRequest(token, commentId, payload);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();

@@ -11,12 +11,15 @@ public class DeleteCommentReq {
 
     private final String commentId;
 
-    public DeleteCommentReq(String token, String commentId) {
+    private final String reasonId;
+
+    public DeleteCommentReq(String token, String commentId, String reasonId) {
         this.token = token;
         this.commentId = commentId;
+        this.reasonId = reasonId;
     }
 
-    public static DeleteCommentReq create(String token, String commentId) {
+    public static DeleteCommentReq create(String token, String commentId, String reasonId) {
 
         if (token == null) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -26,6 +29,6 @@ public class DeleteCommentReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        return new DeleteCommentReq(token, commentId);
+        return new DeleteCommentReq(token, commentId, reasonId);
     }
 }

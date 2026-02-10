@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -287,7 +286,8 @@ public class PostService implements PostServiceI {
                     targetId,
                     post.getId(),
                     user.getId(),
-                    NotificationContent.UPVOTE.name()
+                    NotificationContent.UPVOTE.name(),
+                    null
             );
         }
         else if (isNewDownvote) {
@@ -296,7 +296,8 @@ public class PostService implements PostServiceI {
                     targetId,
                     post.getId(),
                     user.getId(),
-                    NotificationContent.DOWNVOTE.name()
+                    NotificationContent.DOWNVOTE.name(),
+                    null
             );
         }
 
@@ -363,6 +364,24 @@ public class PostService implements PostServiceI {
 
         if (!user.canDelete(post)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String targetId;
+        if (post.getPageProfile() != null && post.getPageProfile().getId() != null) {
+            targetId = post.getPageProfile().getId();
+        }
+        else {
+            targetId = post.getAuthor().getId();
+        }
+        if (user.isStaff()) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    targetId,
+                    post.getId(),
+                    user.getId(),
+                    NotificationContent.MODERATION.name(),
+                    dto.getReasonId()
+            );
         }
 
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), post.getId());

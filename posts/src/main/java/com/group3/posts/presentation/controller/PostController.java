@@ -121,9 +121,10 @@ public class PostController {
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> delete(
             @RequestHeader(value = "Authorization") String token,
-            @PathVariable(value = "postId") String postId
+            @PathVariable(value = "postId") String postId,
+            @RequestBody Map<String, Object> payload
     ) {
-        DeletePostReq dto = PostMapper.delete().toRequest(token, postId);
+        DeletePostReq dto = PostMapper.delete().toRequest(token, postId, payload);
         this.service.delete(dto);
 
         return ResponseEntity.ok().build();

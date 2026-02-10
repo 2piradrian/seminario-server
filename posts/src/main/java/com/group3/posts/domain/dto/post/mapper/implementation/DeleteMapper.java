@@ -6,10 +6,11 @@ import java.util.Map;
 
 public class DeleteMapper {
 
-    public DeletePostReq toRequest(String token, String postId) {
+    public DeletePostReq toRequest(String token, String postId, Map<String, Object> payload) {
         return DeletePostReq.create(
             token,
-            postId
+            postId,
+                (String) payload.get("reasonId")
         );
     }
 }

@@ -4,6 +4,8 @@ import com.group3.config.PrefixedUUID;
 import com.group3.entity.*;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
+import com.group3.users.config.helpers.SecretKeyHelper;
+import com.group3.users.data.repository.NotificationsRepository;
 import com.group3.users.data.repository.ReviewRepository;
 import com.group3.users.data.repository.UserProfileRepository;
 import com.group3.users.domain.dto.review.mapper.ReviewMapper;
@@ -29,6 +31,10 @@ public class ReviewService implements ReviewServiceI {
     private final ReviewRepository reviewRepository;
 
     private final UserProfileRepository userProfileRepository;
+
+    private final NotificationsRepository notificationsRepository;
+
+    private final SecretKeyHelper secretKeyHelper;
 
     @Override
     public GetUserByIdRes getById(GetReviewByIdReq dto) {
@@ -106,6 +112,18 @@ public class ReviewService implements ReviewServiceI {
 
         if (!user.canDelete(review))
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        if (user.isStaff()){
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    review.getReviewerUser().getId(),
+                    review.getId(),
+                    user.getId(),
+                    NotificationContent.MODERATION.name(),
+                    dto.getReasonId()
+
+            );
+        }
 
         this.reviewRepository.delete(review.getId());
     }

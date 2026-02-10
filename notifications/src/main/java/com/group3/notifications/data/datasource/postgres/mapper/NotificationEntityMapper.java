@@ -12,9 +12,9 @@ public class NotificationEntityMapper {
                 notificationModel.getId(),
                 notificationModel.getTargetId(),
                 notificationModel.getSourceId(),
+                notificationModel.getReasonId() == null ? null : ModerationReason.builder().id(notificationModel.getReasonId()).build(),
                 User.builder().id(notificationModel.getCarriedOutById()).build(),
                 notificationModel.getContent(),
-                notificationModel.getReasonId() == null ? null : ModerationReason.builder().id(notificationModel.getReasonId()).build(),
                 notificationModel.getCreatedAt(),
                 notificationModel.getUpdatedAt(),
                 notificationModel.getIsRead()
@@ -28,7 +28,7 @@ public class NotificationEntityMapper {
                 notification.getSourceId(),
                 notification.getCarriedOutBy().getId(),
                 notification.getContent(),
-                notification.getModerationReason() == null ? null : notification.getModerationReason().getId(),
+                notification.getReason() == null ? null : notification.getReason().getId(),
                 notification.getCreatedAt(),
                 notification.getUpdatedAt(),
                 notification.getIsRead()
