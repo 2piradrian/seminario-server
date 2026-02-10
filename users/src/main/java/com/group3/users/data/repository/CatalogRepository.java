@@ -54,42 +54,6 @@ public class CatalogRepository implements CatalogRepositoryI {
         return this.repository.getInstrumentListById(instruments).getInstruments();
     }
 
-    // ======== Categories ========
-
-    @Override
-    public List<Category> getAllCategory() {
-        List<Category> categories = this.repository.getAllCategory().getCategories();
-        return categories != null ? categories : List.of();
-    }
-
-    @Override
-    public Category getCategoryById(String categoryId) {
-        return this.repository.getCategoryById(categoryId).getCategory();
-    }
-
-    @Override
-    public List<Category> getCategoryListById(List<String> categories) {
-        return this.repository.getCategoryListById(categories).getCategories();
-    }
-
-    // ======== Content Types ========
-
-    @Override
-    public List<ContentType> getAllContentType() {
-        List<ContentType> contentTypes = this.repository.getAllContentType().getContentTypes();
-        return contentTypes != null ? contentTypes : List.of();
-    }
-
-    @Override
-    public ContentType getContentTypeById(String contentTypeId) {
-        return this.repository.getContentTypeById(contentTypeId).getContentType();
-    }
-
-    @Override
-    public List<ContentType> getContentTypeListById(List<String> contentTypes) {
-        return this.repository.getContentTypeListById(contentTypes).getContentTypes();
-    }
-
     // ======== Moderation Reasons ========
 
     @Override
@@ -101,44 +65,6 @@ public class CatalogRepository implements CatalogRepositoryI {
     @Override
     public ModerationReason getModerationReasonById(String moderationReasonId) {
         return this.repository.getModerationReasonById(moderationReasonId).getModerationReason();
-    }
-
-    // ======== Page Types ========
-
-    @Override
-    public List<PageType> getAllPageType() {
-        List<PageType> pageTypes = this.repository.getAllPageType().getPageTypes();
-        return pageTypes != null ? pageTypes : List.of();
-    }
-
-    @Override
-    public PageType getPageTypeById(String pageTypeId) {
-        return this.repository.getPageTypeById(pageTypeId).getPageType();
-    }
-
-    @Override
-    public List<PageType> getPageTypeListById(List<String> pageTypes) {
-        return this.repository.getPageTypeListById(pageTypes).getPageTypes();
-    }
-
-    // ======== Post Types ========
-
-    @Override
-    public List<PostType> getAllPostType() {
-        List<PostType> postTypes = this.repository.getAllPostType().getPostTypes();
-        return postTypes != null ? postTypes : List.of();
-    }
-
-    @Override
-    public PostType getPostTypeById(String postTypeId) {
-        return this.repository.getPostTypeById(postTypeId).getPostType();
-    }
-
-    @Override
-    public List<PostType> getPostTypeListById(List<String> postTypes) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("ids", postTypes);
-        return this.repository.getPostTypeListById(payload).getPostTypes();
     }
 
 }
