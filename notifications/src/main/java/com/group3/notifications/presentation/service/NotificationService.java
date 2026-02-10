@@ -8,6 +8,7 @@ import com.group3.notifications.domain.dto.notification.mapper.NotificationMappe
 import com.group3.notifications.domain.dto.notification.request.*;
 import com.group3.notifications.domain.dto.notification.response.GetLatestUncheckNotificationRes;
 import com.group3.notifications.domain.dto.notification.response.GetNotificationPageRes;
+import com.group3.notifications.domain.repository.CatalogRepositoryI;
 import com.group3.notifications.domain.repository.NotificationRepositoryI;
 import com.group3.notifications.domain.repository.UserRepositoryI;
 import jakarta.transaction.Transactional;
@@ -28,10 +29,20 @@ public class NotificationService implements NotificationServiceI {
 
     private final UserRepositoryI userRepository;
 
+    private final CatalogRepositoryI catalogRepository;
+
     @Override
     public void create(CreateNotificationReq dto) {
         if (!this.secretKeyHelper.isValid(dto.getSecret())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        if (dto.getContent() == NotificationContent.MODERATION) {
+            if (dto.getReasonId() == null || dto.getReasonId().isEmpty()) {
+                throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
+            }
+            ModerationReason reason = this.catalogRepository.getModerationReasonById(dto.getReasonId());
+            if (reason == null) throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
         Notification existingNotification = notificationRepository.findBy(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
@@ -54,6 +65,10 @@ public class NotificationService implements NotificationServiceI {
         notification.setCarriedOutBy(User.builder().id(dto.getCarriedOutById()).build());
         notification.setContent(dto.getContent());
         notification.setIsRead(false);
+
+        if (dto.getContent() == NotificationContent.MODERATION) {
+            notification.setModerationReason(this.catalogRepository.getModerationReasonById(dto.getReasonId()));
+        }
 
         LocalDateTime now = LocalDateTime.now();
 

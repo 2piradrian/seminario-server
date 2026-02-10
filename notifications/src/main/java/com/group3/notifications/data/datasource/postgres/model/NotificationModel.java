@@ -31,6 +31,9 @@ public class NotificationModel {
     @Enumerated(EnumType.STRING)
     private NotificationContent content;
 
+    @Column
+    private String reasonId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

@@ -1,5 +1,6 @@
 package com.group3.notifications.data.datasource.postgres.mapper;
 
+import com.group3.entity.ModerationReason;
 import com.group3.entity.Notification;
 import com.group3.entity.User;
 import com.group3.notifications.data.datasource.postgres.model.NotificationModel;
@@ -13,7 +14,7 @@ public class NotificationEntityMapper {
                 notificationModel.getSourceId(),
                 User.builder().id(notificationModel.getCarriedOutById()).build(),
                 notificationModel.getContent(),
-                null,
+                notificationModel.getReasonId() == null ? null : ModerationReason.builder().id(notificationModel.getReasonId()).build(),
                 notificationModel.getCreatedAt(),
                 notificationModel.getUpdatedAt(),
                 notificationModel.getIsRead()
@@ -27,6 +28,7 @@ public class NotificationEntityMapper {
                 notification.getSourceId(),
                 notification.getCarriedOutBy().getId(),
                 notification.getContent(),
+                notification.getModerationReason() == null ? null : notification.getModerationReason().getId(),
                 notification.getCreatedAt(),
                 notification.getUpdatedAt(),
                 notification.getIsRead()

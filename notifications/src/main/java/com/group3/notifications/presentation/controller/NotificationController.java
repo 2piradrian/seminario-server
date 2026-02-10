@@ -73,9 +73,9 @@ public class NotificationController {
     public ResponseEntity<?> deleteBySourceId(
         @RequestHeader(value = "Authorization") String token,
         @RequestParam(value = "secret") String secret,
-        @RequestParam(value = "sourceId") String soruceId
+        @RequestParam(value = "sourceId") String sourceId
     ) {
-        DeleteBySourceIdReq dto = NotificationMapper.deleteBySource().toRequest(secret, soruceId ,token);
+        DeleteBySourceIdReq dto = NotificationMapper.deleteBySource().toRequest(secret, sourceId ,token);
         this.service.deleteBySourceId(dto);
         return ResponseEntity.ok().build();
     }

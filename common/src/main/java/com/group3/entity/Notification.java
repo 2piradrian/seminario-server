@@ -19,6 +19,8 @@ public class Notification {
 
     private String sourceId;
 
+    private ModerationReason reason;
+
     private User carriedOutBy;
 
     private NotificationContent content;
