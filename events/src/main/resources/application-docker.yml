@@ -10,10 +10,14 @@ server:
   servlet:
     context-path: /events-server
   port: 0
+  error:
+    include-exception: true
+    include-stacktrace: always
+    include-message: always
 
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
+    com.arena: INFO
 
 eureka:
   instance:

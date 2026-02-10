@@ -13,18 +13,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ErrorHandler.class)
     public ResponseEntity<?> handleErrorHandler(ErrorHandler e) {
-        log.info(e.getMessage());
+        log.error("Unhandled exception", e);
         return ResponseEntity
-            .status(e.getHttpCode())
-            .body(e.toResponse());
+                .status(e.getHttpCode())
+                .body(e.toResponse());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGenericException(Exception e) {
-        log.info(e.getMessage());
+        log.error("Unhandled exception", e);
         return ResponseEntity
-            .status(500)
-            .body(new ErrorHandler(ErrorType.INTERNAL_ERROR).toResponse());
+                .status(500)
+                .body(new ErrorHandler(ErrorType.INTERNAL_ERROR).toResponse());
     }
 
 }
