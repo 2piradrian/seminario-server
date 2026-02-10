@@ -1,6 +1,7 @@
 package com.group3.results.domain.repository;
 
 import com.group3.entity.Follow;
+import com.group3.entity.TimeReportContent;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 
@@ -17,4 +18,6 @@ public interface UserRepositoryI {
     List<Follow> getAllFollowers(String token, String id, String secret);
 
     List<User> getByListOfIds(String token, String secret, Integer page, Integer size, List<String> ids);
+
+    TimeReportContent getGrowthReport(String token, String secret);
 }
