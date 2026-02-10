@@ -2,6 +2,9 @@ package com.group3.posts.domain.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Post;
+import com.group3.entity.TimeReportContent;
+
+import java.time.LocalDateTime;
 
 public interface PostRepositoryI {
 
@@ -32,4 +35,6 @@ public interface PostRepositoryI {
     void deleteAllByAuthorId(String authorId);
 
     void deleteAllByPageId(String pageId);
+
+    TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek);
 }

@@ -398,4 +398,27 @@ public class PostService implements PostServiceI {
         this.postsRepository.deleteAllByPageId(dto.getPageId());
     }
 
+    @Override
+    public GetPostGrowthReportRes getGrowthReport(GetPostGrowthReportReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        boolean isSecretValid = this.secretKeyHelper.isValid(dto.getSecret());
+        if (!isSecretValid) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime lastYear = now.minusYears(1);
+        LocalDateTime lastMonth = now.minusMonths(1);
+        LocalDateTime lastWeek = now.minusWeeks(1);
+
+        TimeReportContent reportContent = this.postsRepository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
+
+        return PostMapper.getPostGrowthReport().toResponse(reportContent);
+    }
+
 }

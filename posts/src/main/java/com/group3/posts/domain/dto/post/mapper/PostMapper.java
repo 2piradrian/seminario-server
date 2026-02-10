@@ -51,4 +51,8 @@ public class PostMapper {
     public static DeletePostsByPageIdMapper deletePostsByPageId() {
         return new DeletePostsByPageIdMapper();
     }
+
+    public static GetPostGrowthReportMapper getPostGrowthReport() {
+        return new GetPostGrowthReportMapper();
+    }
 }

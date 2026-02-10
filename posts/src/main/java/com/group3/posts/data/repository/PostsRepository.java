@@ -2,6 +2,8 @@ package com.group3.posts.data.repository;
 
 import com.group3.entity.*;
 import com.group3.posts.data.datasource.postgres.mapper.PostsEntityMapper;
+
+import java.time.LocalDateTime;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import com.group3.posts.data.datasource.postgres.repository.PostgresPostRepositoryI;
 import com.group3.posts.domain.repository.PostRepositoryI;
@@ -168,5 +170,14 @@ public class PostsRepository implements PostRepositoryI {
     @Override
     public void deleteAllByPageId(String pageId) {
         this.repository.deleteAllByPageId(pageId);
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek) {
+        return this.repository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
     }
 }

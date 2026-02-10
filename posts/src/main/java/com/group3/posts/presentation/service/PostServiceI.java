@@ -29,4 +29,6 @@ public interface PostServiceI {
 
     void deletePostsByPageId(DeletePostsByPageIdReq dto);
 
+    GetPostGrowthReportRes getGrowthReport(GetPostGrowthReportReq dto);
+
 }

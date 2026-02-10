@@ -1,5 +1,6 @@
 package com.group3.posts.data.datasource.postgres.repository;
 
+import com.group3.entity.TimeReportContent;
 import com.group3.posts.data.datasource.postgres.model.PostModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,9 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+
 public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String> {
-
-
 
     @Query("""
         SELECT p FROM PostModel p
@@ -76,4 +77,19 @@ public interface PostgresPostRepositoryI extends JpaRepository<PostModel, String
     void deleteAllByAuthorId(String authorId);
 
     void deleteAllByPageId(String pageId);
+
+    @Query("""
+        SELECT new com.group3.entity.TimeReportContent(
+            SUM(CASE WHEN p.createdAt >= :yearStart THEN 1L ELSE 0L END),
+            SUM(CASE WHEN p.createdAt >= :monthStart THEN 1L ELSE 0L END),
+            SUM(CASE WHEN p.createdAt >= :weekStart THEN 1L ELSE 0L END)
+        )
+        FROM PostModel p
+        WHERE p.createdAt >= :yearStart
+        """)
+    TimeReportContent getGrowthReport(
+        @Param("yearStart") LocalDateTime yearStart,
+        @Param("monthStart") LocalDateTime monthStart,
+        @Param("weekStart") LocalDateTime weekStart
+    );
 }
