@@ -21,4 +21,6 @@ public interface UserServiceI {
 
     void update(EditUserReq dto);
 
+    GetUserGrowthReportRes getGrowthReport(GetUserGrowthReportReq dto);
+
 }

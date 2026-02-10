@@ -10,15 +10,14 @@ import com.group3.users.domain.dto.auth.response.AuthUserRes;
 import com.group3.users.domain.dto.follow.request.GetAllFollowersReq;
 import com.group3.users.domain.dto.follow.request.GetAllFollowingReq;
 import com.group3.users.domain.dto.user.mapper.UserMapper;
-import com.group3.users.domain.dto.user.mapper.implementation.GetByListOfIdsPageMapper;
 import com.group3.users.domain.dto.user.request.*;
 import com.group3.users.domain.dto.user.response.*;
-import com.group3.users.domain.repository.NotificationsRepositoryI;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -336,6 +335,29 @@ public class UserService implements UserServiceI {
         userProfile.setLongDescription(dto.getLongDescription());
 
         this.userProfileRepository.update(userProfile);
+    }
+
+    @Override
+    public GetUserGrowthReportRes getGrowthReport(GetUserGrowthReportReq dto) {
+        User user = this.authService.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        boolean isSecretValid = this.secretKeyHelper.isValid(dto.getSecret());
+        if (!isSecretValid) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime lastYear = now.minusYears(1);
+        LocalDateTime lastMonth = now.minusMonths(1);
+        LocalDateTime lastWeek = now.minusWeeks(1);
+
+        TimeReportContent reportContent = this.userProfileRepository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
+
+        return UserMapper.getUserGrowthReport().toResponse(reportContent);
     }
 
 }

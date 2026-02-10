@@ -93,4 +93,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/growth-report")
+    public ResponseEntity<?> getGrowthReport(
+        @RequestHeader(value = "Authorization") String token,
+        @RequestParam(value = "secret") String secret
+    ) {
+        GetUserGrowthReportReq dto = UserMapper.getUserGrowthReport().toRequest(token, secret);
+        return ResponseEntity.ok(this.userService.getGrowthReport(dto));
+    }
+
 }

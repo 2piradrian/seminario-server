@@ -2,6 +2,7 @@ package com.group3.users.data.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.Status;
+import com.group3.entity.TimeReportContent;
 import com.group3.entity.UserProfile;
 import com.group3.users.data.datasource.postgres.mapper.UserProfileEntityMapper;
 import com.group3.users.data.datasource.postgres.model.UserProfileModel;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,6 +65,15 @@ public class UserProfileRepository implements UserProfileRepositoryI {
         UserProfileModel updated = this.repository.save(userProfileModel);
 
         return UserProfileEntityMapper.toDomain(updated);
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek) {
+        return this.repository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
     }
 
 }

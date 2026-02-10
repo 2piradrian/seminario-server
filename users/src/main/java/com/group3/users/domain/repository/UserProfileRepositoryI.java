@@ -1,7 +1,9 @@
 package com.group3.users.domain.repository;
 
+import com.group3.entity.TimeReportContent;
 import com.group3.entity.UserProfile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -15,4 +17,5 @@ public interface UserProfileRepositoryI {
 
     UserProfile update(UserProfile user);
 
+    TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek);
 }

@@ -30,4 +30,6 @@ public class UserMapper {
 
     public static GetByListOfIdsPageMapper getByListOfIdsPage() { return new GetByListOfIdsPageMapper(); }
 
+    public static GetUserGrowthReportMapper getUserGrowthReport() { return new GetUserGrowthReportMapper(); }
+
 }
