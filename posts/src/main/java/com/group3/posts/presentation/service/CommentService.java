@@ -102,7 +102,8 @@ public class CommentService implements CommentServiceI {
                 targetId,
                 post.getId(),
                 author.getId(),
-                NotificationContent.COMMENT.name()
+                NotificationContent.COMMENT.name(),
+                null
         );
 
         return CommentMapper.create().toResponse(comment);
@@ -219,7 +220,8 @@ public class CommentService implements CommentServiceI {
                     targetId,
                     post.getId(),
                     user.getId(),
-                    NotificationContent.UPVOTE.name()
+                    NotificationContent.UPVOTE.name(),
+                    null
             );
         }
         else if (isNewDownvote) {
@@ -228,7 +230,8 @@ public class CommentService implements CommentServiceI {
                     targetId,
                     post.getId(),
                     user.getId(),
-                    NotificationContent.DOWNVOTE.name()
+                    NotificationContent.DOWNVOTE.name(),
+                    null
             );
         }
 
@@ -263,6 +266,25 @@ public class CommentService implements CommentServiceI {
 
         if (!user.canDelete(comment)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
+
+        String targetId;
+        if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
+            targetId = comment.getPageProfile().getId();
+        }
+        else {
+            targetId = comment.getAuthor().getId();
+        }
+
+        if (user.isStaff()) {
+            this.notificationsRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    targetId,
+                    comment.getId(),
+                    user.getId(),
+                    NotificationContent.MODERATION.name(),
+                    dto.getReasonId()
+            );
         }
 
         this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), comment.getId());

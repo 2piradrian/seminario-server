@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class DeleteMapper {
 
-    public DeleteEventReq toRequest(String token, String eventId) {
+    public DeleteEventReq toRequest(String token, String eventId, String reasonId) {
         return DeleteEventReq.create(
             token,
-            eventId
+            eventId, reasonId
         );
     }
 }
