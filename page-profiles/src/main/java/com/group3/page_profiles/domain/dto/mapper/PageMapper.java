@@ -43,5 +43,9 @@ public class PageMapper {
     public static DeleteUserPagesMapper deleteUserPages() {
         return new DeleteUserPagesMapper();
     }
+
+    public static GetPageGrowthReportMapper getPageGrowthReport() {
+        return new GetPageGrowthReportMapper();
+    }
     
 }

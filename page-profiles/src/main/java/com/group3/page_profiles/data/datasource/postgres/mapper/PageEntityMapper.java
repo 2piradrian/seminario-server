@@ -6,6 +6,8 @@ import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.page_profiles.data.datasource.postgres.model.PageProfileModel;
 
+import java.time.LocalDateTime;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,44 +18,46 @@ public class PageEntityMapper {
         User owner = new User();
         owner.setId(page.getOwnerId());
 
-        return new PageProfile(
-            page.getId(),
-            page.getName(),
-            page.getPortraitImage(),
-            page.getProfileImage(),
-            page.getShortDescription(),
-            page.getLongDescription(),
-            owner,
-            page.getMembers()
+        return PageProfile.builder()
+            .id(page.getId())
+            .name(page.getName())
+            .portraitImage(page.getPortraitImage())
+            .profileImage(page.getProfileImage())
+            .shortDescription(page.getShortDescription())
+            .longDescription(page.getLongDescription())
+            .owner(owner)
+            .members(page.getMembers()
                 .stream()
                 .map(id -> {
                     User member = new User();
                     member.setId(id);
                     return member;
                 })
-                .collect(Collectors.toList()),
-            page.getStatus(),
-            new PageType(page.getPageTypeId(), null),
-            false
-        );
+                .collect(Collectors.toList()))
+            .status(page.getStatus())
+            .pageType(new PageType(page.getPageTypeId(), null))
+            .isFollowing(false)
+            .createdAt(page.getCreatedAt())
+            .build();
     }
 
     public static PageProfileModel toModel(PageProfile page) {
-        return new PageProfileModel(
-            page.getId(),
-            page.getName(),
-            page.getPortraitImage(),
-            page.getProfileImage(),
-            page.getShortDescription(),
-            page.getLongDescription(),
-            page.getOwner().getId(),
-            page.getMembers()
-                .stream()
-                .map(User::getId)
-                .collect(Collectors.toList()),
-            page.getStatus(),
-            page.getPageType().getId()
-        );
+        PageProfileModel model = new PageProfileModel();
+        model.setId(page.getId());
+        model.setName(page.getName());
+        model.setPortraitImage(page.getPortraitImage());
+        model.setProfileImage(page.getProfileImage());
+        model.setShortDescription(page.getShortDescription());
+        model.setLongDescription(page.getLongDescription());
+        model.setOwnerId(page.getOwner().getId());
+        model.setMembers(page.getMembers()
+            .stream()
+            .map(User::getId)
+            .collect(Collectors.toList()));
+        model.setStatus(page.getStatus());
+        model.setPageTypeId(page.getPageType().getId());
+        model.setCreatedAt(page.getCreatedAt());
+        return model;
     }
 
         public static List<PageProfile> toDomain(List<PageProfileModel> page) {

@@ -25,4 +25,6 @@ public interface PageProfileServiceI {
 
     void deleteUserPages(DeleteUserPagesReq dto);
 
+    GetPageGrowthReportRes getGrowthReport(GetPageGrowthReportReq dto);
+
 }

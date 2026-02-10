@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class PageProfileService implements PageProfileServiceI {
         page.setShortDescription(verse.getRandomVerse());
         page.setLongDescription(verse.getRandomVerse());
         page.setStatus(Status.ACTIVE);
+        page.setCreatedAt(LocalDateTime.now());
 
         PageProfile newPage = this.pageProfileRepository.save(page);
         return PageMapper.create().toResponse(newPage);
@@ -365,6 +367,29 @@ public class PageProfileService implements PageProfileServiceI {
         this.pageProfileRepository.deleteByOwnerId(dto.getUserId());
         
         this.pageProfileRepository.removeMemberFromAllPages(dto.getUserId());
+    }
+
+    @Override
+    public GetPageGrowthReportRes getGrowthReport(GetPageGrowthReportReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        boolean isSecretValid = this.secretKeyHelper.isValid(dto.getSecret());
+        if (!isSecretValid) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime lastYear = now.minusYears(1);
+        LocalDateTime lastMonth = now.minusMonths(1);
+        LocalDateTime lastWeek = now.minusWeeks(1);
+
+        TimeReportContent reportContent = this.pageProfileRepository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
+
+        return PageMapper.getPageGrowthReport().toResponse(reportContent);
     }
 
 }

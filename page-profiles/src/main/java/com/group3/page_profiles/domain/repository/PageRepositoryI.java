@@ -2,9 +2,11 @@ package com.group3.page_profiles.domain.repository;
 
 import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
-import com.group3.entity.UserProfile;
+import com.group3.entity.TimeReportContent;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 public interface PageRepositoryI {
 
@@ -27,5 +29,7 @@ public interface PageRepositoryI {
     void deleteByOwnerId(String ownerId);
 
     void removeMemberFromAllPages(String userId);
+
+    TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek);
     
 }

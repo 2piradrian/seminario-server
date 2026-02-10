@@ -123,5 +123,14 @@ public class PageProfileController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/growth-report")
+    public ResponseEntity<?> getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
+    ) {
+        GetPageGrowthReportReq dto = PageMapper.getPageGrowthReport().toRequest(token, secret);
+        return ResponseEntity.ok(this.pageService.getGrowthReport(dto));
+    }
     
 }

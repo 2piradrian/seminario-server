@@ -3,6 +3,7 @@ package com.group3.page_profiles.data.repository;
 import com.group3.entity.PageContent;
 import com.group3.entity.PageProfile;
 import com.group3.entity.Status;
+import com.group3.entity.TimeReportContent;
 import com.group3.page_profiles.data.datasource.postgres.mapper.PageEntityMapper;
 import com.group3.page_profiles.data.datasource.postgres.model.PageProfileModel;
 import com.group3.page_profiles.data.datasource.postgres.repository.PostgresPageProfileRepositoryI;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,6 +120,15 @@ public class PageProfileRepository implements PageRepositoryI {
     @Override
     public void removeMemberFromAllPages(String userId) {
         this.repository.removeMemberFromAllPages(userId);
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek) {
+        return this.repository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
     }
 
 }
