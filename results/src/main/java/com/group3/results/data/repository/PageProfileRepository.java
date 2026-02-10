@@ -1,10 +1,12 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.PageProfile;
+import com.group3.entity.TimeReportContent;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.pages_server.repository.PageProfilesServerRepositoryI;
 import com.group3.results.data.datasource.pages_server.responses.GetPageByIdRes;
+import com.group3.results.data.datasource.pages_server.responses.GetPageGrowthReportRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageListByIdsRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
 import com.group3.results.domain.repository.PageRepositoryI;
@@ -76,6 +78,17 @@ public class PageProfileRepository implements PageRepositoryI {
             }
         }
         return pages;
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(String token, String secret) {
+        GetPageGrowthReportRes response = this.repository.getGrowthReport(token, secret);
+
+        return TimeReportContent.builder()
+                .yearlyReport(response.getYearlyCreatedPages())
+                .monthlyReport(response.getMonthlyCreatedPages())
+                .weeklyReport(response.getWeeklyCreatedPages())
+                .build();
     }
 
 }

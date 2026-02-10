@@ -1,6 +1,7 @@
 package com.group3.results.data.datasource.pages_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.pages_server.responses.GetPageGrowthReportRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageByIdRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageListByIdsRes;
 import com.group3.results.data.datasource.pages_server.responses.GetPageProfilePageFilteredRes;
@@ -36,6 +37,12 @@ public interface PageProfilesServerRepositoryI {
     GetPageListByIdsRes getListByIds(
         @RequestParam(value = "pageIds") List<String> pageIds,
         @RequestParam(value = "secret") String secret
+    );
+
+    @GetMapping("/api/page-profiles/growth-report")
+    GetPageGrowthReportRes getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
     );
 
 }

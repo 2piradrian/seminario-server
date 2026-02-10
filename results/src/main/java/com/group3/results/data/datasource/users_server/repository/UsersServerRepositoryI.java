@@ -1,6 +1,7 @@
 package com.group3.results.data.datasource.users_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.users_server.responses.GetUserGrowthReportRes;
 import com.group3.results.data.datasource.users_server.responses.*;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -56,6 +57,12 @@ public interface UsersServerRepositoryI {
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "ids", required = false) List<String> ids
+    );
+
+    @GetMapping("/api/users/growth-report")
+    GetUserGrowthReportRes getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
     );
 
 }

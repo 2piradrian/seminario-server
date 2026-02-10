@@ -1,15 +1,13 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.Follow;
+import com.group3.entity.TimeReportContent;
 import com.group3.entity.User;
 import com.group3.entity.UserProfile;
 import com.group3.error.ErrorHandler;
 import com.group3.error.ErrorType;
 import com.group3.results.data.datasource.users_server.repository.UsersServerRepositoryI;
-import com.group3.results.data.datasource.users_server.responses.AuthUserRes;
-import com.group3.results.data.datasource.users_server.responses.GetByListOfIdsPageRes;
-import com.group3.results.data.datasource.users_server.responses.GetUserByIdRes;
-import com.group3.results.data.datasource.users_server.responses.GetUserPageFilteredRes;
+import com.group3.results.data.datasource.users_server.responses.*;
 import com.group3.results.domain.repository.UserRepositoryI;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
@@ -129,6 +127,17 @@ public class UserRepository implements UserRepositoryI {
             }
         }
         return users;
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(String token, String secret) {
+        GetUserGrowthReportRes response = this.repository.getGrowthReport(token, secret);
+
+        return TimeReportContent.builder()
+                .yearlyReport(response.getYearlyRegisteredUsers())
+                .monthlyReport(response.getMonthlyRegisteredUsers())
+                .weeklyReport(response.getWeeklyRegisteredUsers())
+                .build();
     }
 
 }

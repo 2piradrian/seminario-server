@@ -1,9 +1,11 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.Post;
+import com.group3.entity.TimeReportContent;
 import com.group3.results.data.datasource.post_server.repository.PostServerRepositoryI;
 import com.group3.results.data.datasource.post_server.responses.GetFilteredPostPageRes;
 import com.group3.results.data.datasource.post_server.responses.GetOnlyPagePostPageRes;
+import com.group3.results.data.datasource.post_server.responses.GetPostGrowthReportRes;
 import com.group3.results.domain.repository.PostRepositoryI;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -32,6 +34,17 @@ public class PostRepository implements PostRepositoryI {
         );
 
         return response.getPosts();
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(String token, String secret) {
+        GetPostGrowthReportRes response = this.repository.getGrowthReport(token, secret);
+
+        return TimeReportContent.builder()
+                .yearlyReport(response.getYearlyCreatedPosts())
+                .monthlyReport(response.getMonthlyCreatedPosts())
+                .weeklyReport(response.getWeeklyCreatedPosts())
+                .build();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.group3.results.data.datasource.event_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.event_server.responses.GetEventGrowthReportRes;
 import com.group3.results.data.datasource.event_server.responses.GetOnlyPageEventPageRes;
 import com.group3.results.data.datasource.event_server.responses.GetFilteredEventPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
@@ -28,6 +29,12 @@ public interface EventServerRepositoryI {
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
+    );
+
+    @GetMapping("/api/events/growth-report")
+    GetEventGrowthReportRes getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
     );
 
 }

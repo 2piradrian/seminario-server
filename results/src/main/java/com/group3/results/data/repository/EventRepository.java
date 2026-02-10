@@ -1,7 +1,9 @@
 package com.group3.results.data.repository;
 
 import com.group3.entity.Event;
+import com.group3.entity.TimeReportContent;
 import com.group3.results.data.datasource.event_server.repository.EventServerRepositoryI;
+import com.group3.results.data.datasource.event_server.responses.GetEventGrowthReportRes;
 import com.group3.results.data.datasource.event_server.responses.GetOnlyPageEventPageRes;
 import com.group3.results.data.datasource.event_server.responses.GetFilteredEventPageRes;
 import com.group3.results.domain.repository.EventRepositoryI;
@@ -32,6 +34,17 @@ public class EventRepository implements EventRepositoryI {
         );
 
         return response.getEvents();
+    }
+
+    @Override
+    public TimeReportContent getGrowthReport(String token, String secret) {
+        GetEventGrowthReportRes response = this.repository.getGrowthReport(token, secret);
+
+        return TimeReportContent.builder()
+                .yearlyReport(response.getYearlyCreatedEvents())
+                .monthlyReport(response.getMonthlyCreatedEvents())
+                .weeklyReport(response.getWeeklyCreatedEvents())
+                .build();
     }
 
 }

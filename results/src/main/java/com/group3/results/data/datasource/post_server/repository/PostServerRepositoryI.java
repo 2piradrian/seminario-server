@@ -1,6 +1,7 @@
 package com.group3.results.data.datasource.post_server.repository;
 
 import com.group3.results.config.beans.LoadBalancerConfiguration;
+import com.group3.results.data.datasource.post_server.responses.GetPostGrowthReportRes;
 import com.group3.results.data.datasource.post_server.responses.GetFilteredPostPageRes;
 import com.group3.results.data.datasource.post_server.responses.GetOnlyPagePostPageRes;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
@@ -27,6 +28,12 @@ public interface PostServerRepositoryI {
         @RequestParam(value = "secret") String secret,
         @RequestParam(value = "page") Integer page,
         @RequestParam(value = "size") Integer size
+    );
+
+    @GetMapping("/api/posts/growth-report")
+    GetPostGrowthReportRes getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
     );
 
 }
