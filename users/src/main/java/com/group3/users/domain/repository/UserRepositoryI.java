@@ -12,6 +12,8 @@ public interface UserRepositoryI {
 
     User getByEmail(String email);
 
+    User getByEmailIgnoreStatus(String email);
+
     List<User> getAllStaff();
 
     PageContent<User> getFilteredPage(String fullname, List<String> styles, List<String> instruments, Integer page, Integer size);

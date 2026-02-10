@@ -16,7 +16,8 @@ public class PrefixedUUID {
         COMMENT((byte) 0b0100),
         IMAGE((byte) 0b0101),
         EVENT((byte) 0b0110),
-        CHAT_MESSAGE((byte) 0b0111);
+        CHAT_MESSAGE((byte) 0b0111),
+        REVIEW((byte) 0b1000);
 
         private final byte prefix;
 
