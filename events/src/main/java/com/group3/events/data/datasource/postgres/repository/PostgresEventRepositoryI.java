@@ -2,6 +2,7 @@ package com.group3.events.data.datasource.postgres.repository;
 
 import com.group3.entity.EventStatus;
 import com.group3.entity.Status;
+import com.group3.entity.TimeReportContent;
 import com.group3.events.data.datasource.postgres.model.EventModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -126,5 +127,20 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     @Modifying
     @Query(value = "DELETE FROM event_assist WHERE profile_id = :userId", nativeQuery = true)
     void removeAssistantFromAllEvents(@Param("userId") String userId);
+
+    @Query("""
+        SELECT new com.group3.entity.TimeReportContent(
+            SUM(CASE WHEN e.createdAt >= :yearStart THEN 1L ELSE 0L END),
+            SUM(CASE WHEN e.createdAt >= :monthStart THEN 1L ELSE 0L END),
+            SUM(CASE WHEN e.createdAt >= :weekStart THEN 1L ELSE 0L END)
+        )
+        FROM EventModel e
+        WHERE e.createdAt >= :yearStart
+        """)
+    TimeReportContent getGrowthReport(
+        @Param("yearStart") LocalDateTime yearStart,
+        @Param("monthStart") LocalDateTime monthStart,
+        @Param("weekStart") LocalDateTime weekStart
+    );
 
 }

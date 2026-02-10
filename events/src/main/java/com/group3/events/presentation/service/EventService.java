@@ -417,4 +417,27 @@ public class EventService implements EventServiceI {
         this.eventRepository.deleteByPageId(dto.getPageId());
     }
 
+    @Override
+    public GetEventGrowthReportRes getGrowthReport(GetEventGrowthReportReq dto) {
+        User user = this.userRepository.auth(dto.getToken());
+        if (user == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        boolean isSecretValid = this.secretKeyHelper.isValid(dto.getSecret());
+        if (!isSecretValid) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime lastYear = now.minusYears(1);
+        LocalDateTime lastMonth = now.minusMonths(1);
+        LocalDateTime lastWeek = now.minusWeeks(1);
+
+        TimeReportContent reportContent = this.eventRepository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
+
+        return EventMapper.getEventGrowthReport().toResponse(reportContent);
+    }
+
 }

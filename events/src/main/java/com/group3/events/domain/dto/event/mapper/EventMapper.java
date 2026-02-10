@@ -54,4 +54,8 @@ public class EventMapper {
         return new DeletePageEventsMapper();
     }
 
+    public static GetEventGrowthReportMapper getEventGrowthReport() {
+        return new GetEventGrowthReportMapper();
+    }
+
 }

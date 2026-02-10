@@ -2,6 +2,7 @@ package com.group3.events.domain.repository;
 
 import com.group3.entity.Event;
 import com.group3.entity.PageContent;
+import com.group3.entity.TimeReportContent;
 import com.group3.entity.User;
 
 import java.time.LocalDateTime;
@@ -37,5 +38,7 @@ public interface EventRepositoryI {
     void deleteByPageId(String pageId);
 
     void removeAssistantFromAllEvents(String userId);
+
+    TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek);
 
 }

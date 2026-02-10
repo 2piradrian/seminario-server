@@ -158,4 +158,13 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/growth-report")
+    public ResponseEntity<?> getGrowthReport(
+            @RequestHeader(value = "Authorization") String token,
+            @RequestParam(value = "secret") String secret
+    ) {
+        GetEventGrowthReportReq dto = EventMapper.getEventGrowthReport().toRequest(token, secret);
+        return ResponseEntity.ok(this.service.getGrowthReport(dto));
+    }
+
 }

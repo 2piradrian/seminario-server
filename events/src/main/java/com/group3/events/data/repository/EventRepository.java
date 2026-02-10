@@ -190,4 +190,13 @@ public class EventRepository implements EventRepositoryI {
         this.repository.removeAssistantFromAllEvents(userId);
     }
 
+    @Override
+    public TimeReportContent getGrowthReport(LocalDateTime lastYear, LocalDateTime lastMonth, LocalDateTime lastWeek) {
+        return this.repository.getGrowthReport(
+            lastYear,
+            lastMonth,
+            lastWeek
+        );
+    }
+
 }

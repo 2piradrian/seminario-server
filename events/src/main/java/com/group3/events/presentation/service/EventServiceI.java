@@ -33,4 +33,6 @@ public interface EventServiceI {
 
     void deleteEventsByPageId(DeletePageEventsReq dto);
 
+    GetEventGrowthReportRes getGrowthReport(GetEventGrowthReportReq dto);
+
 }
