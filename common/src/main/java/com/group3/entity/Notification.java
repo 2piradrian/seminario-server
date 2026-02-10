@@ -25,8 +25,6 @@ public class Notification {
 
     private NotificationContent content;
 
-    private ModerationReason moderationReason;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
