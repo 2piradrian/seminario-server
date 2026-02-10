@@ -30,6 +30,10 @@ public class User {
                 .anyMatch(member -> member.getId().equals(this.getId()));
     }
 
+    public boolean isStaff(){
+        return this.role.equals(Role.ADMIN) || this.role.equals(Role.MODERATOR);
+    }
+
     public boolean canDelete(Post post){
         return this.role.canDelete() ||
         (post.getAuthor() != null && post.getAuthor().getId().equals(this.getId())) ||
