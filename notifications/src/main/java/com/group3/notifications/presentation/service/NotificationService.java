@@ -67,7 +67,7 @@ public class NotificationService implements NotificationServiceI {
         notification.setIsRead(false);
 
         if (dto.getContent() == NotificationContent.MODERATION) {
-            notification.setModerationReason(this.catalogRepository.getModerationReasonById(dto.getReasonId()));
+            notification.setReason(this.catalogRepository.getModerationReasonById(dto.getReasonId()));
         }
 
         LocalDateTime now = LocalDateTime.now();
