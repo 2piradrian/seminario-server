@@ -11,7 +11,7 @@ public class BanUserMapper {
                 token,
                 (String) payload.get("userId"),
                 (String) payload.get("reasonId")
-                );
+        );
     }
 
 }
