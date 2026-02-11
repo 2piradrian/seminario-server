@@ -18,9 +18,7 @@ public class BannedUserModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "banned_by_id")
-    private UserModel bannedBy;
+    private String bannedBy;
 
     @Column(unique = true)
     private String email;
