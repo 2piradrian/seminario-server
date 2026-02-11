@@ -15,7 +15,7 @@ public class BannedUserEntityMapper {
 
         return new BannedUser(
                 bannedUserModel.getId(),
-                UserEntityMapper.toDomain(bannedUserModel.getBannedBy()),
+                bannedUserModel.getBannedBy(),
                 bannedUserModel.getEmail(),
                 ModerationReason.builder().id(bannedUserModel.getReasonId()).build(),
                 bannedUserModel.getCreatedAt(),
@@ -28,7 +28,7 @@ public class BannedUserEntityMapper {
 
         return new BannedUserModel(
                 bannedUser.getId(),
-                UserEntityMapper.toModel(bannedUser.getBannedBy()),
+                bannedUser.getBannedBy(),
                 bannedUser.getEmail(),
                 bannedUser.getReason().getId(),
                 bannedUser.getCreatedAt(),

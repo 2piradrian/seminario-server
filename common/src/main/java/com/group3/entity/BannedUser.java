@@ -16,7 +16,7 @@ public class BannedUser {
 
     private String id;
 
-    private User bannedBy;
+    private String bannedBy;
 
     private String email;
 

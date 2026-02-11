@@ -7,7 +7,6 @@ import com.group3.users.domain.dto.banneduser.mapper.BannedUserMapper;
 import com.group3.users.domain.dto.banneduser.request.BanUserReq;
 import com.group3.users.domain.dto.banneduser.request.GetAllBannedUserPageReq;
 import com.group3.users.domain.dto.banneduser.response.GetAllBannedUserPageRes;
-import com.group3.users.domain.dto.user.request.DeleteUserReq;
 import com.group3.users.domain.repository.BannedRepositoryI;
 import com.group3.users.domain.repository.CatalogRepositoryI;
 import com.group3.users.domain.repository.UserRepositoryI;
@@ -48,7 +47,7 @@ public class BannedService implements BannedServiceI {
         }
 
         BannedUser bannedUser = new BannedUser();
-        bannedUser.setBannedBy(adminUser);
+        bannedUser.setBannedBy(adminUser.getEmail());
         bannedUser.setEmail(userToBan.getEmail());
         bannedUser.setReason(reason);
         bannedUser.setCreatedAt(LocalDateTime.now());

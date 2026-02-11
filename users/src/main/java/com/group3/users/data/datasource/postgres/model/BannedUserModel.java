@@ -15,11 +15,10 @@ import java.time.LocalDateTime;
 public class BannedUserModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "banned_by_id")
-    private UserModel bannedBy;
+    private String bannedBy;
 
     @Column(unique = true)
     private String email;

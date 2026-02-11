@@ -31,6 +31,9 @@ public class User {
     }
 
     public boolean isStaff(){
+        if (this.role == null) {
+            return false;
+        }
         return this.role.equals(Role.ADMIN) || this.role.equals(Role.MODERATOR);
     }
 

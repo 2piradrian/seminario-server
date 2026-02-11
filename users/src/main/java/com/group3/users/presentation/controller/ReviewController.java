@@ -32,7 +32,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateReviewRes> create(
+    public ResponseEntity<?> create(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {

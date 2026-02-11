@@ -9,26 +9,27 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/banned")
 @AllArgsConstructor
+@RequestMapping("/api/banned")
 public class BannedController {
 
     private final BannedServiceI bannedService;
 
     @PostMapping("/ban-user")
-    public ResponseEntity<Void> banUser(
+    public ResponseEntity<?> banUser(
             @RequestHeader("Authorization") String token,
-            @RequestParam String userId,
-            @RequestParam String reason
+            @RequestBody Map<String, Object> payload
     ) {
-        BanUserReq banUserReq = BannedUserMapper.banUser().toRequest(token, userId, reason);
+        BanUserReq banUserReq = BannedUserMapper.banUser().toRequest(token, payload);
         bannedService.banUser(banUserReq);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-all-banned-user-page")
-    public ResponseEntity<GetAllBannedUserPageRes> getAllBannedUsers(
+    public ResponseEntity<?> getAllBannedUsers(
             @RequestHeader("Authorization") String token,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size

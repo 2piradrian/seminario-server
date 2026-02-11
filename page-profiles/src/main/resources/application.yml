@@ -13,10 +13,14 @@ server:
     servlet:
         context-path: /page-profiles-server
     port: 0
+    error:
+        include-exception: true
+        include-stacktrace: always
+        include-message: always
 
 logging:
     level:
-        org.springframework.cloud.gateway: DEBUG
+        com.group3: INFO
 
 eureka:
     instance:
