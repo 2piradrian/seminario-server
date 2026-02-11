@@ -61,10 +61,15 @@ public class ReviewService implements ReviewServiceI {
 
         Review review = new Review();
 
-        if(dto.getReviewedUserId().equals(user.getId()))
+        if(dto.getReviewedUserId().equals(user.getId())) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        
-        review.setReviewedId(PrefixedUUID.generate(PrefixedUUID.EntityType.REVIEW).toString());
+        }
+
+        UserProfile reviewedUser = this.userProfileRepository.getById(dto.getReviewedUserId());
+        if (reviewedUser == null) throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
+
+        review.setId(PrefixedUUID.generate(PrefixedUUID.EntityType.REVIEW).toString());
+        review.setReviewedId(dto.getReviewedUserId());
         review.setReviewerUser(userProfileRepository.getById(user.getId()));
         review.setReview(dto.getReview());
         review.setRating(dto.getRating());
