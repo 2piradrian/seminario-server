@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class ReviewModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "reviewed_id", nullable = false)
