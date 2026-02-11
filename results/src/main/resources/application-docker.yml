@@ -17,7 +17,7 @@ server:
 
 logging:
   level:
-    com.arena: INFO
+    com.group3: INFO
 
 eureka:
   instance:
