@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/results/reports")
 @RequiredArgsConstructor
 public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("/get-report")
-    public ResponseEntity<GetReportRes> getReport(
-            @RequestHeader("Authorization") String token
+    @GetMapping()
+    public ResponseEntity<?> getReport(
+            @RequestHeader(value = "Authorization") String token
     ) {
         GetReportReq dto = ResultsMapper.getReport().toRequest(token);
         return ResponseEntity.ok(this.reportService.getReport(dto));
