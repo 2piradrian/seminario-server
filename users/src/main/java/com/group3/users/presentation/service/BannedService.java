@@ -7,7 +7,6 @@ import com.group3.users.domain.dto.banneduser.mapper.BannedUserMapper;
 import com.group3.users.domain.dto.banneduser.request.BanUserReq;
 import com.group3.users.domain.dto.banneduser.request.GetAllBannedUserPageReq;
 import com.group3.users.domain.dto.banneduser.response.GetAllBannedUserPageRes;
-import com.group3.users.domain.dto.user.request.DeleteUserReq;
 import com.group3.users.domain.repository.BannedRepositoryI;
 import com.group3.users.domain.repository.CatalogRepositoryI;
 import com.group3.users.domain.repository.UserRepositoryI;
@@ -31,7 +30,11 @@ public class BannedService implements BannedServiceI {
     private final UserService userService;
 
     @Override
-    public void banUser(BanUserReq dto) {
+    public void banUser(BanUserReq dto) throws Exception {
+        if (true) {
+            throw new Exception(dto.toString());
+        }
+
         User adminUser = this.authService.auth(dto.getToken());
         if (adminUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
