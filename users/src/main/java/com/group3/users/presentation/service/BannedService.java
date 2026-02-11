@@ -31,10 +31,6 @@ public class BannedService implements BannedServiceI {
 
     @Override
     public void banUser(BanUserReq dto) throws Exception {
-        if (true) {
-            throw new Exception(dto.toString());
-        }
-
         User adminUser = this.authService.auth(dto.getToken());
         if (adminUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
 
