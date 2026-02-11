@@ -14,19 +14,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ErrorHandler.class)
     public ResponseEntity<?> handleErrorHandler(ErrorHandler e) {
         log.error("Unhandled exception", e);
-        throw new RuntimeException(e.toString());
-        //return ResponseEntity
-        //        .status(e.getHttpCode())
-        //        .body(e.toResponse());
+        return ResponseEntity
+                .status(e.getHttpCode())
+                .body(e.toResponse());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGenericException(Exception e) {
         log.error("Unhandled exception", e);
-        throw new RuntimeException(e.toString());
-        //return ResponseEntity
-        //        .status(500)
-        //        .body(new ErrorHandler(ErrorType.INTERNAL_ERROR).toResponse());
+        return ResponseEntity
+                .status(500)
+                .body(new ErrorHandler(ErrorType.INTERNAL_ERROR).toResponse());
     }
 
 }
