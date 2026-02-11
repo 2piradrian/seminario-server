@@ -29,7 +29,7 @@ public class GatewayBeans {
                 )
                 .route(r -> r
                         .path("/api/banned/**")
-                        .filters(f -> f.rewritePath("/api/banned(?<segment>/.*)?", "/users-server/api/banned{segment}"))
+                        .filters(f -> f.rewritePath("/api/banned(?<segment>/.*)?", "/users-server/api/banned${segment}"))
                         .uri("lb://users-server")
                 )
                 .route(r -> r
