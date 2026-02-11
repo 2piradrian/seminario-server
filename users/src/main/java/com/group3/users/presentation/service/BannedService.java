@@ -47,7 +47,6 @@ public class BannedService implements BannedServiceI {
         }
 
         BannedUser bannedUser = new BannedUser();
-        bannedUser.setId(userToBan.getId());
         bannedUser.setBannedBy(adminUser);
         bannedUser.setEmail(userToBan.getEmail());
         bannedUser.setReason(reason);
