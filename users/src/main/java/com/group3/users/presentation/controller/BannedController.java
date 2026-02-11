@@ -19,7 +19,7 @@ public class BannedController {
     private final BannedServiceI bannedService;
 
     @PostMapping("/ban-user")
-    public ResponseEntity<Void> banUser(
+    public ResponseEntity<?> banUser(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Object> payload
     ) {
@@ -29,7 +29,7 @@ public class BannedController {
     }
 
     @GetMapping("/get-all-banned-user-page")
-    public ResponseEntity<GetAllBannedUserPageRes> getAllBannedUsers(
+    public ResponseEntity<?> getAllBannedUsers(
             @RequestHeader("Authorization") String token,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "size") Integer size
