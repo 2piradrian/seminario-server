@@ -32,10 +32,8 @@ public class BannedService implements BannedServiceI {
 
     @Override
     public void banUser(BanUserReq dto) {
-        log.info(dto.toString());
         User adminUser = this.authService.auth(dto.getToken());
         if (adminUser == null) throw new ErrorHandler(ErrorType.UNAUTHORIZED);
-        log.info(adminUser.toString());
 
         if (!adminUser.getRole().equals(Role.ADMIN)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
@@ -44,14 +42,10 @@ public class BannedService implements BannedServiceI {
         ModerationReason reason = this.catalogRepository.getModerationReasonById(dto.getReasonId());
         if (reason == null) throw new ErrorHandler(ErrorType.INVALID_FIELDS);
 
-        log.info(reason.toString());
-
         User userToBan = this.userRepository.getById(dto.getUserId());
         if (userToBan == null) {
             throw new ErrorHandler(ErrorType.USER_NOT_FOUND);
         }
-
-        log.info(userToBan.toString());
 
         BannedUser bannedUser = new BannedUser();
         bannedUser.setBannedBy(adminUser);
