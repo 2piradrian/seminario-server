@@ -37,6 +37,7 @@ public class PageEntityMapper {
             .status(page.getStatus())
             .pageType(new PageType(page.getPageTypeId(), null))
             .isFollowing(false)
+            .createdAt(page.getCreatedAt())
             .build();
     }
 
@@ -55,6 +56,7 @@ public class PageEntityMapper {
             .collect(Collectors.toList()));
         model.setStatus(page.getStatus());
         model.setPageTypeId(page.getPageType().getId());
+        model.setCreatedAt(page.getCreatedAt());
         return model;
     }
 

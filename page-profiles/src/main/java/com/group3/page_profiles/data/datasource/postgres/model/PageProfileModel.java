@@ -44,4 +44,6 @@ public class PageProfileModel {
 
     private String pageTypeId;
 
+    private LocalDateTime createdAt;
+
 }
