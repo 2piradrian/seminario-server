@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/banned")
 @AllArgsConstructor
+@RequestMapping("/api/banned")
 public class BannedController {
 
     private final BannedServiceI bannedService;
@@ -25,7 +25,7 @@ public class BannedController {
     ) {
         BanUserReq banUserReq = BannedUserMapper.banUser().toRequest(token, payload);
         bannedService.banUser(banUserReq);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-all-banned-user-page")
