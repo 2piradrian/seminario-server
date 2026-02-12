@@ -339,6 +339,16 @@ public class PageProfileService implements PageProfileServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        if (user.isStaff() && !page.getOwner().getId().equals(user.getId())) {
+            this.notificationRepository.create(
+                    this.secretKeyHelper.getSecret(),
+                    page.getOwner().getId(),
+                    page.getId(),
+                    NotificationContent.MODERATION.name(),
+                    dto.getReasonId()
+            );
+        }
+
         if (page.getProfileImage() != null && !page.getProfileImage().isEmpty()) {
             this.imagesRepository.delete(page.getProfileImage(), secretKeyHelper.getSecret());
         }
