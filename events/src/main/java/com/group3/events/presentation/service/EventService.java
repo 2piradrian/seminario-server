@@ -9,7 +9,6 @@ import com.group3.events.data.repository.*;
 import com.group3.events.domain.dto.event.mapper.EventMapper;
 import com.group3.events.domain.dto.event.request.*;
 import com.group3.events.domain.dto.event.response.*;
-import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -366,7 +365,7 @@ public class EventService implements EventServiceI {
             targetId = event.getAuthor().getId();
         }
 
-        if (user.isStaff()){
+        if (user.isStaff() && !event.getAuthor().getId().equals(user.getId())){
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
                     targetId,

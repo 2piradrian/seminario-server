@@ -373,7 +373,7 @@ public class PostService implements PostServiceI {
         else {
             targetId = post.getAuthor().getId();
         }
-        if (user.isStaff()) {
+        if (user.isStaff() && !post.getAuthor().getId().equals(user.getId())) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
                     targetId,
