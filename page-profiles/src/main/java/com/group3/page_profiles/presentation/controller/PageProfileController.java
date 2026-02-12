@@ -106,9 +106,10 @@ public class PageProfileController {
     @DeleteMapping("/{pageId}")
     public ResponseEntity<?> delete(
         @RequestHeader(value = "Authorization") String token,
-        @PathVariable(value = "pageId") String pageId
+        @PathVariable(value = "pageId") String pageId,
+        @RequestBody Map<String, Object> payload
     ) {
-        DeletePageReq dto = PageMapper.delete().toRequest(token, pageId);
+        DeletePageReq dto = PageMapper.delete().toRequest(token, pageId, payload);
         this.pageService.delete(dto);
 
         return ResponseEntity.ok().build();

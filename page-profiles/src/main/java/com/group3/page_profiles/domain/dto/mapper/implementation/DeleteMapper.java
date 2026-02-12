@@ -6,10 +6,11 @@ import java.util.Map;
 
 public class DeleteMapper {
     
-    public DeletePageReq toRequest(String token, String pageId) {
+    public DeletePageReq toRequest(String token, String pageId, Map<String, Object> payload) {
         return DeletePageReq.create(
             token,
-            pageId
+            pageId,
+                    (String) payload.get("reasonId")
         );
     }
     
