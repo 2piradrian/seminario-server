@@ -11,14 +11,14 @@ public class GetEventByDateRangeReq {
 
     private final String token;
 
-    private final String userId;
+    private final String profileId;
 
     private final Date dateMonth;
 
-    private GetEventByDateRangeReq(String token, String userId, Date dateMonth) {
+    private GetEventByDateRangeReq(String token, String profileId, Date dateMonth) {
         this.dateMonth = dateMonth;
         this.token = token;
-        this.userId = userId;
+        this.profileId = profileId;
     }
 
     public static GetEventByDateRangeReq create(String token, String userId, Date dateMonth) {

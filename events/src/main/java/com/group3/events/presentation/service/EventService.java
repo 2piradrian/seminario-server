@@ -214,7 +214,7 @@ public class EventService implements EventServiceI {
             .atStartOfDay(ZoneOffset.UTC)
             .toInstant());
 
-        List<Event> events = this.eventRepository.getInDateRange(dto.getUserId(), dateStart, dateEnd);
+        List<Event> events = this.eventRepository.getInDateRange(dto.getProfileId(), dateStart, dateEnd);
 
         for (Event event : events) {
             if (event.getAuthor().getId() != null) {
