@@ -365,6 +365,9 @@ public class EventService implements EventServiceI {
             targetId = event.getAuthor().getId();
         }
 
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), event.getId());
+        this.eventRepository.deleteById(event.getId());
+
         if (user.isStaff() && !event.getAuthor().getId().equals(user.getId())){
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
@@ -375,10 +378,6 @@ public class EventService implements EventServiceI {
                     dto.getReasonId()
             );
         }
-
-        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), event.getId());
-
-        this.eventRepository.deleteById(event.getId());
     }
 
     @Override

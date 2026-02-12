@@ -373,6 +373,13 @@ public class PostService implements PostServiceI {
         else {
             targetId = post.getAuthor().getId();
         }
+
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), post.getId());
+        this.commentRepository.deleteAllByPostId(post.getId());
+        this.postsRepository.deleteAllUpvoters(post.getId());
+        this.postsRepository.deleteAllDownvoters(post.getId());
+        this.postsRepository.deleteById(post.getId());
+
         if (user.isStaff() && !post.getAuthor().getId().equals(user.getId())) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
@@ -383,12 +390,6 @@ public class PostService implements PostServiceI {
                     dto.getReasonId()
             );
         }
-
-        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), post.getId());
-        this.commentRepository.deleteAllByPostId(post.getId());
-        this.postsRepository.deleteAllUpvoters(post.getId());
-        this.postsRepository.deleteAllDownvoters(post.getId());
-        this.postsRepository.deleteById(post.getId());
     }
 
     @Override

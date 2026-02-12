@@ -276,6 +276,12 @@ public class CommentService implements CommentServiceI {
             targetId = comment.getAuthor().getId();
         }
 
+        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), comment.getId());
+        this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
+        this.commentRepository.deleteAllUpvoters(comment.getId());
+        this.commentRepository.deleteAllDownvoters(comment.getId());
+        this.commentRepository.deleteById(comment.getId());
+
         if (user.isStaff() && !comment.getAuthor().getId().equals(user.getId())) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
@@ -286,12 +292,6 @@ public class CommentService implements CommentServiceI {
                     dto.getReasonId()
             );
         }
-
-        this.notificationsRepository.deleteBySourceId(dto.getToken(), this.secretKeyHelper.getSecret(), comment.getId());
-        this.commentRepository.deleteAllRepliesByCommentId(comment.getId());
-        this.commentRepository.deleteAllUpvoters(comment.getId());
-        this.commentRepository.deleteAllDownvoters(comment.getId());
-        this.commentRepository.deleteById(comment.getId());
     }
 
     @Override
