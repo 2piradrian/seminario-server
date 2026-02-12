@@ -276,7 +276,7 @@ public class CommentService implements CommentServiceI {
             targetId = comment.getAuthor().getId();
         }
 
-        if (user.isStaff()) {
+        if (user.isStaff() && !comment.getAuthor().getId().equals(user.getId())) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
                     targetId,

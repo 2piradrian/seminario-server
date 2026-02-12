@@ -115,10 +115,11 @@ public class ReviewService implements ReviewServiceI {
         Review review = reviewRepository.getById(dto.getId());
         if (review == null) throw new ErrorHandler(ErrorType.REVIEW_NOT_FOUND);
 
-        if (!user.canDelete(review))
+        if (!user.canDelete(review)) {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
+        }
 
-        if (user.isStaff()){
+        if (user.isStaff() && !review.getReviewerUser().getId().equals(user.getId())){
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
                     review.getReviewerUser().getId(),
