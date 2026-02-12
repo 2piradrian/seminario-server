@@ -17,13 +17,14 @@ public class NotificationRepository implements NotificationsRepositoryI {
     private final NotificationsServerRepositoryI repository;
 
     @Override
-    public void create(String secret, String targetId, String sourceId, String carriedOutById, String content) {
+    public void create(String secret, String targetId, String sourceId, String carriedOutById, String content, String reasonId) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("secret", secret);
         payload.put("targetId", targetId);
         payload.put("sourceId", sourceId);
         payload.put("carriedOutById", carriedOutById);
         payload.put("content", content);
+        payload.put("reasonId", reasonId);
 
         this.repository.create(payload);
     }

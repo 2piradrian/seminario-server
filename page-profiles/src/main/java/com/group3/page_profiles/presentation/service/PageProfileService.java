@@ -226,7 +226,8 @@ public class PageProfileService implements PageProfileServiceI {
                     newMember.getId(),
                     page.getId(),
                     user.getId(),
-                    NotificationContent.PAGE_INVITATION.name()
+                    NotificationContent.PAGE_INVITATION.name(),
+                    null
                 );
 
             }
@@ -362,6 +363,7 @@ public class PageProfileService implements PageProfileServiceI {
                     this.secretKeyHelper.getSecret(),
                     page.getOwner().getId(),
                     page.getId(),
+                    user.getId(),
                     NotificationContent.MODERATION.name(),
                     dto.getReasonId()
             );
