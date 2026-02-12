@@ -76,7 +76,8 @@ public class EventService implements EventServiceI {
 
         if (localDateInit.isEqual(LocalDate.now(ZoneOffset.UTC))){
             event.setStatus(EventStatus.IN_PROGRESS);
-        } else {
+        }
+        else {
             event.setStatus(EventStatus.UPCOMING);
         }
 
