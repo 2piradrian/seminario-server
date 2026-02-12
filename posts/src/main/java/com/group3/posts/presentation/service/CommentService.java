@@ -268,6 +268,9 @@ public class CommentService implements CommentServiceI {
             throw new ErrorHandler(ErrorType.UNAUTHORIZED);
         }
 
+        Post post = this.postsRepository.getById(comment.getPostId());
+        if (post == null) throw new ErrorHandler(ErrorType.POST_NOT_FOUND);
+
         String targetId;
         if (comment.getPageProfile() != null && comment.getPageProfile().getId() != null) {
             targetId = comment.getPageProfile().getId();
@@ -282,7 +285,7 @@ public class CommentService implements CommentServiceI {
         this.commentRepository.deleteAllDownvoters(comment.getId());
         this.commentRepository.deleteById(comment.getId());
 
-        if (user.isStaff() && !comment.getAuthor().getId().equals(user.getId())) {
+        if (user.isStaff() && !comment.getAuthor().getId().equals(user.getId()) && !post.getAuthor().getId().equals(user.getId())) {
             this.notificationsRepository.create(
                     this.secretKeyHelper.getSecret(),
                     targetId,
