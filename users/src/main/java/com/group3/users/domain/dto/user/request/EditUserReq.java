@@ -89,7 +89,7 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (shortDescription.isEmpty() || shortDescription.length() > 256) {
+        if (shortDescription.isEmpty()){
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
@@ -97,7 +97,7 @@ public class EditUserReq {
             throw new ErrorHandler(ErrorType.MISSING_REQUIRED_FIELDS);
         }
 
-        if (longDescription.isEmpty() || longDescription.length() > 4096) {
+        if (longDescription.isEmpty()) {
             throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
