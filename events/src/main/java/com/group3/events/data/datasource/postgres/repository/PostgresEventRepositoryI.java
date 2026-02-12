@@ -106,7 +106,7 @@ public interface PostgresEventRepositoryI extends JpaRepository<EventModel, Stri
     @Query("""
         SELECT e 
         FROM EventModel e 
-        WHERE (e.pageId = :ownerId OR e.authorId = :ownerId OR :ownerId MEMBER OF e.assists)
+        WHERE (e.pageId = :userId OR e.authorId = :userId OR :userId MEMBER OF e.assists)
         AND e.dateInit BETWEEN :dateStart AND :dateEnd
         ORDER BY e.createdAt DESC
     """)
