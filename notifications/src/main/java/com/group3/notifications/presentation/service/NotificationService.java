@@ -45,12 +45,12 @@ public class NotificationService implements NotificationServiceI {
             if (reason == null) throw new ErrorHandler(ErrorType.INVALID_FIELDS);
         }
 
-        Notification existingNotification = notificationRepository.findBy(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
-
-        if (existingNotification != null) {
-            notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
-            return;
-        }
+        //Notification existingNotification = notificationRepository.findBy(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
+        //
+        //if (existingNotification != null) {
+        //    notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), dto.getContent());
+        //    return;
+        //}
 
         if (dto.getContent() == NotificationContent.UPVOTE) {
             notificationRepository.delete(dto.getTargetId(), dto.getCarriedOutById(), NotificationContent.DOWNVOTE);
